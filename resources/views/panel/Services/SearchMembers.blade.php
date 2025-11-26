@@ -460,7 +460,10 @@
 
 
                     console.log(item);
-                    $("#Modal_biodata #rno").text(item.rno);
+
+                    $("#Modal_biodata #btn_pdf").attr("href", `/pdfview/fullbiodata/${item.rno}`);
+
+                    // $("#Modal_biodata #rno").text(item.rno);
                     $("#Modal_biodata #gender").text(item.g);
                     $("#Modal_biodata #refname").text(item.refname);
                     $("#Modal_biodata #dob").text(item.bio.dob);

@@ -39,5 +39,7 @@ Route::middleware("auth")->group(function () {
 
     });
 
+    Route::get('/pdfview/{type}/{rno}', [DashboardController::class, 'pdfview'])->name('pdfview');
+
 
 });

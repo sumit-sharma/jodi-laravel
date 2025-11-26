@@ -23,23 +23,24 @@ class SearchController extends Controller
     {
         try {
 
-        $data = $request->all();
-        unset($data['_token']);
-        $results = $this->searchService->search(
-            $data,
-            $request->get('per_page', 20)
-        );
+            $data = $request->all();
+            unset($data['_token']);
+            $results = $this->searchService->search(
+                $data,
+                $request->get('per_page', 20)
+            );
 
-        $searchLog = $this->searchService->saveSearchLog($data);
+            if ($request->expectsJson()) {
+                return response()->json($results);
+            }
 
-        if($request->expectsJson()){
-            return response()->json($results);
-        }
+            $searchLog = $this->searchService->saveSearchLog($data);
 
-        // return
+            return view('panel.Services.SearchMembersResult', compact('results'));
 
         } catch (\Throwable $th) {
             //throw $th;
+            return $th;
         }
 
     }

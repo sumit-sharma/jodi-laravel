@@ -151,4 +151,21 @@ class SearchService
         ]);
     }
 
+    public function searchByrno($rno)
+    {
+        $query = ViewProfile::with([
+            'personal',
+            'bio',
+            'occupation',
+            'income',
+            'education',
+            'organisation',
+            'payment',
+            'profilebs',
+            'personal.zone'
+        ]);
+
+        return $query->where('rno', $rno)->first();
+    }
+
 }

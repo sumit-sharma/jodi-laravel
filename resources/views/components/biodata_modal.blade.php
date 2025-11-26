@@ -30,12 +30,12 @@
                             <a href="#person-details">
                                 <button type="button" class="btn btn-outline-primary">Contact</button>
                             </a>
-                            <button type="button" class="btn btn-outline-primary">PDF <i
-                                    data-feather="download"></i></button>
+                            <a class="btn btn-outline-primary" id="btn_pdf" href="#" target="_blank">PDF <i
+                                    data-feather="download"></i></a>
                         </div>
                     </div>
                 </div>
-                <label id="rno"></label>
+                {{-- <label id="rno"></label> --}}
                 <!--                                                            <h5 class="modal-title font-size-16" id="SerialNumberTitle">BIO Data</h5>-->
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -347,3 +347,5 @@
         </div>
     </div>
 </div>
+
+

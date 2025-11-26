@@ -661,9 +661,9 @@
                                         <div class="col-lg-4 col-12 mb-2">
                                             <label class="form-label">Family Income (P.A):</label>
                                             <select name="familyincome" id="familyincome" class="form-select">
-                                                {{-- @foreach ($incomes as $item)
+                                                @foreach ($incomes as $item)
                                                     <option value="{{ $item->inc_code }}">{{ $item->income }}</option>
-                                                @endforeach --}}
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="col-lg-4 col-12 mb-2">
