@@ -1,0 +1,8 @@
+Field,Type,Null,Key,Default,Extra
+id,bigint unsigned,NO,PRI,,auto_increment
+rno,int,NO,MUL,"0",""
+orgname,varchar(750),YES,MUL,,""
+orgdept,varchar(750),YES,MUL,,""
+orgyear,varchar(750),YES,"",,""
+created_at,timestamp,YES,"",,""
+updated_at,timestamp,YES,"",,""
