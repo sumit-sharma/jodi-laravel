@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Cache;
 
 class SearchService
 {
-    public function search(array $input, int $perPage = 20)
+    public function search(array $input, int $perPage = 20,  int $page = 1)
     {
         $searchField = $input['searchinfield'];
         $searchValue = trim($input['searchvalue']);
         $dtype       = $input['dtype'] ?? [];
         $status      = $input['chkstatus'] ?? [];
 
-        $cacheKey = 'search_results_' . md5(json_encode(['searchField' => $searchField, 'searchValue' => $searchValue, 'dtype' => $dtype, 'status' => $status]));
+        $cacheKey = 'search_results_' . md5(json_encode(['searchField' => $searchField, 'searchValue' => $searchValue, 'dtype' => $dtype, 'status' => $status, 'page'  => $page, 'perPage' => $perPage]));
 
         if ($searchField === 'dob') {
             $searchValue = date('Y-m-d', strtotime(str_replace('/', '-', $searchValue)));
@@ -48,6 +48,8 @@ class SearchService
         switch ($searchField) {
 
             case 'rno':
+                $query->where($searchField, 'like', "$searchValue%");
+                break;
             case 'refname':
             case 'cst':
             case 'tc':
@@ -119,9 +121,9 @@ class SearchService
         // Sort latest profiles first
         $query->orderByDesc('id');
 
-        return Cache::remember($cacheKey, now()->addMinutes(30), function () use ($query, $perPage) {
+        return Cache::remember($cacheKey, now()->addMinutes(30), function () use ($query, $perPage, $page) {
             // Return paginated result
-            return $query->paginate($perPage)->withQueryString();
+            return $query->paginate($perPage, ['*'], 'page', $page)->withQueryString();
         });
     }
 

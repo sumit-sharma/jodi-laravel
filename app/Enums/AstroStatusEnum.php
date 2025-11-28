@@ -5,6 +5,7 @@ namespace App\Enums;
 enum AstroStatusEnum: int
 {
 
+    case NA = 0;
     case Manglik = 1;
     case SlightlyManglik = 2;
     case NonManglik = 3;
@@ -14,6 +15,7 @@ enum AstroStatusEnum: int
     public function label(): string
     {
         return match ($this) {
+            self::NA => 'N/A',
             self::Manglik => 'Manglik',
             self::SlightlyManglik => 'Slightly Manglik',
             self::NonManglik => 'Non Manglik',

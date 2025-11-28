@@ -156,8 +156,10 @@
                                                 @endforeach
 
                                             </tbody>
-
+                                            <tfoot>
+                                            </tfoot>
                                         </table>
+                                        {{ $results->withQueryString()->links() }}
                                     </div>
 
                                         @include('components.biodata_modal')
@@ -758,13 +760,15 @@
                                 </tr>`;
                     });
                     $("#Modal_biodata #education_container").html(html);
-                    $("#Modal_biodata #occupation").text(item.occupation.name);
-                    $("#Modal_biodata #income").text(item.income.income);
-                    $("#Modal_biodata #salary").text(item.personal.salary);
+                    $("#Modal_biodata #occupation").text(item?.occupation?.name);
+                    $("#Modal_biodata #income").text(item?.income?.income);
+                    $("#Modal_biodata #salary").text(item?.personal?.salary);
 
+                    $("#Modal_biodata #tbody_organistion").children('tr.company_row').remove();
                     let companyhtml = "";
+
                     item.organisation.forEach(org => {
-                        companyhtml += `<tr>
+                        companyhtml += `<tr class="company_row">
                                         <td><strong>Company Name:</strong></td>
                                         <td>${org.orgname}</td>
                                         <td><strong>Designation:</strong></td>

@@ -161,7 +161,7 @@
 
                             <thead class="table-primary">
                                 <tr>
-                                    <th colspan="6" id="occupation" class="font-size-18">Occupation</th>
+                                    <th colspan="6" class="font-size-18">Occupation</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_organistion">

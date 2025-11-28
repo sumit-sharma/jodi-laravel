@@ -3,6 +3,7 @@ namespace App\Enums;
 
 enum ComplexionEnum: int {
 
+    case NA = 0;
     case VERY_FAIR = 1;
     case FAIR      = 2;
     case WHEATISH  = 3;
@@ -12,6 +13,7 @@ enum ComplexionEnum: int {
     public function label(): string
     {
         return match ($this) {
+            self::NA => 'N/A',
             self::VERY_FAIR => 'Very Fair',
             self::FAIR      => 'Fair',
             self::WHEATISH  => 'Wheatish',

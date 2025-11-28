@@ -38,8 +38,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-5">
-                                <form id="frmSearchMember" method="POST" action="{{ route('search-data') }}">
-                                    @csrf
+                                <form id="frmSearchMember" method="GET" action="{{ route('search-data') }}">
                                     <div class="row mb-6">
                                         <div class="col-12 mb-3">
                                             <h5 class="font-size-14 mb-2">Select Field:</h5>
@@ -245,16 +244,21 @@
                 return false;
             }
 
+            // Convert FormData to URLSearchParams for GET query string
+            const params = new URLSearchParams();
+            for (const [key, value] of formData.entries()) {
+                params.append(key, value);
+            }
+
             const options = {
                 headers: {
                     'Accept': 'application/json'
                 },
-                method: 'POST',
-                body: formData
+                method: 'GET'
             };
 
 
-            fetch(`{{ route('search-data') }}`, options)
+            fetch(`{{ route('search-data') }}?${params.toString()}`, options)
                 .then(res => res.json())
                 .then(data => {
                     document.getElementById("table_search").querySelector("tbody").innerHTML = data.data
@@ -540,13 +544,15 @@
                                 </tr>`;
                     });
                     $("#Modal_biodata #education_container").html(html);
-                    $("#Modal_biodata #occupation").text(item.occupation.name);
-                    $("#Modal_biodata #income").text(item.income.income);
-                    $("#Modal_biodata #salary").text(item.personal.salary);
+                    $("#Modal_biodata #occupation").text(item?.occupation?.name);
+                    $("#Modal_biodata #income").text(item?.income?.income);
+                    $("#Modal_biodata #salary").text(item?.personal?.salary);
 
+                    $("#Modal_biodata #tbody_organistion").children('tr.company_row').remove();
                     let companyhtml = "";
+
                     item.organisation.forEach(org => {
-                        companyhtml += `<tr>
+                        companyhtml += `<tr class="company_row">
                                         <td><strong>Company Name:</strong></td>
                                         <td>${org.orgname}</td>
                                         <td><strong>Designation:</strong></td>

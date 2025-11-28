@@ -334,6 +334,8 @@
                                             <div class="card">
                                                 <div class="card-header">
                                                     <div id="my-dropzone" class="dropzone"></div>
+                                                        <div id="previewContainer" class="mt-3 d-flex gap-2 flex-wrap"></div>
+
                                                     {{-- <div>
                                                     <input type="file" id="myfile" name="myfile" multiple>
                                                     <div class="dz-message needsclick">
@@ -820,6 +822,19 @@
 
     </div>
     <!-- end row-->
+<!-- CROP MODAL -->
+<div class="modal fade" id="cropModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="cropImage" style="max-width:100%;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cropSave" class="btn btn-success">Crop & Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
     </div> <!-- container-fluid -->
@@ -837,6 +852,10 @@
     <!-- select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- cropper js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 
     <script>
         function cmToFeetInchesRounded(cm) {
@@ -871,6 +890,80 @@
 
         });
     </script>
+<script>
+Dropzone.autoDiscover = false;
+
+let cropper;
+let croppedImages = [];   // Store final cropped images (max 6)
+
+// Initialize Dropzone
+const dz = new Dropzone("#my-dropzone", {
+    url: "{{ route('customer.upload') }}",
+    autoProcessQueue: false,
+    maxFiles: 1,
+    uploadMultiple: false,
+    clickable: true,
+    addRemoveLinks: true,
+    acceptedFiles: "image/*",
+    dragover: false,
+    dragenter: false,
+    dragleave: false,
+    drop: false,
+    dictDefaultMessage: "Select image (1 at a time) max 6 images",
+
+    init: function () {
+        this.on("addedfile", function(file) {
+
+            if (croppedImages.length >= 6) {
+                this.removeFile(file);
+                alert("Maximum 6 images allowed.");
+                return;
+            }
+
+            // Show crop modal
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById("cropImage").src = event.target.result;
+
+                $("#cropModal").modal("show");
+
+                setTimeout(() => {
+                    cropper = new Cropper(document.getElementById("cropImage"), {
+                        aspectRatio: 0,
+                        viewMode: 1,
+                    });
+                }, 200);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+
+// When user clicks Save Crop
+document.getElementById("cropSave").onclick = function() {
+    let canvas = cropper.getCroppedCanvas({
+        width: 600,
+        height: 800,
+    });
+
+    canvas.toBlob((blob) => {
+
+        croppedImages.push(blob); // store file
+
+        // Preview image
+        let url = URL.createObjectURL(blob);
+        document.getElementById("previewContainer").innerHTML += `
+            <img src="${url}" class="border rounded" width="100">
+        `;
+
+        $("#cropModal").modal("hide");
+        cropper.destroy();
+        cropper = null;
+        dz.removeAllFiles();
+
+    }, "image/jpeg", 0.9);
+};
+</script>
 
 
     <script>
@@ -879,7 +972,7 @@
         // store uploaded file paths
         let uploadedFiles = [];
 
-        const myDropzone = new Dropzone("#my-dropzone", {
+        const myDropzone = new Dropzone("#my-dropzone1", {
             url: "{{ route('customer.upload') }}",
             paramName: "file",
             maxFilesize: 5, // MB

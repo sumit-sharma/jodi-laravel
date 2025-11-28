@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\Caste;
 use App\Models\ProfileBio;
 use App\Models\ProfileBs;
 use App\Models\ProfileEducation;
@@ -99,6 +100,7 @@ class CustomerService
     }
     public function saveViewProfile($rno, $data)
     {
+        $cst = Caste::find($data['caste']);
         $currentUserId         = auth()->user()->id;
         $diff                  = Carbon::parse($data['dob'])->diff(now());
         $columns               = ['refname', 'hghtft', 'rs', 'ms'];
@@ -108,7 +110,7 @@ class CustomerService
         $filterArray["y"]      = $diff->year;
         $filterArray["m"]      = $diff->month;
         $filterArray["rl"]     = $data['religion'];
-        $filterArray["cst"]    = $data['caste'];
+        $filterArray["cst"]    = $cst->name;
         $filterArray["hg"]     = $data['hght'];
         $filterArray['wt']     = $data['wtkg'];
         $filterArray['eh']     = $data['eatinghabit'];

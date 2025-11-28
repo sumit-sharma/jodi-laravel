@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum DrinkingHabitEnum:int
 {
+    case CantSay = 0;
     case NonConsumer = 1;
     case DrinkOccasionally = 2;
     case RegularDrinker = 3;
@@ -12,6 +13,7 @@ enum DrinkingHabitEnum:int
     public function label(): string
     {
         return match ($this) {
+            self::CantSay => "Can't Say",
             self::NonConsumer => 'Non Consumer',
             self::DrinkOccasionally => 'Drink Occasionally',
             self::RegularDrinker => 'Regular Drinker',
