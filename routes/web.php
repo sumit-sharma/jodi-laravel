@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerUploadController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\MatchController;
@@ -15,6 +16,8 @@ Route::middleware("guest")->group(function () {
 
 Route::get('/', RedirectController::class);
 
+Route::get('/uploads/customer/{filename}', [CustomerUploadController::class, 'show'])
+    ->where('filename', '.*'); // allow dots in filename
 
 
 

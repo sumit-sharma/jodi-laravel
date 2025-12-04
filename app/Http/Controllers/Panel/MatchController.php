@@ -28,19 +28,19 @@ class MatchController extends Controller
 
     public function saveMatchPrefrences(MatchPrefrenceRequest $request, int $rno)
     {
-        $validate_data = $request->validated();
-        $validate_data['religion'] = implode(',',$request->religion);
-        $validate_data['caste'] = implode(',',$request->caste);
-        $validate_data['edupref'] = implode(',',$request->edupref);
-        $validate_data['eatingpref'] = implode(',',$request->eatingpref);
-        $validate_data['astropref'] = implode(',',$request->astropref);
-        $validate_data['rspref'] = implode(',',$request->rspref);
-        $validate_data['mspref'] = implode(',',$request->mspref);
-        $validate_data['occupref'] = implode(',',$request->occupref);
-        $validate_data['zonepref'] = implode(',',$request->zonepref);
-        $validate_data['mr'] = implode(',',$request->mr);
+        $validate_data               = $request->validated();
+        $validate_data['religion']   = \App\Traits\CommonTrait::chkArrayImplode($request->religion);
+        $validate_data['caste']      = \App\Traits\CommonTrait::chkArrayImplode($request->caste);
+        $validate_data['edupref']    = \App\Traits\CommonTrait::chkArrayImplode($request->edupref);
+        $validate_data['eatingpref'] = \App\Traits\CommonTrait::chkArrayImplode($request->eatingpref);
+        $validate_data['astropref']  = \App\Traits\CommonTrait::chkArrayImplode($request->astropref);
+        $validate_data['rspref']     = \App\Traits\CommonTrait::chkArrayImplode($request->rspref);
+        $validate_data['mspref']     = \App\Traits\CommonTrait::chkArrayImplode($request->mspref);
+        $validate_data['occupref']   = \App\Traits\CommonTrait::chkArrayImplode($request->occupref);
+        $validate_data['zonepref']   = \App\Traits\CommonTrait::chkArrayImplode($request->zonepref);
+        $validate_data['mr']         = \App\Traits\CommonTrait::chkArrayImplode($request->mr);
         // dump($validate_data);
-        $result =  $this->matchService->saveMatchPrefrence($rno, $validate_data);
+        $result = $this->matchService->saveMatchPrefrence($rno, $validate_data);
         return back()->with('success', 'Match prefrences updated ');
     }
 

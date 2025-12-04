@@ -113,7 +113,7 @@
                                     <div class="mb-3 col-2">
                                         <label for="example-text-input" class="form-label">Caste</label>
                                         <select name="caste[]" id="caste" multiple class="form-select select2"
-                                            data-value={{ $matchPrefrences->caste }}>
+                                            data-value="{{ $matchPrefrences->caste }}">
                                         </select>
                                     </div>
 
@@ -748,7 +748,7 @@
                 .then(data => {
                     const select = document.getElementById('caste');
                     select.innerHTML = '';
-                    const selectedIds = $("#caste").data('value').split(',').map(Number);
+                    const selectedIds = $("#caste").data('value').split(' ').map(Number);
                     console.log(selectedIds);
 
                     data.data.forEach(element => {

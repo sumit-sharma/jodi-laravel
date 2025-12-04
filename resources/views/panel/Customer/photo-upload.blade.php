@@ -69,8 +69,9 @@
 
                                             <div class="col-lg-4 col-sm-12 pic-div">
                                                 <div class="mt-4">
-                                                    <a href="{{ Storage::disk('public')->url('uploads/customer/'.$item->photo) }}" class="image-popup" data-lightbox="gallery">
-                                                        <img src="{{ Storage::disk('public')->url('uploads/customer/'.$item->photo) }}" class="img-fluid" width="200"
+
+                                                    <a href="{{ url('/uploads/customer/' . $item->photo) }}" class="image-popup" data-lightbox="gallery">
+                                                        <img src="{{ url('uploads/customer/'.$item->photo) }}" class="img-fluid" width="200"
                                                             alt="profile pictures">
                                                     </a>
                                                     <p align="center" class="mt-2">

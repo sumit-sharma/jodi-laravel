@@ -28,12 +28,19 @@ trait CommonTrait
         echo $output;
     }
 
-    public static function chkSelected(string $value, $searchvalue)
+    public static function chkSelected(string | null $value, $searchvalue)
     {
-        $dataArray = explode(',', $value);
-        if(in_array($searchvalue, $dataArray)){
-            echo 'selected';
+        if ($value) {
+            $dataArray = explode(' ', $value);
+            if (in_array($searchvalue, $dataArray)) {
+                echo 'selected';
+            }
         }
+    }
+
+    public static function chkArrayImplode($item, $separtor = ' ')
+    {
+        return is_array($item)? implode($separtor, $item):$item;
     }
 
 }

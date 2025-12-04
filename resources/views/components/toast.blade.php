@@ -26,4 +26,12 @@
     @if (session('info'))
         toastr.info("{{ session('info') }}");
     @endif
+
+    // Validation Errors
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            toastr.error("{{ $error }}");
+        @endforeach
+    @endif
+
 </script>

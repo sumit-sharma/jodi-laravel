@@ -30,6 +30,7 @@ class MatchService
 
     public function saveMatchPrefrence($rno, $data)
     {
+        info(json_encode($data));
         return ProfileMatch::updateOrCreate(['rno' => $rno], $data);
     }
 
