@@ -25,7 +25,16 @@ class CustomerSeeder extends Seeder
         DB::statement("insert ignore into jodi_laravel.profile_payment (rno, amount, dated, details, created_at, updated_at) SELECT li.rno, li.amount, li.dated, li.details, NOW(), NOW() FROM old_jodi.profile_payment as li");
         DB::statement("insert ignore into jodi_laravel.convert_log (old_rno, new_rno, empid, dated, created_at, updated_at) SELECT li.old_rno,  li.new_rno,  li.empid, li.dated, NOW(), NOW() FROM old_jodi.convert_log as li");
 
-         */
+        DB::statement("insert ignore into jodi_laravel.snaps (rno, photo, sorting, created_at, updated_at) SELECT li.rno, li.photo, li.sorting, NOW(), NOW() FROM old_jodi.snap as li");
+
+
+        DB::statement("insert ignore into jodi_laravel.profile_matches (rno, agefrom, ageupto, hghtfrom, hghtto, religion, caste, education, edupref, eatingpref, astropref, rspref, mspref, childpref, occupref, incomepref, zonepref, mr, created_at, updated_at) SELECT li.rno, li.agefrom, li.ageupto, li.hghtfrom, li.hghtto, li.religion, li.caste, li.education, li.edupref, li.eatingpref, li.astropref, li.rspref, li.mspref, li.childpref, li.occupref, li.incomepref, li.zonepref, li.mr, NOW(), NOW() FROM old_jodi.profile_match as li");
+
+
+        */
+
+
+
 
 
     }

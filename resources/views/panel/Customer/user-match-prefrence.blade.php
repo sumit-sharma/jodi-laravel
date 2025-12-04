@@ -1,37 +1,305 @@
 @extends('layouts.home')
+
 @section('main-content')
     <div class="container-fluid">
-		<style>
-		.form-check-input {width:1em !important; height: 1em !important; border: 1px solid #420d1c !important;}
-        td { vertical-align: middle; text-align: center; }
 
-		</style>
         <div class="row">
-            @include('components.inner-menu')
-        </div>
-        <div class="row">
+
+
             <div class="col-xl-12">
                 <!-- card -->
                 <div class="card">
                     <!-- card body -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Search Member Result</h4>
+                                    <h4 class="mb-sm-0 font-size-18">Update Match Prefrence</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Service</a></li>
-                                            <li class="breadcrumb-item active">Form Transfer</li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Find Match</a></li>
+                                            <li class="breadcrumb-item active">Update Match Prefrence</li>
                                         </ol>
                                     </div>
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
+                            <hr>
+                            <form id="frmupdatepref" method="POST"
+                                action="{{ route('save-match-prefrences', ['rno' => $rno]) }}">
+                                @csrf
+                                <div class="row">
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Reference No</label>
+                                        <label class="form-control">{{ $rno . '-' . $bio->refname }}</label>
+                                    </div>
+                                    <div class="mb-3 col-1">
+                                        <label for="example-text-input" class="form-label">Age From</label>
+                                        <select name="agefrom" class="form-select">
+                                            @foreach (range(18, 70) as $item)
+                                                <option value="{{ $item }}"
+                                                    {{ $matchPrefrences->agefrom == $item ? 'selected' : '' }}>
+                                                    {{ $item }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-1">
+                                        <label for="example-text-input" class="form-label">Age Up To</label>
+                                        <select name="ageupto" class="form-select">
+                                            @foreach (range(18, 70) as $item)
+                                                <option value="{{ $item }}"
+                                                    {{ $matchPrefrences->ageupto == $item ? 'selected' : '' }}>
+                                                    {{ $item }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Child Pref.</label>
+                                        <select name="childpref" id="childpref" class="form-select">
+                                            <option value="1" {{ $matchPrefrences->childpref == 1 ? 'selected' : '' }}>
+                                                With Child</option>
+                                            <option value="0" {{ $matchPrefrences->childpref == 0 ? 'selected' : '' }}>
+                                                Without Child</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-1">
+                                        <label for="example-text-input" class="form-label">Height From</label>
+                                        <select name="hghtfrom" class="form-select">
+                                            {{ \App\Traits\CommonTrait::loadheightdata($matchPrefrences->hghtfrom) }}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-1">
+                                        <label for="example-text-input" class="form-label">Height Up To</label>
+                                        <select name="hghtto" class="form-select">
+                                            {{ \App\Traits\CommonTrait::loadheightdata($matchPrefrences->hghtto) }}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Min. Income Pref.</label>
+                                        <select name="incomepref" id="incomepref" class="form-select">
+                                            @foreach ($incomes as $item)
+                                                <option value="{{ $item->inc_code }}"
+                                                    {{ $item->inc_code == $matchPrefrences->incomepref ? 'selected' : '' }}>
+                                                    {{ $item->income }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Religion</label>
+                                        <select multiple name="religion[]" id="religion" class="form-select select2">
+                                            <option>Select</option>
+                                            <option value="1"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->religion, 1) }}>
+                                                Hindu</option>
+                                            <option value="2"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->religion, 2) }}>
+                                                Sikh</option>
+                                            <option value="3"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->religion, 3) }}>
+                                                Jain</option>
+                                            <option value="4"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->religion, 4) }}>
+                                                Christian</option>
+                                            <option value="5"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->religion, 5) }}>
+                                                Muslim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Caste</label>
+                                        <select name="caste[]" id="caste" multiple class="form-select select2"
+                                            data-value={{ $matchPrefrences->caste }}>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Min. Education</label>
+                                        <select name="education" id="education" class="form-select">
+                                            <option value="1" {{ $matchPrefrences->education == 1 ? 'selected' : '' }}>
+                                                Matriculate</option>
+                                            <option value="2" {{ $matchPrefrences->education == 2 ? 'selected' : '' }}>
+                                                Under Graduate</option>
+                                            <option value="3" {{ $matchPrefrences->education == 3 ? 'selected' : '' }}>
+                                                Graduate</option>
+                                            <option value="6" {{ $matchPrefrences->education == 6 ? 'selected' : '' }}>
+                                                Double Graduate</option>
+                                            <option value="4" {{ $matchPrefrences->education == 4 ? 'selected' : '' }}>
+                                                Post Graduate</option>
+                                            <option value="5" {{ $matchPrefrences->education == 5 ? 'selected' : '' }}>
+                                                Doctorate</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Education Pref.</label>
+                                        <select name="edupref[]" multiple class="form-select select2">
+                                            @foreach ($eduprefs as $item)
+                                                <option value="{{ $item->sno }}"
+                                                    {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->edupref, $item->sno) }}>
+                                                    {{ $item->education }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Occupation Pref.</label>
+                                        <select name="occupref[]" multiple class="form-select select2">
+                                            @foreach ($occupations as $item)
+                                                <option value="{{ $item->occ_code }}"
+                                                    {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->occupref, $item->occ_code) }}>
+                                                    {{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Astro Status</label>
+                                        <select name="astropref[]" multiple class="form-select select2">
+                                            <option value="1"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->astropref, 1) }}>
+                                                Manglik</option>
+                                            <option value="2"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->astropref, 2) }}>
+                                                Slightly Manglik</option>
+                                            <option value="3"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->astropref, 3) }}>
+                                                Non Manglik</option>
+                                            <option value="4"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->astropref, 4) }}>
+                                                Don't Believe</option>
+                                            <option value="5"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->astropref, 5) }}>
+                                                Don't Know</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Eating Pref.</label>
+                                        <select name="eatingpref[]" multiple class="form-select select2">
+                                            <option value="1"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->eatingpref, 1) }}>
+                                                Vegetarian</option>
+                                            <option value="2"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->eatingpref, 2) }}>
+                                                Eggetarian</option>
+                                            <option value="3"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->eatingpref, 3) }}>
+                                                Non Vegetarian</option>
+                                            <option value="4"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->eatingpref, 4) }}>
+                                                Don't Know</option>
+                                            <option value="5"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->eatingpref, 5) }}>
+                                                Occasionally Non Vegetarian</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <div class="row">
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Mail Reminder</label>
+                                        <select name="mr[]" multiple class="form-select select2">
+                                            <option value="1"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mr, 1) }}>Monday
+                                            </option>
+                                            <option value="2"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mr, 2) }}>Tuesday
+                                            </option>
+                                            <option value="3"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mr, 3) }}>
+                                                Wednesday</option>
+                                            <option value="4"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mr, 4) }}>
+                                                Thursday</option>
+                                            <option value="5"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mr, 5) }}>Friday
+                                            </option>
+                                            <option value="6"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mr, 6) }}>
+                                                Saturday</option>
+                                            <option value="7"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mr, 7) }}>Sunday
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Residential Pref.</label>
+                                        <select name="rspref[]" multiple class="form-select select2">
+                                            <option value="1"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->rspref, 1) }}>
+                                                Indian Citizen</option>
+                                            <option value="2"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->rspref, 2) }}>
+                                                Temp. Residing Abroad</option>
+                                            <option value="3"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->rspref, 3) }}>Non
+                                                Resident Indian</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Marital Pref.</label>
+                                        <select name="mspref[]" multiple class="form-select select2">
+                                            <option value="1"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mspref, 1) }}>
+                                                Never Married</option>
+                                            <option value="2"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mspref, 2) }}>
+                                                Divorced</option>
+                                            <option value="3"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mspref, 3) }}>
+                                                Widow</option>
+                                            <option value="4"
+                                                {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->mspref, 4) }}>
+                                                Separated</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-2">
+                                        <label for="example-text-input" class="form-label">Zone</label>
+                                        <label class="form-label">Select</label>
+                                        <select name="zonepref[]" multiple class="form-select select2">
+                                            @foreach ($zones as $item)
+                                                <option value="{{ $item->zone_code }}"
+                                                    {{ \App\Traits\CommonTrait::chkSelected($matchPrefrences->zonepref, $item->zone_code) }}>
+                                                    {{ $item->zone_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                                <div class="col-md-12 col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary w-lg waves-effect waves-light">Update
+                                        Match</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- end card -->
+                </div><!-- end col -->
+            </div>
+            <div class="clearfix"></div>
+
+
+            {{-- <div class="col-xl-12">
+                <!-- card -->
+                <div class="card">
+                    <!-- card body -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0 font-size-18">Find Match Results</h4>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
 
                             <hr>
 
 
-                            <div class="col-md-8">
+
+                            <div class="col-md-8 col-12">
                                 <div class="mb-3">
                                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bx-filter-alt label-icon"></i> Filter</button>
@@ -43,7 +311,7 @@
                                             class="bx bx-reset label-icon"></i> Reset</button>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-12">
                                 <form class="app-search d-none d-lg-block pt-0 pb-0">
                                     <div class="position-relative">
                                         <input type="search" class="form-control bg-black opacity-50"
@@ -53,146 +321,79 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-md-2 text-right" style="text-align: right;">
+                            <div class="col-md-2 col-12 text-right" style="text-align: right;">
                                 <div class="mb-4">
-                                    <button type="button" class="btn btn-secondary">Total Record -
-                                        {{ $results->total() }}</button>
+                                    <button type="button" class="btn btn-secondary">Total Record - 8</button>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
 
-                            {{-- @dump($results) --}}
-                            @php
-                                function msValue($msInt)
-                                {
-                                    $ms = '';
-                                    switch ($msInt) {
-                                        case '1':
-                                            $ms = 'Never Married';
-                                            break;
-                                        case '2':
-                                            $ms = 'Divorced';
-                                            break;
-                                        case '3':
-                                            $ms = 'Widow';
-                                            break;
-                                        case '4':
-                                            $ms = 'Separated';
-                                            break;
-                                    }
-                                    return $ms;
-                                }
+                            <hr>
 
-                                function rsValue($rs)
-                                {
-                                    $rs_value = '';
-                                    switch ($rs) {
-                                        case '1':
-                                            $rs_value = 'Indian Citizen';
-                                            break;
-                                        case '2':
-                                            $rs_value = 'Temp. Residing Abroad';
-                                            break;
-                                        case '3':
-                                            $rs_value = 'Non Resident Indian';
-                                            break;
-                                    }
-                                    return $rs_value;
-                                }
-
-                            @endphp
-
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-12">
                                 <div class="table-rep-plugin">
-                                    <div class="{!! $results->count() > 2 ? 'table-responsive':'' !!} mb-0" data-pattern="priority-columns">
+                                    <div class="table-responsive mb-0" data-pattern="priority-columns">
                                         <table id="tech-companies-1" class="table table-bordered">
                                             <thead class="table-primary pdng_d">
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>Ref No.</th>
-                                                    <th>Gender</th>
-                                                    <th>Name</th>
-                                                    <th>Born</th>
-                                                    <th>Age</th>
-                                                    <th>Ms</th>
-                                                    <th>Caste</th>
-                                                    <th>Height</th>
-                                                    <th>Ast</th>
-                                                    <th>Ed</th>
-                                                    <th>CB</th>
-                                                    <th>Family Income</th>
-                                                    <th>Location</th>
-                                                    <th>Occupation</th>
-                                                    <th>Rs</th>
-                                                    <th>TC</th>
-                                                    <th>RM</th>
-                                                    <th>L_CALL</th>
-                                                    <th>L_Mail</th>
-                                                    <th>L_Mtng</th>
-                                                    <th>R_Date</th>
-                                                    <th>Action</th>
+                                                    <th data-priority="1" width="">Refrence ID</th>
+                                                    <th data-priority="2" width="">Gender</th>
+                                                    <th data-priority="3" width="">Name</th>
+                                                    <th data-priority="4" width="">Born</th>
+                                                    <th data-priority="5" width="">Age</th>
+                                                    <th data-priority="6" width="">Ms</th>
+                                                    <th data-priority="7" width="">Caste</th>
+                                                    <th data-priority="8" width="">Hght</th>
+                                                    <th data-priority="9" width="">Ast</th>
+                                                    <th data-priority="10" width="">Ed</th>
+                                                    <th data-priority="11" width="">CB</th>
+                                                    <th data-priority="12" width="">Family Income</th>
+                                                    <th data-priority="13" width="">Location</th>
+                                                    <th data-priority="14" width="">Occupation</th>
+                                                    <th data-priority="15" width="">Rs</th>
+                                                    <th data-priority="16" width="">TC</th>
+                                                    <th data-priority="17" width="">TL</th>
+                                                    <th data-priority="18" width="">RM</th>
+                                                    <th data-priority="19" width="">L_Call</th>
+                                                    <th data-priority="20" width="">L_Mail</th>
+                                                    <th data-priority="21" width="">L_Mtng</th>
+                                                    <th data-priority="22" width="">R_Date</th>
                                                 </tr>
                                             </thead>
 
                                             <tbody class="pdng_d">
-                                                @foreach ($results as $data)
-                                                    <tr>
-                                                        <td>
-															<div class="form-check">
-																<input class="form-check-input chkrno" type="radio" name="formRadios" id="formRadios2" value="{{ $data->rno }}">
-															</div>
-														</td>
-                                                        <td>
-                                                            <a href="#" class="biodata_modal" data-bs-toggle="modal"
-                                                                data-bs-target="#Modal_biodata" data-rno="{{ $data->rno }}">{{ $data->rno }}</a>
-                                                        </td>
-                                                        <td>{{ $data->g }}</td>
-                                                        <td>{{ $data->refname }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->dob)->format('M d Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->dob)->age }}</td>
-                                                        <td>{{ msValue($data->ms) }}</td>
-                                                        <td>{{ $data->cst }}</td>
-                                                        <td>{{ $data->hg }}</td>
-                                                        <td>{{ $data->bio->astrostatus->label() }}</td>
-                                                        <td>{{ $data->bio->education->label() }}</td>
-                                                        <td>{{ $data->personal->budget }}</td>
-                                                        <td>{{ $data?->income?->income }}</td>
-                                                        <td>{{ $data->personal->arealocation }}</td>
-                                                        <td>{{ $data->occupation?->name }}</td>
-                                                        <td>{{ rsValue($data->rs) }}</td>
-                                                        <td>{{ $data->tc }}</td>
-                                                        <td>{{ $data->rm }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->profiledate)->format('M d Y') }}</td>
-                                                        <td>
-															<div class="btn-group me-1 mt-2">
-																<span class="dropdown-toggle  dropstart dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-																	<i data-feather="more-vertical"></i>
-																</span>
-																<div class="dropdown-menu">
-																	<a class="dropdown-item" href="{{ route('customer.edit', ['customer' => $data->rno]) }}">Edit Profile</a>
-																	<a class="dropdown-item" href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}">Upload Photo</a>
-																	<a class="dropdown-item" href="#">Update Finance</a>
-																</div>
-															</div>
-														</td>
-                                                    </tr>
-                                                @endforeach
-
+                                                <tr>
+                                                    <td><a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#SerialNumber">11023488</a></td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                    <td>...</td>
+                                                </tr>
                                             </tbody>
-                                            <tfoot>
-                                            </tfoot>
+
                                         </table>
-                                        {{ $results->withQueryString()->links() }}
                                     </div>
 
-                                        @include('components.biodata_modal')
-
                                     <!-- Modal -->
-                                    {{-- <div class="modal fade" id="SerialNumber" tabindex="-1" role="dialog"
+                                    <div class="modal fade" id="SerialNumber" tabindex="-1" role="dialog"
                                         aria-labelledby="SerialNumberTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                                             <div class="modal-content biodata-popup-h">
@@ -200,8 +401,7 @@
                                                     <div class="row">
                                                         <div class="col-10">
                                                             <h5 class="modal-title font-size-16" id="SerialNumberTitle">
-                                                                BIO
-                                                                Data</h5>
+                                                                BIO Data</h5>
                                                         </div>
                                                     </div>
                                                     <div class="row d-sm-none1">
@@ -500,21 +700,25 @@
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <!--<div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                </div>-->
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        </div>-->
                                             </div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     <!-- end modal -->
 
                                 </div>
                             </div>
                             <div class="clearfix"></div>
 
+
                         </div>
                     </div><!-- end card -->
                 </div><!-- end col -->
             </div>
+            <div class="clearfix"></div> --}}
+
+
 
         </div>
         <!-- end row-->
@@ -523,411 +727,58 @@
     </div> <!-- container-fluid -->
 @endsection
 @section('footer-script')
+    <!-- select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
-        var selected_rno = "";
-        $(document).on("click", ".biodata_modal", function () {
-            let rno = $(this).data("rno"); // auto-parsed JSON
-            const options = {
-                headers: {
-                    'Accept': 'application/json',
-                },
-                method: 'GET',
+        function setcastes(religionCodes) {
+            console.log("religionCodes", religionCodes);
+            // If no selection, set empty
+            if (!religionCodes) religionCodes = [];
+            // Build query string for array
+            let query = religionCodes.map(code => 'religion[]=' + encodeURIComponent(code)).join('&');
+            let url = "/dashboard/fetch-castes"; // just the base route
+            if (query) {
+                url += '?' + query;
             }
 
-            const url = `{{ route('search-data') }}?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
-
-            fetch(url, options)
+            fetch(url)
                 .then(res => res.json())
                 .then(data => {
-                    const item = data.data[0];
+                    const select = document.getElementById('caste');
+                    select.innerHTML = '';
+                    const selectedIds = $("#caste").data('value').split(',').map(Number);
+                    console.log(selectedIds);
 
-                    let religion_name = ""
-                    switch (item.rl) {
-                        case 1:
-                            religion_name = "Hindu"
-                            break;
-                        case 2:
-                            religion_name = "Sikh"
-                            break;
-                        case 3:
-                            religion_name = "Jain"
-                            break;
-                        case 4:
-                            religion_name = "Christian"
-                            break;
-                        case 5:
-                            religion_name = "Muslim"
-                            break;
-                    }
-
-
-
-                    let complexion = "";
-                    switch (item.bio.complexion) {
-                        case 1:
-                            complexion = "Very Fair";
-                            break;
-                        case 2:
-                            complexion = "Fair";
-                            break;
-                        case 3:
-                            complexion = "Wheatish";
-                            break;
-                        case 4:
-                            complexion = "Brown";
-                            break;
-                        case 5:
-                            complexion = "Dark";
-                            break;
-                    }
-
-
-                    const birthDate = new Date(item.bio.dob);
-                    const today = new Date();
-                    let years = today.getFullYear() - birthDate.getFullYear();
-
-
-                    let eyecolor = ""
-                    switch (item.personal.eyecolor) {
-                        case 1:
-                            eyecolor = "Amber"
-                            break;
-                        case 2:
-                            eyecolor = "Blue"
-                            break;
-                        case 3:
-                            eyecolor = "Brown"
-                            break;
-                        case 4:
-                            eyecolor = "Black"
-                            break;
-                        case 5:
-                            eyecolor = "Gray"
-                            break;
-                        case 6:
-                            eyecolor = "Green"
-                            break;
-                        case 7:
-                            eyecolor = "Hazel"
-                            break;
-                        case 8:
-                            eyecolor = "Red & Violet"
-                            break;
-                        case 9:
-                            eyecolor = "Spectrum"
-                            break;
-                    }
-
-                    let haircolor = "";
-                    switch (item.personal.haircolor) {
-                        case 1:
-                            haircolor = "Black"
-                            break;
-                        case 2:
-                            haircolor = "Brown"
-                            break;
-                        case 3:
-                            haircolor = "Grey"
-                            break;
-                        case 4:
-                            haircolor = "Blond"
-                            break;
-                        case 5:
-                            haircolor = "Bald"
-                            break;
-                    }
-
-                    let ast = ""
-                    switch (item.bio.astrostatus) {
-                        case 1:
-                            ast = "Manglik";
-                            break;
-                        case 2:
-                            ast = "Slightly Manglik";
-                            break;
-                        case 3:
-                            ast = "Non Manglik";
-                            break;
-                        case 4:
-                            ast = "Don't Believe";
-                            break;
-                        case 5:
-                            ast = "Don't Know";
-                            break;
-                    }
-
-
-                    let dh = ""
-                    switch (item.bio.drinkinghabit) {
-                        case 1:
-                            dh = "Non Consumer";
-                            break;
-                        case 2:
-                            dh = "Drink Occasionally";
-                            break;
-                        case 3:
-                            dh = "Regular Drinker";
-                            break;
-                        case 4:
-                            dh = "Don't Know";
-                            break;
-                    }
-
-                    let smoking = ""
-                    switch (item.bio.smokinghabit) {
-                        case 1:
-                            smoking = "Non Smoker"
-                            break;
-                        case 2:
-                            smoking = "Smoker"
-                            break;
-                        case 3:
-                            smoking = "Don't Know"
-                            break;
-                    }
-
-                    let eating = ""
-                    switch (item.bio.eatinghabit) {
-                        case 1:
-                            eating = "Vegetarian"
-                            break;
-                        case 2:
-                            eating = "Eggetarian"
-                            break;
-                        case 3:
-                            eating = "Non Vegetarian"
-                            break;
-                        case 4:
-                            eating = "Don't Know"
-                            break;
-                        case 5:
-                            eating = "Occasionally Non Vegetarian"
-                            break;
-                    }
-
-
-
-                    console.log(item);
-
-                    $("#Modal_biodata #btn_pdf").attr("href", `/pdfview/fullbiodata/${item.rno}`);
-
-                    // $("#Modal_biodata #rno").text(item.rno);
-                    $("#Modal_biodata #gender").text(item.g);
-                    $("#Modal_biodata #refname").text(item.refname);
-                    $("#Modal_biodata #dob").text(item.bio.dob);
-
-
-
-                    $("#Modal_biodata #age").text(parseInt(years));
-                    $("#Modal_biodata #tob").text(item.bio.tob);
-                    $("#Modal_biodata #pob").text(item.bio.pob);
-
-
-
-                    $("#Modal_biodata #height").text(item.hghtft);
-                    $("#Modal_biodata #weight").text(item.wt);
-                    $("#Modal_biodata #religion").text(religion_name);
-
-                    $("#Modal_biodata #caste").text(item.cst);
-                    $("#Modal_biodata #subcaste").text(item.bio.subcaste);
-                    $("#Modal_biodata #gotra").text(item.bio.gotra);
-
-
-                    $("#Modal_biodata #complexion").text(complexion);
-                    $("#Modal_biodata #eyecolor").text(eyecolor);
-                    $("#Modal_biodata #haircolor").text(haircolor);
-
-
-                    $("#Modal_biodata #bg").text(item.bio.bg);
-                    $("#Modal_biodata #astrostatus").text(ast);
-                    $("#Modal_biodata #dh").text(dh);
-
-                    $("#Modal_biodata #smoking").text(smoking);
-                    $("#Modal_biodata #eating").text(eating);
-                    $("#Modal_biodata #spec").text(item.bio.spects);
-
-
-
-                    $("#Modal_biodata #dd").text(item.bio.dd);
-                    $("#Modal_biodata #hobbies").text(item.personal.hobbies);
-                    $("#Modal_biodata #characteristics").text(item.personal.characteristics);
-
-
-                    let education = "";
-                    switch (item.ed) {
-                        case "1":
-                            education = "Matriculate"
-                            break;
-                        case "2":
-                            education = "Under Graduate"
-                            break;
-                        case "3":
-                            education = "Graduate"
-                            break;
-                        case "6":
-                            education = "Double Graduate"
-                            break;
-                        case "4":
-                            education = "Post Graduate"
-                            break;
-                        case "5":
-                            education = "Doctorate"
-                            break;
-                    }
-
-                    html = `<tr><td><strong>Education:</strong></td><td colspan="5">${education}</td></tr>`
-                    item.education.forEach(ed => {
-                        html +=  `
-                            <tr>
-                                <td><strong>Name of Course:</strong></td>
-                                <td><label class="educourse">${ed.educourse}</label></td>
-                                <td><strong>Institution:</strong></td>
-                                <td><label class="eduinst">${ed.eduinst}</label></td>
-                                <td><strong>Year:</strong></td>
-                                <td><label class="eduyear">${ed.eduyear}</label></td>
-                                </tr>`;
+                    data.data.forEach(element => {
+                        const option = document.createElement('option');
+                        option.value = element.id;
+                        option.textContent = element.name;
+                        if (selectedIds.includes(Number(element.id))) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
                     });
-                    $("#Modal_biodata #education_container").html(html);
-                    $("#Modal_biodata #occupation").text(item?.occupation?.name);
-                    $("#Modal_biodata #income").text(item?.income?.income);
-                    $("#Modal_biodata #salary").text(item?.personal?.salary);
-
-                    $("#Modal_biodata #tbody_organistion").children('tr.company_row').remove();
-                    let companyhtml = "";
-
-                    item.organisation.forEach(org => {
-                        companyhtml += `<tr class="company_row">
-                                        <td><strong>Company Name:</strong></td>
-                                        <td>${org.orgname}</td>
-                                        <td><strong>Designation:</strong></td>
-                                        <td>${org.orgdept}</td>
-                                        <td><strong>Working Year:</strong></td>
-                                        <td>${org.orgyear}</td>
-                                    </tr>`;
-                    });
-                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
-
-                    let rs_value = ""
-                    switch (item.rs) {
-                        case "1":
-                            rs_value = "Indian Citizen"
-                            break;
-                        case "2":
-                            rs_value = "Temp. Residing Abroad"
-                            break;
-                        case "3":
-                            rs_value = "Non Resident Indian"
-                            break;
-
-                    }
-                    let ms = ""
-                    switch (item.ms) {
-                        case "1":
-                            ms = "Never Married"
-                            break;
-                       case "2":
-                            ms = "Divorced"
-                            break;
-                       case "3":
-                            ms = "Widow"
-                            break;
-                       case "4":
-                            ms = "Separated"
-                            break;
-                    }
-
-                    $("#Modal_biodata #rs").text(rs_value);
-                    $("#Modal_biodata #rcountry").text(item.personal.rcountry);
-                    $("#Modal_biodata #visa").text(item.personal.visa);
-                    $("#Modal_biodata #nationality").text(item.personal.nationality);
-                    $("#Modal_biodata #rcity").text(item.personal.rcity);
-                    $("#Modal_biodata #ms").text(ms);
-                    $("#Modal_biodata #child").text(item.ch);
-                    $("#Modal_biodata #marriageinfo").text(item.personal.marriageinfo);
-                    $("#Modal_biodata #childdetails").text(item.personal.childdetails);
-
-
-                    let bshtml = "";
-                    item.profilebs.forEach(bs => {
-                        bshtml += `<tr>
-                                    <td><strong>Name of Brother / Sister:</strong></td>
-                                    <td>${bs.bsname}</td>
-                                    <td><strong>B/S:</strong></td>
-                                    <td>${bs.bs}</td>
-                                    <td><strong>Age:</strong></td>
-                                    <td>${bs.bsage}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Ms-St:</strong></td>
-                                    <td>${bs.bsmarriage}</td>
-                                    <td><strong>Personal Details:</strong></td>
-                                    <td colspan="3">${bs.bsdetails}</td>
-                                </tr>`;
-                    })
-
-                    $("#Modal_biodata #family_detail").append(bshtml)
-
-                    $("#Modal_biodata #typeoffamily").text(item.personal.typeoffamily);
-                    $("#Modal_biodata #familystatus").text(item.personal.familystatus);
-                    $("#Modal_biodata #fathersname").text(item.personal.fathersname);
-                    $("#Modal_biodata #fatherdetails").text(item.personal.fatherdetails);
-                    $("#Modal_biodata #mothersname").text(item.personal.mothersname);
-                    $("#Modal_biodata #motherdetails").text(item.personal.motherdetails);
-                    $("#Modal_biodata #familyhistory").text(item.personal.familyhistory);
-                    $("#Modal_biodata #personaldetails").text(item.personal.personaldetails);
-                    $("#Modal_biodata #familyincome").text(item.personal.familyincome);
-                    $("#Modal_biodata #familynative").text(item.personal.familynative);
-                    $("#Modal_biodata #budget").text(item.personal.budget);
-
-                    $("#Modal_biodata #contactperson").text(item.personal.contactperson);
-                    $("#Modal_biodata #contactaddress").text(item.personal.contactaddress);
-
-                    $("#Modal_biodata #arealocation").text(item.personal.arealocation);
-                    $("#Modal_biodata #contactcity").text(item.personal.contactcity);
-                    $("#Modal_biodata #contactpincode").text(item.personal.contactpincode);
-
-                    $("#Modal_biodata #contactstate").text(item.personal.contactstate);
-                    $("#Modal_biodata #contactcountry").text(item.personal.contactcountry);
-                    $("#Modal_biodata #contactphone").text(item.personal.contactphone);
-
-
-                    $("#Modal_biodata #contactemail").text(item.personal.contactemail);
-                    $("#Modal_biodata #contactrelation").text(item.personal.contactrelation);
-                    $("#Modal_biodata #contactzone").text(item.personal.zone.zone_name);
-
-
-
-
-
-
                 })
+                .catch(err => console.error(err));
+        }
 
-
-            // // Example: Fill modal fields
-
-            // // You can access full object here
-            // console.log(item.refname);
-        });
-    </script>
-
-    <script>
-        $(function(){
-            $('.chkrno').on('change', function(){
-                rno = $(this).val()
-                console.log("rno", rno);
-                selected_rno = rno;
+        $(function() {
+            $('.select2').select2({
+                tags: true,
+                placeholder: "Select or type to add",
+                allowClear: true,
             });
 
-            $(".inner-menu-item").click(function(){
-                URL = $(this).data('key')+selected_rno
-                console.log("url", URL);
-                window.open(URL, "_blank").focus();
-
-                // if(selected_rno != ""){
-                // }
+            $("#religion").change(function() {
+                let religionCodes = $(this).val();
+                setcastes(religionCodes);
             });
-        });
+
+
+            let religionCodes = $("#religion").val();
+            setcastes(religionCodes);
+        })
     </script>
-
-
 @endsection

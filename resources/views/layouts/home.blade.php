@@ -110,6 +110,7 @@
 
     @yield('footer-script')
 
+    <x-toast />
 
 </body>
 

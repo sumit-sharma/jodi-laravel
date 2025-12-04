@@ -22,12 +22,11 @@ class SearchController extends Controller
     public function searchData(Request $request)
     {
         try {
-            $perPage = $request->get('per_page', 20);
             $data = $request->all();
             unset($data['_token']);
             $results = $this->searchService->search(
                 $data,
-                $perPage,
+                $request->get('per_page', 20),
                 $request->get('page', 1)
             );
 

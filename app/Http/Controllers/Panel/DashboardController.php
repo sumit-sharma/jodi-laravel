@@ -27,6 +27,13 @@ class DashboardController extends Controller
         return response()->json(['data' => $result]);
     }
 
+
+    public function fetchCastes(Request $request)
+    {
+        $result = MiscService::getCasteData($request->religion);
+        return response()->json(['data' => $result]);
+    }
+
     public function getDistinctData(Request $request)
     {
         $q = $request->q;
