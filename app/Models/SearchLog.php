@@ -16,4 +16,13 @@ class SearchLog extends Model
         ];
     }
 
+
+    public function employee()
+    {
+        return $this->belongsTo(User::class, 'empid','username'  );
+    }
+
+
+
+
 }

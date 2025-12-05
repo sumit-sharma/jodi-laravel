@@ -16,7 +16,8 @@ class SearchController extends Controller
 
     public function searchMembers(Request $request)
     {
-        return view('panel.Services.SearchMembers');
+        $searchLogs = $this->searchService->getSearchLog();
+        return view('panel.Services.SearchMembers', compact('searchLogs'));
     }
 
     public function searchData(Request $request)

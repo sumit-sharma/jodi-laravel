@@ -149,9 +149,20 @@ class SearchService
         return SearchLog::create([
             'searchvalue' => $searchValue,
             'inputs'      => ['searchinfield' => $searchField, 'searchvalue' => $searchValue, 'dtype' => $dtype, 'status' => $status],
-            'empid' => auth()->user()->id,
+            'empid' => auth()->user()->username,
         ]);
     }
+
+
+    public function getSearchLog($perPage = 5, $page = 1, $empid = null)
+    {
+        $query = SearchLog::with('employee');
+        if($empid){
+            $query = $query->where('empid', $empid);
+        }
+        return $query->latest()->paginate($perPage,['*'], 'page', $page);
+    }
+
 
     public function searchByrno($rno)
     {

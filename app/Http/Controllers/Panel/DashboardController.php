@@ -18,7 +18,8 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('panel.dashboard');
+        $data['searchLogs'] = $this->searchService->getSearchLog();
+        return view('panel.dashboard', $data);
     }
 
     public function getCaste($religion)

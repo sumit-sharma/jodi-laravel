@@ -2,6 +2,15 @@
 
 @section('main-content')
     <div class="container-fluid">
+    <style>
+        .table thead {
+            position: sticky;
+            top: 0;
+            background: #f8f9fa;
+            /* match table header */
+            z-index: 1;
+        }
+    </style>
         <div class="row pt-4 mb-4">
             <div class="col-xl-3 col-md-6">
                 <!-- card -->
@@ -490,95 +499,100 @@
                                 <div class="d-flex flex-wrap align-items-center mb-4">
                                     <h5 class="card-title-desc">Search Records</h5>
                                 </div>
+                                <form id="frmSearchMember" method="GET" action="{{ route('search-data') }}">
+                                    <div class="row align-items-top">
 
-                                <div class="row align-items-top">
+                                        <div class="mb-3 col-12">
+                                            <h5 class="font-size-14 mb-2">Select Field:</h5>
+                                            <select name="searchinfield" class="form-select">
+                                                <option value="rno">Ref No.</option>
+                                                <option value="refname">Name</option>
+                                                <option value="dob">Date of Birth</option>
+                                                <option value="birthyear">Birth Year</option>
+                                                <option value="caste">Caste</option>
+                                                <option value="occupation">Occupation</option>
+                                                <option value="familyincome">Family Income</option>
+                                                <option value="contactphone">Mobile</option>
+                                                <option value="rcity">Residing City</option>
+                                                <option value="zone">Zone</option>
+                                                <option value="arealocation">Location</option>
+                                                <option value="contactcity">Contact City</option>
+                                                <option value="contactstate">Contact State</option>
+                                                <option value="contactemail">Email ID</option>
+                                                <option value="tc">Tele-councelor</option>
+                                                <option value="mc">Team Leader</option>
+                                                <option value="rm">Relationship Manager</option>
+                                                <option value="fathersname">Father's Name</option>
+                                                <option value="fatherdetails">Father's Occupation</option>
+                                                <option value="mothersname">Mother's Name</option>
+                                                <option value="motherdetails">Mother's Occupation</option>
+                                                <option value="edu">Education Details</option>
+                                                <option value="occu">Occupation Details</option>
+                                            </select>
 
-                                    <div class="mb-3 col-12">
-                                        <h5 class="font-size-14 mb-2">Select Field:</h5>
-                                        <select class="form-select">
-                                            <option>Reference No</option>
-                                            <option>Name</option>
-                                            <option>Date of Birth</option>
-                                            <option>Birth Year</option>
-                                            <option>Caste</option>
-                                            <option>Occupation</option>
-                                            <option>Family Income</option>
-                                            <option>Mobile</option>
-                                            <option>Residing City</option>
-                                            <option>Zone</option>
-                                            <option>Location</option>
-                                            <option>Contact City</option>
-                                            <option>Contact State</option>
-                                            <option>Email ID</option>
-                                            <option>Tele-councelor</option>
-                                            <option>Team Leader</option>
-                                            <option>Relationship Manager</option>
-                                            <option>Father's Name</option>
-                                            <option>Father's Occupation</option>
-                                            <option>Mother's Name</option>
-                                            <option>Mother's Occupation</option>
-                                            <option>Education Details</option>
-                                            <option>Occupation Details</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3 col-12">
-                                        <h5 class="font-size-14 mb-2">Search Criteria:</h5>
-                                        <input class="form-control" type="search" value=""
-                                            id="example-search-input" placeholder="">
-                                    </div>
+                                        </div>
+                                        <div class="mb-3 col-12">
+                                            <h5 class="font-size-14 mb-2">Search Criteria:</h5>
+                                            <input name="searchvalue" class="form-control" type="search" value=""
+                                                id="searchvalue" placeholder="">
+                                        </div>
 
-                                    <div class="mb-6 col-12">
-                                        <h5 class="font-size-14 mb-2">Data Type:</h5>
+                                        <div class="mb-6 col-12">
 
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="formCheck1"
-                                                        checked>
-                                                    <label class="form-check-label" for="formCheck1">
-                                                        Paid
-                                                    </label>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <h5 class="font-size-14 mb-2">Data Type:</h5>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="check-paid"
+                                                            name="dtype[]" value="P">
+                                                        <label class="form-check-label" for="check-paid">
+                                                            Paid
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="chk-NP"
+                                                            name="dtype[]" value="N">
+                                                        <label class="form-check-label" for="chk-NP">
+                                                            Non Paid
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="chkNA"
+                                                            name="dtype[]" value="A">
+                                                        <label class="form-check-label" for="chkNA">
+                                                            NA
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="formCheck2"
-                                                        checked>
-                                                    <label class="form-check-label" for="formCheck2">
-                                                        Active
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="formCheck2"
-                                                        checked>
-                                                    <label class="form-check-label" for="formCheck2">
-                                                        Non Paid
-                                                    </label>
+
+                                                <div class="col-6">
+                                                    <h5 class="font-size-14 mb-2">Data Status:</h5>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="dts_fix"
+                                                            value="F" name="chkstatus[]">
+                                                        <label class="form-check-label" for="dts_fix">
+                                                            Fixed
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="chkStatNA"
+                                                            value="A" name="chkstatus[]">
+                                                        <label class="form-check-label" for="chkStatNA">
+                                                            NA
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-6">
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox" id="formCheck1">
-                                                    <label class="form-check-label" for="formCheck1">
-                                                        Fixed
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="formCheck2">
-                                                    <label class="form-check-label" for="formCheck2">
-                                                        NA
-                                                    </label>
-                                                </div>
-                                            </div>
+                                        </div>
+
+                                        <div class="mb-6 pt-4 col-12">
+                                            <button type="button"
+                                                    class="btn btn-success w-lg waves-effect waves-light">Search</button></a>
                                         </div>
 
                                     </div>
-
-                                    <div class="mb-6 pt-4 col-12">
-                                        <a href="search-result.php"><button type="button"
-                                                class="btn btn-success w-lg waves-effect waves-light">Search</button></a>
-                                    </div>
-
-                                </div>
+                                </form>
                             </div>
                             <!-- end card -->
                         </div>
@@ -596,40 +610,15 @@
                                 </div>
 
                                 <div class="table-rep-plugin">
-                                    <div class="table-responsive mb-0" data-pattern="priority-columns">
-                                        <table id="tech-companies-1" class="table table-bordered">
+                                    <div class="table-responsive mb-0" data-pattern="priority-columns" style="height: 310px; overflow-y: auto;">
+                                        <table id="table_search" class="table table-bordered">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th data-priority="1" width="35%">Ref No.</th>
                                                     <th data-priority="2" width="65%">Name</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>110234</td>
-                                                    <td>Sunny</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>110238</td>
-                                                    <td>Priya</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>110267</td>
-                                                    <td>Rahul</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>110299</td>
-                                                    <td>Yuvraj</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>110789</td>
-                                                    <td>Vicky</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>110290</td>
-                                                    <td>Dhawal</td>
-                                                </tr>
-                                            </tbody>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
 
@@ -653,30 +642,24 @@
                                         <div class="table-rep-plugin">
                                             <div class="table-responsive mb-0" data-pattern="priority-columns">
                                                 <table id="tech-companies-1" class="table table-bordered">
-                                                    <thead class="table-light">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th data-priority="1">Date</th>
+                                                        <th data-priority="2">Time</th>
+                                                        <th data-priority="3">Criteria</th>
+                                                        <th data-priority="4">Search By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($searchLogs as $item)
                                                         <tr>
-                                                            <th data-priority="1">Date</th>
-                                                            <th data-priority="2">Time</th>
-                                                            <th data-priority="3">Criteria</th>
+                                                            <td>{{ \App\Traits\CommonTrait::convertCommonDate($item->created_at) }}</td>
+                                                            <td>{{ \App\Traits\CommonTrait::convertCommonDate($item->created_at, 'h:m A') }}</td>
+                                                            <td>{{ $item->inputs['searchinfield'].' : '.$item->inputs['searchvalue'] }}</td>
+                                                            <td>{{ $item->employee->name }}</td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>10/8/25</td>
-                                                            <td>12:12PM</td>
-                                                            <td>Dhawal</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>9/8/25</td>
-                                                            <td>12:22PM</td>
-                                                            <td>1988</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>8/8/25</td>
-                                                            <td>12:23PM</td>
-                                                            <td>110786</td>
-                                                        </tr>
-                                                    </tbody>
+                                                    @endforeach
+                                                </tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -995,3 +978,57 @@
         <!-- end row-->
     </div> <!-- container-fluid -->
 @endsection
+
+@section('footer-script')
+    <script>
+        const form = document.getElementById("frmSearchMember");
+
+
+        // fetch data from Laravel
+        function fetchData() {
+            const formData = new FormData(form);
+            let searchInput = document.getElementById("searchvalue");
+            if (searchInput.value.trim() == "") {
+                return false;
+            }
+
+            // Convert FormData to URLSearchParams for GET query string
+            const params = new URLSearchParams();
+            for (const [key, value] of formData.entries()) {
+                params.append(key, value);
+            }
+
+            const options = {
+                headers: {
+                    'Accept': 'application/json'
+                },
+                method: 'GET'
+            };
+
+
+            fetch(`{{ route('search-data') }}?${params.toString()}`, options)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("table_search").querySelector("tbody").innerHTML = data.data
+                        .map(item =>`<tr><td width="35%"><a href="#" data-bs-toggle="modal" data-bs-target="#Modal_biodata" class="biodata_modal" data-rno=${item.rno} >${item.rno}</a></td><td width="65%">${item.refname}</td></tr>`)
+                        .join("");
+                });
+        }
+
+        // debounced version (for text inputs)
+        const debouncedFetch = debounce(fetchData, 300);
+
+        // input handles keyboard typing
+        form.addEventListener("input", (e) => {
+            if (e.target.type === "text" || e.target.type === "search") {
+                debouncedFetch();
+            }
+        });
+
+        // change handles checkbox/select instantly
+        form.addEventListener("change", fetchData);
+    </script>
+@endsection
+
+
+

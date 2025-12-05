@@ -112,7 +112,7 @@
             <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <img id="cropImage" style="max-width:90%;">
+                        <img id="cropImage">
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="cropSave" class="btn btn-success">Crop & Save</button>
@@ -197,7 +197,12 @@
                     cropper = new Cropper(document.getElementById("cropImage"), {
                         aspectRatio: 1,
                         viewMode: 1,
-                        autoCropArea: 1
+                        // zoomable: false,
+                        minContainerHeight: 800,
+                        minContainerWidth: 800
+
+
+
                     });
 
                     // Attach click handler safely

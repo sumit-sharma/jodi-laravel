@@ -188,24 +188,18 @@
                                                         <th data-priority="1">Date</th>
                                                         <th data-priority="2">Time</th>
                                                         <th data-priority="3">Criteria</th>
+                                                        <th data-priority="4">Search By</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>10/8/25</td>
-                                                        <td>12:12PM</td>
-                                                        <td>Dhawal</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>9/8/25</td>
-                                                        <td>12:22PM</td>
-                                                        <td>1988</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>8/8/25</td>
-                                                        <td>12:23PM</td>
-                                                        <td>110786</td>
-                                                    </tr>
+                                                    @foreach ($searchLogs as $item)
+                                                        <tr>
+                                                            <td>{{ \App\Traits\CommonTrait::convertCommonDate($item->created_at) }}</td>
+                                                            <td>{{ \App\Traits\CommonTrait::convertCommonDate($item->created_at, 'h:m A') }}</td>
+                                                            <td>{{ $item->inputs['searchinfield'].' : '.$item->inputs['searchvalue'] }}</td>
+                                                            <td>{{ $item->employee->name }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

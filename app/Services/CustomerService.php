@@ -20,7 +20,7 @@ class CustomerService
     {
         $columns                    = ["gender", "refname", "dob", "tob", "age", "pob", "religion", "caste", "subcaste", "gotra", "hght", "hghtft", "wtkg", "complexion", "dd", "bg", "astrostatus", "drinkinghabit", "smokinghabit", "eatinghabit", "spects", "education", "occupation", "income", "rs", "ms"];
         $filterArray                = Arr::only($data, $columns);
-        $filterArray["empid"]       = auth()->user()->id;
+        $filterArray["empid"]       = auth()->user()->username;
         $filterArray["dtype"]       = 'N';
         $filterArray["profiledate"] = now();
         $filterArray["profiledate"] = now();
@@ -112,7 +112,7 @@ class CustomerService
     public function saveViewProfile($rno, $data)
     {
         $cst = Caste::find($data['caste']);
-        $currentUserId         = auth()->user()->id;
+        $currentUserId         = auth()->user()->username;
         $diff                  = Carbon::parse($data['dob'])->diff(now());
         $columns               = ['refname', 'hghtft', 'rs', 'ms'];
         $filterArray           = Arr::only($data, $columns);

@@ -1,6 +1,8 @@
 <?php
 namespace App\Traits;
 
+use Illuminate\Support\Carbon;
+
 trait CommonTrait
 {
 
@@ -41,6 +43,11 @@ trait CommonTrait
     public static function chkArrayImplode($item, $separtor = ' ')
     {
         return is_array($item)? implode($separtor, $item):$item;
+    }
+
+    public static function convertCommonDate($dateString, $format = 'M d Y')
+    {
+        return Carbon::parse($dateString)->format($format);
     }
 
 }
