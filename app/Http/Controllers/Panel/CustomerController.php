@@ -2,7 +2,9 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProfileMoreInfoRequest;
 use App\Models\CounterNumber;
+use App\Models\ProfileMoreInfo;
 use App\Services\CustomerService;
 use App\Services\MiscService;
 use App\Services\SearchService;
@@ -77,19 +79,8 @@ class CustomerController extends Controller
             $profileBS           = $this->customerService->saveProfileBS($rno, $data);
             $ViewProfile         = $this->customerService->saveViewProfile($rno, $data);
             DB::commit();
-            return redirect()->route('search-data', ['searchinfield' => 'rno', 'searchvalue' => $rno])->with('success', 'Profile has been created with Reference Number:'.$rno.' successfully');
+            return redirect()->route('search-data', ['searchinfield' => 'rno', 'searchvalue' => $rno])->with('success', 'Profile has been created with Reference Number:' . $rno . ' successfully');
 
-            // return response()->json(['status' => 'success', 'message' => 'Profile has been created successfully']);
-
-            // return response()->json([
-            //     'data'                => $data,
-            //     'profileBio'          => $profileBio,
-            //     'profilePersonal'     => $profilePersonal,
-            //     'profileEducation'    => $profileEducation,
-            //     'profileOrganisation' => $profileOrganisation,
-            //     'profileBS'           => $profileBS,
-            //     'ViewProfile'         => $profileBS,
-            // ]);
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => $th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile()]);
@@ -144,17 +135,6 @@ class CustomerController extends Controller
 
             return redirect()->route('search-data', ['searchinfield' => 'rno', 'searchvalue' => $rno])->with('success', 'Profile has been updated successfully');
 
-            // return response()->json(['status' => 'success', 'message' => 'Profile has been updated successfully']);
-            // return response()->json([
-            //     'data'                => $data,
-            //     'profileBio'          => $profileBio,
-            //     'profilePersonal'     => $profilePersonal,
-            //     'profileEducation'    => $profileEducation,
-            //     'profileOrganisation' => $profileOrganisation,
-            //     'profileBS'           => $profileBS,
-            //     'ViewProfile'         => $profileBS,
-            // ]);
-
         } catch (\Throwable $th) {
             DB::rollBack();
             // dd($th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile());
@@ -174,9 +154,9 @@ class CustomerController extends Controller
     public function upload(Request $request)
     {
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('uploads/customer', 'public');
+            $path     = $request->file('file')->store('uploads/customer', 'public');
             $filename = explode('uploads/customer/', $path)[1];
-            $result = $this->customerService->storesnap(['rno' => $request->rno, 'photo' => $filename, 'sorting' => 0]);
+            $result   = $this->customerService->storesnap(['rno' => $request->rno, 'photo' => $filename, 'sorting' => 0]);
 
             return response()->json(['status' => 'success', 'data' => $result]);
         }
@@ -185,7 +165,7 @@ class CustomerController extends Controller
 
     public function uplodPics(Request $request, $rno)
     {
-        $data['rno'] = $rno;
+        $data['rno']   = $rno;
         $data['snaps'] = $this->customerService->getSnaps($rno);
         return view('panel.Customer.photo-upload', $data);
 
@@ -194,8 +174,32 @@ class CustomerController extends Controller
     public function deleteFile(Request $request)
     {
         $result = $this->customerService->deletesnap(['rno' => $request->rno, 'photo' => $request->photo]);
-        Storage::disk('public')->delete('uploads/customer/'.$request->photo);
+        Storage::disk('public')->delete('uploads/customer/' . $request->photo);
         return response()->json(['status' => 'success', 'message' => "file has been deleted"]);
+    }
+
+    public function viewAddMoreInfo(Request $request, $rno)
+    {
+        $data['rno']       = $rno;
+        $data['bio']       = MiscService::getTableData('profile_bio', ['rno', 'refname'], 'rno', 'asc', "rno =  $rno")->first();
+        $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc', "status = 1");
+        $data['moreInfo'] = $this->customerService->fetchProfileMoreInfo($rno) ?? new ProfileMoreInfo;
+        return view('panel.Customer.add_more_info', $data);
+    }
+
+    public function saveMoreInfo(StoreProfileMoreInfoRequest $request)
+    {
+        $data   = $request->validated();
+        $result = $this->customerService->SaveProfileMoreInfo($data);
+        if ($result) {
+            return redirect()->route('add-more-info', ['rno' => $data['rno']])->with('success', 'Profile More Info has been saved');
+        }
+        return back()->with('error', 'There are some error, please try again!');
+    }
+
+    public function updateMoreInfo(Request $request, $id)
+    {
+
     }
 
 }

@@ -8,8 +8,7 @@ class MatchService
 
     public function getSingleCustMatchPrefrences($rno)
     {
-        $query = ProfileMatch::where('rno', $rno);
-        return $query->first();
+        return  ProfileMatch::where('rno', $rno)->first();
     }
 
     public function load_search($data = [],  $page = 1, $per_page = null)
@@ -24,13 +23,11 @@ class MatchService
         }
 
         return $query->get();
-
     }
 
 
     public function saveMatchPrefrence($rno, $data)
     {
-        info(json_encode($data));
         return ProfileMatch::updateOrCreate(['rno' => $rno], $data);
     }
 

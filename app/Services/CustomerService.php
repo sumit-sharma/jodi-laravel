@@ -5,6 +5,7 @@ use App\Models\Caste;
 use App\Models\ProfileBio;
 use App\Models\ProfileBs;
 use App\Models\ProfileEducation;
+use App\Models\ProfileMoreInfo;
 use App\Models\ProfileOrganisation;
 use App\Models\ProfilePersonal;
 use App\Models\Snap;
@@ -30,8 +31,8 @@ class CustomerService
 
     public function saveProfilePersonal($rno, $data)
     {
-        $columns            = ["visa", "rcity", "rcountry", "marriageinfo", "child", "childdetails", "familystatus", "fathersname", "mothersname", "fatherdetails", "motherdetails", "familyincome", "familyincomem", "typeoffamily", "familynative", "hobbies", "characteristics", "eyecolor", "haircolor", "salary", "budget", "nationality", "familyhistory", "contactperson", "contactaddress", "contactcity", "contactstate", "contactpincode", "contactcountry", "contactphone", "contactemail", "contactrelation", "personaldetails", "contactzone", "arealocation"];
-        $filterArray        = Arr::only($data, $columns);
+        $columns     = ["visa", "rcity", "rcountry", "marriageinfo", "child", "childdetails", "familystatus", "fathersname", "mothersname", "fatherdetails", "motherdetails", "familyincome", "familyincomem", "typeoffamily", "familynative", "hobbies", "characteristics", "eyecolor", "haircolor", "salary", "budget", "nationality", "familyhistory", "contactperson", "contactaddress", "contactcity", "contactstate", "contactpincode", "contactcountry", "contactphone", "contactemail", "contactrelation", "personaldetails", "contactzone", "arealocation"];
+        $filterArray = Arr::only($data, $columns);
         return ProfilePersonal::updateOrCreate(['rno' => $rno], $filterArray);
     }
 
@@ -111,7 +112,7 @@ class CustomerService
     }
     public function saveViewProfile($rno, $data)
     {
-        $cst = Caste::find($data['caste']);
+        $cst                   = Caste::find($data['caste']);
         $currentUserId         = auth()->user()->username;
         $diff                  = Carbon::parse($data['dob'])->diff(now());
         $columns               = ['refname', 'hghtft', 'rs', 'ms'];
@@ -140,7 +141,6 @@ class CustomerService
         return ViewProfile::updateOrCreate(['rno' => $rno], $filterArray);
     }
 
-
     public function getSnaps($rno)
     {
         return Snap::where('rno', $rno)->OrderBy('sorting', 'asc')->get();
@@ -154,6 +154,20 @@ class CustomerService
     public function deletesnap($data)
     {
         return Snap::where($data)->delete();
+    }
+
+    public function SaveProfileMoreInfo($data)
+    {
+        $data['dated'] = $data['dated'] ?? now()->format('y-m-d');
+        $data['time']  = $data['time'] ?? now()->format('h:i:s');
+        $data['empid'] = $data['empid'] ?? auth()->user()->username;
+
+        return ProfileMoreInfo::updateOrCreate(['rno' => $data['rno']],$data);
+    }
+
+    public function fetchProfileMoreInfo($rno)
+    {
+        return ProfileMoreInfo::where('rno', $rno)->first();
     }
 
 }

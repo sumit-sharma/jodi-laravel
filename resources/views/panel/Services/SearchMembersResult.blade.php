@@ -919,12 +919,10 @@
             });
 
             $(".inner-menu-item").click(function(){
+                if(selected_rno == "") return false;
                 URL = $(this).data('key')+selected_rno
                 console.log("url", URL);
                 window.open(URL, "_blank").focus();
-
-                // if(selected_rno != ""){
-                // }
             });
         });
     </script>

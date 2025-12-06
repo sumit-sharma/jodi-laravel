@@ -26,6 +26,7 @@
                                                           </div>
                                                       </div>-->
                                 <a href="javascript:;" class="dropdown-item inner-menu-item" data-key="/update-match-prefrence/">Update match preference</a>
+                                <a href="javascript:;" class="dropdown-item inner-menu-item" data-key="/add-more-info/">Add more info </a>
                                 <a href="#" class="dropdown-item" data-key="t-calendar">Delete member </a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Convert member </a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Change TC/TL/RM</a>
@@ -44,10 +45,8 @@
                                 <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
 
                                 <a href="#" class="dropdown-item" data-key="t-calendar">metting </a>
-                                <a href="#" class="dropdown-item" data-key="t-chat">edit profile </a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Sent mails</a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a>
-                                <a href="#" class="dropdown-item" data-key="t-chat">Update more info </a>
 
                             </div>
                         </li>

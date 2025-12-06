@@ -197,7 +197,7 @@
                                                             <td>{{ \App\Traits\CommonTrait::convertCommonDate($item->created_at) }}</td>
                                                             <td>{{ \App\Traits\CommonTrait::convertCommonDate($item->created_at, 'h:m A') }}</td>
                                                             <td>{{ $item->inputs['searchinfield'].' : '.$item->inputs['searchvalue'] }}</td>
-                                                            <td>{{ $item->employee->name }}</td>
+                                                            <td>{{ $item->employee?->name }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
