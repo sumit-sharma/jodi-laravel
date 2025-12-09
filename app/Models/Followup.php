@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Zone extends Model
+class Followup extends Model
 {
+    protected $table = 'followup';
 
-    protected $table = 'zones';
     protected $guarded = [];
+
 }

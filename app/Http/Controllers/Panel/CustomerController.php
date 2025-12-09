@@ -190,16 +190,32 @@ class CustomerController extends Controller
     public function saveMoreInfo(StoreProfileMoreInfoRequest $request)
     {
         $data   = $request->validated();
-        $result = $this->customerService->SaveProfileMoreInfo($data);
+        $result = $this->customerService->saveProfileMoreInfo($data);
         if ($result) {
             return redirect()->route('add-more-info', ['rno' => $data['rno']])->with('success', 'Profile More Info has been saved');
         }
         return back()->with('error', 'There are some error, please try again!');
     }
 
-    public function updateMoreInfo(Request $request, $id)
+    public function storeInteraction(Request $request)
     {
-
+        $data = $request->all();
+        unset($data['_token']);
+        $result = $this->customerService->storeInteraction($data);
+        if($result){
+            return response()->json(['status' => 'success', 'message' => 'Interaction has been saved successfully']);
+        }
+        return response()->json(['status' => 'error', 'message' => 'There are some error, please try again!']);
     }
 
+    public function storeMeeting(Request $request)
+    {
+        $data = $request->all();
+        unset($data['_token']);
+        $result = $this->customerService->storeMeeting($data);
+        if($result){
+            return response()->json(['status' => 'success', 'message' => 'Meeting has been saved successfully']);
+        }
+        return response()->json(['status' => 'error', 'message' => 'There are some error, please try again!']);
+    }
 }

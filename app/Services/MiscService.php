@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Caste;
@@ -11,9 +12,9 @@ class MiscService
     public static function getCasteData(int|array $religionCode)
     {
         $query = Caste::query();
-        if(is_array($religionCode)){
+        if (is_array($religionCode)) {
             $query = $query->whereIn('religion_code', $religionCode);
-        }else{
+        } else {
             $query = $query->where('religion_code', $religionCode);
         }
         return $query->orderBy('name', 'asc')->get();
@@ -22,21 +23,20 @@ class MiscService
     public static function getDistinctData($table, $column, $where = null)
     {
         $query = DB::table($table)->select($column);
-        $cacheKey = 'table_data'.md5(json_encode(['table' => $table, 'column' => $column, 'where' => $where]));
-        return Cache::remember($cacheKey, now()->addHours(2), function () use($query, $column, $where) {
-            if($where){
+        $cacheKey = 'table_data' . md5(json_encode(['table' => $table, 'column' => $column, 'where' => $where]));
+        return Cache::remember($cacheKey, now()->addHours(2), function () use ($query, $column, $where) {
+            if ($where) {
                 $query->whereRaw($where);
             }
             return $query = $query->distinct()->pluck($column);
         });
-
     }
 
     public static function getTableData(string $table, array $columns, $sortBy = 'id', $sortOrder = 'asc', $where = null)
     {
         $query = DB::table($table)->select($columns);
-        $cacheKey = 'table_data'.md5(json_encode(['table' => $table, 'columns' => $columns, 'sortBy' => $sortBy, 'sortOrder' => $sortOrder, 'where' => $where]));
-        return Cache::remember($cacheKey, now()->addHours(2), function () use($query, $sortBy, $sortOrder, $where) {
+        $cacheKey = 'table_data' . md5(json_encode(['table' => $table, 'columns' => $columns, 'sortBy' => $sortBy, 'sortOrder' => $sortOrder, 'where' => $where]));
+        return Cache::remember($cacheKey, now()->addHours(2), function () use ($query, $sortBy, $sortOrder, $where) {
             if ($where) {
                 $query = $query->whereRaw($where);
             }
@@ -44,4 +44,9 @@ class MiscService
         });
     }
 
+
+    public static function checkExists($table, $whereArray = []): bool
+    {
+        return DB::table($table)->where($whereArray)->exists();
+    }
 }

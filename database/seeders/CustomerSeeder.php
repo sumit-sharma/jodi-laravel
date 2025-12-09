@@ -32,6 +32,14 @@ class CustomerSeeder extends Seeder
 
         DB::statement("insert ignore into jodi_laravel.profile_moreinfo (rno, dated, time, empid, metwith, member, profession, family, prop1, prop2, prop3, properties, residence, business, income, rentedincome, turnover, vehicle, roka, remarks, created_at, updated_at) SELECT li.rno, li.dated, li.time, li.empid, li.metwith, li.member, li.profession, li.family, li.prop1, li.prop2, li.prop3, li.properties, li.residence, li.business, li.income, li.rentedincome, li.turnover, li.vehicle, li.roka, li.remarks, NOW(), NOW() FROM old_jodi.profile_moreinfo as li");
 
+
+        DB::statement("insert ignore into jodi_laravel.interaction (rno, dated, time, empid, calltype, callstatus, description, futuredate, status, created_at, updated_at) SELECT li.rno, li.dated, li.time, li.empid, li.calltype, li.callstatus, li.description, li.futuredate, li.status, NOW(), NOW() FROM old_jodi.interaction as li");
+
+        DB::statement("insert ignore into jodi_laravel.followup (rno, empid, dated, d_by, futuredate, created_at, updated_at) SELECT li.rno, li.empid, li.dated, li.d_by, li.futuredate, NOW(), NOW() FROM old_jodi.followup as li");
+        DB::statement("insert ignore into jodi_laravel.meeting (rno, proposal, dated, time, place, mtg_by1, mtg_by2, meeting_type, remarks, att_by1, att_by2, created_at, updated_at) SELECT li.rno, li.proposal, li.dated, li.time, li.place, li.mtg_by1, li.mtg_by2, li.meeting_type, li.remarks, li.att_by1, li.att_by2, NOW(), NOW() FROM old_jodi.meeting as li");
+
+        DB::statement("insert ignore into jodi_laravel.messages (dated, time, msgfrom, msgto, message, received, created_at, updated_at) SELECT li.dated, li.time, li.msgfrom, li.msgto, li.message, li.received, NOW(), NOW() FROM old_jodi.messages as li");
+
         */
 
 

@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Zone extends Model
+class Interaction extends Model
 {
+    protected $table = 'interaction';
 
-    protected $table = 'zones';
     protected $guarded = [];
+
 }

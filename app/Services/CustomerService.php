@@ -2,6 +2,9 @@
 namespace App\Services;
 
 use App\Models\Caste;
+use App\Models\Followup;
+use App\Models\Interaction;
+use App\Models\Meeting;
 use App\Models\ProfileBio;
 use App\Models\ProfileBs;
 use App\Models\ProfileEducation;
@@ -156,7 +159,7 @@ class CustomerService
         return Snap::where($data)->delete();
     }
 
-    public function SaveProfileMoreInfo($data)
+    public function saveProfileMoreInfo($data)
     {
         $data['dated'] = $data['dated'] ?? now()->format('y-m-d');
         $data['time']  = $data['time'] ?? now()->format('h:i:s');
@@ -168,6 +171,40 @@ class CustomerService
     public function fetchProfileMoreInfo($rno)
     {
         return ProfileMoreInfo::where('rno', $rno)->first();
+    }
+
+
+    public function storeInteraction($data)
+    {
+        try {
+            DB::transaction(function () use ($data) {
+                $data['empid'] = auth()->user()->username;
+                $result = Interaction::create($data);
+                //TODO: update followup future date if needed
+                // Followup::where('rno', $data['rno'])->update(['futuredate' => $data['futuredate']]);
+            });
+            return true;
+        } catch (\Exception $e) {
+            // Log the exception or handle it as needed
+            return false;
+        }
+    }
+
+    public function storeMeeting($data)
+    {
+        try {
+            DB::transaction(function () use ($data) {
+                $result = Meeting::create($data);
+                ViewProfile::where('rno', $data['rno'])->update(['last_mtng' => $data['dated']]);
+
+                //TODO: update followup future date if needed
+                // Followup::where('rno', $data['rno'])->update(['futuredate' => $data['futuredate']]);
+            });
+            return true;
+        } catch (\Exception $e) {
+            // Log the exception or handle it as needed
+            return false;
+        }
     }
 
 }
