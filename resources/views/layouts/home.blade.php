@@ -51,8 +51,8 @@
             <div class="page-content">
 
 
-                    <!-- start page title -->
-                    <!--<div class="row">
+                <!-- start page title -->
+                <!--<div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                                     <h4 class="mb-sm-0 font-size-18">Horizontal</h4>
@@ -67,9 +67,9 @@
                                 </div>
                             </div>
                         </div>-->
-                    <!-- end page title -->
+                <!-- end page title -->
 
-                        @yield('main-content')
+                @yield('main-content')
 
 
             </div>
@@ -100,17 +100,42 @@
     <script>
         function debounce(func, delay) {
             let timeout;
-            return function (...args) {
+            return function(...args) {
                 clearTimeout(timeout);
                 timeout = setTimeout(() => func.apply(this, args), delay);
             };
         }
-
     </script>
 
     @yield('footer-script')
 
     <x-toast />
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
+    <script>
+        $(function() {
+            $('.select2-tag').select2({
+                tags: true,
+                placeholder: "Select or type to add",
+                allowClear: true,
+            });
+
+            $('.select2-notag').select2({
+                placeholder: "Select or type to add",
+                allowClear: true,
+            })
+        });
+    </script>
+
+
+
 
 </body>
 

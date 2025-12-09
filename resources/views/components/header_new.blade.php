@@ -320,9 +320,9 @@
                                     <li><a href="#" data-key="t-cart">Transfer RM</a></li>
                                     <li><a href="#" data-key="t-checkout">Transfer TC</a></li>
                                     <li><a href="feedback-options.php" data-key="t-shops">Feedback Option</a></li>
-                                    <li><a href="caste-options.php" data-key="t-add-product">Caste Option</a></li>
-                                    <li><a href="occupation-options.php" data-key="t-seller">Occupation Option</a></li>
-                                    <li><a href="zone-options.php" data-key="t-sale-details">Zone Option</a></li>
+                                    <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>
+                                    <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
+                                    <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
 									<li><a href="#" data-key="t-shops">Enter Massage</a></li>
                                     <li><a href="update-my-info.php" data-key="t-add-product">Update My Info</a></li>
                                     <li><a href="#" data-key="t-seller">Updates Timmings</a></li>

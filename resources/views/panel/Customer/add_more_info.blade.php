@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="col-md-3 mt-3">
                                             <label for="" class="form-label">Met With </label>
-                                            <select name="metwith" id="metwith" class="form-select select2">
+                                            <select name="metwith" id="metwith" class="form-select select2-notag">
                                                 @foreach ($employees as $item)
                                                     <option value="{{ $item->username }}"
                                                         {{ $moreInfo->metwith == $item->username ? 'selected' : '' }}>
@@ -176,19 +176,4 @@
 
 
     </div> <!-- container-fluid -->
-@endsection
-@section('footer-script')
-    <!-- select2 -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script>
-        $(function() {
-            $('.select2').select2({
-                tags: true,
-                placeholder: "Select or type to add",
-                allowClear: true,
-            });
-        });
-    </script>
 @endsection

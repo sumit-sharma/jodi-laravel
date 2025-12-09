@@ -1,11 +1,18 @@
 @extends('layouts.home')
 @section('main-content')
     <div class="container-fluid">
-		<style>
-		.form-check-input {width:1em !important; height: 1em !important; border: 1px solid #420d1c !important;}
-        td { vertical-align: middle; text-align: center; }
+        <style>
+            .form-check-input {
+                width: 1em !important;
+                height: 1em !important;
+                border: 1px solid #420d1c !important;
+            }
 
-		</style>
+            td {
+                vertical-align: middle;
+                text-align: center;
+            }
+        </style>
         <div class="row">
             @include('components.inner-menu')
         </div>
@@ -104,7 +111,7 @@
 
                             <div class="col-md-12">
                                 <div class="table-rep-plugin">
-                                    <div class="{!! $results->count() > 2 ? 'table-responsive':'' !!} mb-0" data-pattern="priority-columns">
+                                    <div class="{!! $results->count() > 2 ? 'table-responsive' : '' !!} mb-0" data-pattern="priority-columns">
                                         <table id="tech-companies-1" class="table table-bordered">
                                             <thead class="table-primary pdng_d">
                                                 <tr>
@@ -138,13 +145,16 @@
                                                 @foreach ($results as $data)
                                                     <tr>
                                                         <td>
-															<div class="form-check">
-																<input class="form-check-input chkrno" type="radio" name="formRadios" id="formRadios2" value="{{ $data->rno }}">
-															</div>
-														</td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input chkrno" type="radio"
+                                                                    name="formRadios" data-refname="{{ $data->refname }}"
+                                                                    value="{{ $data->rno }}">
+                                                            </div>
+                                                        </td>
                                                         <td>
                                                             <a href="#" class="biodata_modal" data-bs-toggle="modal"
-                                                                data-bs-target="#Modal_biodata" data-rno="{{ $data->rno }}">{{ $data->rno }}</a>
+                                                                data-bs-target="#Modal_biodata"
+                                                                data-rno="{{ $data->rno }}">{{ $data->rno }}</a>
                                                         </td>
                                                         <td>{{ $data->g }}</td>
                                                         <td>{{ $data->refname }}</td>
@@ -163,22 +173,33 @@
                                                         <td>{{ rsValue($data->rs) }}</td>
                                                         <td>{{ $data->tc }}</td>
                                                         <td>{{ $data->rm }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->profiledate)->format('M d Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}
+                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->bio->profiledate)->format('M d Y') }}
+                                                        </td>
                                                         <td>
-															<div class="btn-group me-1 mt-2">
-																<span class="dropdown-toggle  dropstart dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-																	<i data-feather="more-vertical"></i>
-																</span>
-																<div class="dropdown-menu">
-																	<a class="dropdown-item" href="{{ route('customer.edit', ['customer' => $data->rno]) }}">Edit Profile</a>
-																	<a class="dropdown-item" href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}">Upload Photo</a>
-																	<a class="dropdown-item" href="#">Update Finance</a>
-																</div>
-															</div>
-														</td>
+                                                            <div class="btn-group me-1 mt-2">
+                                                                <span
+                                                                    class="dropdown-toggle  dropstart dropdown-toggle-split"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i data-feather="more-vertical"></i>
+                                                                </span>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('customer.edit', ['customer' => $data->rno]) }}">Edit
+                                                                        Profile</a>
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}">Upload
+                                                                        Photo</a>
+                                                                    <a class="dropdown-item" href="#">Update
+                                                                        Finance</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
 
@@ -189,323 +210,9 @@
                                         {{ $results->withQueryString()->links() }}
                                     </div>
 
-                                        @include('components.biodata_modal')
-
-                                    <!-- Modal -->
-                                    {{-- <div class="modal fade" id="SerialNumber" tabindex="-1" role="dialog"
-                                        aria-labelledby="SerialNumberTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                            <div class="modal-content biodata-popup-h">
-                                                <div class="modal-header">
-                                                    <div class="row">
-                                                        <div class="col-10">
-                                                            <h5 class="modal-title font-size-16" id="SerialNumberTitle">
-                                                                BIO
-                                                                Data</h5>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row d-sm-none1">
-                                                        <div class="col-12">
-                                                            <div class="btn-group" role="group"
-                                                                aria-label="Basic outlined example">
-                                                                <a href="#personal-details">
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary">Personal</button>
-                                                                </a>
-                                                                <a href="#education">
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary">Edu</button>
-                                                                </a>
-                                                                <a href="#occupation">
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary">Occu</button>
-                                                                </a>
-                                                                <a href="#other-details">
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary">Other</button>
-                                                                </a>
-                                                                <a href="#family-details">
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary">Family</button>
-                                                                </a>
-                                                                <a href="#person-details">
-                                                                    <button type="button"
-                                                                        class="btn btn-outline-primary">Contact</button>
-                                                                </a>
-                                                                <button type="button" class="btn btn-outline-primary">PDF
-                                                                    <i data-feather="download"></i></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--                                                            <h5 class="modal-title font-size-16" id="SerialNumberTitle">BIO Data</h5>-->
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="table-rep-plugin">
-                                                        <div class="table-responsive mb-0"
-                                                            data-pattern="priority-columns">
-                                                            <table id="tech-companies-1"
-                                                                class="table table-bordered bio_data">
-                                                                <thead class="table-primary">
-                                                                    <tr>
-                                                                        <th colspan="6" class="font-size-18"
-                                                                            id="personal-details">Personal Details</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td width="12%"><strong>Gender:</strong></td>
-                                                                        <td width="21%">...</td>
-                                                                        <td width="12%"><strong>Name:</strong></td>
-                                                                        <td width="21%">...</td>
-                                                                        <td width="12%"><strong>DOB:</strong></td>
-                                                                        <td width="21%">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Age:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Time of Birth:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Birth Place:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Height (Cms):</strong></td>
-                                                                        <td>... (Fit) ...</td>
-                                                                        <td><strong>Weight:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Religion:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Caste & Subcaste:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Other Caste:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Gotra:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Complexion:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Color of Eye:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Color of Hair:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Blood Group:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Astro Status:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Drinking:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Smoking:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Eating:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Spectacles:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Disease / Disability:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Hobbies:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Characteristics:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                </tbody>
-
-                                                                <thead class="table-primary">
-                                                                    <tr>
-                                                                        <th colspan="6" id="education"
-                                                                            class="font-size-18">Education</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td><strong>Education:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Name of Course:</strong></td>
-                                                                        <td colspan="3">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Institution:</strong></td>
-                                                                        <td colspan="3">...</td>
-                                                                        <td><strong>Year:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                </tbody>
-
-                                                                <thead class="table-primary">
-                                                                    <tr>
-                                                                        <th colspan="6" id="occupation"
-                                                                            class="font-size-18">Occupation</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td><strong>Occupation:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Income (P.A.):</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Salary (P.A.):</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Company Name:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Designation:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Working Year:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                </tbody>
-
-                                                                <thead class="table-primary">
-                                                                    <tr>
-                                                                        <th colspan="6" id="other-details"
-                                                                            class="font-size-18">Other Details</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td><strong>Residential:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Residing Country:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Visa:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Nationality:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Residing City:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Marital:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>No. of Children:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Marriage Info:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Child Info:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                </tbody>
-
-                                                                <thead class="table-primary">
-                                                                    <tr>
-                                                                        <th colspan="6" id="family-details"
-                                                                            class="font-size-18">Family Details</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td><strong>Name of Brother / Sister:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>B/S:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Age:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Ms-St:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Personal Details:</strong></td>
-                                                                        <td colspan="3">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Family Type:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Family Status:</strong></td>
-                                                                        <td colspan="3">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Father's Name:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Father's Details:</strong></td>
-                                                                        <td colspan="3">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Mother's Name:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Mother's Details:</strong></td>
-                                                                        <td colspan="3">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Family History:</strong></td>
-                                                                        <td colspan="5">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Extra Info (Personal):</strong></td>
-                                                                        <td colspan="5">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Family Income (P.A):</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Family Native:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Budget:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                </tbody>
-
-                                                                <thead class="table-primary">
-                                                                    <tr>
-                                                                        <th colspan="6" class="font-size-18"
-                                                                            id="person-details">Person Details</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td><strong>Contact Person:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Address:</strong></td>
-                                                                        <td colspan="3">...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Location:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>City:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Pin Code:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>State:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Country:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Phone No:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><strong>Email ID:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Relation:</strong></td>
-                                                                        <td>...</td>
-                                                                        <td><strong>Zone:</strong></td>
-                                                                        <td>...</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                                <!--<div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                </div>-->
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    <!-- end modal -->
+                                    @include('components.biodata_modal')
+                                    @include('components.interaction_modal')
+                                    @include('components.meeting_modal')
 
                                 </div>
                             </div>
@@ -523,9 +230,15 @@
     </div> <!-- container-fluid -->
 @endsection
 @section('footer-script')
+    <!-- timepicker -->
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
     <script>
         var selected_rno = "";
-        $(document).on("click", ".biodata_modal", function () {
+        var selected_refname = "";
+        $(document).on("click", ".biodata_modal", function() {
             let rno = $(this).data("rno"); // auto-parsed JSON
             const options = {
                 headers: {
@@ -705,10 +418,6 @@
                             break;
                     }
 
-
-
-                    console.log(item);
-
                     $("#Modal_biodata #btn_pdf").attr("href", `/pdfview/fullbiodata/${item.rno}`);
 
                     // $("#Modal_biodata #rno").text(item.rno);
@@ -777,7 +486,7 @@
 
                     html = `<tr><td><strong>Education:</strong></td><td colspan="5">${education}</td></tr>`
                     item.education.forEach(ed => {
-                        html +=  `
+                        html += `
                             <tr>
                                 <td><strong>Name of Course:</strong></td>
                                 <td><label class="educourse">${ed.educourse}</label></td>
@@ -805,7 +514,7 @@
                                         <td>${org.orgyear}</td>
                                     </tr>`;
                     });
-                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
+                    $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
                     let rs_value = ""
                     switch (item.rs) {
@@ -825,13 +534,13 @@
                         case "1":
                             ms = "Never Married"
                             break;
-                       case "2":
+                        case "2":
                             ms = "Divorced"
                             break;
-                       case "3":
+                        case "3":
                             ms = "Widow"
                             break;
-                       case "4":
+                        case "4":
                             ms = "Separated"
                             break;
                     }
@@ -911,21 +620,94 @@
     </script>
 
     <script>
-        $(function(){
-            $('.chkrno').on('change', function(){
+        $(function() {
+            $('.chkrno').on('change', function() {
                 rno = $(this).val()
+                refname = $(this).data('refname');
                 console.log("rno", rno);
                 selected_rno = rno;
+                selected_refname = refname;
             });
 
-            $(".inner-menu-item").click(function(){
-                if(selected_rno == "") return false;
-                URL = $(this).data('key')+selected_rno
+            $(".inner-menu-item").click(function() {
+                if (selected_rno == "") return false;
+                URL = $(this).data('key') + selected_rno
                 console.log("url", URL);
                 window.open(URL, "_blank").focus();
             });
+            let now = new Date();
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            let currentTime = `${hours}:${minutes}`;
+            let intModalModalEl = document.getElementById('IntractionPageModal');
+            let meetModalModalEl = document.getElementById('MeetingPageModal');
+
+            $("#inter_tob").timepicker({
+                uiLibrary: 'bootstrap5',
+                value: currentTime
+            });
+
+            $('#modl_inter').click(function() {
+                if (selected_rno) {
+                    let interactionmodal = bootstrap.Modal.getInstance(intModalModalEl) ||
+                        new bootstrap.Modal(intModalModalEl);;
+                    interactionmodal.show()
+                } else {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                $("#IntractionPageModal #inter_rno").val(rno);
+                $("#IntractionPageModal #inter_refname").text(selected_refname)
+                $("#IntractionPageModal #inter_refno").text(rno)
+            });
+
+            $('#modl_meet').click(function() {
+                if (selected_rno) {
+                    let meetingmodal = bootstrap.Modal.getInstance(meetModalModalEl) ||
+                        new bootstrap.Modal(meetModalModalEl);
+                    meetingmodal.show()
+                } else {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                $("#MeetingPageModal #meet_rno").val(rno);
+                $("#MeetingPageModal #meet_refname").text(selected_refname)
+                $("#MeetingPageModal #meet_refno").text(rno)
+            });
+
+            document.getElementById('btnAddInteraction').addEventListener('click', async function() {
+                let form = document.getElementById('frmAddInteraction');
+
+                if (!form.checkValidity()) {
+                    form.reportValidity(); // Shows browser validation messages
+                    return; // Stop submission
+                }
+
+
+                let formData = new FormData(form);
+                const url = "{{ route('save-interaction') }}"
+                let response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let data = await response.json();
+                let interactionmodal = bootstrap.Modal.getInstance(intModalModalEl);
+
+                // interactionmodal.hide();
+
+                if (data.status === 'success') {
+                    interactionmodal.hide();
+                    toastr.success(data.message);
+                } else {
+                    toastr.error(data.message || 'There was an error saving the interaction.');
+                }
+                //     document.getElementById('result').innerHTML = "Success!";
+                //     console.log(data);
+                // } else {
+                //     console.log("Error:", data);
+                // }
+            });
         });
     </script>
-
-
 @endsection
