@@ -26,25 +26,22 @@ class CustomerSeeder extends Seeder
         DB::statement("insert ignore into jodi_laravel.convert_log (old_rno, new_rno, empid, dated, created_at, updated_at) SELECT li.old_rno,  li.new_rno,  li.empid, li.dated, NOW(), NOW() FROM old_jodi.convert_log as li");
 
         DB::statement("insert ignore into jodi_laravel.snaps (rno, photo, sorting, created_at, updated_at) SELECT li.rno, li.photo, li.sorting, NOW(), NOW() FROM old_jodi.snap as li");
-
-
+        
+        
         DB::statement("insert ignore into jodi_laravel.profile_matches (rno, agefrom, ageupto, hghtfrom, hghtto, religion, caste, education, edupref, eatingpref, astropref, rspref, mspref, childpref, occupref, incomepref, zonepref, mr, created_at, updated_at) SELECT li.rno, li.agefrom, li.ageupto, li.hghtfrom, li.hghtto, li.religion, li.caste, li.education, li.edupref, li.eatingpref, li.astropref, li.rspref, li.mspref, li.childpref, li.occupref, li.incomepref, li.zonepref, li.mr, NOW(), NOW() FROM old_jodi.profile_match as li");
 
         DB::statement("insert ignore into jodi_laravel.profile_moreinfo (rno, dated, time, empid, metwith, member, profession, family, prop1, prop2, prop3, properties, residence, business, income, rentedincome, turnover, vehicle, roka, remarks, created_at, updated_at) SELECT li.rno, li.dated, li.time, li.empid, li.metwith, li.member, li.profession, li.family, li.prop1, li.prop2, li.prop3, li.properties, li.residence, li.business, li.income, li.rentedincome, li.turnover, li.vehicle, li.roka, li.remarks, NOW(), NOW() FROM old_jodi.profile_moreinfo as li");
 
-
+        
         DB::statement("insert ignore into jodi_laravel.interaction (rno, dated, time, empid, calltype, callstatus, description, futuredate, status, created_at, updated_at) SELECT li.rno, li.dated, li.time, li.empid, li.calltype, li.callstatus, li.description, li.futuredate, li.status, NOW(), NOW() FROM old_jodi.interaction as li");
 
         DB::statement("insert ignore into jodi_laravel.followup (rno, empid, dated, d_by, futuredate, created_at, updated_at) SELECT li.rno, li.empid, li.dated, li.d_by, li.futuredate, NOW(), NOW() FROM old_jodi.followup as li");
         DB::statement("insert ignore into jodi_laravel.meeting (rno, proposal, dated, time, place, mtg_by1, mtg_by2, meeting_type, remarks, att_by1, att_by2, created_at, updated_at) SELECT li.rno, li.proposal, li.dated, li.time, li.place, li.mtg_by1, li.mtg_by2, li.meeting_type, li.remarks, li.att_by1, li.att_by2, NOW(), NOW() FROM old_jodi.meeting as li");
-
+        
         DB::statement("insert ignore into jodi_laravel.messages (dated, time, msgfrom, msgto, message, received, created_at, updated_at) SELECT li.dated, li.time, li.msgfrom, li.msgto, li.message, li.received, NOW(), NOW() FROM old_jodi.messages as li");
 
-        */
-
-
+        DB::statement("insert ignore into jodi_laravel.appointments (empid,rno, refname, contactaddress, contactphone, apttype, aptdate, apttime, remarks, aptstatus, update_date, aptremarks, att_by1, att_by2, created_at, updated_at) SELECT li.empid,li.rno, li.refname, li.contactaddress, li.contactphone, li.apttype, li.aptdate, li.apttime, li.remarks, li.aptstatus, li.update_date, li.aptremarks, li.att_by1, li.att_by2, NOW(), NOW() FROM old_jodi.appointment as li");
+        
+         */
     }
 }
-
-
-

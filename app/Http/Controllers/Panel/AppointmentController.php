@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers\Panel;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\SaveAppointmentRequest;
+use App\Services\AppointmentService;
+use Illuminate\Http\Request;
+
+class AppointmentController extends Controller
+{
+    public $appointmentService;
+
+    public function __construct(AppointmentService $appointmentService)
+    {
+        $this->appointmentService = $appointmentService;
+    }
+
+    public function index(Request $request)
+    {
+        $request->merge(['limit' => 15]);
+        $data['appointments'] = $this->appointmentService->index($request);
+        return view('panel.Data.add-edit-appointment', $data);
+    }
+
+    public function show(Request $request, $id)
+    {
+        $appointment = $this->appointmentService->show($id);
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'success', 'data' => $appointment]);
+        }
+    }
+
+    public function saveAppointment(SaveAppointmentRequest $request)
+    {
+        $data = $request->validated();
+        $data['empid'] = auth()->user()->username;
+        unset($data['appointment_id']);
+        if ($request->appointment_id) {
+            $data['update_date'] = now()->format('Y-m-d');
+            $result =   $this->appointmentService->updateAppointment($data, $request->appointment_id);
+        } else {
+            $result = $this->appointmentService->storeAppointment($data);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'success', 'data' => $result]);
+        }
+    }
+}

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerUploadController;
+use App\Http\Controllers\Panel\AppointmentController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\MasterController;
@@ -36,6 +37,10 @@ Route::middleware("auth")->group(function () {
     Route::get('/dashboard/fetch-castes', [DashboardController::class, 'fetchCastes'])->name('fetch-castes');
     Route::get('/dashboard/fetch-distinct-data', [DashboardController::class, 'getDistinctData'])->name('fetch-distinct-data');
     Route::get('/dashboard/fetch-table-data', [DashboardController::class, 'getTableData'])->name('fetch-table-data');
+
+    Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment.index');
+    Route::get('/appointment/{id}', [AppointmentController::class, 'show'])->name('appointment.show');
+    Route::post('/appointment', [AppointmentController::class, 'saveAppointment'])->name('appointment.save');
 
 
     Route::prefix('services')->group(function () {

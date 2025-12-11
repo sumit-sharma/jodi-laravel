@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Enums\AstroStatusEnum;
@@ -27,5 +28,4 @@ class ProfileBio extends Model
             'education'     => EducationEnum::class,
         ];
     }
-
 }
