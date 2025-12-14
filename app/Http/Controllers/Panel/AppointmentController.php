@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveAppointmentRequest;
 use App\Services\AppointmentService;
+use App\Services\MiscService;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -20,6 +21,7 @@ class AppointmentController extends Controller
     {
         $request->merge(['limit' => 15]);
         $data['appointments'] = $this->appointmentService->index($request);
+        $data['employees']         = MiscService::getTableData('users', ['username', 'name'], 'name');
         return view('panel.Data.add-edit-appointment', $data);
     }
 

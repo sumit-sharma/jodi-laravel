@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Caste;
@@ -20,6 +21,50 @@ use Illuminate\Support\Facades\DB;
 class CustomerService
 {
 
+    public function index($request)
+    {
+        $query = $this->loadData($request);
+        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+    }
+
+    protected function loadData($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        return ViewProfile::with([
+            'personal',
+            'bio',
+            'occupation',
+            'income',
+            'education',
+            'organisation',
+            'payment',
+            'profilebs',
+            'personal.zone'
+        ])::orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+    }
+
+    public function pickListBioData($request, $selectArray = ['rno', 'refname'])
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+        $limit   = $request->limit ?? 20;
+
+        $query = ProfileBio::select($selectArray)->orderBy($sortBy, $orderBy)
+            ->when($request->q, function ($query) use ($request) {
+                $query->where('refname', 'like', '%' . $request->q . '%')
+                    ->orWhere('rno', 'like', $request->q . '%');
+            })
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->refname, fn($query) => $query->where('refname', $request->refname));
+
+        return $query->paginate($limit);
+    }
+
+
+
     public function saveProfileBio($rno, $data)
     {
         $columns                    = ["gender", "refname", "dob", "tob", "age", "pob", "religion", "caste", "subcaste", "gotra", "hght", "hghtft", "wtkg", "complexion", "dd", "bg", "astrostatus", "drinkinghabit", "smokinghabit", "eatinghabit", "spects", "education", "occupation", "income", "rs", "ms"];
@@ -27,9 +72,7 @@ class CustomerService
         $filterArray["empid"]       = auth()->user()->username;
         $filterArray["dtype"]       = 'N';
         $filterArray["profiledate"] = now();
-        $filterArray["profiledate"] = now();
         return ProfileBio::updateOrCreate(['rno' => $rno], $filterArray);
-
     }
 
     public function saveProfilePersonal($rno, $data)
@@ -59,7 +102,6 @@ class CustomerService
             }
             return ProfileEducation::insert($items);
         });
-
     }
 
     public function saveProfileOrganisation($rno, $data)
@@ -111,7 +153,6 @@ class CustomerService
             }
             return ProfileBs::insert($items);
         });
-
     }
     public function saveViewProfile($rno, $data)
     {
@@ -165,7 +206,7 @@ class CustomerService
         $data['time']  = $data['time'] ?? now()->format('h:i:s');
         $data['empid'] = $data['empid'] ?? auth()->user()->username;
 
-        return ProfileMoreInfo::updateOrCreate(['rno' => $data['rno']],$data);
+        return ProfileMoreInfo::updateOrCreate(['rno' => $data['rno']], $data);
     }
 
     public function fetchProfileMoreInfo($rno)
@@ -206,5 +247,4 @@ class CustomerService
             return false;
         }
     }
-
 }

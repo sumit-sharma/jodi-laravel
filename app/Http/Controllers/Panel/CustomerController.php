@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
@@ -30,9 +31,13 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data['customers'] = $this->customerService->index($request);
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'success', 'data' => $data]);
+        }
+        // return view('panel.Customer.index', $data);
     }
 
     /**
@@ -80,7 +85,6 @@ class CustomerController extends Controller
             $ViewProfile         = $this->customerService->saveViewProfile($rno, $data);
             DB::commit();
             return redirect()->route('search-data', ['searchinfield' => 'rno', 'searchvalue' => $rno])->with('success', 'Profile has been created with Reference Number:' . $rno . ' successfully');
-
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(['status' => 'error', 'message' => $th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile()]);
@@ -113,7 +117,6 @@ class CustomerController extends Controller
         $data['customer'] = $this->searchService->searchByrno($rno);
         // dd($data['customer']);
         return view('panel.Customer.edit_profile', $data);
-
     }
 
     /**
@@ -134,12 +137,10 @@ class CustomerController extends Controller
             DB::commit();
 
             return redirect()->route('search-data', ['searchinfield' => 'rno', 'searchvalue' => $rno])->with('success', 'Profile has been updated successfully');
-
         } catch (\Throwable $th) {
             DB::rollBack();
             // dd($th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile());
             return back()->with('error', $th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile());
-
         }
     }
 
@@ -168,7 +169,6 @@ class CustomerController extends Controller
         $data['rno']   = $rno;
         $data['snaps'] = $this->customerService->getSnaps($rno);
         return view('panel.Customer.photo-upload', $data);
-
     }
 
     public function deleteFile(Request $request)
@@ -202,7 +202,7 @@ class CustomerController extends Controller
         $data = $request->all();
         unset($data['_token']);
         $result = $this->customerService->storeInteraction($data);
-        if($result){
+        if ($result) {
             return response()->json(['status' => 'success', 'message' => 'Interaction has been saved successfully']);
         }
         return response()->json(['status' => 'error', 'message' => 'There are some error, please try again!']);
@@ -213,9 +213,30 @@ class CustomerController extends Controller
         $data = $request->all();
         unset($data['_token']);
         $result = $this->customerService->storeMeeting($data);
-        if($result){
+        if ($result) {
             return response()->json(['status' => 'success', 'message' => 'Meeting has been saved successfully']);
         }
         return response()->json(['status' => 'error', 'message' => 'There are some error, please try again!']);
+    }
+
+    public function pickListBioData(Request $request)
+    {
+        $data = $this->customerService->pickListBioData($request, ['id', 'rno', 'refname', 'gender']);
+        if ($request->expectsJson()) {
+            $formattedData = $data->getCollection()->transform(function ($item) {
+                return [
+                    'id'   => $item->rno,
+                    'text' => $item->rno . ' - ' . $item->refname,
+                    'gender' => $item->gender,
+                ];
+            });
+
+            return response()->json([
+                'results'    => $formattedData,
+                'pagination' => [
+                    'more' => $data->hasMorePages()
+                ]
+            ]);
+        }
     }
 }

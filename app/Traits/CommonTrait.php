@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 use Illuminate\Support\Carbon;
@@ -42,7 +43,7 @@ trait CommonTrait
 
     public static function chkArrayImplode($item, $separtor = ' ')
     {
-        return is_array($item)? implode($separtor, $item):$item;
+        return is_array($item) ? implode($separtor, $item) : $item;
     }
 
     public static function convertCommonDate($dateString, $format = 'M d Y')
@@ -50,4 +51,14 @@ trait CommonTrait
         return Carbon::parse($dateString)->format($format);
     }
 
+    public static function convertcmtoft($str)
+    {
+        $feet = substr($str, 0, 1);
+        $inches = substr($str, 1, 2);
+        if (substr($inches, 0, 1) == 0) {
+            $inches = substr($inches, 1, 1);
+        }
+        $cm = (($feet * 12) + $inches) * 2.54;
+        return round($cm);
+    }
 }

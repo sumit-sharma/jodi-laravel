@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
@@ -6,13 +7,14 @@ use App\Http\Requests\MatchPrefrenceRequest;
 use App\Models\ProfileMatch;
 use App\Services\MatchService;
 use App\Services\MiscService;
+use Illuminate\Http\Request;
 
 class MatchController extends Controller
 {
     protected $matchService;
     public function __construct(MatchService $matchService)
     {
-        $this->matchService = $matchService;
+        $this->matchService  = $matchService;
     }
 
     public function viewUpdateMatchPrefrences($rno)
@@ -39,9 +41,25 @@ class MatchController extends Controller
         $validate_data['occupref']   = \App\Traits\CommonTrait::chkArrayImplode($request->occupref);
         $validate_data['zonepref']   = \App\Traits\CommonTrait::chkArrayImplode($request->zonepref);
         $validate_data['mr']         = \App\Traits\CommonTrait::chkArrayImplode($request->mr);
-        // dump($validate_data);
         $result = $this->matchService->saveMatchPrefrence($rno, $validate_data);
         return back()->with('success', 'Match prefrences updated ');
     }
 
+    public function findMatch(Request $request, $rno = null)
+    {
+        $data['rno'] = $rno ?? 0;
+        $data['matchPrefrences'] = $this->matchService->getSingleCustMatchPrefrences($rno) ?? new ProfileMatch;
+        $data['incomes']         = MiscService::getTableData('incomes', ['inc_code', 'income']);
+        $data['occupations']     = MiscService::getTableData('occupations', ['occ_code', 'name'], 'occ_code');
+        $data['eduprefs']        = MiscService::getTableData('edupref', ['sno', 'education']);
+        $data['zones']           = MiscService::getTableData('zones', ['zone_code', 'zone_name'], 'zone_name', 'asc', "zone_name <> ''");
+        return view('panel.Match.find-match', $data);
+    }
+
+    public function searchMatch(Request $request)
+    {
+        // info($request->all());
+        $data = $this->matchService->searchMatchList($request->all());
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
 }

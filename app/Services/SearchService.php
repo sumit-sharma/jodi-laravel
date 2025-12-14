@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Services;
 
+use App\Models\Caste;
 use App\Models\Occupation;
 use App\Models\SearchLog;
 use App\Models\ViewProfile;
@@ -39,7 +41,6 @@ class SearchService
             if (! in_array('A', $dtype)) {
                 $query = $query->where('ost', '!=', 'N');
             }
-
         }
         if (! empty($status)) {
             $query = $query->whereIn('status', $status);
@@ -75,13 +76,17 @@ class SearchService
 
             case 'zone':
                 $zoneValues = self::get_zonedetail($searchValue);
-                $query->whereHas('personal', fn($q) =>
+                $query->whereHas(
+                    'personal',
+                    fn($q) =>
                     $q->whereIn('contactzone', $zoneValues)
                 );
                 break;
 
             case 'familyincome':
-                $query->whereHas('personal', fn($q) =>
+                $query->whereHas(
+                    'personal',
+                    fn($q) =>
                     $q->where('familyincome', $searchValue)
                 );
                 break;
@@ -101,13 +106,17 @@ class SearchService
                 break;
 
             case 'dob':
-                $query->whereHas('bio', fn($q) =>
+                $query->whereHas(
+                    'bio',
+                    fn($q) =>
                     $q->where('dob', $searchValue)
                 );
                 break;
 
             case 'birthyear':
-                $query->whereHas('bio', fn($q) =>
+                $query->whereHas(
+                    'bio',
+                    fn($q) =>
                     $q->whereYear('dob', $searchValue)
                 );
                 break;
@@ -157,10 +166,10 @@ class SearchService
     public function getSearchLog($perPage = 5, $page = 1, $empid = null)
     {
         $query = SearchLog::with('employee');
-        if($empid){
+        if ($empid) {
             $query = $query->where('empid', $empid);
         }
-        return $query->latest()->paginate($perPage,['*'], 'page', $page);
+        return $query->latest()->paginate($perPage, ['*'], 'page', $page);
     }
 
 
@@ -180,5 +189,4 @@ class SearchService
 
         return $query->where('rno', $rno)->first();
     }
-
 }

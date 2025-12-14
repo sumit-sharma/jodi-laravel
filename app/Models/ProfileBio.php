@@ -14,7 +14,42 @@ use Illuminate\Database\Eloquent\Model;
 class ProfileBio extends Model
 {
     protected $table   = "profile_bio";
-    protected $guarded = [];
+    protected $fillable = [
+        'rno',
+        'gender',
+        'refname',
+        'dob',
+        'tob',
+        'age',
+        'pob',
+        'religion',
+        'caste',
+        'subcaste',
+        'gotra',
+        'hght',
+        'hghtft',
+        'wtkg',
+        'complexion',
+        'dd',
+        'bg',
+        'astrostatus',
+        'drinkinghabit',
+        'smokinghabit',
+        'eatinghabit',
+        'spects',
+        'education',
+        'occupation',
+        'income',
+        'rs',
+        'ms',
+        'childstatus',
+        'dtype',
+        'payment',
+        'profiledate',
+        'empid',
+        'rfno',
+        'brand'
+    ];
 
     protected function casts()
     {
