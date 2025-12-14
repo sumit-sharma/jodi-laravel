@@ -111,7 +111,8 @@
 
                             <div class="col-md-12">
                                 <div class="table-rep-plugin">
-                                    <div class="{!! $results->count() > 2 ? 'table-responsive' : '' !!} mb-0" data-pattern="priority-columns">
+                                    <div class="{!! $results->count() > 2 ? 'table-responsive' : '' !!} mb-0"
+                                        data-pattern="priority-columns">
                                         <table id="tech-companies-1" class="table table-bordered">
                                             <thead class="table-primary pdng_d">
                                                 <tr>
@@ -183,8 +184,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="btn-group me-1 mt-2">
-                                                                <span
-                                                                    class="dropdown-toggle  dropstart dropdown-toggle-split"
+                                                                <span class="dropdown-toggle  dropstart dropdown-toggle-split"
                                                                     data-bs-toggle="dropdown" aria-expanded="false">
                                                                     <i data-feather="more-vertical"></i>
                                                                 </span>
@@ -238,7 +238,7 @@
     <script>
         var selected_rno = "";
         var selected_refname = "";
-        $(document).on("click", ".biodata_modal", function() {
+        $(document).on("click", ".biodata_modal", function () {
             let rno = $(this).data("rno"); // auto-parsed JSON
             const options = {
                 headers: {
@@ -487,14 +487,14 @@
                     html = `<tr><td><strong>Education:</strong></td><td colspan="5">${education}</td></tr>`
                     item.education.forEach(ed => {
                         html += `
-                            <tr>
-                                <td><strong>Name of Course:</strong></td>
-                                <td><label class="educourse">${ed.educourse}</label></td>
-                                <td><strong>Institution:</strong></td>
-                                <td><label class="eduinst">${ed.eduinst}</label></td>
-                                <td><strong>Year:</strong></td>
-                                <td><label class="eduyear">${ed.eduyear}</label></td>
-                                </tr>`;
+                                <tr>
+                                    <td><strong>Name of Course:</strong></td>
+                                    <td><label class="educourse">${ed.educourse}</label></td>
+                                    <td><strong>Institution:</strong></td>
+                                    <td><label class="eduinst">${ed.eduinst}</label></td>
+                                    <td><strong>Year:</strong></td>
+                                    <td><label class="eduyear">${ed.eduyear}</label></td>
+                                    </tr>`;
                     });
                     $("#Modal_biodata #education_container").html(html);
                     $("#Modal_biodata #occupation").text(item?.occupation?.name);
@@ -506,13 +506,13 @@
 
                     item.organisation.forEach(org => {
                         companyhtml += `<tr class="company_row">
-                                        <td><strong>Company Name:</strong></td>
-                                        <td>${org.orgname}</td>
-                                        <td><strong>Designation:</strong></td>
-                                        <td>${org.orgdept}</td>
-                                        <td><strong>Working Year:</strong></td>
-                                        <td>${org.orgyear}</td>
-                                    </tr>`;
+                                            <td><strong>Company Name:</strong></td>
+                                            <td>${org.orgname}</td>
+                                            <td><strong>Designation:</strong></td>
+                                            <td>${org.orgdept}</td>
+                                            <td><strong>Working Year:</strong></td>
+                                            <td>${org.orgyear}</td>
+                                        </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
@@ -559,19 +559,19 @@
                     let bshtml = "";
                     item.profilebs.forEach(bs => {
                         bshtml += `<tr>
-                                    <td><strong>Name of Brother / Sister:</strong></td>
-                                    <td>${bs.bsname}</td>
-                                    <td><strong>B/S:</strong></td>
-                                    <td>${bs.bs}</td>
-                                    <td><strong>Age:</strong></td>
-                                    <td>${bs.bsage}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Ms-St:</strong></td>
-                                    <td>${bs.bsmarriage}</td>
-                                    <td><strong>Personal Details:</strong></td>
-                                    <td colspan="3">${bs.bsdetails}</td>
-                                </tr>`;
+                                        <td><strong>Name of Brother / Sister:</strong></td>
+                                        <td>${bs.bsname}</td>
+                                        <td><strong>B/S:</strong></td>
+                                        <td>${bs.bs}</td>
+                                        <td><strong>Age:</strong></td>
+                                        <td>${bs.bsage}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ms-St:</strong></td>
+                                        <td>${bs.bsmarriage}</td>
+                                        <td><strong>Personal Details:</strong></td>
+                                        <td colspan="3">${bs.bsdetails}</td>
+                                    </tr>`;
                     })
 
                     $("#Modal_biodata #family_detail").append(bshtml)
@@ -620,8 +620,8 @@
     </script>
 
     <script>
-        $(function() {
-            $('.chkrno').on('change', function() {
+        $(function () {
+            $('.chkrno').on('change', function () {
                 rno = $(this).val()
                 refname = $(this).data('refname');
                 console.log("rno", rno);
@@ -629,7 +629,7 @@
                 selected_refname = refname;
             });
 
-            $(".inner-menu-item").click(function() {
+            $(".inner-menu-item").click(function () {
                 if (selected_rno == "") return false;
                 URL = $(this).data('key') + selected_rno
                 console.log("url", URL);
@@ -647,7 +647,7 @@
                 value: currentTime
             });
 
-            $('#modl_inter').click(function() {
+            $('#modl_inter').click(function () {
                 if (selected_rno) {
                     let interactionmodal = bootstrap.Modal.getInstance(intModalModalEl) ||
                         new bootstrap.Modal(intModalModalEl);;
@@ -661,7 +661,7 @@
                 $("#IntractionPageModal #inter_refno").text(rno)
             });
 
-            $('#modl_meet').click(function() {
+            $('#modl_meet').click(function () {
                 if (selected_rno) {
                     let meetingmodal = bootstrap.Modal.getInstance(meetModalModalEl) ||
                         new bootstrap.Modal(meetModalModalEl);
@@ -675,7 +675,7 @@
                 $("#MeetingPageModal #meet_refno").text(rno)
             });
 
-            document.getElementById('btnAddInteraction').addEventListener('click', async function() {
+            document.getElementById('btnAddInteraction').addEventListener('click', async function () {
                 let form = document.getElementById('frmAddInteraction');
 
                 if (!form.checkValidity()) {

@@ -63,17 +63,19 @@
                                         </div>
                                         <div class="clearfix"></div>
 
-                                        <div class="col-md-4 col-12 mt-2">
+                                        <div class="col-md-6 col-12 mt-2">
                                             <label for="contactaddress" class="form-label">Address</label>
                                             <textarea id="contactaddress" name="contactaddress" class="form-control"
                                                 rows="3" spellcheck="false" aria-label=""></textarea>
                                         </div>
-                                        <div class="col-md-4 col-12 mt-2">
+                                        <div class="col-md-6 col-12 mt-2">
                                             <label for="remarks" class="form-label">Remarks (if any)</label>
                                             <textarea id="remarks" name="remarks" class="form-control" rows="3"
                                                 spellcheck="false" aria-label=""></textarea>
                                         </div>
-                                        <div class="col-md-4 col-12 mt-2">
+                                        <div class="clearfix"></div>
+
+                                        <div class="col-md-2 col-12 mt-2">
                                             <label for="aptstatus" class="form-label">Status</label>
                                             <select id="aptstatus" name="aptstatus" class="form-select">
                                                 <option value="0">Pending</option>
@@ -81,6 +83,38 @@
                                                 <option value="2">Cancelled</option>
                                                 <option value="3">Postponed</option>
                                             </select>
+                                        </div>
+
+                                        <div class="col-md-2 col-12 mt-2">
+                                            <label for="att_by1" class="form-label">Appointment Attended By</label>
+                                            <select id="att_by1" name="att_by1" class="form-select select2-notag">
+                                                <option value="">Select</option>
+                                                @foreach ($employees as $employee)
+                                                    @if (trim($employee->name) != "")
+                                                        <option value="{{ $employee->username }}">
+                                                            {{ $employee->username . "-" . $employee->name }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 col-12 mt-2">
+                                            <label for="att_by2" class="form-label">Appointment Attended By:</label>
+                                            <select id="att_by2" name="att_by2" class="form-select select2-notag">
+                                                <option value="">Select</option>
+                                                @foreach ($employees as $employee)
+                                                    @if (trim($employee->name) != "")
+                                                        <option value="{{ $employee->username }}">
+                                                            {{ $employee->username . "-" . $employee->name }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 col-12 mt-2">
+                                            <label for="aptremarks" class="form-label">Post Appointment Remarks:</label>
+                                            <textarea id="aptremarks" name="aptremarks" class="form-control"
+                                                rows="3"></textarea>
                                         </div>
 
                                         <div class="clearfix"></div>

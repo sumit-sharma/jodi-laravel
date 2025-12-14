@@ -31,6 +31,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/uplod-photo/{rno}', [CustomerController::class, 'uplodPics'])->name('customer.uplod-photo');
     Route::delete('/delete-customer-photo', [CustomerController::class, 'deleteFile'])->name('customer.photo-delete');
     Route::post('/customer-upload', [CustomerController::class, 'upload'])->name('customer.upload');
+    Route::get('/customer/picklistbiodata', [CustomerController::class, 'pickListBioData'])->name('customer.picklistbiodata');
     Route::resource('customer', CustomerController::class);
 
     Route::get('/dashboard/get-castes/{religion}', [DashboardController::class, 'getCaste'])->name('get-caste');
@@ -42,6 +43,8 @@ Route::middleware("auth")->group(function () {
     Route::get('/appointment/{id}', [AppointmentController::class, 'show'])->name('appointment.show');
     Route::post('/appointment', [AppointmentController::class, 'saveAppointment'])->name('appointment.save');
 
+    Route::any('/find-match/{rno?}', [MatchController::class, 'findMatch'])->name('panel.find-match');
+    Route::any('/search-match', [MatchController::class, 'searchMatch'])->name('panel.search-match');
 
     Route::prefix('services')->group(function () {
         Route::get('/search-members', [SearchController::class, 'searchMembers'])->name('seach-members');

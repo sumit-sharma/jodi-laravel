@@ -420,7 +420,7 @@
                         <span data-key="t-ecommerce">Match</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="search-match.php" key="t-products">Serach Match</a></li>
+                        <li><a href="{{ route('panel.find-match') }}" key="t-products">Serach Match</a></li>
                     </ul>
                 </li>
 
