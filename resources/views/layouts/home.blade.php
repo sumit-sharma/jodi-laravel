@@ -100,7 +100,7 @@
     <script>
         function debounce(func, delay) {
             let timeout;
-            return function(...args) {
+            return function (...args) {
                 clearTimeout(timeout);
                 timeout = setTimeout(() => func.apply(this, args), delay);
             };
@@ -120,7 +120,7 @@
     </script>
 
     <script>
-        $(function() {
+        $(function () {
             $('.select2-tag').select2({
                 tags: true,
                 placeholder: "Select or type to add",
@@ -135,7 +135,10 @@
     </script>
 
 
+    @section('bottom-section')
+    @show
 
+    @yield('bottom-js')
 
 </body>
 

@@ -62,4 +62,43 @@ class MatchController extends Controller
         $data = $this->matchService->searchMatchList($request->all());
         return response()->json(['status' => 'success', 'data' => $data]);
     }
+
+
+    public function saveClientSL(Request $request)
+    {
+        $validate_data = $request->validate([
+            'rno' => 'required',
+            'proposal' => 'required',
+        ]);
+        $verify = $this->matchService->verifyClientSL($validate_data['rno'], $validate_data['proposal']);
+        if ($verify) {
+            return response()->json(['status' => 'error', 'message' => 'Client SL already exists']);
+        }
+        $result = $this->matchService->saveClientSL($validate_data);
+        return response()->json(['status' => 'success', 'message' => 'Client SL saved successfully']);
+    }
+
+
+    public function clientSLList(Request $request, $rno)
+    {
+        $page = $request->input('page', 1);
+        $limit = $request->input('limit', 15);
+        $conditions = [['rno', '=', $rno], ['status', '<>', 1]];
+        $data['rno'] = $rno;
+        $data['clientSLNotOkData'] = $this->matchService->getClientSLList($conditions);
+        $data['clientSLData'] = $this->matchService->getClientSLList([['rno', '=', $rno]], $page, $limit);
+        return view('panel.Match.client-sl-list', $data);
+    }
+
+
+    public function updateClientSL(Request $request, $id)
+    {
+        // dd($request->all());
+        $validate_data = $request->validate([
+            'status' => 'required',
+            'remarks' => 'nullable',
+        ]);
+        $result = $this->matchService->updateClientSL($id, $validate_data);
+        return response()->json(['status' => 'success', 'message' => 'Client SL updated successfully']);
+    }
 }

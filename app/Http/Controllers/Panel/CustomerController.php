@@ -9,6 +9,7 @@ use App\Models\ProfileMoreInfo;
 use App\Services\CustomerService;
 use App\Services\MiscService;
 use App\Services\SearchService;
+use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -227,6 +228,7 @@ class CustomerController extends Controller
                 return [
                     'id'   => $item->rno,
                     'text' => $item->rno . ' - ' . $item->refname,
+                    'name' => $item->refname,
                     'gender' => $item->gender,
                 ];
             });
@@ -238,5 +240,12 @@ class CustomerController extends Controller
                 ]
             ]);
         }
+    }
+
+
+    public function fetchImages(Request $request, $rno)
+    {
+        $snaps = $this->customerService->getSnaps($rno);
+        return response()->json(['status' => 'success', 'data' => $snaps]);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\ClientSLStatusEnum;
+use App\Models\ClientSL;
 use App\Models\ProfileMatch;
 use App\Models\ViewProfile;
 use App\Traits\CommonTrait;
@@ -123,162 +125,159 @@ class MatchService
         return $query->paginate(10);
     }
 
+    public function saveClientSL($validate_data)
+    {
+        $data['proposal'] = $validate_data['proposal'];
+        $data['dated'] = date('Y-m-d');
+        $data['time'] = date('H:i');
+        $data['slby'] = auth()->user()->username;
+        $data['rno'] = $validate_data['rno'];
+        return ClientSL::create($data);
+    }
 
-    // public function searchMatch($input)
-    // {
-    //     // Extract variables from input with defaults
-    //     $religion         = $input['religion'] ?? [];
-    //     $caste            = $input['caste'] ?? [];
-    //     $zone             = $input['zone'] ?? [];
-    //     $education        = $input['education'] ?? 0;
-    //     $eatingpref       = $input['eatingpref'] ?? [];
-    //     $astropref        = $input['astropref'] ?? [];
-    //     $rspref           = $input['rspref'] ?? [];
-    //     $mspref           = $input['mspref'] ?? [];
-    //     $childpref        = $input['childpref'] ?? '';
-    //     $incomepref       = $input['incomepref'] ?? '';
-    //     $familyincomepref = $input['familyincomepref'] ?? '';
-    //     $occupref         = $input['occupref'] ?? [];
-    //     $budget           = $input['budget'] ?? 0;
-    //     $dtype            = $input['dtype'] ?? [];
-    //     // Match specific variables
-    //     $matchrno   = $input['matchrno'] ?? '';
-    //     $gender     = $input['g'] ?? '';
-    //     $agefrom    = $input['agefrom'] ?? 18;
-    //     $ageupto    = $input['ageupto'] ?? 40;
-    //     $hghtfrom   = $input['hghtfrom'] ?? 0;
-    //     $hghtto     = $input['hghtto'] ?? 12; // default high value
+    public function verifyClientSL($rno, $proposal)
+    {
+        return ClientSL::where(function ($q) use ($rno, $proposal) {
+            $q->where('rno', $rno)
+                ->where('proposal', $proposal);
+        })
+            ->orWhere(function ($q) use ($rno, $proposal) {
+                $q->where('rno', $proposal)
+                    ->where('proposal', $rno);
+            })
+            ->exists();
+    }
 
-    //     $query = ViewProfile::query()
-    //         ->select([
-    //             'viewprofile.rno',
-    //             'viewprofile.g',
-    //             'viewprofile.refname',
-    //             'profile_bio.dob',
-    //             'viewprofile.y',
-    //             'viewprofile.rl',
-    //             'viewprofile.cst',
-    //             'viewprofile.hghtft',
-    //             'viewprofile.ast',
-    //             'viewprofile.ed',
-    //             'viewprofile.ms',
-    //             'viewprofile.rs',
-    //             'profile_personal.arealocation',
-    //             'occupations.occupation',
-    //             'incomes.income',
-    //             'profile_personal.budget',
-    //             'viewprofile.tc',
-    //             'viewprofile.mc',
-    //             'viewprofile.rm',
-    //             'viewprofile.last_call',
-    //             'viewprofile.last_mail',
-    //             'viewprofile.last_mtng',
-    //             'viewprofile.dtype',
-    //             'viewprofile.status',
-    //             'viewprofile.ost',
-    //             'viewprofile.vc',
-    //             'viewprofile.op'
-    //         ])
-    //         ->join('profile_personal', 'viewprofile.rno', '=', 'profile_personal.rno')
-    //         ->join('profile_bio', 'profile_bio.rno', '=', 'viewprofile.rno')
-    //         ->leftJoin('occupations', 'occupations.occ_code', '=', 'viewprofile.oc')
-    //         ->leftJoin('incomes', 'incomes.inc_code', '=', 'viewprofile.fi')
-    //         ->where('viewprofile.status', 'A');
+    public function getClientSLList($conditions, $page = null, $limit = null)
+    {
+        $query =  ClientSL::with('vp')->where($conditions);
+        if ($limit) {
+            $query = $query->paginate($limit, ['*'], 'page', $page);
+        } else {
+            $query = $query->get();
+        }
+        return $query;
+    }
 
-    //     // Filter by dtype
-    //     if (!empty($dtype)) {
-    //         // If $dtype is string comma separated
-    //         if (is_string($dtype)) {
-    //             $dtype = explode(',', $dtype);
-    //         }
-    //         $query->whereIn('viewprofile.dtype', $dtype);
-    //     }
+    public function updateClientSL($id, $data)
+    {
+        return ClientSL::where('id', $id)->update($data);
+    }
 
-    //     // Apply Filters
-    //     if (!empty($religion)) {
-    //         if (is_string($religion)) $religion = explode(',', $religion);
-    //         $query->whereIn('viewprofile.rl', $religion);
-    //     }
+    public function getProposalsForSendMail($rno, $filter = 'all')
+    {
+        // $rno is the Current User Loopup ID
 
-    //     if (!empty($caste)) {
-    //         if (is_string($caste)) $caste = explode(',', $caste);
-    //         // Fetch caste names from IDs if needed, assuming input is IDs but viewprofile.cst has names
-    //         // Code snippet says: select caste from cst vs sno in ($caste)
-    //         $casteNames = Caste::whereIn('id', $caste)->pluck('name')->toArray();
-    //         $query->whereIn('viewprofile.cst', $casteNames);
-    //     }
+        $query = ClientSL::where('status', ClientSLStatusEnum::OK)
+            ->with(['vp', 'client'])
+            ->where(function ($q) use ($rno) {
+                $q->where('rno', $rno)
+                    ->orWhere('proposal', $rno);
+            });
 
-    //     if (!empty($zone)) {
-    //         if (is_string($zone)) $zone = explode(',', $zone);
-    //         $query->whereIn('profile_personal.contactzone', $zone);
-    //     }
+        // Add existence checks using subqueries
+        // Mail Sent by User ($rno) to the Other Party
+        $query->addSelect([
+            'sent_mail_id' => \App\Models\Sendmail::select('id')
+                ->whereColumn('rno', 'client_sl.rno') // Assuming client_sl.rno is User if match
+                ->whereColumn('proposal', 'client_sl.proposal')
+                ->whereRaw('client_sl.rno = ?', [$rno]) // Strict check: User must be sender
+                ->unionAll(
+                    \App\Models\Sendmail::select('id')
+                        ->whereColumn('rno', 'client_sl.proposal')
+                        ->whereColumn('proposal', 'client_sl.rno')
+                        ->whereRaw('client_sl.proposal = ?', [$rno]) // User is 'proposal' col in SL, so User is Sender
+                )
+                ->limit(1)
+        ]);
 
-    //     // Education minimum
-    //     if ($education) {
-    //         $query->where('viewprofile.ed', '>=', $education);
-    //     }
+        // Mail Received by User ($rno) from the Other Party
+        $query->addSelect([
+            'received_mail_id' => \App\Models\Sendmail::select('id')
+                ->whereColumn('rno', 'client_sl.proposal')
+                ->whereColumn('proposal', 'client_sl.rno')
+                ->whereRaw('client_sl.rno = ?', [$rno]) // User is SL.rno (Receiver), Other is SL.proposal (Sender)
+                ->unionAll(
+                    \App\Models\Sendmail::select('id')
+                        ->whereColumn('rno', 'client_sl.rno')
+                        ->whereColumn('proposal', 'client_sl.proposal')
+                        ->whereRaw('client_sl.proposal = ?', [$rno]) // User is SL.proposal (Receiver), Other is SL.rno (Sender)
+                )
+                ->limit(1)
+        ]);
 
-    //     if (!empty($eatingpref)) {
-    //         if (is_string($eatingpref)) $eatingpref = explode(',', $eatingpref);
-    //         $query->whereIn('viewprofile.eh', $eatingpref);
-    //     }
-    //     if (!empty($astropref)) {
-    //         if (is_string($astropref)) $astropref = explode(',', $astropref);
-    //         $query->whereIn('viewprofile.ast', $astropref);
-    //     }
-    //     if (!empty($rspref)) {
-    //         if (is_string($rspref)) $rspref = explode(',', $rspref);
-    //         $query->whereIn('viewprofile.rs', $rspref);
-    //     }
-    //     if (!empty($mspref)) {
-    //         if (is_string($mspref)) $mspref = explode(',', $mspref);
-    //         $query->whereIn('viewprofile.ms', $mspref);
-    //     }
+        // Apply Filters
+        if ($filter === 'exists') {
+            $query->where(function ($q) use ($rno) {
+                // Check if ANY mail exists involving this pair?
+                // Original request: "It exists in sendMail Model"
+                // This usually means "Have I interacted with them?"
+                $q->whereHas('sendMail', function ($sub) use ($rno) {
+                    $sub->where('rno', $rno)->orWhere('proposal', $rno);
+                })->orWhereHas('receiveMail', function ($sub) use ($rno) { // Model relations might be weak, use subquery logic generally
+                    $sub->where('rno', $rno)->orWhere('proposal', $rno);
+                });
+                // Re-using the logic from select might be cleaner but whereHas is safer for purely existence
+                // Let's rely on the subselects being not null if we want specific sent/recv
+                // Or better, let's just stick to the subqueries we built?
+                // But we can't 'where' on addSelect columns easily in simple Eloquent without having
 
-    //     if ($incomepref) {
-    //         $query->where('viewprofile.pi', '>=', $incomepref);
-    //     }
-    //     if ($familyincomepref) {
-    //         $query->where('viewprofile.fi', '>=', $familyincomepref);
-    //     }
+                // Simpler approach for "Exists":
+                // Check if there is a Sendmail record where (rno=A AND proposal=B) OR (rno=B AND proposal=A)
 
-    //     if (!empty($occupref)) {
-    //         if (is_string($occupref)) $occupref = explode(',', $occupref);
-    //         $query->whereIn('viewprofile.oc', $occupref);
-    //     }
-    //     // $childpref is not used in snippet? Logic missing.
+                $q->whereExists(function ($sub) use ($rno) {
+                    $sub->select(\Illuminate\Support\Facades\DB::raw(1))
+                        ->from('sendmail')
+                        ->where(function ($w) {
+                            $w->whereColumn('sendmail.rno', 'client_sl.rno')
+                                ->whereColumn('sendmail.proposal', 'client_sl.proposal');
+                        })->orWhere(function ($w) {
+                            $w->whereColumn('sendmail.rno', 'client_sl.proposal')
+                                ->whereColumn('sendmail.proposal', 'client_sl.rno');
+                        });
+                });
+            });
+        } elseif ($filter === 'not_exists') {
+            $query->whereNotExists(function ($sub) use ($rno) {
+                $sub->select(\Illuminate\Support\Facades\DB::raw(1))
+                    ->from('sendmail')
+                    ->where(function ($w) {
+                        $w->whereColumn('sendmail.rno', 'client_sl.rno')
+                            ->whereColumn('sendmail.proposal', 'client_sl.proposal');
+                    })->orWhere(function ($w) {
+                        $w->whereColumn('sendmail.rno', 'client_sl.proposal')
+                            ->whereColumn('sendmail.proposal', 'client_sl.rno');
+                    });
+            });
+        }
 
-    //     if ($budget > 0) {
-    //         $query->where('profile_personal.budget', '>=', $budget);
-    //     }
+        return $query->get()
+            ->map(function ($item) use ($rno) {
+                // Determine the "Other" party
+                $other_id = ($item->rno == $rno) ? $item->proposal : $item->rno;
+                // dd($item);
+                // Get other profile
+                $other_profile = ($item->rno == $rno) ? $item->vp : $item->client;
+                $other_refname = $other_profile ? $other_profile->refname : null;
+                $other_status = $item->vp ? $item->vp->status : $item->client->status;
 
-    //     // Match Logic
-    //     // Age range, Height range
-    //     $query->whereBetween('viewprofile.y', [$agefrom, $ageupto]);
-    //     $query->whereBetween('viewprofile.hg', [$hghtfrom, $hghtto]);
+                return [
+                    'id' => $item->id,
+                    'my_id' => $rno,
+                    'other_id' => $other_id,
+                    'other_refname' => $other_refname,
+                    'other_status' => $other_status,
+                    'dated' => $item->dated,
+                    'status' => $item->status->label(),
 
-    //     if (!empty($matchrno)) {
-    //         // Exclude already matched in clientsl
-    //         $query->where('viewprofile.g', '<>', $gender);
+                    // Relation Objects (if loaded via normal relations, but we used subqueries for IDs)
+                    'vp' => $item->vp,
+                    'client' => $item->client,
 
-    //         $excludedRnos = DB::table('clientsl')->where('rno', $matchrno)->pluck('proposal')
-    //             ->merge(DB::table('clientsl')->where('proposal', $matchrno)->pluck('rno'));
-
-    //         $query->whereNotIn('viewprofile.rno', $excludedRnos);
-
-    //         // Also exclude self? Usually implicit by gender, but safe to add
-    //         $query->where('viewprofile.rno', '<>', $matchrno);
-    //     } else {
-    //         // If no matchrno, maybe just filtering general?
-    //         // Snippet says: v.g='$g'
-    //         if ($gender) {
-    //             $query->where('viewprofile.g', $gender);
-    //         }
-    //     }
-
-    //     // Sorting
-    //     $query->orderByDesc('profile_bio.profiledate');
-
-    //     return $query->paginate(20, ['*'], 'page', $input['page'] ?? 1);
-    // }    
+                    // Computed Status
+                    'has_sent_mail' => !is_null($item->sent_mail_id),
+                    'has_received_mail' => !is_null($item->received_mail_id),
+                ];
+            });
+    }
 }

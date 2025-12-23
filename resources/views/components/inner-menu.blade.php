@@ -14,17 +14,6 @@
                             <div class="dropdown-menu" aria-labelledby="topnav-pages"
                                 style="position: fixed; overflow-y: scroll; height: 80vh;">
 
-                                <!--<div class="dropdown">
-                                                          <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-ecommerce"
-                                                              role="button">
-                                                              <span data-key="t-ecommerce">Ecommerce</span> <div class="arrow-down"></div>
-                                                          </a>
-                                                          <div class="dropdown-menu" aria-labelledby="topnav-ecommerce">
-                                                              <a href="ecommerce-products.html" class="dropdown-item" data-key="t-products">Products</a>
-                                                              <a href="ecommerce-product-detail.html" class="dropdown-item" data-key="t-product-detail">Product Detail</a>
-                                                              <a href="ecommerce-orders.html" class="dropdown-item" data-key="t-orders">Orders</a>
-                                                          </div>
-                                                      </div>-->
                                 <a href="javascript:;" class="dropdown-item inner-menu-item"
                                     data-key="/update-match-prefrence/">Update match preference</a>
                                 <a href="javascript:;" class="dropdown-item inner-menu-item"
@@ -43,7 +32,8 @@
                                 <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a>
                                 <a href="#" class="dropdown-item inner-menu-item" data-key="/find-match/">Find match
                                 </a>
-                                <a href="#" class="dropdown-item" data-key="t-chat">Save to SL </a>
+                                <a href="#" class="dropdown-item inner-menu-modal" id="modl_sl"
+                                    data-key="SaveSLModal">Save to SL </a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Hold/ release</a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Interaction</a>
                                 <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a>
@@ -51,7 +41,8 @@
                                 <a href="#" class="dropdown-item" data-key="t-chat">Fix/Active </a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
 
-                                <a href="#" class="dropdown-item" data-key="t-chat">Sent mails</a>
+                                <a href="javascript:;" class="dropdown-item inner-menu-item" data-key="/sendmail/">Sent
+                                    mails</a>
                                 <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a>
 
                             </div>
@@ -151,15 +142,10 @@
                             </a>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-others" role="button">
-                                <span data-key="t-apps">Client SL</span>
-                                <div class="arrow-down"></div>
+                        <li class="nav-item">
+                            <a class="nav-link inner-menu-item" href="javascript:void(0);" data-key="/client-sl-list/">
+                                <span>Client SL</span>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="topnav-pages">
-                                <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
-                                <a href="#" class="dropdown-item" data-key="t-chat">Coming soon</a>
-                            </div>
                         </li>
 
                     </ul>
@@ -168,3 +154,190 @@
         </div>
     </div>
 </div>
+@section('bottom-section')
+    @@parent
+    @include('components.save-sl-modal')
+    @include('components.interaction_modal')
+    @include('components.meeting_modal')
+
+@endsection
+
+@section('bottom-js')
+    <!--     timepicker -->
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+    <script>
+        $(document).ready(function () {
+            const fetchBioDataPickList = async (rno) => {
+                try {
+                    const tbody = document.querySelector('#table-sl-result tbody');
+                    tbody.innerHTML = 'loading....';
+                    document.getElementById('sl_input_name').value = ""
+                    const response = await fetch("{{ route('customer.picklistbiodata') }}" + '?rno=' + rno, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    const data = await response.json();
+                    if (data.results.length > 0) {
+                        let html = '';
+                        data.results.forEach(element => {
+                            html += `<tr><td><div class="form-check"><input class="form-check-input" type="radio" name="proposal" value="${element.id}" checked></div></td><td>${element.id}</td><td>${element.name}</td><td>${element.gender}</td></tr>`;
+                        });
+                        tbody.innerHTML = html;
+                        document.getElementById('sl_input_name').value = data.results[0].name;
+                    }
+                } catch (error) {
+                    console.log('Error:', error);
+                }
+            }
+
+
+            // $(".upper-menu-item").click(function () {
+            //     if (selected_rno == "") return false;
+            //     URL = $(this).data('key') + selected_rno
+            //     console.log("url", URL);
+            //     window.open(URL, "_blank").focus();
+            // });
+
+
+            $(".inner-menu-item").click(function () {
+                if (selected_rno) {
+                    URL = $(this).data('key') + selected_rno
+                    console.log("url", URL);
+                    window.open(URL, "_blank").focus();
+                } else {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+            });
+            let now = new Date();
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            let currentTime = `${hours}:${minutes}`;
+            let intModalEl = document.getElementById('IntractionPageModal');
+            let meetModalEl = document.getElementById('MeetingPageModal');
+            let saveSLModalEl = document.getElementById('SaveSLModal');
+
+            $(".timepicker").timepicker({
+                uiLibrary: 'bootstrap5',
+                value: currentTime
+            });
+
+            $('#modl_inter').click(function () {
+                if (selected_rno) {
+                    let interactionmodal = bootstrap.Modal.getInstance(intModalEl) ||
+                        new bootstrap.Modal(intModalEl);;
+                    interactionmodal.show()
+                } else {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                $("#IntractionPageModal #inter_rno").val(rno);
+                $("#IntractionPageModal #inter_refname").text(selected_refname)
+                $("#IntractionPageModal #inter_refno").text(rno)
+            });
+
+            $('#modl_meet').click(function () {
+                if (selected_rno) {
+                    let modal = bootstrap.Modal.getInstance(meetModalEl) ||
+                        new bootstrap.Modal(meetModalEl);
+                    modal.show()
+                } else {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                $("#MeetingPageModal #meet_rno").val(rno);
+                $("#MeetingPageModal #meet_refname").text(selected_refname)
+                $("#MeetingPageModal #meet_refno").text(rno)
+            });
+
+            $('#modl_sl').click(function () {
+                if (selected_rno) {
+                    let modal = bootstrap.Modal.getInstance(saveSLModalEl) ||
+                        new bootstrap.Modal(saveSLModalEl);
+                    modal.show()
+                } else {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                $("#SaveSLModal #saveSLModal_rno").val(selected_rno);
+                // $("#SaveSLModal #meet_refname").text(selected_refname)
+                // $("#SaveSLModal #meet_refno").text(rno)
+            });
+
+            document.getElementById('sl_input_rno').addEventListener('input', function (event) {
+                let rno = event.target.value;
+                const debouncedFetch = debounce(fetchBioDataPickList, 300);
+                document.getElementById('error_msg').textContent = '';
+                document.getElementById('success_msg').textContent = '';
+                debouncedFetch(rno);
+            });
+
+            $("#frmSaveSL").submit(async function (e) {
+                e.preventDefault();
+                let form = this;
+
+                if (!form.checkValidity()) {
+                    form.reportValidity(); // Shows browser validation messages
+                    return; // Stop submission
+                }
+                document.getElementById('error_msg').textContent = '';
+                document.getElementById('success_msg').textContent = '';
+                let formData = new FormData(form);
+                const url = "{{ route('save-client-sl') }}";
+                let response = await fetch(url, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    }
+                });
+
+                let data = await response.json();
+                console.log(data);
+                if (data.status === 'error') {
+                    document.getElementById('error_msg').textContent = data.message;
+                } else {
+                    document.getElementById('success_msg').textContent = data.message;
+                }
+            })
+
+            document.getElementById('btnAddInteraction').addEventListener('click', async function () {
+                let form = document.getElementById('frmAddInteraction');
+
+                if (!form.checkValidity()) {
+                    form.reportValidity(); // Shows browser validation messages
+                    return; // Stop submission
+                }
+
+
+                let formData = new FormData(form);
+                const url = "{{ route('save-interaction') }}"
+                let response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let data = await response.json();
+                let interactionmodal = bootstrap.Modal.getInstance(intModalModalEl);
+
+                // interactionmodal.hide();
+
+                if (data.status === 'success') {
+                    interactionmodal.hide();
+                    toastr.success(data.message);
+                } else {
+                    toastr.error(data.message || 'There was an error saving the interaction.');
+                }
+                //     document.getElementById('result').innerHTML = "Success!";
+                //     console.log(data);
+                // } else {
+                //     console.log("Error:", data);
+                // }
+            });
+        })
+    </script>
+@endsection

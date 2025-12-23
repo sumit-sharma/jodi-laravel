@@ -358,8 +358,9 @@
                         <span data-key="t-ecommerce">Reference</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="add-edit-references.php" key="t-products">Add/Edit Reference</a></li>
-                        <li><a href="show-references.php" data-key="t-product-detail">Show Raference</a></li>
+                        <li><a href="{{ route('references.create') }}" key="t-products">Add/Edit Reference</a></li>
+                        <li><a href="{{ route('references.index') }}" data-key="t-product-detail">Show Raference</a>
+                        </li>
                     </ul>
                 </li>
 

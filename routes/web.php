@@ -7,7 +7,9 @@ use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
+use App\Http\Controllers\Panel\ReferenceController;
 use App\Http\Controllers\Panel\SearchController;
+use App\Http\Controllers\Panel\SendMailController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +47,9 @@ Route::middleware("auth")->group(function () {
 
     Route::any('/find-match/{rno?}', [MatchController::class, 'findMatch'])->name('panel.find-match');
     Route::any('/search-match', [MatchController::class, 'searchMatch'])->name('panel.search-match');
+    Route::post('/save-client-sl', [MatchController::class, 'saveClientSL'])->name('save-client-sl');
+    Route::put('/update-client-sl/{id}', [MatchController::class, 'updateClientSL'])->name('update-client-sl');
+    Route::get('/client-sl-list/{rno}', [MatchController::class, 'clientSLList'])->name('client-sl-list');
 
     Route::prefix('services')->group(function () {
         Route::get('/search-members', [SearchController::class, 'searchMembers'])->name('seach-members');
@@ -61,6 +66,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/store-occupation', [MasterController::class, 'storeOccupation'])->name('panel.store-occupation');
     });
 
+    Route::resource('references', ReferenceController::class);
+
     Route::get('/pdfview/{type}/{rno}', [DashboardController::class, 'pdfview'])->name('pdfview');
 
     Route::get('/update-match-prefrence/{rno}', [MatchController::class, 'viewUpdateMatchPrefrences'])->name('update-match-prefrence');
@@ -71,4 +78,8 @@ Route::middleware("auth")->group(function () {
 
     Route::post('/save-interaction', [CustomerController::class, 'storeInteraction'])->name('save-interaction');
     Route::post('/save-meeting', [CustomerController::class, 'storeMeeting'])->name('save-meeting');
+
+    Route::get('/fetch-images/{rno}', [CustomerController::class, 'fetchImages'])->name('fetch-images');
+    Route::get('/sendmail/{rno}', [SendMailController::class, 'index'])->name('sendmail.index');
+    Route::post('/sendmail', [SendMailController::class, 'store'])->name('sendmail.store');
 });

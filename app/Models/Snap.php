@@ -9,7 +9,4 @@ class Snap extends Model
     protected $table = 'snaps';
 
     protected $fillable = ['rno', 'photo', 'sorting', 'created_at', 'updated_at'];
-
-
-
 }

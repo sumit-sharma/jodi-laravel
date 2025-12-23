@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
@@ -38,11 +39,10 @@ class DashboardController extends Controller
     public function getDistinctData(Request $request)
     {
         $q = $request->q;
-        if(!empty(trim($q))){
+        if (!empty(trim($q))) {
             $where = "{$request->column} LIKE '%{$q}%'";
         }
         return MiscService::getDistinctData($request->table, $request->column, $where ?? null);
-
     }
 
     public function getTableData(Request $request)
@@ -57,16 +57,21 @@ class DashboardController extends Controller
             case 'fullbiodata':
                 $view = 'pdf-views.full-biodata';
                 break;
+            case 'pdf1':
+                $view = 'pdf-views.pdf1';
+                break;
+            case 'pdf2':
+                $view = 'pdf-views.pdf2';
+                break;
+            case 'pdf3':
+                $view = 'pdf-views.pdf3';
+                break;
         }
         $data = $this->searchService->searchByrno($rno);
-        // return view($view, compact('data'));
-        $pdf = Pdf::loadView($view, compact('data'));
-        $pdf->setPaper('A3', 'portrait');
+        return view($view, compact('data'));
+        // $pdf = Pdf::loadView($view, compact('data'));
+        // $pdf->setPaper('A3', 'portrait');
 
-        return $pdf->download('biodata_'.$rno.'_'.time().'.pdf');
-
+        // return $pdf->download('biodata_' . $rno . '_' . time() . '.pdf');
     }
-
-
-
 }

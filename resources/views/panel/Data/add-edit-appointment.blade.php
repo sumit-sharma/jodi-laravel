@@ -233,7 +233,6 @@
                                         </div> --}}
                                     </div>
                                     {{ $appointments->links() }}
-                                    @include('components.biodata_modal')
                                 </div>
                             </div>
                             <div class="clearfix"></div>

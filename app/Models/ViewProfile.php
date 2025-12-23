@@ -8,7 +8,42 @@ class ViewProfile extends Model
 {
 
     protected $table = 'viewprofile';
-    protected $guarded = [];
+    protected $fillable = [
+        'rno',
+        'gender',
+        'refname',
+        'dob',
+        'tob',
+        'age',
+        'pob',
+        'religion',
+        'caste',
+        'subcaste',
+        'gotra',
+        'hght',
+        'hghtft',
+        'wtkg',
+        'complexion',
+        'dd',
+        'bg',
+        'astrostatus',
+        'drinkinghabit',
+        'smokinghabit',
+        'eatinghabit',
+        'spects',
+        'education',
+        'occupation',
+        'income',
+        'rs',
+        'ms',
+        'childstatus',
+        'dtype',
+        'payment',
+        'profiledate',
+        'empid',
+        'rfno',
+        'brand'
+    ];
 
 
     public function personal()
@@ -24,6 +59,11 @@ class ViewProfile extends Model
     public function occupation()
     {
         return $this->belongsTo(Occupation::class, 'oc', 'occ_code');
+    }
+
+    public function personalincome()
+    {
+        return $this->belongsTo(Income::class, 'pi', 'inc_code');
     }
 
     public function income()
@@ -51,5 +91,8 @@ class ViewProfile extends Model
         return $this->hasOne(ProfilePayment::class, 'rno', 'rno');
     }
 
-
+    public function snaps()
+    {
+        return $this->hasMany(Snap::class, 'rno', 'rno');
+    }
 }

@@ -46,7 +46,7 @@ class CustomerService
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
     }
 
-    public function pickListBioData($request, $selectArray = ['rno', 'refname'])
+    public function pickListBioData($request, $selectArray = ['rno', 'refname'], $single = false)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
         $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
@@ -54,13 +54,13 @@ class CustomerService
 
         $query = ProfileBio::select($selectArray)->orderBy($sortBy, $orderBy)
             ->when($request->q, function ($query) use ($request) {
-                $query->where('refname', 'like', '%' . $request->q . '%')
-                    ->orWhere('rno', 'like', $request->q . '%');
+                $query->where('refname', 'like', "%{$request->q}%")
+                    ->orWhere('rno', 'like', "%{$request->q}%");
             })
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
-            ->when($request->refname, fn($query) => $query->where('refname', $request->refname));
+            ->when($request->refname, fn($query) => $query->where('refname', 'like', "%{$request->refname}%"));
 
-        return $query->paginate($limit);
+        return $single ? $query->first() : $query->paginate($limit);
     }
 
 

@@ -9,7 +9,44 @@ use Illuminate\Database\Eloquent\Model;
 class ProfilePersonal extends Model
 {
     protected $table = "profile_personal";
-    protected $guarded = [];
+    protected $fillable = [
+        'rno',
+        'visa',
+        'rcity',
+        'rcountry',
+        'marriageinfo',
+        'child',
+        'childdetails',
+        'familystatus',
+        'fathersname',
+        'mothersname',
+        'fatherdetails',
+        'motherdetails',
+        'familyincome',
+        'familyincomem',
+        'typeoffamily',
+        'familynative',
+        'hobbies',
+        'characteristics',
+        'eyecolor',
+        'haircolor',
+        'salary',
+        'budget',
+        'nationality',
+        'familyhistory',
+        'contactperson',
+        'contactaddress',
+        'contactcity',
+        'contactstate',
+        'contactpincode',
+        'contactcountry',
+        'contactphone',
+        'contactemail',
+        'contactrelation',
+        'personaldetails',
+        'contactzone',
+        'arealocation'
+    ];
 
 
     protected function casts()
@@ -25,5 +62,4 @@ class ProfilePersonal extends Model
     {
         return $this->belongsTo(Zone::class, 'contactzone', 'zone_code');
     }
-
 }

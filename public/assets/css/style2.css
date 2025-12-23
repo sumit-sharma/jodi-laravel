@@ -28,3 +28,8 @@
 label.error {
 	color: red;
 }
+
+.bg-pink {
+	color: #4d4afbff !important;
+	background-color: #FFB7DB !important;
+}

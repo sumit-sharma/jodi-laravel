@@ -161,7 +161,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="row mb-2 row-cols-5"">
-                                            <div class=" col mb-2">
+                                                <div class=" col mb-2">
                                         <label class="form-label">Religion:</label>
                                         <select id="religion" name="religion" class="form-select">
                                             <option value="1" selected>Hindu</option>

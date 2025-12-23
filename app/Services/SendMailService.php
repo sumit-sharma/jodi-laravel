@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Sendmail;
+use App\Models\ViewProfile;
+use Illuminate\Support\Facades\DB;
+
+class SendMailService
+{
+    public function index($request)
+    {
+        $query = $this->loadData($request);
+        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+    }
+
+    protected function loadData($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'dated';
+
+        return Sendmail::with(['sender', 'receiver'])->orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->proposal, fn($query) => $query->where('proposal', $request->proposal))
+            ->when($request->sentmail, fn($query) => $query->where('rno', $request->sentmail)->orWhere('proposal', $request->sentmail));
+    }
+
+
+    public function store(array $data)
+    {
+        // dd($data);
+        return DB::transaction(function () use ($data) {
+            if ($data['side'] == 0 || $data['side'] == 2) {
+                Sendmail::create([
+                    'dated' => now()->format('Y-m-d'),
+                    'time' => now()->format('H:i:s'),
+                    'rno' => $data['rno'],
+                    'proposal' => $data['proposal'],
+                    'photos' => implode(',', $data['photo']),
+                    'matter' => $data['matter'],
+                    'wc' => $data['wc'] ?? 0,
+                    'pdftype' => $data['pdf_type'],
+                    'empid' => auth()->user()->username,
+                    'status' => 0,
+                    'addl_st' => '',
+                ]);
+                ViewProfile::where('rno', $data['rno'])->update(['last_mail' => now()->format('Y-m-d')]);
+            }
+            if ($data['side'] == 1 || $data['side'] == 2) {
+                Sendmail::create([
+                    'dated' => now()->format('Y-m-d'),
+                    'time' => now()->format('H:i:s'),
+                    'rno' => $data['proposal'],
+                    'proposal' => $data['rno'],
+                    'photos' => implode(',', $data['photo']),
+                    'matter' => $data['matter'],
+                    'wc' => $data['wc'] ?? 0,
+                    'pdftype' => $data['pdf_type'],
+                    'empid' => auth()->user()->username,
+                    'status' => 0,
+                    'addl_st' => '',
+                ]);
+                ViewProfile::where('rno', $data['proposal'])->update(['last_mail' => now()->format('Y-m-d')]);
+            }
+        });
+    }
+}
