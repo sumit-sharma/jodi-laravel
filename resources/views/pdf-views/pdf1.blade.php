@@ -94,7 +94,7 @@
 			<table width="100%">
 				<tr>
 					<td align="center" style="padding: 0;">
-						<img src="https://jodi-v2.cswebgroup.com/assets/images/pdf-banner.jpg" width="100%" />
+						<img src="{{ public_path('assets/images/pdf-banner.jpg') }}" width="100%" />
 					</td>
 				</tr>
 			</table>
@@ -472,7 +472,9 @@
 					<tr>
 						@foreach ($chunk as $item)
 							<td width="{{ $width }}" align="center" style="padding: 5px;">
-								<img src="{{ url('uploads/customer/' . $item->photo) }}" width="100%" />
+								<img src="{{ public_path('storage/uploads/customer/' . $item->photo) }}"
+									onerror="this.onerror=null;this.src='{{ public_path('assets/images/No-Image-Placeholder.svg') }}';"
+									width="100%" />
 							</td>
 						@endforeach
 					</tr>

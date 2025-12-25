@@ -138,8 +138,7 @@
     </script>
 
 
-    @section('bottom-section')
-    @show
+    @yield('bottom-section')
 
     @yield('bottom-js')
 

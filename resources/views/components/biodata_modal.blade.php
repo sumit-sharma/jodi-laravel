@@ -341,15 +341,12 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <!--<div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    </div>-->
         </div>
     </div>
 </div>
 
 
-@section('bottom-js')
+@section('bottom-section')
     <script>
         $(document).on("click", ".biodata_modal", function () {
             let rno = $(this).data("rno"); // auto-parsed JSON
@@ -362,7 +359,7 @@
 
             const url = `{{ route('search-data') }}?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
             // const url = `/services/search-result?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
-
+            console.log("urlsss", url);
             fetch(url, options)
                 .then(res => res.json())
                 .then(data => {
@@ -532,7 +529,7 @@
                             break;
                     }
 
-                    $("#Modal_biodata #btn_pdf").attr("href", `/pdfview/fullbiodata/${item.rno}`);
+                    $("#Modal_biodata #btn_pdf").attr("href", `/pdfview/pdf1/${item.rno}`);
 
                     // $("#Modal_biodata #rno").text(item.rno);
                     $("#Modal_biodata #gender").text(item.g);
@@ -601,14 +598,14 @@
                     html = `<tr><td><strong>Education:</strong></td><td colspan="5">${education}</td></tr>`
                     item.education.forEach(ed => {
                         html += `
-                                                                                                                            <tr>
-                                                                                                                                <td><strong>Name of Course:</strong></td>
-                                                                                                                                <td><label class="educourse">${ed.educourse}</label></td>
-                                                                                                                                <td><strong>Institution:</strong></td>
-                                                                                                                                <td><label class="eduinst">${ed.eduinst}</label></td>
-                                                                                                                                <td><strong>Year:</strong></td>
-                                                                                                                                <td><label class="eduyear">${ed.eduyear}</label></td>
-                                                                                                                                </tr>`;
+                                                                        <tr>
+                                                                            <td><strong>Name of Course:</strong></td>
+                                                                            <td><label class="educourse">${ed.educourse}</label></td>
+                                                                            <td><strong>Institution:</strong></td>
+                                                                            <td><label class="eduinst">${ed.eduinst}</label></td>
+                                                                            <td><strong>Year:</strong></td>
+                                                                            <td><label class="eduyear">${ed.eduyear}</label></td>
+                                                                            </tr>`;
                     });
                     $("#Modal_biodata #education_container").html(html);
                     $("#Modal_biodata #occupation").text(item?.occupation?.name);
@@ -620,13 +617,13 @@
 
                     item.organisation.forEach(org => {
                         companyhtml += `<tr class="company_row">
-                                                                                                                                        <td><strong>Company Name:</strong></td>
-                                                                                                                                        <td>${org.orgname}</td>
-                                                                                                                                        <td><strong>Designation:</strong></td>
-                                                                                                                                        <td>${org.orgdept}</td>
-                                                                                                                                        <td><strong>Working Year:</strong></td>
-                                                                                                                                        <td>${org.orgyear}</td>
-                                                                                                                                    </tr>`;
+                                                                    <td><strong>Company Name:</strong></td>
+                                                                    <td>${org.orgname}</td>
+                                                                    <td><strong>Designation:</strong></td>
+                                                                    <td>${org.orgdept}</td>
+                                                                    <td><strong>Working Year:</strong></td>
+                                                                    <td>${org.orgyear}</td>
+                                                                </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
@@ -673,19 +670,19 @@
                     let bshtml = "";
                     item.profilebs.forEach(bs => {
                         bshtml += `<tr>
-                                                                                                                                    <td><strong>Name of Brother / Sister:</strong></td>
-                                                                                                                                    <td>${bs.bsname}</td>
-                                                                                                                                    <td><strong>B/S:</strong></td>
-                                                                                                                                    <td>${bs.bs}</td>
-                                                                                                                                    <td><strong>Age:</strong></td>
-                                                                                                                                    <td>${bs.bsage}</td>
-                                                                                                                                </tr>
-                                                                                                                                <tr>
-                                                                                                                                    <td><strong>Ms-St:</strong></td>
-                                                                                                                                    <td>${bs.bsmarriage}</td>
-                                                                                                                                    <td><strong>Personal Details:</strong></td>
-                                                                                                                                    <td colspan="3">${bs.bsdetails}</td>
-                                                                                                                                </tr>`;
+                                                                <td><strong>Name of Brother / Sister:</strong></td>
+                                                                <td>${bs.bsname}</td>
+                                                                <td><strong>B/S:</strong></td>
+                                                                <td>${bs.bs}</td>
+                                                                <td><strong>Age:</strong></td>
+                                                                <td>${bs.bsage}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><strong>Ms-St:</strong></td>
+                                                                <td>${bs.bsmarriage}</td>
+                                                                <td><strong>Personal Details:</strong></td>
+                                                                <td colspan="3">${bs.bsdetails}</td>
+                                                            </tr>`;
                     })
 
                     $("#Modal_biodata #family_detail").append(bshtml)

@@ -30,6 +30,8 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+
+    Route::get('/customer-photos/{rno}', [CustomerController::class, 'showPhotos'])->name('customer.show-photos');
     Route::get('/uplod-photo/{rno}', [CustomerController::class, 'uplodPics'])->name('customer.uplod-photo');
     Route::delete('/delete-customer-photo', [CustomerController::class, 'deleteFile'])->name('customer.photo-delete');
     Route::post('/customer-upload', [CustomerController::class, 'upload'])->name('customer.upload');
@@ -78,9 +80,10 @@ Route::middleware("auth")->group(function () {
     Route::post('/save-more-info', [CustomerController::class, 'saveMoreInfo'])->name('save-more-info');
 
     Route::post('/get-meeting_by', [CustomerController::class, 'getMeetingBy'])->name('get-meeting_by');
-    Route::post('/save-interaction', [CustomerController::class, 'storeInteraction'])->name('save-interaction');
     Route::post('/save-meeting', [CustomerController::class, 'storeMeeting'])->name('save-meeting');
     Route::get('/meeting-list/{rno}', [CustomerController::class, 'meetingList'])->name('meeting-list');
+
+    Route::post('/save-interaction', [CustomerController::class, 'storeInteraction'])->name('save-interaction');
     Route::get('/interaction-list/{rno}', [CustomerController::class, 'interactionList'])->name('interaction-list');
     Route::put('/interaction/toggle-bookmark', [CustomerController::class, 'toggleBookmarkInteraction'])->name('interaction.toggle-bookmark');
     Route::delete('/interaction/delete-interaction', [CustomerController::class, 'destroyInteraction'])->name('interaction.delete-interaction');

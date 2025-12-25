@@ -1,87 +1,95 @@
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jodi Serach Bio Data</title>
 
-	  <style>
-		  .main_cls {
-			  font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
-			  margin: 0 auto;
-			  width: 1000px;
-		  }
-		  .sect_one {
-			  background: #fff;
-			  border-radius: 5px;
-			  padding: 20px;
-			  margin-bottom: 20px;
-		  }
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Jodi Serach Bio Data</title>
 
-		  .sect_one h1 {
-			  margin: 0;
-			  padding:0;
-			  font-size: 40px;
-		  }
-		  .sect_one h2, h3 {
-			  margin: 0 0 15px 0;
-			  padding:0;
-			  font-size: 20px;
-		  }
-		  .sect_one table {
-  				border-collapse: collapse;
-			}
-		  .sect_one th, td {
-			  padding: 6px;
-		  }
-		  .sect_two {
-			  background: #430b1c;
-			  border-radius: 5px;
-			  padding: 20px;
-			  margin-bottom: 20px;
-			  text-align: center;
-			  color: #ffffff;
-		  }
-		  .sect_two h2{
-			  margin:0;
-			  padding: 0;
-		  }
-	  </style>
+	<style>
+		.main_cls {
+			font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
+			margin: 0 auto;
+			width: 1000px;
+		}
 
-  </head>
+		.sect_one {
+			background: #fff;
+			border-radius: 5px;
+			padding: 20px;
+			margin-bottom: 20px;
+		}
+
+		.sect_one h1 {
+			margin: 0;
+			padding: 0;
+			font-size: 40px;
+		}
+
+		.sect_one h2,
+		h3 {
+			margin: 0 0 15px 0;
+			padding: 0;
+			font-size: 20px;
+		}
+
+		.sect_one table {
+			border-collapse: collapse;
+		}
+
+		.sect_one th,
+		td {
+			padding: 6px;
+		}
+
+		.sect_two {
+			background: #430b1c;
+			border-radius: 5px;
+			padding: 20px;
+			margin-bottom: 20px;
+			text-align: center;
+			color: #ffffff;
+		}
+
+		.sect_two h2 {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+
+</head>
 
 
 
-  <body bgcolor="#dcd9d2">
-	  <div class="main_cls">
+<body bgcolor="#dcd9d2">
+	<div class="main_cls">
 
-		  <div class="sect_one">
-			 <table width="100%">
+		<div class="sect_one">
+			<table width="100%">
 				<tr>
 					<td width="50%" align="left">
 						<h1>{{ $data->refname }}</h1>
 					</td>
 					<td width="50%" align="right">
-                        <img src="{{ public_path('assets/images/emb-logo2.jpg') }}" width="170">
+						<img src="{{ public_path('assets/images/emb-logo2.jpg') }}" width="170">
 					</td>
 				</tr>
-        	</table>
-		  </div>
+			</table>
+		</div>
 
-		  <div class="sect_one">
-		  	<table width="100%">
+		<div class="sect_one">
+			<table width="100%">
 				<tr>
 					<td width="33%"><img src="{{ public_path('/assets/images/bio-data.jpg') }}" width="100%" /></td>
 					<td width="33%"><img src="{{ public_path('/assets/images/bio-data2.jpg') }}" width="100%" /></td>
 					<td width="33%"><img src="{{ public_path('/assets/images/bio-data3.jpg') }}" width="100%" /></td>
 				</tr>
-        	</table>
-		  </div>
+			</table>
+		</div>
 
-          {{-- @dump($data) --}}
-		  <div class="sect_one">
-		  	<h2>Personal Details</h2>
+		{{-- @dump($data) --}}
+		<div class="sect_one">
+			<h2>Personal Details</h2>
 			<table width="100%" border="1" collapse="0" bordercolor="#D8D8D8">
 				<tr>
 					<td width="16.6%">Reference No:</td>
@@ -151,11 +159,11 @@
 					<td>Characteristics:</td>
 					<td colspan="5">{{ $data->personal->characteristics }}</td>
 				</tr>
-        	</table>
-		  </div>
+			</table>
+		</div>
 
-		   <div class="sect_one">
-		  	<h2>Education</h2>
+		<div class="sect_one">
+			<h2>Education</h2>
 			<table width="100%" border="1" collapse="0" bordercolor="#D8D8D8">
 				<tr>
 					<td width="10%">S.No:</td>
@@ -163,19 +171,19 @@
 					<td width="50%">Institution:</td>
 					<td width="10%">Year:</td>
 				</tr>
-                @foreach ($data->education as $key => $item)
-				<tr>
-					<td width="10%">{{ ++$key }}</td>
-					<td width="30%">{{ $item->educourse }}</td>
-					<td width="50%">{{ $item->eduinst }}</td>
-					<td width="10%">{{ $item->eduyear }}</td>
-				</tr>
-                @endforeach
-        	</table>
-		  </div>
+				@foreach ($data->education as $key => $item)
+					<tr>
+						<td width="10%">{{ ++$key }}</td>
+						<td width="30%">{{ $item->educourse }}</td>
+						<td width="50%">{{ $item->eduinst }}</td>
+						<td width="10%">{{ $item->eduyear }}</td>
+					</tr>
+				@endforeach
+			</table>
+		</div>
 
-		  <div class="sect_one">
-		  	<h2>Occupation</h2>
+		<div class="sect_one">
+			<h2>Occupation</h2>
 			<table width="100%" border="1" collapse="0" bordercolor="#D8D8D8">
 				<tr>
 					<td width="16.6%">Occupation:</td>
@@ -185,53 +193,53 @@
 					<td width="16.6%">Salary (P.A.):</td>
 					<td width="16.6%">{{ $data?->personal?->salary }}</td>
 				</tr>
-                @foreach ($data->organisation as $item)
-				<tr>
-					<td width="16.6%">Company Name:</td>
-					<td width="16.6%">{{ $item->orgname }}</td>
-					<td width="16.6%">Designation:</td>
-					<td width="16.6%">{{ $item->orgdept }}</td>
-					<td width="16.6%">Working Year:</td>
-					<td width="16.6%">{{ $item->orgyear }}</td>
-				</tr>
-                @endforeach
+				@foreach ($data->organisation as $item)
+					<tr>
+						<td width="16.6%">Company Name:</td>
+						<td width="16.6%">{{ $item->orgname }}</td>
+						<td width="16.6%">Designation:</td>
+						<td width="16.6%">{{ $item->orgdept }}</td>
+						<td width="16.6%">Working Year:</td>
+						<td width="16.6%">{{ $item->orgyear }}</td>
+					</tr>
+				@endforeach
 
-        	</table>
-		  </div>
-@php
-                    $rs_value = "";
-                    switch ($data->rs) {
-                        case "1":
-                            $rs_value = "Indian Citizen";
-                            break;
-                        case "2":
-                            $rs_value = "Temp. Residing Abroad";
-                            break;
-                        case "3":
-                            $rs_value = "Non Resident Indian";
-                            break;
+			</table>
+		</div>
+		@php
+			$rs_value = "";
+			switch ($data->rs) {
+				case "1":
+					$rs_value = "Indian Citizen";
+					break;
+				case "2":
+					$rs_value = "Temp. Residing Abroad";
+					break;
+				case "3":
+					$rs_value = "Non Resident Indian";
+					break;
 
-                    }
-                    $ms = "";
-                    switch ($data->ms) {
-                        case "1":
-                            $ms = "Never Married";
-                            break;
-                       case "2":
-                            $ms = "Divorced";
-                            break;
-                       case "3":
-                            $ms = "Widow";
-                            break;
-                       case "4":
-                            $ms = "Separated";
-                            break;
-                    }
+			}
+			$ms = "";
+			switch ($data->ms) {
+				case "1":
+					$ms = "Never Married";
+					break;
+				case "2":
+					$ms = "Divorced";
+					break;
+				case "3":
+					$ms = "Widow";
+					break;
+				case "4":
+					$ms = "Separated";
+					break;
+			}
 
-@endphp
+		@endphp
 
-		  <div class="sect_one">
-		  	<h2>Other Details</h2>
+		<div class="sect_one">
+			<h2>Other Details</h2>
 			<table width="100%" border="1" collapse="0" bordercolor="#D8D8D8">
 				<tr>
 					<td width="16.6%">Residential:</td>
@@ -258,29 +266,29 @@
 					<td width="16.6%">{{ $data->personal->childdetails ?? '--' }}</td>
 				</tr>
 
-        	</table>
-		  </div>
+			</table>
+		</div>
 
-		  <div class="sect_one">
-		  	<h2>Family Details</h2>
+		<div class="sect_one">
+			<h2>Family Details</h2>
 			<table width="100%" border="1" collapse="0" bordercolor="#D8D8D8">
-                @foreach ($data->profilebs as $item)
+				@foreach ($data->profilebs as $item)
 
-				<tr>
-					<td width="16.6%">Name of Brother / Sister:</td>
-					<td width="16.6%">{{ $item->bsname }}</td>
-					<td width="16.6%">B/S:</td>
-					<td width="16.6%">{{ $item->bs }}</td>
-					<td width="16.6%">Age:</td>
-					<td width="16.6%">{{ $item->bsage }}</td>
-				</tr>
-				<tr>
-					<td width="16.6%">Ms-St:</td>
-					<td width="16.6%">{{ $item->bsmarriage }}</td>
-					<td width="16.6%">Personal Details:</td>
-					<td width="16.6%" colspan="3">{{ $item->bsdetails }}</td>
-				</tr>
-                @endforeach
+					<tr>
+						<td width="16.6%">Name of Brother / Sister:</td>
+						<td width="16.6%">{{ $item->bsname }}</td>
+						<td width="16.6%">B/S:</td>
+						<td width="16.6%">{{ $item->bs }}</td>
+						<td width="16.6%">Age:</td>
+						<td width="16.6%">{{ $item->bsage }}</td>
+					</tr>
+					<tr>
+						<td width="16.6%">Ms-St:</td>
+						<td width="16.6%">{{ $item->bsmarriage }}</td>
+						<td width="16.6%">Personal Details:</td>
+						<td width="16.6%" colspan="3">{{ $item->bsdetails }}</td>
+					</tr>
+				@endforeach
 				<tr>
 					<td width="16.6%">Family Type:</td>
 					<td width="16.6%">{{ $data->personal->typeoffamily }}</td>
@@ -315,11 +323,11 @@
 					<td width="16.6%">Budget:</td>
 					<td width="16.6%">{{ $data->personal->budget }}</td>
 				</tr>
-        	</table>
-		  </div>
+			</table>
+		</div>
 
-		  <div class="sect_one">
-		  	<h2>Person Details</h2>
+		<div class="sect_one">
+			<h2>Person Details</h2>
 			<table width="100%" border="1" collapse="0" bordercolor="#D8D8D8">
 				<tr>
 					<td width="16.6%">Contact Person:</td>
@@ -351,19 +359,19 @@
 					<td width="16.6%">Zone:</td>
 					<td width="16.6%">{{ $data->personal->zone->zone_name }}</td>
 				</tr>
-        	</table>
-		  </div>
+			</table>
+		</div>
 
-		  <div class="sect_two">
-		  	<h2>JodiSearch Matrimonial</h2>
+		<div class="sect_two">
+			<h2>JodiSearch Matrimonial</h2>
 			<p>Second Floor, D-24, Defence Colony, New Delhi, Delhi 110024</p>
 			<p>Email: info@jodisearchmatrimonial.in | Support: (+91) 9718511111 / 9711000143</p>
-		  </div>
+		</div>
 
 
 
 
-	  </div>
+	</div>
 
 
 
@@ -371,7 +379,7 @@
 
 
 
-  </body>
+</body>
 
 
 

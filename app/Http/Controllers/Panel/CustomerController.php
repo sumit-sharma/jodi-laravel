@@ -179,6 +179,12 @@ class CustomerController extends Controller
         return response()->json(['status' => 'success', 'message' => "file has been deleted"]);
     }
 
+    public function showPhotos(Request $request, $rno)
+    {
+        $data['rno']   = $rno;
+        $data['snaps'] = $this->customerService->getSnaps($rno);
+        return view('panel.Customer.customer-photos', $data);
+    }
     public function viewAddMoreInfo(Request $request, $rno)
     {
         $data['rno']       = $rno;

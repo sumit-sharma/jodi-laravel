@@ -7,7 +7,7 @@
         <div class="row">
 
             <?php // include 'includes/inner-menu.php';
-                ?>
+            ?>
 
             <div class="col-xl-12">
                 <!-- card -->
@@ -15,32 +15,6 @@
                     <!-- card body -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Photo Upload</h4>
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Profile</a></li>
-                                            <li class="breadcrumb-item active">Photo Upload</li>
-                                        </ol>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <form method="POST" action="{{ route('customer.upload') }}" enctype="multipart/form-data">
-                                @csrf
-                                <div class="col-12">
-                                    <div id="my-dropzone" class="dropzone"></div>
-                                    <div id="previewContainer" class="mt-3 d-flex gap-2 flex-wrap"></div>
-
-                                </div>
-                            </form>
-
-
-
-                            <!-- end col -->
-                            <div class="clearfix"></div>
-
 
 
                             <div class="col-lg-12">

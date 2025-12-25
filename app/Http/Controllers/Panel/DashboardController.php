@@ -68,10 +68,10 @@ class DashboardController extends Controller
                 break;
         }
         $data = $this->searchService->searchByrno($rno);
-        return view($view, compact('data'));
-        // $pdf = Pdf::loadView($view, compact('data'));
-        // $pdf->setPaper('A3', 'portrait');
+        // return view($view, compact('data'));
+        $pdf = Pdf::loadView($view, compact('data'));
+        $pdf->setPaper('A3', 'portrait');
 
-        // return $pdf->download('biodata_' . $rno . '_' . time() . '.pdf');
+        return $pdf->download('biodata_' . $rno . '_' . time() . '.pdf');
     }
 }
