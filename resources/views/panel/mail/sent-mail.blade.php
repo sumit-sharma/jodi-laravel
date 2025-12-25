@@ -325,10 +325,10 @@
                         let html = '<tr>';
                         data.data.forEach(element => {
                             html += `<td width="16.5%" align="center">
-                                                            <img src="/uploads/customer/${element.photo}" width="100%" />
-                                                            <input class="form-check-input mt-2 border-primary" type="checkbox"
-                                                                name="prop_photo[]" value="${element.photo}">
-                                                        </td>`;
+                                                                        <img src="/uploads/customer/${element.photo}" width="100%" />
+                                                                        <input class="form-check-input mt-2 border-primary" type="checkbox"
+                                                                            name="prop_photo[]" value="${element.photo}">
+                                                                    </td>`;
                         });
                         html += '</tr>';
                         tbody.innerHTML = html;

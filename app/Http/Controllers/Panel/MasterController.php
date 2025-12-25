@@ -86,4 +86,13 @@ class MasterController extends Controller
             return redirect()->route('manage-occupation')->with('error', 'some error occurred, please try again.');
         }
     }
+
+    public function getActiveEmployee(Request $request)
+    {
+        $data = MiscService::getTableData('users', ['id', 'name', 'username'], 'name', 'asc', "status = 1");
+        return response()->json([
+            'status' => 'success',
+            'data'   => $data
+        ]);
+    }
 }

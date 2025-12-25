@@ -34,6 +34,9 @@
     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
 </head>
 
 <body data-topbar="dark" data-sidebar="brand">

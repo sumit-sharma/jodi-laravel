@@ -173,19 +173,19 @@ class SearchService
     }
 
 
-    public function searchByrno($rno)
+    public function searchByrno($rno, $with = [
+        'personal',
+        'bio',
+        'occupation',
+        'income',
+        'education',
+        'organisation',
+        'payment',
+        'profilebs',
+        'personal.zone'
+    ])
     {
-        $query = ViewProfile::with([
-            'personal',
-            'bio',
-            'occupation',
-            'income',
-            'education',
-            'organisation',
-            'payment',
-            'profilebs',
-            'personal.zone'
-        ]);
+        $query = ViewProfile::with($with);
 
         return $query->where('rno', $rno)->first();
     }

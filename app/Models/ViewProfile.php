@@ -95,4 +95,14 @@ class ViewProfile extends Model
     {
         return $this->hasMany(Snap::class, 'rno', 'rno');
     }
+
+    public function tcData()
+    {
+        return $this->belongsTo(User::class, 'tc', 'username');
+    }
+
+    public function rmData()
+    {
+        return $this->belongsTo(User::class, 'rm', 'username');
+    }
 }

@@ -212,6 +212,7 @@ class CustomerController extends Controller
     public function storeMeeting(Request $request)
     {
         $data = $request->all();
+        // return $data;
         unset($data['_token']);
         $result = $this->customerService->storeMeeting($data);
         if ($result) {
@@ -247,5 +248,44 @@ class CustomerController extends Controller
     {
         $snaps = $this->customerService->getSnaps($rno);
         return response()->json(['status' => 'success', 'data' => $snaps]);
+    }
+
+    public function getMeetingBy(Request $request)
+    {
+        $rnoViewProfile = $this->searchService->searchByrno($request->rno, ['tcData', 'rmData']);
+        $empData[] =  $rnoViewProfile->rmData->only('name', 'username');
+        $empData[] =  $rnoViewProfile->tcData->only('name', 'username');
+        $proposalViewProfile = $this->searchService->searchByrno($request->proposal, ['tcData', 'rmData']);
+        $empData[] =  $proposalViewProfile->rmData->only('name', 'username');
+        $empData[] =  $proposalViewProfile->tcData->only('name', 'username');
+        $data  = collect($empData)->unique('username')->values();
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+
+
+    public function meetingList(Request $request, $rno)
+    {
+        $request->merge(['rno' => $rno, 'page' => $request->page ?? 1, 'limit' => $request->limit ?? 15]);
+        $data['meetings'] = $this->customerService->getMeetings($request);
+        return view('panel.Customer.meeting-list', $data);
+    }
+
+    public function interactionList(Request $request, $rno)
+    {
+        $request->merge(['rno' => $rno, 'page' => $request->page ?? 1, 'limit' => $request->limit ?? 15]);
+        $data['interactions'] = $this->customerService->getInteractions($request);
+        return view('panel.Customer.interaction-list', $data);
+    }
+
+
+    public function toggleBookmarkInteraction(Request $request)
+    {
+        $result = $this->customerService->toggleBookmarkInteraction($request->interaction_id);
+        return response()->json(['status' => 'success', 'data' => $result]);
+    }
+    public function destroyInteraction(Request $request)
+    {
+        $result = $this->customerService->destroyInteraction($request->interaction_id);
+        return response()->json(['status' => 'success', 'data' => $result]);
     }
 }

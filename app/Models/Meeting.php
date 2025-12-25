@@ -22,4 +22,8 @@ class Meeting extends Model
     ];
 
 
+    public function proposalData()
+    {
+        return $this->belongsTo(ViewProfile::class, 'proposal', 'rno');
+    }
 }

@@ -64,6 +64,7 @@ Route::middleware("auth")->group(function () {
         Route::post('/store-zone', [MasterController::class, 'storeZone'])->name('panel.store-zone');
         Route::get('/manage-occupation', [MasterController::class, 'viewOccupationManager'])->name('manage-occupation');
         Route::post('/store-occupation', [MasterController::class, 'storeOccupation'])->name('panel.store-occupation');
+        Route::get('/get-active-employee', [MasterController::class, 'getActiveEmployee'])->name('panel.get-active-employee');
     });
 
     Route::resource('references', ReferenceController::class);
@@ -76,10 +77,17 @@ Route::middleware("auth")->group(function () {
     Route::get('/add-more-info/{rno}', [CustomerController::class, 'viewAddMoreInfo'])->name('add-more-info');
     Route::post('/save-more-info', [CustomerController::class, 'saveMoreInfo'])->name('save-more-info');
 
+    Route::post('/get-meeting_by', [CustomerController::class, 'getMeetingBy'])->name('get-meeting_by');
     Route::post('/save-interaction', [CustomerController::class, 'storeInteraction'])->name('save-interaction');
     Route::post('/save-meeting', [CustomerController::class, 'storeMeeting'])->name('save-meeting');
+    Route::get('/meeting-list/{rno}', [CustomerController::class, 'meetingList'])->name('meeting-list');
+    Route::get('/interaction-list/{rno}', [CustomerController::class, 'interactionList'])->name('interaction-list');
+    Route::put('/interaction/toggle-bookmark', [CustomerController::class, 'toggleBookmarkInteraction'])->name('interaction.toggle-bookmark');
+    Route::delete('/interaction/delete-interaction', [CustomerController::class, 'destroyInteraction'])->name('interaction.delete-interaction');
+
 
     Route::get('/fetch-images/{rno}', [CustomerController::class, 'fetchImages'])->name('fetch-images');
     Route::get('/sendmail/{rno}', [SendMailController::class, 'index'])->name('sendmail.index');
     Route::post('/sendmail', [SendMailController::class, 'store'])->name('sendmail.store');
+    Route::get('/sendmail/show/{id}', [SendMailController::class, 'show'])->name('sendmail.show');
 });

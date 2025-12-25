@@ -22,6 +22,7 @@ class SendMailService
         return Sendmail::with(['sender', 'receiver'])->orderBy($sortBy, $orderBy)
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
             ->when($request->proposal, fn($query) => $query->where('proposal', $request->proposal))
+            ->when($request->status, fn($query) => $query->where('status', $request->status))
             ->when($request->sentmail, fn($query) => $query->where('rno', $request->sentmail)->orWhere('proposal', $request->sentmail));
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SendMailRequest;
+use App\Http\Resources\BasicSentMailResource;
 use App\Services\SearchService;
 use App\Services\SendMailService;
 use App\Services\MatchService;
@@ -59,7 +60,17 @@ class SendMailController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $request = request();
+        $request->sentmail = $id;
+        $request->status = 1;
+        $data = $this->sendMailService->index($request);
+        // return $data;
+        foreach ($data as $item) {
+            $item->cid = $id;
+        }
+        $result =  BasicSentMailResource::collection($data);
+        $data = collect($result->resolve())->unique('id')->values();
+        return response()->json($data);
     }
 
     /**

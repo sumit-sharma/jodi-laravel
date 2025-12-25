@@ -247,4 +247,39 @@ class CustomerService
             return false;
         }
     }
+
+    public function getMeetings($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = Meeting::orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+    }
+
+    public function getInteractions($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = Interaction::orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+    }
+
+    public function toggleBookmarkInteraction($interactionId)
+    {
+        $interaction = Interaction::find($interactionId);
+        $interaction->status = $interaction->status == '2' ? '0' : '2';
+        $interaction->save();
+        $interaction->refresh();
+        return $interaction;
+    }
+
+    public function destroyInteraction($interactionId)
+    {
+        Interaction::find($interactionId)->delete();
+        return true;
+    }
 }

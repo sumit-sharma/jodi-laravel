@@ -125,14 +125,16 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle arrow-none" href="#" role="button">
-                                <span data-key="t-horizontal">Meeting</span>
+                            <a class="nav-link dropdown-toggle arrow-none inner-menu-item" href="javascript:void(0);"
+                                data-key="/meeting-list/">
+                                <span>Meeting</span>
                             </a>
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle arrow-none" href="#" role="button">
-                                <span data-key="t-horizontal">Interaction</span>
+                            <a class="nav-link dropdown-toggle arrow-none inner-menu-item" href="javascript:void(0);"
+                                data-key="/interaction-list/">
+                                <span>Interaction</span>
                             </a>
                         </li>
 
@@ -239,6 +241,15 @@
                 $("#IntractionPageModal #inter_refname").text(selected_refname)
                 $("#IntractionPageModal #inter_refno").text(rno)
             });
+            function formatState(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var $state = $(
+                    '<span class="' + $(state.element).attr('class') + '">' + state.text + '</span>'
+                );
+                return $state;
+            }
 
             $('#modl_meet').click(function () {
                 if (selected_rno) {
@@ -249,10 +260,90 @@
                     toastr.error("please check candidate first")
                     return;
                 }
+
+                let url = `{{ route('sendmail.show', ['id' => ':id']) }}`
+                url = url.replace(':id', selected_rno);
+                fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(response => response.json()).then(data => {
+                    console.log(data);
+                    let options = '<option value="">Select</option>';
+
+                    data.forEach(element => {
+                        let cls = '';
+                        let disabled = '';
+                        if (element.status == 'F') {
+                            cls = 'bg-pink';
+                            disabled = 'disabled';
+                        }
+
+                        options += `<option value="${element.id}" class="${cls}" ${disabled}>${element.id} - ${element.text}</option>`;
+                    });
+                    $('#MeetingPageModal #meeting_with')
+                        .html(options)
+                        .select2({
+                            dropdownParent: $('#MeetingPageModal'),
+                            placeholder: "Select or type to add",
+                            allowClear: true,
+                            templateResult: formatState
+                        });
+                })
+
+                $.ajax({
+                    url: "{{ route('panel.get-active-employee') }}",
+                    type: "GET",
+                    success: function (response) {
+                        if (response.status == "success") {
+                            let options = '<option value="">Select</option>';
+                            response.data.forEach(element => {
+                                options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                            });
+                            $('#MeetingPageModal #att_by1').html(options).select2({
+                                dropdownParent: $('#MeetingPageModal'),
+                                placeholder: "Select or type to add",
+                                allowClear: true
+                            });
+                            $('#MeetingPageModal #att_by2').html(options).select2({
+                                dropdownParent: $('#MeetingPageModal'),
+                                placeholder: "Select or type to add",
+                                allowClear: true
+                            });
+                        }
+                    }
+                })
+
                 $("#MeetingPageModal #meet_rno").val(rno);
                 $("#MeetingPageModal #meet_refname").text(selected_refname)
                 $("#MeetingPageModal #meet_refno").text(rno)
             });
+            $('#MeetingPageModal #meeting_with').on('change', function () {
+                let selectedValue = $(this).val();
+                console.log("selectedValue: ", selectedValue);
+                let url = `{{ route('get-meeting_by') }}`
+                fetch(url, {
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json"
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        rno: selected_rno,
+                        proposal: selectedValue
+                    })
+                }).then(response => response.json()).then(data => {
+                    if (data.status == "success") {
+                        let options = '<option value="">Select</option>';
+                        data.data.forEach(element => {
+                            options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                        });
+                        $('#MeetingPageModal #mtg_by1').html(options)
+                        $('#MeetingPageModal #mtg_by2').html(options)
+                    }
+                })
+            })
 
             $('#modl_sl').click(function () {
                 if (selected_rno) {
