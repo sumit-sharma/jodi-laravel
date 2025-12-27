@@ -161,7 +161,7 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="row mb-2 row-cols-5"">
-                                                                <div class=" col mb-2">
+                                                                            <div class=" col mb-2">
                                             <label class="form-label">Religion:</label>
                                             <select id="religion" name="religion" class="form-select">
                                                 <option value="1" selected>Hindu</option>
@@ -939,7 +939,7 @@
 
             $(document).on('click', '.btnAddeducation', function () {
                 $(this).closest('div.edusection').append(
-                    `<div class="row bg-secondary-subtle mb-1 pt-2"> <div class="col-lg-11 col-11"> <div class="row"> <div class="col-lg-4 col-12"> <label for="" class="form-label">Name of Course:</label> <input class="form-control" type="text" name="educourse[]" placeholder="Enter name of course"> </div> <div class="col-lg-4 col-12 mb-2 pt-2"> <label for="" class="form-label">Institution:</label> <input class="form-control" type="text" name="eduinst[]" placeholder="Enter Institution name"> </div> <div class="col-lg-4 col-12"> <label for="" class="form-label">Year:</label> <input class="form-control" type="text" name="eduyear[]" placeholder="Enter passing year"> </div> </div> </div> <div class="col-lg-1 col-6 pb-3"> <label class="form-label">&nbsp;</label> <br> <button type="button" class="btn btn-dark waves-effect waves-light btnAddeducation"> <span class="font-size-14">+</span> </button> <button type="button" class="btn btn-danger waves-effect waves-light btnRemoveEducation"> <span class="font-size-14">-</span> </button> </div> <div class="clearfix"></div> </div>`
+                    `<div class="row bg-secondary-subtle mb-1 pt-2"> <div class="col-lg-11 col-11"> <div class="row"> <div class="col-lg-4 col-12"> <label for="" class="form-label">Name of Course:</label> <input class="form-control" type="text" name="educourse[]" placeholder="Enter name of course" required> </div> <div class="col-lg-4 col-12 mb-2 pt-2"> <label for="" class="form-label">Institution:</label> <input class="form-control" type="text" name="eduinst[]" placeholder="Enter Institution name" required> </div> <div class="col-lg-4 col-12"> <label for="" class="form-label">Year:</label> <input class="form-control" type="text" name="eduyear[]" placeholder="Enter passing year" required> </div> </div> </div> <div class="col-lg-1 col-6 pb-3"> <label class="form-label">&nbsp;</label> <br> <button type="button" class="btn btn-dark waves-effect waves-light btnAddeducation"> <span class="font-size-14">+</span> </button> <button type="button" class="btn btn-danger waves-effect waves-light btnRemoveEducation"> <span class="font-size-14">-</span> </button> </div> <div class="clearfix"></div> </div>`
                 )
             });
             $(document).on('click', '.btnRemoveEducation', function () {

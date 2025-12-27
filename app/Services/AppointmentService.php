@@ -9,7 +9,7 @@ class AppointmentService
     public function index($request)
     {
         $query = $this->loadData($request);
-        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
     protected function loadData($request)

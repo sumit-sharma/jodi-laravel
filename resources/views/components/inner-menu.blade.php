@@ -73,7 +73,7 @@
                                 </div>
                             </li>
 
-                            <li class="nav-item dropdown">
+                            {{-- <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-mail" role="button">
                                     <span data-key="t-apps">Mails</span>
                                     <div class="arrow-down"></div>
@@ -84,9 +84,9 @@
                                     <a href="#" class="dropdown-item" data-key="t-chat">Coming soon</a>
 
                                 </div>
-                            </li>
+                            </li> --}}
 
-                            <li class="nav-item dropdown">
+                            {{-- <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-follow"
                                     role="button">
                                     <span data-key="t-apps">Feedback</span>
@@ -95,19 +95,27 @@
                                 <div class="dropdown-menu" aria-labelledby="topnav-pages">
 
                                     <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Coming soon</a>
 
                                 </div>
+                            </li> --}}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
+                                    href="javascript:void(0);" data-key="/sendmail-list/">
+                                    <span>Mail</span>
+                                </a>
                             </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-match" role="button">
-                                    <span data-key="t-apps">Enquiry</span>
-                                    <div class="arrow-down"></div>
+                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
+                                    href="javascript:void(0);" data-key="/feedback/">
+                                    <span>Feedback</span>
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
-                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
+                                    href="javascript:void(0);" data-key="/enquiry-list/">
+                                    <span>Enquiry</span>
+                                </a>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -266,14 +274,33 @@
             });
 
             $("#modl_enquiry").click(function () {
-                if (selected_rno) {
-                    let enquiryModal = bootstrap.Modal.getInstance(enqModalEl) ||
-                        new bootstrap.Modal(enqModalEl);
-                    enquiryModal.show()
-                } else {
+                if (selected_rno == "") {
                     toastr.error("please check candidate first")
                     return;
                 }
+
+                // check if client has already enquired
+                let url = "{{ route('get-enquiry', ['rno' => ':rno']) }}";
+                url = url.replace(':rno', selected_rno);
+                fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(response => response.json()).then(data => {
+                    console.log(data)
+                    if (data.status == 'success' && data?.data?.status == 0) {
+                        toastr.error("Enquiry already entered and not updated yet")
+                        return;
+                    } else {
+                        let enquiryModal = bootstrap.Modal.getInstance(enqModalEl) ||
+                            new bootstrap.Modal(enqModalEl);
+                        enquiryModal.show()
+
+                    }
+
+                })
+
                 $("#EnquiryPageModal #enquiry_rno").val(rno);
                 $("#EnquiryPageModal #enquiry_refno").text(rno);
                 $("#EnquiryPageModal #enquiry_refname").text(selected_refname)
@@ -460,12 +487,36 @@
                 } else {
                     toastr.error(data.message || 'There was an error saving the interaction.');
                 }
-                //     document.getElementById('result').innerHTML = "Success!";
-                //     console.log(data);
-                // } else {
-                //     console.log("Error:", data);
-                // }
             });
-        })
+
+
+            $("#frmAddEnquiry").submit(async function (e) {
+                e.preventDefault();
+                let form = this;
+
+                if (!form.checkValidity()) {
+                    form.reportValidity(); // Shows browser validation messages
+                    return; // Stop submission
+                }
+
+                let formData = new FormData(form);
+                const url = "{{ route('save-enquiry') }}"
+                let response = await fetch(url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let data = await response.json();
+                let enquiryModal = bootstrap.Modal.getInstance(enqModalEl) ||
+                    new bootstrap.Modal(enqModalEl);
+
+                if (data.status === 'success') {
+                    enquiryModal.hide();
+                    toastr.success(data.message);
+                } else {
+                    toastr.error(data.message || 'There was an error saving the enquiry.');
+                }
+            });
+        });
     </script>
 @endsection

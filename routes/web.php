@@ -6,6 +6,7 @@ use App\Http\Controllers\Panel\AppointmentController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\EnquiryController;
+use App\Http\Controllers\Panel\FeedbackController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
 use App\Http\Controllers\Panel\ReferenceController;
@@ -89,13 +90,18 @@ Route::middleware("auth")->group(function () {
     Route::put('/interaction/toggle-bookmark', [CustomerController::class, 'toggleBookmarkInteraction'])->name('interaction.toggle-bookmark');
     Route::delete('/interaction/delete-interaction', [CustomerController::class, 'destroyInteraction'])->name('interaction.delete-interaction');
 
-    Route::get('/enquiry-list', [EnquiryController::class, 'index'])->name('enquiry-list');
+    Route::get('/enquiry-list/{rno}', [EnquiryController::class, 'enquiryList'])->name('enquiry-list');
     Route::post('/save-enquiry', [EnquiryController::class, 'store'])->name('save-enquiry');
+    Route::get('/customer-enquiry/{rno}', [EnquiryController::class, 'show'])->name('get-enquiry');
     Route::put('/update-enquiry/{id}', [EnquiryController::class, 'update'])->name('update-enquiry');
-    Route::delete('/delete-enquiry/{id}', [EnquiryController::class, 'destroy'])->name('delete-enquiry');
+    // Route::delete('/delete-enquiry/{id}', [EnquiryController::class, 'destroy'])->name('delete-enquiry');
 
     Route::get('/fetch-images/{rno}', [CustomerController::class, 'fetchImages'])->name('fetch-images');
+    Route::get('/sendmail-list/{rno}', [SendMailController::class, 'listSendMail'])->name('sendmail-list');
     Route::get('/sendmail/{rno}', [SendMailController::class, 'index'])->name('sendmail.index');
     Route::post('/sendmail', [SendMailController::class, 'store'])->name('sendmail.store');
     Route::get('/sendmail/show/{id}', [SendMailController::class, 'show'])->name('sendmail.show');
+
+    Route::get('/feedback/{rno}', [FeedbackController::class, 'feedbackList'])->name('feedback');
+    Route::get('/fetch-feedback/{type}/{rno}', [FeedbackController::class, 'fetchFeedbackByType'])->name('fetch-feedback');
 });

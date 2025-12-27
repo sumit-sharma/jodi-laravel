@@ -74,6 +74,11 @@ class CustomerSeeder extends Seeder
         echo nl2br("start enquiry import\n");
         DB::statement("insert ignore into jodi_laravel.enquiry (rno, dated, time, empid, enqpur, remarks, furtheraction, slfor, updatedby, updatedatetime, status, created_at, updated_at) SELECT li.rno, li.dated, li.time, li.empid, li.enqpur, li.remarks, li.furtheraction, li.slfor, li.updatedby, li.updatedatetime, li.status, NOW(), NOW() FROM old_jodi.enquiry as li");
         echo nl2br("finish enquiry import\n");
+         
+        echo nl2br("start feedback import\n");
+        DB::statement("insert ignore into jodi_laravel.feedback (rno, proposal, fstatus, feedback, fdate, time, fby, created_at, updated_at) SELECT li.rno, li.proposal, li.fstatus, li.feedback, li.fdate, li.time, li.fby, NOW(), NOW() FROM old_jodi.feedback as li");
+        echo nl2br("finish feedback import\n");
+
          */
     }
 }

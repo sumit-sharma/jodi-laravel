@@ -13,7 +13,7 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmAddEnquiry" method="{{ route('save-enquiry') }}" method="POST">
+                <form id="frmAddEnquiry" method="POST" action="{{ route('save-enquiry') }}">
                     @csrf
                     <div class="row">
                         <div class="col-6 mt-0">
@@ -28,7 +28,7 @@
                         <div class="col-6 mt-0">
                             <label for="" class="form-label">Enquiry Date:</label>
                             <input class="form-control" type="date" id="enquiry_date" name="dated" placeholder=""
-                                max="{{ now()->format('Y-m-d') }}" value="{{ now()->format('Y-m-d') }}" required>
+                                value="{{ now()->format('Y-m-d') }}" required>
                         </div>
                         <div class="col-6 mt-0">
                             <label for="" class="form-label">Enquiry Time:</label>
@@ -49,8 +49,7 @@
                         </div>
                         <div class="col-6 mt-4">
                             <label for="" class="form-label">SL for:</label>
-                            <select name="slfor" id="slfor" class="form-select">
-
+                            <select name="slfor" id="slfor" class="form-select" style="width: 100%;" required>
                             </select>
                         </div>
                         <div class="clearfix"></div>
@@ -65,7 +64,7 @@
                         <input type="hidden" id="enquiry_rno" name="rno" />
 
                         <div class="col-12 mt-4">
-                            <button type="button" id="btnAddEnquiry"
+                            <button type="submit" id="btnAddEnquiry"
                                 class="btn btn-primary waves-effect waves-light">Save
                                 Enquiry</button>
                         </div>

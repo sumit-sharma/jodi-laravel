@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Caste;
+use App\Models\Enquiry;
+use App\Models\Feedback;
 use App\Models\Followup;
 use App\Models\Interaction;
 use App\Models\Meeting;
@@ -16,6 +18,7 @@ use App\Models\Snap;
 use App\Models\ViewProfile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CustomerService
@@ -24,7 +27,7 @@ class CustomerService
     public function index($request)
     {
         $query = $this->loadData($request);
-        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
     protected function loadData($request)
@@ -255,7 +258,7 @@ class CustomerService
 
         $query = Meeting::orderBy($sortBy, $orderBy)
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
-        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
     public function getInteractions($request)
@@ -265,7 +268,7 @@ class CustomerService
 
         $query = Interaction::orderBy($sortBy, $orderBy)
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
-        return $request->limit ? $query->limit($request->limit)->paginate($request->limit) : $query->get();
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
     public function toggleBookmarkInteraction($interactionId)
@@ -281,5 +284,57 @@ class CustomerService
     {
         Interaction::find($interactionId)->delete();
         return true;
+    }
+
+    public function storeEnquiry($data)
+    {
+        return Enquiry::create($data);
+    }
+
+    public function getEnquiry($rno)
+    {
+        return Enquiry::where('rno', $rno)->latest('id')->first();
+    }
+
+    public function getEnquiryList($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = Enquiry::orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+
+    public function getFeedbackList($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = Feedback::orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+    public function getFeedbackListByType($type, $request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+        $cacheKey = $request->rno . '_' . $type . '_' . $orderBy . '_' . $sortBy . '_' . $request->limit . '_' . $request->page;
+
+        return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($type, $request, $orderBy, $sortBy) {
+            if ($type == "rno") {
+                $with = ['receiver'];
+            } elseif ($type == "proposal") {
+                $with = ['sender'];
+            }
+            $query = Feedback::with($with)->orderBy($sortBy, $orderBy)
+                ->when($request->rno, fn($query) => $query->where($type, $request->rno));
+
+
+            return $request->limit ? $query->paginate($request->limit) : $query->get();
+        });
     }
 }
