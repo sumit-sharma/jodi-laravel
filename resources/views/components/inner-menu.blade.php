@@ -27,7 +27,8 @@
                                     <a href="#" class="dropdown-item" data-key="t-chat">Convert member </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Change TC/TL/RM</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Classified</a>
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">Enquiry </a>
+                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_enquiry"
+                                        data-key="EnquiryPageModal">Enquiry </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Visited/Non Visited </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a>
@@ -160,7 +161,7 @@
     @include('components.save-sl-modal')
     @include('components.interaction_modal')
     @include('components.meeting_modal')
-
+    @include('components.enquiry_modal')
 </div>
 
 @section('bottom-js')
@@ -170,6 +171,28 @@
 
     <script>
         $(document).ready(function () {
+            function formatState(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var $state = $(
+                    '<span class="' + $(state.element).attr('class') + '">' + state.text + '</span>'
+                );
+                return $state;
+            }
+
+
+            const fetchActiveEmployee = async () => {
+                const response = await fetch("{{ route('panel.get-active-employee') }}", {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const data = await response.json();
+                return data;
+            }
+
             const fetchBioDataPickList = async (rno) => {
                 try {
                     const tbody = document.querySelector('#table-sl-result tbody');
@@ -221,6 +244,7 @@
             let intModalEl = document.getElementById('IntractionPageModal');
             let meetModalEl = document.getElementById('MeetingPageModal');
             let saveSLModalEl = document.getElementById('SaveSLModal');
+            let enqModalEl = document.getElementById('EnquiryPageModal');
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -240,15 +264,34 @@
                 $("#IntractionPageModal #inter_refname").text(selected_refname)
                 $("#IntractionPageModal #inter_refno").text(rno)
             });
-            function formatState(state) {
-                if (!state.id) {
-                    return state.text;
+
+            $("#modl_enquiry").click(function () {
+                if (selected_rno) {
+                    let enquiryModal = bootstrap.Modal.getInstance(enqModalEl) ||
+                        new bootstrap.Modal(enqModalEl);
+                    enquiryModal.show()
+                } else {
+                    toastr.error("please check candidate first")
+                    return;
                 }
-                var $state = $(
-                    '<span class="' + $(state.element).attr('class') + '">' + state.text + '</span>'
-                );
-                return $state;
-            }
+                $("#EnquiryPageModal #enquiry_rno").val(rno);
+                $("#EnquiryPageModal #enquiry_refno").text(rno);
+                $("#EnquiryPageModal #enquiry_refname").text(selected_refname)
+
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+                    $('#EnquiryPageModal #slfor').html(options).select2({
+                        dropdownParent: $('#EnquiryPageModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                });
+            });
+
 
             $('#modl_meet').click(function () {
                 if (selected_rno) {
@@ -291,28 +334,23 @@
                         });
                 })
 
-                $.ajax({
-                    url: "{{ route('panel.get-active-employee') }}",
-                    type: "GET",
-                    success: function (response) {
-                        if (response.status == "success") {
-                            let options = '<option value="">Select</option>';
-                            response.data.forEach(element => {
-                                options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
-                            });
-                            $('#MeetingPageModal #att_by1').html(options).select2({
-                                dropdownParent: $('#MeetingPageModal'),
-                                placeholder: "Select or type to add",
-                                allowClear: true
-                            });
-                            $('#MeetingPageModal #att_by2').html(options).select2({
-                                dropdownParent: $('#MeetingPageModal'),
-                                placeholder: "Select or type to add",
-                                allowClear: true
-                            });
-                        }
-                    }
-                })
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    $('#MeetingPageModal #att_by1').html(options).select2({
+                        dropdownParent: $('#MeetingPageModal'),
+                        placeholder: "Select or type to add",
+                        allowClear: true
+                    });
+                    $('#MeetingPageModal #att_by2').html(options).select2({
+                        dropdownParent: $('#MeetingPageModal'),
+                        placeholder: "Select or type to add",
+                        allowClear: true
+                    });
+                });
 
                 $("#MeetingPageModal #meet_rno").val(rno);
                 $("#MeetingPageModal #meet_refname").text(selected_refname)

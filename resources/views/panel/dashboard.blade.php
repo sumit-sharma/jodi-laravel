@@ -587,7 +587,7 @@
                                         </div>
 
                                         <div class="mb-6 pt-4 col-12">
-                                            <button type="button"
+                                            <button type="submit"
                                                 class="btn btn-success w-lg waves-effect waves-light">Search</button></a>
                                         </div>
 
