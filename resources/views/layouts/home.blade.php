@@ -126,12 +126,12 @@
         $(function () {
             $('.select2-tag').select2({
                 tags: true,
-                placeholder: "Select or type to add",
+                placeholder: "Select or type to Search",
                 allowClear: true,
             });
 
             $('.select2-notag').select2({
-                placeholder: "Select or type to add",
+                placeholder: "Select or type to Search",
                 allowClear: true,
             })
         });

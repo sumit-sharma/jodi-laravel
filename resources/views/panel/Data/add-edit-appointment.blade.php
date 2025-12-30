@@ -147,7 +147,7 @@
                         <div class="row">
                             <div class="col-md-12 col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Add Appointment</h4>
+                                    <h4 class="mb-sm-0 font-size-18">List Appointment</h4>
                                     <!--<button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Total Result-1</button>-->
                                 </div>
                             </div>
@@ -180,7 +180,8 @@
                             </div>
                             <div class="col-md-2 col-12 text-right" style="text-align: right;">
                                 <div class="mb-4">
-                                    <button type="button" class="btn btn-secondary">Total Record - 8</button>
+                                    <button type="button" class="btn btn-secondary">Total Record -
+                                        {{ $appointments->total() }}</button>
                                 </div>
                             </div>
                             <div class="clearfix"></div>

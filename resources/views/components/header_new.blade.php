@@ -13,7 +13,7 @@
                     </span>
                 </a>
 
-                <a href="index.html" class="logo logo-light">
+                <a href="{{ route('dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="/assets/images/emb-logo.webp" alt="" height="15">
                     </span>
@@ -34,7 +34,7 @@
 
 
 
-            <div class="dropdown d-inline-block">
+            {{-- <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon position-relative"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -126,7 +126,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
             <div class="dropdown d-inline-block">
@@ -217,8 +217,8 @@
                         <span data-key="t-ecommerce">Reference</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('references.create') }}" key="t-products">Add/Edit Reference</a></li>
-                        <li><a href="{{ route('references.index') }}" data-key="t-product-detail">Show Raference</a>
+                        <li><a href="{{ route('references.create') }}" key="t-products">Add Reference</a></li>
+                        <li><a href="{{ route('references.index') }}" data-key="t-product-detail">Show References</a>
                         </li>
                     </ul>
                 </li>

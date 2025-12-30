@@ -19,7 +19,7 @@ class AppointmentController extends Controller
 
     public function index(Request $request)
     {
-        $request->merge(['limit' => 15]);
+        $request->merge(['limit' => 100]);
         $data['appointments'] = $this->appointmentService->index($request);
         $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc', "status = 1");
         return view('panel.Data.add-edit-appointment', $data);

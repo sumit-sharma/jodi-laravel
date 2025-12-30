@@ -11,7 +11,7 @@
                 z-index: 1;
             }
         </style>
-        <div class="row pt-4 mb-4">
+        {{-- <div class="row pt-4 mb-4">
             <div class="col-xl-3 col-md-6">
                 <!-- card -->
                 <div class="card card-h-100">
@@ -126,7 +126,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div><!-- end card body -->
+                    </div>
+                    <!-- end card body -->
                 </div><!-- end card -->
             </div><!-- end col -->
 
@@ -485,7 +486,7 @@
                     </div><!-- end card body -->
                 </div><!-- end card -->
             </div><!-- end col -->
-        </div><!-- end row-->
+        </div><!-- end row--> --}}
 
         <div class="row">
 
@@ -683,7 +684,7 @@
 
 
 
-            <div class="col-xl-3">
+            {{-- <div class="col-xl-3">
 
                 <div class="card">
                     <div class="card-header align-items-center d-flex">
@@ -976,7 +977,7 @@
                 <!-- end card -->
 
                 <!-- end col -->
-            </div>
+            </div> --}}
 
 
         </div>
@@ -1042,30 +1043,42 @@
     <script>
         $(document).ready(function () {
 
-            min18Year = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate());
-            // const formattedDate = min18Year.toLocaleDateString('en-US');
-            const yyyy = min18Year.getFullYear();
-            const mm = String(min18Year.getMonth() + 1).padStart(2, '0');
-            const dd = String(min18Year.getDate()).padStart(2, '0');
+            // min18Year = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate());
+            // // const formattedDate = min18Year.toLocaleDateString('en-US');
+            // const yyyy = min18Year.getFullYear();
+            // const mm = String(min18Year.getMonth() + 1).padStart(2, '0');
+            // const dd = String(min18Year.getDate()).padStart(2, '0');
 
-            const formattedDate = `${yyyy}-${mm}-${dd}`;
+            // const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+            // $('#searchinfield').change(function () {
+            //     if ($(this).val() == "dob") {
+            //         $("#searchvalue").attr('autocomplete', 'off');
+            //         $("#searchvalue").datepicker({
+            //             uiLibrary: 'bootstrap5',
+            //             maxDate: formattedDate,
+            //             format: "yyyy-mm-dd",
+            //         });
+            //     } else {
+            //         $("#searchvalue").datepicker("destroy");
+            //         if (!$("#searchvalue").hasClass("form-control")) {
+            //             $("#searchvalue").addClass("form-control");
+            //             // $("#searchvalue").attr('autocomplete', 'on');
+            //         }
+            //     }
+            // });
 
             $('#searchinfield').change(function () {
                 if ($(this).val() == "dob") {
+                    $("#searchvalue").attr('placeholder', 'YYYY-MM-DD');
                     $("#searchvalue").attr('autocomplete', 'off');
-                    $("#searchvalue").datepicker({
-                        uiLibrary: 'bootstrap5',
-                        maxDate: formattedDate,
-                        format: "yyyy-mm-dd",
-                    });
                 } else {
-                    $("#searchvalue").datepicker("destroy");
-                    if (!$("#searchvalue").hasClass("form-control")) {
-                        $("#searchvalue").addClass("form-control");
-                        $("#searchvalue").attr('autocomplete', 'on');
-                    }
+                    $("#searchvalue").attr('placeholder', 'Search');
+                    $("#searchvalue").attr('autocomplete', 'on');
                 }
             });
+
+
             $('#frmSearchMember').validate({
                 rules: {
                     searchvalue: {

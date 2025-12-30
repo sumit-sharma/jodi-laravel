@@ -20,7 +20,7 @@
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">
-                                                    <References></References>
+                                                    References
                                                 </a></li>
                                             <li class="breadcrumb-item active">Show References</li>
                                         </ol>
@@ -33,7 +33,7 @@
 
 
                             <div class="col-md-8">
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bx-filter-alt label-icon"></i> Filter</button>
                                     &nbsp;&nbsp;
@@ -42,17 +42,17 @@
                                     &nbsp;&nbsp;
                                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bx-reset label-icon"></i> Reset</button>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="col-md-2">
-                                <form class="app-search d-none d-lg-block pt-0 pb-0">
+                                {{-- <form class="app-search d-none d-lg-block pt-0 pb-0">
                                     <div class="position-relative">
                                         <input type="search" class="form-control bg-black opacity-50"
                                             placeholder="Search...">
                                         <button class="btn btn-primary" type="button"><i
                                                 class="bx bx-search-alt align-middle"></i></button>
                                     </div>
-                                </form>
+                                </form> --}}
                             </div>
                             <div class="col-md-2 text-right" style="text-align: right;">
                                 <div class="mb-4">

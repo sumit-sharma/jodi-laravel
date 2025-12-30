@@ -336,6 +336,12 @@
                                     <td><label id="contactzone"></label>
                                 </tr>
                             </tbody>
+                            <thead class="table-primary">
+                                <tr>
+                                    <th colspan="6" class="font-size-18" id="person-details">Pics</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pics-tbody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -357,14 +363,15 @@
                 method: 'GET',
             }
 
-            const url = `{{ route('search-data') }}?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
+            // const url = `{{ route('search-data') }}?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
             // const url = `/services/search-result?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
-            console.log("urlsss", url);
+            let url = `{{ route('fetch-customer-data', ['rno' => ':rno']) }}`
+            url = url.replace(':rno', rno);
             fetch(url, options)
                 .then(res => res.json())
                 .then(data => {
-                    const item = data.data[0];
-
+                    const item = data.data;
+                    console.log("itemssssssss", item);
                     let religion_name = ""
                     switch (item.rl) {
                         case 1:
@@ -384,7 +391,7 @@
                             break;
                     }
 
-
+                    console.log("snaps", item.snaps);
 
                     let complexion = "";
                     switch (item.bio.complexion) {
@@ -594,20 +601,12 @@
                             education = "Doctorate"
                             break;
                     }
-
-                    html = `<tr><td><strong>Education:</strong></td><td colspan="5">${education}</td></tr>`
+                    let eduHtml = `<tr><td><strong>Education:</strong></td><td colspan="5">${education}</td></tr>`;
                     item.education.forEach(ed => {
-                        html += `
-                                                                        <tr>
-                                                                            <td><strong>Name of Course:</strong></td>
-                                                                            <td><label class="educourse">${ed.educourse}</label></td>
-                                                                            <td><strong>Institution:</strong></td>
-                                                                            <td><label class="eduinst">${ed.eduinst}</label></td>
-                                                                            <td><strong>Year:</strong></td>
-                                                                            <td><label class="eduyear">${ed.eduyear}</label></td>
-                                                                            </tr>`;
+                        eduHtml += `<tr> <td><strong>Name of Course:</strong></td> <td><label class="educourse">${ed.educourse}</label></td> <td><strong>Institution:</strong></td> <td><label class="eduinst">${ed.eduinst}</label></td> <td><strong>Year:</strong></td> <td><label class="eduyear">${ed.eduyear}</label></td> </tr>`;
                     });
-                    $("#Modal_biodata #education_container").html(html);
+
+                    $("#Modal_biodata #education_container").html(eduHtml);
                     $("#Modal_biodata #occupation").text(item?.occupation?.name);
                     $("#Modal_biodata #income").text(item?.income?.income);
                     $("#Modal_biodata #salary").text(item?.personal?.salary);
@@ -616,14 +615,8 @@
                     let companyhtml = "";
 
                     item.organisation.forEach(org => {
-                        companyhtml += `<tr class="company_row">
-                                                                    <td><strong>Company Name:</strong></td>
-                                                                    <td>${org.orgname}</td>
-                                                                    <td><strong>Designation:</strong></td>
-                                                                    <td>${org.orgdept}</td>
-                                                                    <td><strong>Working Year:</strong></td>
-                                                                    <td>${org.orgyear}</td>
-                                                                </tr>`;
+                        companyhtml += `<tr class="company_row"> <td><strong>Company Name:</strong></td> <td>${org.orgname}</td> <td><strong>Designation:</strong></td> <td>${org.orgdept}</td> <td><strong>Working Year:</strong></td> <td>${org.orgyear}</td>
+                                                                                                                                                                                                </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
@@ -669,20 +662,7 @@
 
                     let bshtml = "";
                     item.profilebs.forEach(bs => {
-                        bshtml += `<tr>
-                                                                <td><strong>Name of Brother / Sister:</strong></td>
-                                                                <td>${bs.bsname}</td>
-                                                                <td><strong>B/S:</strong></td>
-                                                                <td>${bs.bs}</td>
-                                                                <td><strong>Age:</strong></td>
-                                                                <td>${bs.bsage}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><strong>Ms-St:</strong></td>
-                                                                <td>${bs.bsmarriage}</td>
-                                                                <td><strong>Personal Details:</strong></td>
-                                                                <td colspan="3">${bs.bsdetails}</td>
-                                                            </tr>`;
+                        bshtml += `<tr> <td><strong>Name of Brother / Sister:</strong></td> <td>${bs.bsname}</td> <td><strong>B/S:</strong></td> <td>${bs.bs}</td> <td><strong>Age:</strong></td> <td>${bs.bsage}</td> </tr> <tr> <td><strong>Ms-St:</strong></td> <td>${bs.bsmarriage}</td> <td><strong>Personal Details:</strong></td> <td colspan="3">${bs.bsdetails}</td> </tr>`;
                     })
 
                     $("#Modal_biodata #family_detail").append(bshtml)
@@ -715,11 +695,17 @@
                     $("#Modal_biodata #contactrelation").text(item.personal.contactrelation);
                     $("#Modal_biodata #contactzone").text(item.personal.zone.zone_name);
 
-
-
-
-
-
+                    let snapTbody = document.getElementById("pics-tbody");
+                    let snapHtml = '<tr>';
+                    if (item.snaps.length > 0) {
+                        item.snaps.forEach(element => {
+                            snapHtml += `<td width="16.5%" align="center"> <img src="/uploads/customer/${element.photo}" width="100%" /></td>`;
+                        });
+                    } else {
+                        snapHtml += `<td colspan="5">No Snapshots Found</td>`;
+                    }
+                    snapHtml += '</tr>';
+                    snapTbody.innerHTML = snapHtml;
                 })
 
 

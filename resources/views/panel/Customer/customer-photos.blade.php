@@ -7,7 +7,7 @@
         <div class="row">
 
             <?php // include 'includes/inner-menu.php';
-                            ?>
+                                    ?>
 
             <div class="col-xl-12">
                 <!-- card -->
@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            @foreach ($snaps as $item)
+                                            @forelse ($snaps as $item)
 
                                                 <div class="col-lg-4 col-sm-12 pic-div">
                                                     <div class="mt-4">
@@ -73,7 +73,11 @@
 
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                            @empty
+                                                <div>
+                                                    No photos found for this customer.
+                                                </div>
+                                            @endforelse
 
 
                                         </div>

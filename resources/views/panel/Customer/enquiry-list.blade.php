@@ -87,7 +87,7 @@
                                             </thead>
 
                                             <tbody class="pdng_d">
-                                                @foreach ($enquiries as $item)
+                                                @forelse ($enquiries as $item)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>{{ $item->dated }}</td>
@@ -101,7 +101,11 @@
                                                         <td>{{ $item->updatedatetime }}</td>
                                                         <td>{{ $item->status == 0 ? 'Pending' : 'Done' }}</td>
                                                     </tr>
-                                                @endforeach
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="11" class="text-center">No Enquiries Found</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
 
                                         </table>

@@ -182,7 +182,8 @@ class SearchService
         'organisation',
         'payment',
         'profilebs',
-        'personal.zone'
+        'personal.zone',
+        'snaps'
     ])
     {
         $query = ViewProfile::with($with);

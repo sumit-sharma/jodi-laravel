@@ -240,11 +240,17 @@
                                                         </td>
                                                         <td>
                                                             @foreach (explode(',', $row->photos) as $key => $photo)
-                                                                <a href="{{ url('/uploads/customer/' . $photo) }}"
-                                                                    class="image-popup" data-lightbox="gallery">
+                                                                @php
+                                                                    $extension = pathinfo($photo, PATHINFO_EXTENSION);
+                                                                    // If no extension, suffix .jpg to the photo filename
+                                                                    $photoWithExtension = $extension ? $photo : $photo . '.jpg';
+                                                                @endphp
+                                                                <a href="{{ url('/uploads/customer/' . $photoWithExtension) }}"
+                                                                    class="image-popup"
+                                                                    data-lightbox="{{ 'gallery_' . $row->rno . '_' . $row->proposal }}">
                                                                     {{-- <img src="/uploads/customer/{{ $photo }}" width="100%" />
                                                                     --}}
-                                                                    {{ 'File ' . ++$key }}
+                                                                    {{ 'Photo ' . ++$key }}
                                                                 </a>
                                                             @endforeach
                                                         </td>
@@ -324,11 +330,7 @@
                         $("#section_propsed").removeClass('d-none');
                         let html = '<tr>';
                         data.data.forEach(element => {
-                            html += `<td width="16.5%" align="center">
-                                                                        <img src="/uploads/customer/${element.photo}" width="100%" />
-                                                                        <input class="form-check-input mt-2 border-primary" type="checkbox"
-                                                                            name="prop_photo[]" value="${element.photo}">
-                                                                    </td>`;
+                            html += `<td width="16.5%" align="center"> <img src="/uploads/customer/${element.photo}" width="100%" /> <input class="form-check-input mt-2 border-primary" type="checkbox" name="prop_photo[]" value="${element.photo}"> </td>`;
                         });
                         html += '</tr>';
                         tbody.innerHTML = html;

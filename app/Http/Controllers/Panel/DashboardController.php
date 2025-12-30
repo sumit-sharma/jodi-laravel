@@ -74,4 +74,11 @@ class DashboardController extends Controller
 
         return $pdf->download('biodata_' . $rno . '_' . time() . '.pdf');
     }
+
+
+    public function fetchCustomerData($rno)
+    {
+        $data = $this->searchService->searchByrno($rno);
+        return response()->json(['data' => $data]);
+    }
 }

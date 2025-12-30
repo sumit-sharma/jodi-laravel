@@ -27,7 +27,7 @@
                             <div class="clearfix"></div>
 
                             <div class="col-md-8 col-12">
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bx-filter-alt label-icon"></i> Filter</button>
                                     &nbsp;&nbsp;
@@ -36,17 +36,17 @@
                                     &nbsp;&nbsp;
                                     <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bx-reset label-icon"></i> Reset</button>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="col-md-2 col-12">
-                                <form class="app-search d-none d-lg-block pt-0 pb-0">
+                                {{-- <form class="app-search d-none d-lg-block pt-0 pb-0">
                                     <div class="position-relative">
                                         <input type="search" class="form-control bg-black opacity-50"
                                             placeholder="Search...">
                                         <button class="btn btn-primary" type="button"><i
                                                 class="bx bx-search-alt align-middle"></i></button>
                                     </div>
-                                </form>
+                                </form> --}}
                             </div>
                             <div class="col-md-2 col-12 text-right" style="text-align: right;">
                                 <div class="mb-4">
@@ -94,11 +94,17 @@
                                                         </td>
                                                         <td>
                                                             @foreach (explode(',', $row->photos) as $key => $photo)
-                                                                <a href="{{ url('/uploads/customer/' . $photo) }}"
-                                                                    class="image-popup" data-lightbox="gallery">
+                                                                @php
+                                                                    $extension = pathinfo($photo, PATHINFO_EXTENSION);
+                                                                    // If no extension, suffix .jpg to the photo filename
+                                                                    $photoWithExtension = $extension ? $photo : $photo . '.jpg';
+                                                                @endphp
+                                                                <a href="{{ url('/uploads/customer/' . $photoWithExtension) }}"
+                                                                    class="image-popup"
+                                                                    data-lightbox="{{ 'gallery_' . $row->rno . '_' . $row->proposal }}">
                                                                     {{-- <img src="/uploads/customer/{{ $photo }}" width="100%" />
                                                                     --}}
-                                                                    {{ 'File ' . ++$key }}
+                                                                    {{ 'Photo ' . ++$key }}
                                                                 </a>
                                                             @endforeach
                                                         </td>
@@ -127,5 +133,12 @@
 
 
     </div> <!-- container-fluid -->
+
+@endsection
+
+@section('footer-script')
+    <!-- lightbox2 -->
+    <link href="/assets/plugins/lightbox2/css/lightbox.css" rel="stylesheet">
+    <script src="/assets/plugins/lightbox2/js/lightbox.js"></script>
 
 @endsection

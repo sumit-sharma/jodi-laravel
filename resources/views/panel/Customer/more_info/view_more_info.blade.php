@@ -8,21 +8,14 @@
                 <div class="card">
                     <!-- card body -->
                     <div class="card-body">
-                        @php
-                            if ($moreInfo->rno) {
-                                $type = 'Update';
-                            } else {
-                                $type = 'Add';
-                            }
-                        @endphp
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">{{ $type }} More Info</h4>
+                                    <h4 class="mb-sm-0 font-size-18">View More Info</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Main</a></li>
-                                            <li class="breadcrumb-item active">{{ $type }} More Info</li>
+                                            <li class="breadcrumb-item active">View More Info</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -42,11 +35,16 @@
                                     </div>
                                     <div class="col-md-3 mt-3">
                                         <label for="" class="form-label">Met With </label>
-                                        @foreach ($employees as $item)
-                                            @if ($moreInfo->metwith == $item->username)
-                                                <label>{{ $item->username . '-' . $item->name }}</label>
-                                            @endif
-                                        @endforeach
+                                        @php
+                                            $name = "--";
+                                            foreach ($employees as $item) {
+                                                if ($moreInfo->metwith == $item->username) {
+                                                    $name = $item->username . '-' . $item->name;
+                                                    break;
+                                                }
+                                            }
+                                        @endphp
+                                        <label class="form-control">{{ $name }}</label>
                                     </div>
                                     <div class="clearfix"></div>
 

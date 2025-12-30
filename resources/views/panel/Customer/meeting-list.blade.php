@@ -80,7 +80,7 @@
                                             </thead>
 
                                             <tbody class="pdng_d">
-                                                @foreach ($meetings as $meeting)
+                                                @forelse ($meetings as $meeting)
                                                     <tr>
                                                         <td>
                                                             <a href="#" class="biodata_modal" data-bs-toggle="modal"
@@ -105,7 +105,11 @@
                                                         <td>{{ $meeting->meeting_type }}</td>
                                                         <td>{{ $meeting->remarks }}</td>
                                                     </tr>
-                                                @endforeach
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="11" class="text-center">No meetings found</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                         {{ $meetings->links() }}
