@@ -30,6 +30,9 @@
                             <a href="#person-details">
                                 <button type="button" class="btn btn-outline-primary">Contact</button>
                             </a>
+                            <a href="#bio_photos">
+                                <button type="button" class="btn btn-outline-primary">Photos</button>
+                            </a>
                             <a class="btn btn-outline-primary" id="btn_pdf" href="#" target="_blank">PDF <i
                                     data-feather="download"></i></a>
                         </div>
@@ -338,7 +341,7 @@
                             </tbody>
                             <thead class="table-primary">
                                 <tr>
-                                    <th colspan="6" class="font-size-18" id="person-details">Pics</th>
+                                    <th colspan="6" class="font-size-18" id="bio_photos">Photos</th>
                                 </tr>
                             </thead>
                             <tbody id="pics-tbody"></tbody>
@@ -616,7 +619,7 @@
 
                     item.organisation.forEach(org => {
                         companyhtml += `<tr class="company_row"> <td><strong>Company Name:</strong></td> <td>${org.orgname}</td> <td><strong>Designation:</strong></td> <td>${org.orgdept}</td> <td><strong>Working Year:</strong></td> <td>${org.orgyear}</td>
-                                                                                                                                                                                                </tr>`;
+                                                                                                                                                                                                                                </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
