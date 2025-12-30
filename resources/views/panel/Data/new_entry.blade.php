@@ -95,7 +95,6 @@
                                             <div class="col-md-3 mb-2">
                                                 <label class="form-label">Gender:</label>
                                                 <select name="gender" class="form-select">
-                                                    <option disabled>Select</option>
                                                     <option value="M">Male</option>
                                                     <option value="F">Female</option>
                                                 </select>
@@ -107,8 +106,9 @@
                                             </div>
                                             <div class="col-md-3 mb-2">
                                                 <label for="" class="form-label">DOB:</label>
-                                                <input class="form-control" type="date" id="dob" name="dob" placeholder=""
-                                                    max="{{ now()->subYears(18)->format('Y-m-d') }}" required>
+                                                <input class="form-control datepicker" type="text" id="dob" name="dob" {{--
+                                                    value="{{ now()->subYears(18)->format('Y-m-d') }}" --}} {{--
+                                                    max="{{ now()->subYears(18)->format('Y-m-d') }}" --}} readonly required>
                                             </div>
                                             <div class="col-md-3 mb-2">
                                                 <label for="" class="form-label">Age:</label>
@@ -161,7 +161,8 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="row mb-2 row-cols-5"">
-                                                                            <div class=" col mb-2">
+                                                                                                                                                                                                                                                                                                                                                                                            <div class="
+                                            col mb-2">
                                             <label class="form-label">Religion:</label>
                                             <select id="religion" name="religion" class="form-select">
                                                 <option value="1" selected>Hindu</option>
@@ -544,7 +545,7 @@
                                     <div class="sibling-span row bg-secondary-subtle mb-3 pt-3 pb-3">
                                         <div class="col-lg-3 col-12 mb-2">
                                             <label for="" class="form-label">Name of Brother / Sister:</label>
-                                            <input name="bsname[]" class="form-control" type="text"
+                                            <input name="bsname[]" class="form-control bsname" type="text"
                                                 placeholder="Enter name">
                                         </div>
                                         <div class="col-lg-2 col-12 mb-2">
@@ -859,16 +860,16 @@
 
         });
 
-        document.getElementById('dob').addEventListener('change', (event) => {
-            const selectedDate = event.target.value;
-            console.log('Date changed to:', selectedDate);
-            // You can perform other actions here, like sending the date to a server
-            const birthDate = new Date(selectedDate);
-            const today = new Date();
-            let years = today.getFullYear() - birthDate.getFullYear();
-            document.getElementById('age').value = parseInt(years);
+        // document.getElementById('dob').addEventListener('change', (event) => {
+        //     const selectedDate = event.target.value;
+        //     console.log('Date changed to:', selectedDate);
+        //     // You can perform other actions here, like sending the date to a server
+        //     const birthDate = new Date(selectedDate);
+        //     const today = new Date();
+        //     let years = today.getFullYear() - birthDate.getFullYear();
+        //     document.getElementById('age').value = parseInt(years);
 
-        });
+        // });
     </script>
 
 
@@ -956,12 +957,70 @@
 
             $(document).on('click', '.btnAddSibling', function () {
                 $(this).closest('div.row').after(
-                    `<div class="sibling-span row bg-secondary-subtle mb-3 pt-3 pb-3"> <div class="col-lg-3 col-12 mb-2"> <label for="" class="form-label">Name of Brother / Sister:</label> <input name="bsname[]" class="form-control" type="text" placeholder="Enter name"> </div> <div class="col-lg-2 col-12 mb-2"> <label class="form-label">B/S:</label> <select name="bs[]" class="form-select"> <option disabled>Select</option> <option>Younger Brother</option> <option>Younger Sister</option> <option>Elder Brother</option> <option>Elder Sister</option> </select> </div> <div class="col-lg-1 col-6 mb-2"> <label for="" class="form-label">Age:</label> <input name="bsage[]" class="form-control" type="text" placeholder="Enter age"> </div> <div class="col-lg-2 col-6 mb-2"> <label class="form-label">Ms-St:</label> <select name="bsmarriage[]" class="form-select"> <option disabled>Select</option> <option>Single</option> <option>Married</option> <option>Divorced</option> <option>Widowed</option> </select> </div> <div class="col-lg-3 col-12 mb-2"> <label for="" class="form-label">Personal Details:</label> <input name="bsdetails[]" class="form-control" type="text" placeholder="Enter personal details"> </div> <div class="col-lg-1 col-12 mb-2"> <label class="form-label">&nbsp;</label> <br> <button type="button" class="btn btn-dark waves-effect waves-light btnAddSibling"> <span class="font-size-14">+</span> </button> <button type="button" class="btn btn-danger waves-effect waves-light btnRemoveSiblingRow"> <span class="font-size-14">-</span> </button> </div> <div class="clearfix"></div> </div>`
+                    `<div class="sibling-span row bg-secondary-subtle mb-3 pt-3 pb-3"> <div class="col-lg-3 col-12 mb-2"> <label for="" class="form-label">Name of Brother / Sister:</label> <input name="bsname[]" class="form-control bsname" type="text" placeholder="Enter name" required> </div> <div class="col-lg-2 col-12 mb-2"> <label class="form-label">B/S:</label> <select name="bs[]" class="form-select" required> <option disabled>Select</option> <option>Younger Brother</option> <option>Younger Sister</option> <option>Elder Brother</option> <option>Elder Sister</option> </select> </div> <div class="col-lg-1 col-6 mb-2"> <label for="" class="form-label">Age:</label> <input name="bsage[]" class="form-control" type="text" placeholder="Enter age" required> </div> <div class="col-lg-2 col-6 mb-2"> <label class="form-label">Ms-St:</label> <select name="bsmarriage[]" class="form-select"> <option disabled>Select</option> <option>Single</option> <option>Married</option> <option>Divorced</option> <option>Widowed</option> </select> </div> <div class="col-lg-3 col-12 mb-2"> <label for="" class="form-label">Personal Details:</label> <input name="bsdetails[]" class="form-control" type="text" placeholder="Enter personal details" required> </div> <div class="col-lg-1 col-12 mb-2"> <label class="form-label">&nbsp;</label> <br> <button type="button" class="btn btn-dark waves-effect waves-light btnAddSibling"> <span class="font-size-14">+</span> </button> <button type="button" class="btn btn-danger waves-effect waves-light btnRemoveSiblingRow"> <span class="font-size-14">-</span> </button> </div> <div class="clearfix"></div> </div>`
                 );
             });
             $(document).on('click', '.btnRemoveSiblingRow', function () {
                 $(this).closest('div.row').remove();
             });
+
+            min18Year = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate());
+            // const formattedDate = min18Year.toLocaleDateString('en-US');
+            const yyyy = min18Year.getFullYear();
+            const mm = String(min18Year.getMonth() + 1).padStart(2, '0');
+            const dd = String(min18Year.getDate()).padStart(2, '0');
+
+            const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+            $(".datepicker").datepicker({
+                uiLibrary: 'bootstrap5',
+                value: formattedDate,
+                maxDate: formattedDate,
+                format: 'yyyy-mm-dd',      // ✅ DB-ready format
+
+                change: function (e) {
+                    const changeDate = e.target.value;
+                    console.log("changeDate", changeDate);
+                    const birthDate = new Date(changeDate);
+                    const today = new Date();
+                    let years = today.getFullYear() - birthDate.getFullYear();
+                    document.getElementById('age').value = parseInt(years);
+                }
+            });
+
+            $("#frmFreshCustomerData").validate({
+                ignore: [],
+                invalidHandler: function (event, validator) {
+                    if (!validator.errorList.length) return;
+
+                    // First error element
+                    const errorElement = validator.errorList[0].element;
+
+                    // Find tab pane
+                    const $tabPane = $(errorElement).closest('.tab-pane');
+
+                    // Activate tab
+                    const tabId = $tabPane.attr('id');
+                    const tabTrigger = document.querySelector(
+                        `a[data-bs-toggle="tab"][href="#${tabId}"]`
+                    );
+
+                    if (tabTrigger) {
+                        new bootstrap.Tab(tabTrigger).show();
+                    }
+
+                    // Focus the field
+                    setTimeout(() => {
+                        errorElement.focus();
+                    }, 300);
+                },
+                rules: {
+                    refname: {
+                        required: true,
+                        minlength: 2
+                    }
+                }
+            })
 
         });
     </script>

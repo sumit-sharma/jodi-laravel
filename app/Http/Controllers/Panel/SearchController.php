@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
@@ -23,6 +24,9 @@ class SearchController extends Controller
     public function searchData(Request $request)
     {
         try {
+            if (empty($request->searchvalue)) {
+                return redirect()->back()->with('error', 'Search Criteria/Value is required');
+            }
             $data = $request->all();
             unset($data['_token']);
             $results = $this->searchService->search(
@@ -38,12 +42,9 @@ class SearchController extends Controller
             $searchLog = $this->searchService->saveSearchLog($data);
 
             return view('panel.Services.SearchMembersResult', compact('results'));
-
         } catch (\Throwable $th) {
             //throw $th;
             return $th;
         }
-
     }
-
 }

@@ -504,7 +504,7 @@
 
                                         <div class="mb-3 col-12">
                                             <h5 class="font-size-14 mb-2">Select Field:</h5>
-                                            <select name="searchinfield" class="form-select">
+                                            <select id="searchinfield" name="searchinfield" class="form-select">
                                                 <option value="rno">Ref No.</option>
                                                 <option value="refname">Name</option>
                                                 <option value="dob">Date of Birth</option>
@@ -534,7 +534,7 @@
                                         <div class="mb-3 col-12">
                                             <h5 class="font-size-14 mb-2">Search Criteria:</h5>
                                             <input name="searchvalue" class="form-control" type="search" value=""
-                                                id="searchvalue" placeholder="">
+                                                id="searchvalue" required>
                                         </div>
 
                                         <div class="mb-6 col-12">
@@ -987,6 +987,10 @@
 @endsection
 
 @section('footer-script')
+    <!-- timepicker -->
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
     <script>
         const form = document.getElementById("frmSearchMember");
 
@@ -1034,6 +1038,47 @@
 
         // change handles checkbox/select instantly
         form.addEventListener("change", fetchData);
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            min18Year = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate());
+            // const formattedDate = min18Year.toLocaleDateString('en-US');
+            const yyyy = min18Year.getFullYear();
+            const mm = String(min18Year.getMonth() + 1).padStart(2, '0');
+            const dd = String(min18Year.getDate()).padStart(2, '0');
+
+            const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+            $('#searchinfield').change(function () {
+                if ($(this).val() == "dob") {
+                    $("#searchvalue").attr('autocomplete', 'off');
+                    $("#searchvalue").datepicker({
+                        uiLibrary: 'bootstrap5',
+                        maxDate: formattedDate,
+                        format: "yyyy-mm-dd",
+                    });
+                } else {
+                    $("#searchvalue").datepicker("destroy");
+                    if (!$("#searchvalue").hasClass("form-control")) {
+                        $("#searchvalue").addClass("form-control");
+                        $("#searchvalue").attr('autocomplete', 'on');
+                    }
+                }
+            });
+            $('#frmSearchMember').validate({
+                rules: {
+                    searchvalue: {
+                        required: true
+                    }
+                },
+                messages: {
+                    searchvalue: {
+                        required: "Please enter search Criteria"
+                    }
+                }
+            });
+        });
     </script>
 
 @endsection

@@ -147,7 +147,7 @@ class CustomerService
                     'rno'        => $rno,
                     'bsname'     => $value,
                     'bs'         => $bs[$key],
-                    'bsage'      => $bsage[$key],
+                    'bsage'      => $bsage[$key] ?? 0,
                     'bsmarriage' => $bsmarriage[$key],
                     'bsdetails'  => $bsdetails[$key],
                     'created_at' => now(),

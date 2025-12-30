@@ -13,39 +13,28 @@
                                     <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-pages"
-                                    style="position: fixed; overflow-y: scroll; height: 80vh;">
+                                    style="position: fixed; height: 50vh;"
+                                >
 
-                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
-                                        data-key="/update-match-prefrence/">Update match preference</a>
-                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
-                                        data-key="/add-more-info/">Add more info </a>
-                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_inter"
-                                        data-key="IntractionPageModal">Add Interaction</a>
-                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_meet"
-                                        data-key="MeetingPageModal">Add Meeting</a>
+
+
                                     <a href="#" class="dropdown-item" data-key="t-calendar">Delete member </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Convert member </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Change TC/TL/RM</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Classified</a>
-                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_enquiry"
-                                        data-key="EnquiryPageModal">Enquiry </a>
+
                                     <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Visited/Non Visited </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a>
-                                    <a href="#" class="dropdown-item inner-menu-item" data-key="/find-match/">Find match
-                                    </a>
-                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_sl"
-                                        data-key="SaveSLModal">Save to SL </a>
+
                                     <a href="#" class="dropdown-item" data-key="t-chat">Hold/ release</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Interaction</a>
+
                                     <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Fix/Active </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
 
-                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
-                                        data-key="/sendmail/">Sent
-                                        mails</a>
+
                                     <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a>
 
                                 </div>
@@ -57,8 +46,11 @@
                                     <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-pages">
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Coming soon</a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/update-more-info/">Add more info </a>
+
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/view-more-info/">View more info </a>
                                 </div>
                             </li>
 
@@ -98,11 +90,19 @@
 
                                 </div>
                             </li> --}}
+
+
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
-                                    href="javascript:void(0);" data-key="/sendmail-list/">
-                                    <span>Mail</span>
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">Mail</span>
+                                    <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/sendmail/">Create/Send Mail</a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/sendmail-list/">List Mails</a>
+                                </div>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -112,17 +112,29 @@
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
-                                    href="javascript:void(0);" data-key="/enquiry-list/">
-                                    <span>Enquiry</span>
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">Enquiry</span>
+                                    <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_enquiry"
+                                        data-key="EnquiryPageModal">Add Enquiry </a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/enquiry-list/">List Enquiries </a>
+                                </div>
                             </li>
-
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
-                                    href="javascript:void(0);" data-key="/update-match-prefrence/">
-                                    <span>Match Pref</span>
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">Match</span>
+                                    <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/update-match-prefrence/">Update Match Preference </a>
+
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/find-match/">Find Match </a>
+                                </div>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -132,19 +144,37 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
-                                    href="javascript:void(0);" data-key="/meeting-list/">
-                                    <span>Meeting</span>
-                                </a>
-                            </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
-                                    href="javascript:void(0);" data-key="/interaction-list/">
-                                    <span>Interaction</span>
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">Meeting</span>
+                                    <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_meet"
+                                        data-key="MeetingPageModal">Add Meeting</a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/meeting-list/">List Meeting </a>
+                                </div>
                             </li>
+
+
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">Interaction</span>
+                                    <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_inter"
+                                        data-key="IntractionPageModal">Add Interaction</a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/interaction-list/">List Interaction </a>
+                                </div>
+                            </li>
+
+
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" role="button">
@@ -152,11 +182,17 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link inner-menu-item" href="javascript:void(0);"
-                                    data-key="/client-sl-list/">
-                                    <span>Client SL</span>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">ShortList</span>
+                                    <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_sl"
+                                        data-key="SaveSLModal">Save to SL </a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/client-sl-list/">List Client SL</a>
+                                </div>
                             </li>
 
                         </ul>

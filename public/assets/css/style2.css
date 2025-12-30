@@ -28,6 +28,9 @@
 label.error {
 	color: red;
 }
+label.is-invalid {
+	color: red;
+}
 
 .bg-pink {
 	color: #4d4afbff !important;

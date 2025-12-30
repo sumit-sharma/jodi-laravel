@@ -41,9 +41,9 @@ class SendMailController extends Controller
      */
     public function listSendMail(Request $request, $rno)
     {
-        $request->merge(['sentmail' => $rno, 'limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $request->merge(['sentmail' => $rno, 'limit' => $request->limit ?? 20, 'page' => $request->page ?? 1]);
         $data['sendMails'] = $this->sendMailService->index($request);
-        return view('panel.mail.sent-mail', $data);
+        return view('panel.Customer.sent-mail-list', $data);
     }
 
     /**

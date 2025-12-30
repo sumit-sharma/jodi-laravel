@@ -78,8 +78,9 @@ Route::middleware("auth")->group(function () {
     Route::get('/update-match-prefrence/{rno}', [MatchController::class, 'viewUpdateMatchPrefrences'])->name('update-match-prefrence');
     Route::post('/save-match-prefrences/{rno}', [MatchController::class, 'saveMatchPrefrences'])->name('save-match-prefrences');
 
-    Route::get('/add-more-info/{rno}', [CustomerController::class, 'viewAddMoreInfo'])->name('add-more-info');
+    Route::get('/update-more-info/{rno}', [CustomerController::class, 'UpdateMoreInfo'])->name('update-more-info');
     Route::post('/save-more-info', [CustomerController::class, 'saveMoreInfo'])->name('save-more-info');
+    Route::get('/view-more-info/{rno}', [CustomerController::class, 'ViewMoreInfo'])->name('view-more-info');
 
     Route::post('/get-meeting_by', [CustomerController::class, 'getMeetingBy'])->name('get-meeting_by');
     Route::post('/save-meeting', [CustomerController::class, 'storeMeeting'])->name('save-meeting');

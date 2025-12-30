@@ -190,13 +190,16 @@
                                                                 </span>
                                                                 <div class="dropdown-menu">
                                                                     <a class="dropdown-item"
-                                                                        href="{{ route('customer.edit', ['customer' => $data->rno]) }}">Edit
+                                                                        href="{{ route('customer.edit', ['customer' => $data->rno]) }}"
+                                                                        target="_blank">Edit
                                                                         Profile</a>
                                                                     <a class="dropdown-item"
-                                                                        href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}">Upload
+                                                                        href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}"
+                                                                        target="_blank">Upload
                                                                         Photo</a>
-                                                                    <a class="dropdown-item" href="#">Update
-                                                                        Finance</a>
+                                                                    {{-- <a class="dropdown-item" href="#"
+                                                                        target="_blank">Update
+                                                                        Finance</a> --}}
                                                                 </div>
                                                             </div>
                                                         </td>

@@ -28,128 +28,11 @@
                 <i class="fa fa-fw fa-bars"></i>
             </button>
 
-            <!-- App Search-->
-            <!--<form class="app-search d-none d-lg-block">
-                            <div class="position-relative">
-                                <input type="search" class="form-control" placeholder="Search Members">
-                                <button class="btn btn-primary" type="button"><i class="bx bx-search-alt align-middle"></i></button>
-                            </div>
-                        </form>-->
         </div>
 
         <div class="d-flex">
 
-            <!--<div class="dropdown d-inline-block d-lg-none ms-2">
-                            <button type="button" class="btn header-item" id="page-header-search-dropdown"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i data-feather="search" class="icon-lg"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                                aria-labelledby="page-header-search-dropdown">
 
-                                <form class="p-3">
-                                    <div class="form-group m-0">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Search Result">
-
-                                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>-->
-
-            <!-- <div class="dropdown d-none d-sm-inline-block">
-                            <button type="button" class="btn header-item"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img id="header-lang-img" src="/assets/images/flags/us.jpg" alt="Header Language" height="16">
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-
-
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="en">
-                                    <img src="/assets/images/flags/us.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span>
-                                </a>
-
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp">
-                                    <img src="/assets/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Spanish</span>
-                                </a>
-
-
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr">
-                                    <img src="/assets/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">German</span>
-                                </a>
-
-
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="it">
-                                    <img src="/assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italian</span>
-                                </a>
-
-
-                                <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="ru">
-                                    <img src="/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="dropdown d-none d-sm-inline-block">
-                            <button type="button" class="btn header-item" id="mode-setting-btn">
-                                <i data-feather="moon" class="icon-lg layout-mode-dark"></i>
-                                <i data-feather="sun" class="icon-lg layout-mode-light"></i>
-                            </button>
-                        </div>
-
-                        <div class="dropdown d-none d-lg-inline-block ms-1">
-                            <button type="button" class="btn header-item"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i data-feather="grid" class="icon-lg"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                                <div class="p-2">
-                                    <div class="row g-0">
-                                        <div class="col">
-                                            <a class="dropdown-icon-item" href="#">
-                                                <img src="/assets/images/brands/github.png" alt="Github">
-                                                <span>GitHub</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item" href="#">
-                                                <img src="/assets/images/brands/bitbucket.png" alt="bitbucket">
-                                                <span>Bitbucket</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item" href="#">
-                                                <img src="/assets/images/brands/dribbble.png" alt="dribbble">
-                                                <span>Dribbble</span>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-0">
-                                        <div class="col">
-                                            <a class="dropdown-icon-item" href="#">
-                                                <img src="/assets/images/brands/dropbox.png" alt="dropbox">
-                                                <span>Dropbox</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item" href="#">
-                                                <img src="/assets/images/brands/mail_chimp.png" alt="mail_chimp">
-                                                <span>Mail Chimp</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item" href="#">
-                                                <img src="/assets/images/brands/slack.png" alt="slack">
-                                                <span>Slack</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon position-relative"
@@ -245,29 +128,7 @@
                 </div>
             </div>
 
-            <!--<div class="dropdown d-inline-block">
-                            <button type="button" class="btn header-item right-bar-toggle me-2">
-                                <i data-feather="settings" class="icon-lg"></i>
-                            </button>
-                        </div>-->
-            <!--
-                        <div class="dropdown d-inline-block ms-3">
-                            <button type="button" class="btn header-item bg-light-subtle border-start border-end" id="page-header-user-dropdown"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="/assets/images/users/avatar-4.jpg"
-                                    alt="Header Avatar">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium">Pankaj</span>
-                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
 
-                                <a class="dropdown-item" href="apps-contacts-profile.html"><i class="mdi mdi-face-profile font-size-16 align-middle me-1"></i> Profile</a>
-                                <a class="dropdown-item" href="auth-lock-screen.html"><i class="mdi mdi-lock font-size-16 align-middle me-1"></i> Lock screen</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="auth-logout.html"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
-                            </div>
-                        </div>
-		-->
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item bg-light-subtle border-start border-end"
                     id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -283,8 +144,6 @@
                         <button type="submit" class="dropdown-item"><i
                                 class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</button>
                     </form>
-                    {{-- <a class="dropdown-item" href="auth-logout.html"><i
-                            class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a> --}}
 
                 </div>
             </div>
@@ -321,21 +180,21 @@
                         <span data-key="t-ecommerce">Main</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="permission.php" key="t-products">Permission</a></li>
+                        {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
                         <li><a href="#" data-key="t-product-detail">Change Password</a></li>
                         <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
                         <li><a href="#" data-key="t-customers">Link TL-TC</a></li>
                         <li><a href="#" data-key="t-cart">Transfer RM</a></li>
                         <li><a href="#" data-key="t-checkout">Transfer TC</a></li>
-                        <li><a href="feedback-options.php" data-key="t-shops">Feedback Option</a></li>
+                        <li><a href="feedback-options.php" data-key="t-shops">Feedback Option</a></li> --}}
                         <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>
                         <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
                         <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
-                        <li><a href="#" data-key="t-shops">Enter Massage</a></li>
+                        {{-- <li><a href="#" data-key="t-shops">Enter Massage</a></li>
                         <li><a href="update-my-info.php" data-key="t-add-product">Update My Info</a></li>
                         <li><a href="#" data-key="t-seller">Updates Timmings</a></li>
                         <li><a href="#" data-key="t-sale-details">Reset Password</a></li>
-                        <li><a href="#" data-key="t-sale-details">Reference Graph</a></li>
+                        <li><a href="#" data-key="t-sale-details">Reference Graph</a></li> --}}
                     </ul>
                 </li>
 
@@ -346,9 +205,9 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('seach-members') }}" key="t-products">Search Members</a></li>
-                        <li><a href="form-transfer.php" data-key="t-product-detail">Form Transfer</a></li>
-                        <li><a href="show-all-enquiry.php" data-key="t-orders">Show All Enquiry</a></li>
-                        <li><a href="show-all-rm-data.php" data-key="t-customers">Show All RM Data</a></li>
+                        {{-- <li><a href="form-transfer.php" data-key="t-product-detail">Form Transfer</a></li> --}}
+                        {{-- <li><a href="show-all-enquiry.php" data-key="t-orders">Show All Enquiry</a></li> --}}
+                        {{-- <li><a href="show-all-rm-data.php" data-key="t-customers">Show All RM Data</a></li> --}}
                     </ul>
                 </li>
 
@@ -371,12 +230,12 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li>
-                        <li><a href="add-fresh-data.php" key="t-products">Add Fresh Data</a></li>
+                        {{-- <li><a href="add-fresh-data.php" key="t-products">Add Fresh Data</a></li>
                         <li><a href="add-advt-data.php" data-key="t-product-detail">Add Advt Data</a></li>
-                        <li><a href="show-advt-data.php" data-key="t-orders">Show Advt Data</a></li>
+                        <li><a href="show-advt-data.php" data-key="t-orders">Show Advt Data</a></li> --}}
                         <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
                         </li>
-                        <li><a href="show-hold-list.php" data-key="t-cart">Show Hold Data</a></li>
+                        {{-- <li><a href="show-hold-list.php" data-key="t-cart">Show Hold Data</a></li>
                         <li><a href="show-all-hold-data.php" data-key="t-checkout">Show All Hold Data</a></li>
                         <li><a href="show-other-data.php" data-key="t-shops">Show Other Data</a></li>
                         <li><a href="show-website-data.php" data-key="t-add-product">Show Website Data</a></li>
@@ -385,11 +244,11 @@
                         <li><a href="show-my-non-na-data.php" data-key="t-shops">Show My None-NA Data</a></li>
                         <li><a href="#" data-key="t-add-product">Direct Meeting</a></li>
                         <li><a href="fresh-calls.php" data-key="t-seller">Fresh Call</a></li>
-                        <li><a href="daily-moment.php" data-key="t-sale-details">Daily Moment</a></li>
+                        <li><a href="daily-moment.php" data-key="t-sale-details">Daily Moment</a></li> --}}
                     </ul>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="mail"></i>
                         <span data-key="t-ecommerce">Mail</span>
@@ -413,7 +272,7 @@
                         <li><a href="transfer-followup.php" key="t-products">Transfer Followup</a></li>
                         <li><a href="followup-records.php" data-key="t-product-detail">Follow Records</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -425,7 +284,7 @@
                     </ul>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="file-text"></i>
                         <span data-key="t-ecommerce">Report</span>
@@ -469,7 +328,7 @@
                         <li><a href="#" data-key="t-product-detail">Web Data</a></li>
                         <li><a href="#" key="t-products">Chat Report</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
 

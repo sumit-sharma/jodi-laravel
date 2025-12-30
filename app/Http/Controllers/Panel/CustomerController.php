@@ -185,13 +185,13 @@ class CustomerController extends Controller
         $data['snaps'] = $this->customerService->getSnaps($rno);
         return view('panel.Customer.customer-photos', $data);
     }
-    public function viewAddMoreInfo(Request $request, $rno)
+    public function UpdateMoreInfo(Request $request, $rno)
     {
         $data['rno']       = $rno;
         $data['bio']       = MiscService::getTableData('profile_bio', ['rno', 'refname'], 'rno', 'asc', "rno =  $rno")->first();
         $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc', "status = 1");
         $data['moreInfo'] = $this->customerService->fetchProfileMoreInfo($rno) ?? new ProfileMoreInfo;
-        return view('panel.Customer.add_more_info', $data);
+        return view('panel.Customer.more_info.add_more_info', $data);
     }
 
     public function saveMoreInfo(StoreProfileMoreInfoRequest $request)
@@ -199,10 +199,21 @@ class CustomerController extends Controller
         $data   = $request->validated();
         $result = $this->customerService->saveProfileMoreInfo($data);
         if ($result) {
-            return redirect()->route('add-more-info', ['rno' => $data['rno']])->with('success', 'Profile More Info has been saved');
+            return redirect()->route('update-more-info', ['rno' => $data['rno']])->with('success', 'Profile More Info has been saved');
         }
         return back()->with('error', 'There are some error, please try again!');
     }
+
+    public function ViewMoreInfo(Request $request, $rno)
+    {
+        $data['rno']       = $rno;
+        $data['bio']       = MiscService::getTableData('profile_bio', ['rno', 'refname'], 'rno', 'asc', "rno =  $rno")->first();
+        $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc', "status = 1");
+        $data['moreInfo'] = $this->customerService->fetchProfileMoreInfo($rno) ?? new ProfileMoreInfo;
+        return view('panel.Customer.more_info.view_more_info', $data);
+    }
+
+
 
     public function storeInteraction(Request $request)
     {
