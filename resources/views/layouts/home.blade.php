@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Jodi Search Dashboard</title>
+    <title>Elite Marriage Bureau - Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
