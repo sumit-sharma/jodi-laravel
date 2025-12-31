@@ -7,7 +7,7 @@
                     <div class="collapse navbar-collapse" id="topnav-menu-content">
                         <ul class="navbar-nav">
 
-                            <li class="nav-item dropdown">
+                            {{-- <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
                                     <i data-feather="align-justify"></i><span data-key="t-apps">Main</span>
                                     <div class="arrow-down"></div>
@@ -21,23 +21,19 @@
                                     <a href="#" class="dropdown-item" data-key="t-chat">Convert member </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Change TC/TL/RM</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Classified</a>
-
                                     <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Visited/Non Visited </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a>
-
                                     <a href="#" class="dropdown-item" data-key="t-chat">Hold/ release</a>
-
                                     <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Fix/Active </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
-
-
                                     <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a>
 
+
                                 </div>
-                            </li>
+                            </li> --}}
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
@@ -53,7 +49,7 @@
                                 </div>
                             </li>
 
-                            <li class="nav-item dropdown">
+                            {{-- <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-data" role="button">
                                     <span data-key="t-apps">Services</span>
                                     <div class="arrow-down"></div>
@@ -62,20 +58,8 @@
                                     <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Coming soon</a>
                                 </div>
-                            </li>
-
-                            {{-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-mail" role="button">
-                                    <span data-key="t-apps">Mails</span>
-                                    <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
-
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Coming soon</a>
-
-                                </div>
                             </li> --}}
+
 
                             {{-- <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-follow"
@@ -93,7 +77,7 @@
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
-                                    <span data-key="t-apps">Mail</span>
+                                    <span data-key="t-apps">Mails</span>
                                     <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-pages">

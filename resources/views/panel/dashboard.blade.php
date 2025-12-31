@@ -660,7 +660,7 @@
                                                                 </td>
                                                                 <td>{{ \App\Traits\CommonTrait::convertCommonDate($item->created_at, 'h:m A') }}
                                                                 </td>
-                                                                <td>{{ $item->inputs['searchinfield'] . ' : ' . $item->inputs['searchvalue'] }}
+                                                                <td>{!! "<span class='text-uppercase'>{$item->inputs['searchinfield']}</span> : {$item->inputs['searchvalue']}" !!}
                                                                 </td>
                                                                 <td>{{ $item->employee?->name }}</td>
                                                             </tr>
