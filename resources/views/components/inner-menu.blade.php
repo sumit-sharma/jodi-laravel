@@ -155,7 +155,7 @@
                                     <a href="#" class="dropdown-item inner-menu-modal" id="modl_inter"
                                         data-key="IntractionPageModal">Add Interaction</a>
                                     <a href="javascript:;" class="dropdown-item inner-menu-item"
-                                        data-key="/interaction-list/">List Interaction </a>
+                                        data-key="/interaction-list/">View Interaction </a>
                                 </div>
                             </li>
 
