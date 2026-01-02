@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Caste;
 use App\Models\Enquiry;
 use App\Models\Feedback;
+use App\Models\FixMember;
 use App\Models\Followup;
 use App\Models\Interaction;
 use App\Models\Meeting;
@@ -335,6 +336,109 @@ class CustomerService
 
 
             return $request->limit ? $query->paginate($request->limit) : $query->get();
+        });
+    }
+
+    public function storeFixMember($data)
+    {
+        $data['dated'] = $data['dated'] ?? now()->format('y-m-d');
+        $data['time']  = $data['time'] ?? now()->format('h:i:s');
+        // $data['empid'] = $data['empid'] ?? auth()->user()->username;
+        return FixMember::create($data);
+    }
+
+    public function checkHoldMember($rno)
+    {
+        $query = ViewProfile::where('rno', $rno)
+            ->where('ost', 'F')
+            ->whereNotIn('rno', function ($query) {
+                $query->select('rno')->from('followup');
+            })
+            //TODO: add prespective filter if needed
+            // ->whereNotIn('rno', function ($query) {
+            //     $query->select('rno')->from('prospective');
+            // })
+            ->count();
+        return $query;
+    }
+
+
+    public function checkEligibleFixMember($rno)
+    {
+        return FixMember::where('rno', $rno)->where('status', '<', 2)->count();
+    }
+
+    public function getFixMembers($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = FixMember::orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+    public function setFixMember($rno)
+    {
+        return DB::transaction(function () use ($rno) {
+            FixMember::where('rno', $rno)
+                ->update([
+                    'status' => 2,
+                    'update_by' => auth()->user()->username,
+                    'update_date' => now()->format('Y-m-d'),
+                    'update_time' => now()->format('H:i:s')
+                ]);
+            ViewProfile::where('rno', $rno)
+                ->whereIn('rno', function ($query) {
+                    $query->select('rno')->from('fix_member');
+                })
+                ->update([
+                    'ost' => '',
+                    'status' => 'F',
+                ]);
+            Followup::where('rno', $rno)
+                ->whereIn('rno', function ($query) {
+                    $query->select('rno')->from('fix_member');
+                })
+                ->delete();
+            //TODO: delete prospective table data if available
+            return true;
+        });
+    }
+
+    public function setActiveMember($rno)
+    {
+        return DB::transaction(function () use ($rno) {
+            FixMember::where('rno', $rno)
+                ->update([
+                    'status' => 3,
+                    'update_by' => auth()->user()->username,
+                    'update_date' => now()->format('Y-m-d'),
+                    'update_time' => now()->format('H:i:s')
+                ]);
+            ViewProfile::where('rno', $rno)
+                ->whereIn('rno', function ($query) {
+                    $query->select('rno')->from('fix_member');
+                })
+                ->update([
+                    'status' => 'A',
+                ]);
+
+            return true;
+        });
+    }
+
+    public function deleteFixMember($rno)
+    {
+        return DB::transaction(function () use ($rno) {
+            FixMember::where('rno', $rno)
+                ->update([
+                    'status' => 4,
+                    'update_by' => auth()->user()->username,
+                    'update_date' => now()->format('Y-m-d'),
+                    'update_time' => now()->format('H:i:s')
+                ]);
+            return true;
         });
     }
 }

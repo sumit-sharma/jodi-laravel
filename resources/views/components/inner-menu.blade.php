@@ -7,17 +7,18 @@
                     <div class="collapse navbar-collapse" id="topnav-menu-content">
                         <ul class="navbar-nav">
 
-                            {{-- <li class="nav-item dropdown">
+                            <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
                                     <i data-feather="align-justify"></i><span data-key="t-apps">Main</span>
                                     <div class="arrow-down"></div>
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-pages"
-                                    style="position: fixed; height: 50vh;">
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages" {{--
+                                    style="position: fixed; height: 50vh;"> --}}
+                                    >
 
 
 
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">Delete member </a>
+                                    {{-- <a href="#" class="dropdown-item" data-key="t-calendar">Delete member </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Convert member </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Change TC/TL/RM</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Classified</a>
@@ -26,14 +27,15 @@
                                     <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Hold/ release</a>
                                     <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Fix/Active </a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a>
+                                    <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a> --}}
+                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_fix"
+                                        data-key="fixMemberModal">Fix/Active </a>
+                                    {{-- <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
+                                    <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a> --}}
 
 
                                 </div>
-                            </li> --}}
+                            </li>
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
@@ -189,6 +191,7 @@
     @include('components.interaction_modal')
     @include('components.meeting_modal')
     @include('components.enquiry_modal')
+    @include('components.fix-member-modal')
 </div>
 
 @section('bottom-js')
@@ -272,6 +275,7 @@
             let meetModalEl = document.getElementById('MeetingPageModal');
             let saveSLModalEl = document.getElementById('SaveSLModal');
             let enqModalEl = document.getElementById('EnquiryPageModal');
+            let fixModalEl = document.getElementById('fixMemberModal');
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -334,7 +338,6 @@
                         placeholder: "Select",
                         allowClear: true
                     });
-
                 });
             });
 
@@ -404,7 +407,6 @@
             });
             $('#MeetingPageModal #meeting_with').on('change', function () {
                 let selectedValue = $(this).val();
-                console.log("selectedValue: ", selectedValue);
                 let url = `{{ route('get-meeting_by') }}`
                 fetch(url, {
                     headers: {
@@ -536,6 +538,109 @@
                     toastr.error(data.message || 'There was an error saving the enquiry.');
                 }
             });
+
+
+
+            $('#modl_fix').click(function () {
+
+
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+
+
+                // check if client has already enquired
+                let url = "{{ route('check-fix-member', ['rno' => ':rno']) }}";
+                url = url.replace(':rno', selected_rno);
+                fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(response => response.json()).then(data => {
+                    console.log(data)
+                    if (data.status == 'error') {
+                        toastr.error(data.message)
+                        return;
+                    } else {
+                        let modal = bootstrap.Modal.getInstance(fixModalEl) ||
+                            new bootstrap.Modal(fixModalEl);
+                        modal.show()
+                    }
+                })
+
+                $("#fixMemberModal #fixMemberModal_rno").val(selected_rno);
+                $("#fixMemberModal #fixMemberModal_refname").val(selected_refname)
+                $("#fixMemberModal #fixMemberModal_refno").val(selected_rno)
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+                    $('#fixMemberModal #fix_by').html(options).select2({
+                        dropdownParent: $('#fixMemberModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+                });
+            });
+
+
+
+
+
+            $("#frmFixMember").validate({
+                rules: {
+                    fix_by: "required",
+                    fixed_through: "required",
+                    remarks: "required",
+                },
+                messages: {
+                    fix_by: "Please select fix by",
+                    fixed_through: "Please select fixed through",
+                    remarks: "Please enter remarks",
+                },
+                submitHandler: function (form) {
+                    // form.submit();
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                            });
+                        }
+                    });
+
+                }
+            })
+
+
         });
     </script>
 @endsection

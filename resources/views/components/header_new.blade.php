@@ -310,25 +310,25 @@
                         <span data-key="t-chat">Chat</span>
                     </a>
                 </li>
-
+                --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="briefcase"></i>
                         <span data-key="t-ecommerce">Others</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="#" key="t-products">Sent Package</a></li>
-                        <li><a href="#" data-key="t-product-detail">Print Request</a></li>
-                        <li><a href="#" key="t-products">Fix/Active</a></li>
-                        <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
+                        {{-- <li><a href="#" key="t-products">Sent Package</a></li> --}}
+                        {{-- <li><a href="#" data-key="t-product-detail">Print Request</a></li> --}}
+                        <li><a href="{{ route('fix-member.index') }}" key="t-products">Fix/Active</a></li>
+                        {{-- <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
                         <li><a href="#" key="t-products">View Massage</a></li>
                         <li><a href="#" data-key="t-product-detail">Add Attendance</a></li>
                         <li><a href="#" key="t-products">Reminder</a></li>
                         <li><a href="#" data-key="t-product-detail">Wrong Email</a></li>
                         <li><a href="#" data-key="t-product-detail">Web Data</a></li>
-                        <li><a href="#" key="t-products">Chat Report</a></li>
+                        <li><a href="#" key="t-products">Chat Report</a></li> --}}
                     </ul>
-                </li> --}}
+                </li>
 
             </ul>
 

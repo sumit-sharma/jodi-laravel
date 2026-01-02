@@ -7,6 +7,7 @@ use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\EnquiryController;
 use App\Http\Controllers\Panel\FeedbackController;
+use App\Http\Controllers\Panel\FixMemberController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
 use App\Http\Controllers\Panel\ReferenceController;
@@ -105,4 +106,9 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/feedback/{rno}', [FeedbackController::class, 'feedbackList'])->name('feedback');
     Route::get('/fetch-feedback/{type}/{rno}', [FeedbackController::class, 'fetchFeedbackByType'])->name('fetch-feedback');
+
+    Route::post('/save-fix-member', [FixMemberController::class, 'store'])->name('save-fix-member');
+    Route::get('/check-member/{rno}', [FixMemberController::class, 'checkMember'])->name('check-fix-member');
+    Route::get('/fix-member', [FixMemberController::class, 'index'])->name('fix-member.index');
+    Route::put('/update-fix-active-job/{action}/{rno}', [FixMemberController::class, 'updateFixActiveJob'])->name('update-fix-active-job');
 });

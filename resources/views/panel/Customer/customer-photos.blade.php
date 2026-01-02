@@ -7,7 +7,7 @@
         <div class="row">
 
             <?php // include 'includes/inner-menu.php';
-                                    ?>
+                                        ?>
 
             <div class="col-xl-12">
                 <!-- card -->
@@ -66,10 +66,10 @@
                                                             <img src="{{ url('uploads/customer/' . $item->photo) }}"
                                                                 class="img-fluid" width="200" alt="profile pictures">
                                                         </a>
-                                                        <p align="center" class="mt-2">
+                                                        {{-- <p align="center" class="mt-2">
                                                             <a href="javascript:;" data-photo="{{ $item->photo }}"
                                                                 class="btn_delpic text-danger"><i data-feather="delete"></i></a>
-                                                        </p>
+                                                        </p> --}}
 
                                                     </div>
                                                 </div>

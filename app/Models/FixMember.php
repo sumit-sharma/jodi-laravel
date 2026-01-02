@@ -23,4 +23,9 @@ class FixMember extends Model
         'update_date',
         'update_time',
     ];
+
+    public function viewProfile()
+    {
+        return $this->belongsTo(ViewProfile::class, 'rno', 'rno');
+    }
 }
