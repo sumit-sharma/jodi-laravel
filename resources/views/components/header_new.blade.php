@@ -235,7 +235,8 @@
                         <li><a href="show-advt-data.php" data-key="t-orders">Show Advt Data</a></li> --}}
                         <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
                         </li>
-                        {{-- <li><a href="show-hold-list.php" data-key="t-cart">Show Hold Data</a></li>
+                        <li><a href="{{ route('hold-member.index') }}" data-key="t-cart">Show Hold Data</a></li>
+                        {{-- 
                         <li><a href="show-all-hold-data.php" data-key="t-checkout">Show All Hold Data</a></li>
                         <li><a href="show-other-data.php" data-key="t-shops">Show Other Data</a></li>
                         <li><a href="show-website-data.php" data-key="t-add-product">Show Website Data</a></li>

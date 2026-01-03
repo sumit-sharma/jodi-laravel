@@ -8,6 +8,7 @@ use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\EnquiryController;
 use App\Http\Controllers\Panel\FeedbackController;
 use App\Http\Controllers\Panel\FixMemberController;
+use App\Http\Controllers\Panel\HoldMemberController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
 use App\Http\Controllers\Panel\ReferenceController;
@@ -108,7 +109,12 @@ Route::middleware("auth")->group(function () {
     Route::get('/fetch-feedback/{type}/{rno}', [FeedbackController::class, 'fetchFeedbackByType'])->name('fetch-feedback');
 
     Route::post('/save-fix-member', [FixMemberController::class, 'store'])->name('save-fix-member');
-    Route::get('/check-member/{rno}', [FixMemberController::class, 'checkMember'])->name('check-fix-member');
+    Route::get('/check-fix-member/{rno}', [FixMemberController::class, 'checkFixMember'])->name('check-fix-member');
     Route::get('/fix-member', [FixMemberController::class, 'index'])->name('fix-member.index');
     Route::put('/update-fix-active-job/{action}/{rno}', [FixMemberController::class, 'updateFixActiveJob'])->name('update-fix-active-job');
+
+
+    Route::get('/hold-member-list', [HoldMemberController::class, 'index'])->name('hold-member.index');
+    Route::post('/save-hold-member', [HoldMemberController::class, 'store'])->name('save-hold-member');
+    Route::get('/check-hold-member/{rno}', [HoldMemberController::class, 'checkHoldMember'])->name('check-hold-member');
 });

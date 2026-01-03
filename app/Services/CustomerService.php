@@ -7,6 +7,7 @@ use App\Models\Enquiry;
 use App\Models\Feedback;
 use App\Models\FixMember;
 use App\Models\Followup;
+use App\Models\HoldMember;
 use App\Models\Interaction;
 use App\Models\Meeting;
 use App\Models\ProfileBio;
@@ -440,5 +441,36 @@ class CustomerService
                 ]);
             return true;
         });
+    }
+
+    public function toggleHoldReleaseMember($data)
+    {
+        return DB::transaction(function () use ($data) {
+            $ost = $data['status'] == 0 ? 'F' : '';
+            HoldMember::create([
+                'rno'         => $data['rno'],
+                'hold_req_by' => auth()->user()->username,
+                'hold_by'     => $data['hold_by'],
+                'dated'       => $data['dated'] ?? now()->format('Y-m-d'),
+                'time'        => $data['time'] ?? now()->format('H:i:s'),
+                'reason'      => $data['reason'],
+                'status'      => $data['status']
+            ]);
+
+            ViewProfile::where('rno', $data['rno'])
+                ->update(['ost' => $ost]);
+            return true;
+        });
+    }
+
+    public function getHoldMembers($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = HoldMember::with('viewProfile')->orderBy($sortBy, $orderBy)
+            ->whereHas('viewProfile', fn($query) => $query->where('ost', 'F'))
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 }

@@ -64,7 +64,7 @@ class FixMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function checkMember(int $rno)
+    public function checkFixMember(int $rno)
     {
         $holdMemberCount = $this->customerService->checkHoldMember($rno);
 

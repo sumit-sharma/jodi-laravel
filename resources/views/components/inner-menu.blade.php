@@ -25,10 +25,11 @@
                                     <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Visited/Non Visited </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Hold/ release</a>
                                     <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a> --}}
-                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_fix"
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_hold"
+                                        data-key="holdMemberModal">Hold/ release</a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_fix"
                                         data-key="fixMemberModal">Fix/Active </a>
                                     {{-- <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a> --}}
@@ -192,6 +193,7 @@
     @include('components.meeting_modal')
     @include('components.enquiry_modal')
     @include('components.fix-member-modal')
+    @include('components.hold-member-modal')
 </div>
 
 @section('bottom-js')
@@ -276,6 +278,8 @@
             let saveSLModalEl = document.getElementById('SaveSLModal');
             let enqModalEl = document.getElementById('EnquiryPageModal');
             let fixModalEl = document.getElementById('fixMemberModal');
+            let holdModalEl = document.getElementById('holdMemberModal');
+
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -542,14 +546,10 @@
 
 
             $('#modl_fix').click(function () {
-
-
                 if (selected_rno == "") {
                     toastr.error("please check candidate first")
                     return;
                 }
-
-
                 // check if client has already enquired
                 let url = "{{ route('check-fix-member', ['rno' => ':rno']) }}";
                 url = url.replace(':rno', selected_rno);
@@ -585,9 +585,6 @@
                     });
                 });
             });
-
-
-
 
 
             $("#frmFixMember").validate({
@@ -638,8 +635,121 @@
                     });
 
                 }
-            })
+            });
 
+
+
+            $('#modl_hold').click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                let url = "{{ route('check-hold-member', ['rno' => ':rno']) }}";
+                url = url.replace(':rno', selected_rno);
+                fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(response => response.json()).then(data => {
+                    console.log(data)
+                    if (data.status == 'error') {
+                        $("#holdMemberModal #holdMemberModal_status").val(1);
+                        $("#holdMemberModal .holdMemberModal_action_label").text("Release");
+                    } else {
+                        $("#holdMemberModal #holdMemberModal_status").val(0);
+                        $("#holdMemberModal .holdMemberModal_action_label").text("Hold");
+                    }
+
+                    let modal = bootstrap.Modal.getInstance(holdModalEl) ||
+                        new bootstrap.Modal(holdModalEl);
+                    modal.show()
+                })
+
+                $("#holdMemberModal #holdMemberModal_rno").val(selected_rno);
+                $("#holdMemberModal #holdMemberModal_refname").val(selected_refname)
+                $("#holdMemberModal #holdMemberModal_refno").val(selected_rno)
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+                    $('#holdMemberModal #hold_by').html(options).select2({
+                        dropdownParent: $('#holdMemberModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+                });
+            });
+
+
+
+            $("#frmHoldMember").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    hold_by: "required",
+                    reason: "required",
+                },
+                messages: {
+                    hold_by: "Please select hold by",
+                    reason: "Please enter reason",
+                },
+                submitHandler: function (form) {
+                    // form.submit();
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                            });
+                        }
+                    });
+
+                }
+            });
 
         });
     </script>
