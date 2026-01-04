@@ -1,44 +1,45 @@
+<header id="page-topbar">
+    <div class="navbar-header">
+        <div class="d-flex">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <a href="index.php" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="assets/images/emb-logo.webp" alt="" height="40">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="assets/images/emb-logo.webp" alt="" height="24"> <span class="logo-txt"><img
+                                src="assets/images/js-logo.webp" alt="" height="34"></span>
+                    </span>
+                </a>
 
-            <header id="page-topbar">
-                <div class="navbar-header">
-                    <div class="d-flex">
-                        <!-- LOGO -->
-                        <div class="navbar-brand-box">
-                            <a href="index.php" class="logo logo-dark">
-                                <span class="logo-sm">
-                                    <img src="assets/images/emb-logo.webp" alt="" height="40">
-                                </span>
-                                <span class="logo-lg">
-                                    <img src="assets/images/emb-logo.webp" alt="" height="24"> <span class="logo-txt"><img src="assets/images/js-logo.webp" alt="" height="34"></span>
-                                </span>
-                            </a>
+                <a href="index.html" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="assets/images/emb-logo.webp" alt="" height="15">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="assets/images/emb-logo.webp" alt="" height="34"> <span class="logo-txt"><img
+                                src="assets/images/js-logo.webp" alt="" height="34"></span>
+                    </span>
+                </a>
+            </div>
 
-                            <a href="index.html" class="logo logo-light">
-                                <span class="logo-sm">
-                                    <img src="assets/images/emb-logo.webp" alt="" height="15">
-                                </span>
-                                <span class="logo-lg">
-                                    <img src="assets/images/emb-logo.webp" alt="" height="34"> <span class="logo-txt"><img src="assets/images/js-logo.webp" alt="" height="34"></span>
-                                </span>
-                            </a>
-                        </div>
+            <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn">
+                <i class="fa fa-fw fa-bars"></i>
+            </button>
 
-                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn">
-                            <i class="fa fa-fw fa-bars"></i>
-                        </button>
-
-                        <!-- App Search-->
-                        <!--<form class="app-search d-none d-lg-block">
+            <!-- App Search-->
+            <!--<form class="app-search d-none d-lg-block">
                             <div class="position-relative">
                                 <input type="search" class="form-control" placeholder="Search...">
                                 <button class="btn btn-primary" type="button"><i class="bx bx-search-alt align-middle"></i></button>
                             </div>
                         </form>-->
-                    </div>
+        </div>
 
-                    <div class="d-flex">
+        <div class="d-flex">
 
-                        <!--<div class="dropdown d-inline-block d-lg-none ms-2">
+            <!--<div class="dropdown d-inline-block d-lg-none ms-2">
                             <button type="button" class="btn header-item" id="page-header-search-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i data-feather="search" class="icon-lg"></i>
@@ -58,7 +59,7 @@
                             </div>
                         </div>-->
 
-                       <!-- <div class="dropdown d-none d-sm-inline-block">
+            <!-- <div class="dropdown d-none d-sm-inline-block">
                             <button type="button" class="btn header-item"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img id="header-lang-img" src="assets/images/flags/us.jpg" alt="Header Language" height="16">
@@ -150,7 +151,7 @@
                             </div>
                         </div>-->
 
-                       <!-- <div class="dropdown d-inline-block">
+            <!-- <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item noti-icon position-relative" id="page-header-notifications-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i data-feather="bell" class="icon-lg"></i>
@@ -239,215 +240,219 @@
                             </div>
                         </div>-->
 
-                        <!--<div class="dropdown d-inline-block">
+            <!--<div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item right-bar-toggle me-2">
                                 <i data-feather="settings" class="icon-lg"></i>
                             </button>
                         </div>-->
 
-                        <div class="dropdown d-inline-block">
-                            <button type="button" class="btn header-item bg-light-subtle border-start border-end" id="page-header-user-dropdown"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-4.jpg"
-                                    alt="Header Avatar">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium">{{ auth()->user()->name }}</span>
-                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <!-- item-->
-                                {{-- <a class="dropdown-item" href="apps-contacts-profile.html"><i class="mdi mdi-face-profile font-size-16 align-middle me-1"></i> Profile</a> --}}
-                                {{-- <a class="dropdown-item" href="auth-lock-screen.html"><i class="mdi mdi-lock font-size-16 align-middle me-1"></i> Lock screen</a> --}}
-                                <div class="dropdown-divider"></div>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</button>
-                                </form>
-                                {{-- <a class="dropdown-item" href="auth-logout.html"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a> --}}
+            <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item bg-light-subtle border-start border-end"
+                    id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-4.jpg"
+                        alt="Header Avatar">
+                    <span class="d-none d-xl-inline-block ms-1 fw-medium">{{ auth()->user()->name }}</span>
+                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <!-- item-->
+                    {{-- <a class="dropdown-item" href="apps-contacts-profile.html"><i
+                            class="mdi mdi-face-profile font-size-16 align-middle me-1"></i> Profile</a> --}}
+                    {{-- <a class="dropdown-item" href="auth-lock-screen.html"><i
+                            class="mdi mdi-lock font-size-16 align-middle me-1"></i> Lock screen</a> --}}
+                    <div class="dropdown-divider"></div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item"><i
+                                class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</button>
+                    </form>
+                    {{-- <a class="dropdown-item" href="auth-logout.html"><i
+                            class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a> --}}
 
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
-            </header>
+            </div>
 
-            <!-- ========== Left Sidebar Start ========== -->
-            <div class="vertical-menu">
+        </div>
+    </div>
+</header>
 
-                <div data-simplebar class="h-100">
+<!-- ========== Left Sidebar Start ========== -->
+<div class="vertical-menu">
 
-                    <!--- Sidemenu -->
-                    <div id="sidebar-menu">
-                        <!-- Left Menu Start -->
-                        <ul class="metismenu list-unstyled" id="side-menu">
-                            <!--<li class="menu-title" data-key="t-menu">Menu</li>-->
+    <div data-simplebar class="h-100">
 
-                            <li>
-                                <a href="/dashboard">
-                                    <i data-feather="monitor"></i>
-                                    <!--<span class="badge rounded-pill bg-success-subtle text-success float-end">9+</span>-->
-                                    <span data-key="t-dashboard">Dashboard</span>
-                                </a>
-                            </li>
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+            <!-- Left Menu Start -->
+            <ul class="metismenu list-unstyled" id="side-menu">
+                <!--<li class="menu-title" data-key="t-menu">Menu</li>-->
 
-                            <!--<li class="menu-title" data-key="t-apps">Apps</li>-->
+                <li>
+                    <a href="/dashboard">
+                        <i data-feather="monitor"></i>
+                        <!--<span class="badge rounded-pill bg-success-subtle text-success float-end">9+</span>-->
+                        <span data-key="t-dashboard">Dashboard</span>
+                    </a>
+                </li>
 
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                     <i data-feather="home"></i>
-                                    <span data-key="t-ecommerce">Main</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="permission.php" key="t-products">Permission</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Change Password</a></li>
-                                    <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
-                                    <li><a href="#" data-key="t-customers">Link TL-TC</a></li>
-                                    <li><a href="#" data-key="t-cart">Transfer RM</a></li>
-                                    <li><a href="#" data-key="t-checkout">Transfer TC</a></li>
-                                    <li><a href="feedback-options.php" data-key="t-shops">Feedback Option</a></li>
-                                    <li><a href="caste-options.php" data-key="t-add-product">Caste Option</a></li>
-                                    <li><a href="occupation-options.php" data-key="t-seller">Occupation Option</a></li>
-                                    <li><a href="zone-options.php" data-key="t-sale-details">Zone Option</a></li>
-									<li><a href="#" data-key="t-shops">Enter Massage</a></li>
-                                    <li><a href="update-my-info.php" data-key="t-add-product">Update My Info</a></li>
-                                    <li><a href="#" data-key="t-seller">Updates Timmings</a></li>
-                                    <li><a href="#" data-key="t-sale-details">Reset Password</a></li>
-									<li><a href="#" data-key="t-sale-details">Reference Graph</a></li>
-                                </ul>
-                            </li>
+                <!--<li class="menu-title" data-key="t-apps">Apps</li>-->
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="settings"></i>
-                                    <span data-key="t-ecommerce">Services</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="search-members.php" key="t-products">Search Members</a></li>
-                                    <li><a href="form-transfer.php" data-key="t-product-detail">Form Transfer</a></li>
-                                    <li><a href="show-all-enquiry.php" data-key="t-orders">Show All Enquiry</a></li>
-                                    <li><a href="show-all-rm-data.php" data-key="t-customers">Show All RM Data</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="home"></i>
+                        <span data-key="t-ecommerce">Main</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="permission.php" key="t-products">Permission</a></li>
+                        <li><a href="#" data-key="t-product-detail">Change Password</a></li>
+                        <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
+                        <li><a href="#" data-key="t-customers">Link TL-TC</a></li>
+                        <li><a href="#" data-key="t-cart">Transfer RM</a></li>
+                        <li><a href="#" data-key="t-checkout">Transfer TC</a></li>
+                        <li><a href="feedback-options.php" data-key="t-shops">Feedback Option</a></li>
+                        <li><a href="caste-options.php" data-key="t-add-product">Caste Option</a></li>
+                        <li><a href="occupation-options.php" data-key="t-seller">Occupation Option</a></li>
+                        <li><a href="zone-options.php" data-key="t-sale-details">Zone Option</a></li>
+                        <li><a href="#" data-key="t-shops">Enter Massage</a></li>
+                        <li><a href="update-my-info.php" data-key="t-add-product">Update My Info</a></li>
+                        <li><a href="#" data-key="t-seller">Updates Timmings</a></li>
+                        <li><a href="#" data-key="t-sale-details">Reset Password</a></li>
+                        <li><a href="#" data-key="t-sale-details">Reference Graph</a></li>
+                    </ul>
+                </li>
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="users"></i>
-                                    <span data-key="t-ecommerce">Reference</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="add-edit-references.php" key="t-products">Add/Edit Reference</a></li>
-                                    <li><a href="show-references.php" data-key="t-product-detail">Show Raference</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="settings"></i>
+                        <span data-key="t-ecommerce">Services</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="search-members.php" key="t-products">Search Members</a></li>
+                        <li><a href="form-transfer.php" data-key="t-product-detail">Form Transfer</a></li>
+                        <li><a href="show-all-enquiry.php" data-key="t-orders">Show All Enquiry</a></li>
+                        <li><a href="show-all-rm-data.php" data-key="t-customers">Show All RM Data</a></li>
+                    </ul>
+                </li>
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="database"></i>
-                                    <span data-key="t-ecommerce">Data</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="add-fresh-data.php" key="t-products">Add Fresh Data</a></li>
-                                    <li><a href="add-advt-data.php" data-key="t-product-detail">Add Advt Data</a></li>
-                                    <li><a href="show-advt-data.php" data-key="t-orders">Show Advt Data</a></li>
-                                    <li><a href="#" data-key="t-customers">Add/Edit Appointment</a></li>
-                                    <li><a href="#" data-key="t-cart">Show Hold Data</a></li>
-                                    <li><a href="#" data-key="t-checkout">Show All Hold Data</a></li>
-                                    <li><a href="#" data-key="t-shops">Show Other Data</a></li>
-                                    <li><a href="#" data-key="t-add-product">Show Website Data</a></li>
-                                    <li><a href="#" data-key="t-seller">Show Done List</a></li>
-                                    <li><a href="#" data-key="t-sale-details">Show My NA Data</a></li>
-									<li><a href="#" data-key="t-shops">Show My None-NA Data</a></li>
-                                    <li><a href="#" data-key="t-add-product">Direct Meeting</a></li>
-                                    <li><a href="#" data-key="t-seller">Fresh Call</a></li>
-                                    <li><a href="#" data-key="t-sale-details">Daily Moment</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="users"></i>
+                        <span data-key="t-ecommerce">Reference</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="add-edit-references.php" key="t-products">Add/Edit Reference</a></li>
+                        <li><a href="show-references.php" data-key="t-product-detail">Show Raference</a></li>
+                    </ul>
+                </li>
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="mail"></i>
-                                    <span data-key="t-ecommerce">Mail</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-products">Non Paid Mail/Download</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Update None Paid Mail</a></li>
-									<li><a href="#" key="t-products">All Pending Mail</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Sent Self Profile</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="database"></i>
+                        <span data-key="t-ecommerce">Data</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="add-fresh-data.php" key="t-products">Add Fresh Data</a></li>
+                        <li><a href="add-advt-data.php" data-key="t-product-detail">Add Advt Data</a></li>
+                        <li><a href="show-advt-data.php" data-key="t-orders">Show Advt Data</a></li>
+                        <li><a href="#" data-key="t-customers">Add/Edit Appointment</a></li>
+                        <li><a href="#" data-key="t-cart">Show Hold Data</a></li>
+                        <li><a href="#" data-key="t-checkout">Show All Hold Data</a></li>
+                        <li><a href="#" data-key="t-shops">Show Other Data</a></li>
+                        <li><a href="#" data-key="t-add-product">Show Website Data</a></li>
+                        <li><a href="#" data-key="t-seller">Show Done List</a></li>
+                        <li><a href="#" data-key="t-sale-details">Show My NA Data</a></li>
+                        <li><a href="#" data-key="t-shops">Show My None-NA Data</a></li>
+                        <li><a href="#" data-key="t-add-product">Direct Meeting</a></li>
+                        <li><a href="#" data-key="t-seller">Fresh Call</a></li>
+                        <li><a href="#" data-key="t-sale-details">Daily Moment</a></li>
+                    </ul>
+                </li>
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="user-plus"></i>
-                                    <span data-key="t-ecommerce">Follow</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-products">My All Follow UPS</a></li>
-                                    <li><a href="#" data-key="t-product-detail">My Prospective</a></li>
-									<li><a href="#" key="t-products">Transfer Followup</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Follow Records</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="mail"></i>
+                        <span data-key="t-ecommerce">Mail</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="#" key="t-products">Non Paid Mail/Download</a></li>
+                        <li><a href="#" data-key="t-product-detail">Update None Paid Mail</a></li>
+                        <li><a href="#" key="t-products">All Pending Mail</a></li>
+                        <li><a href="#" data-key="t-product-detail">Sent Self Profile</a></li>
+                    </ul>
+                </li>
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="repeat"></i>
-                                    <span data-key="t-ecommerce">Match</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-products">Serach Match</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="user-plus"></i>
+                        <span data-key="t-ecommerce">Follow</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="#" key="t-products">My All Follow UPS</a></li>
+                        <li><a href="#" data-key="t-product-detail">My Prospective</a></li>
+                        <li><a href="#" key="t-products">Transfer Followup</a></li>
+                        <li><a href="#" data-key="t-product-detail">Follow Records</a></li>
+                    </ul>
+                </li>
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="file-text"></i>
-                                    <span data-key="t-ecommerce">Report</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-products">Employee List</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Appointment List</a></li>
-									<li><a href="#" key="t-products">Daily Report</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Finance Report</a></li>
-									<li><a href="#" key="t-products">Meetings Report</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Edit Log Report</a></li>
-									<li><a href="#" key="t-products">Followup Auto Report</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Attendance Reports</a></li>
-									<li><a href="#" data-key="t-product-detail">My Future Calls</a></li>
-									<li><a href="#" key="t-products">No Touch Clints</a></li>
-                                    <li><a href="#" data-key="t-product-detail">No Meetings Reports</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="repeat"></i>
+                        <span data-key="t-ecommerce">Match</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="#" key="t-products">Serach Match</a></li>
+                    </ul>
+                </li>
 
-                            <li>
-                                <a href="#">
-                                    <i data-feather="message-square"></i>
-                                    <span data-key="t-chat">Chat</span>
-                                </a>
-                            </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="file-text"></i>
+                        <span data-key="t-ecommerce">Report</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="#" key="t-products">Employee List</a></li>
+                        <li><a href="#" data-key="t-product-detail">Appointment List</a></li>
+                        <li><a href="#" key="t-products">Daily Report</a></li>
+                        <li><a href="#" data-key="t-product-detail">Finance Report</a></li>
+                        <li><a href="#" key="t-products">Meetings Report</a></li>
+                        <li><a href="#" data-key="t-product-detail">Edit Log Report</a></li>
+                        <li><a href="#" key="t-products">Followup Auto Report</a></li>
+                        <li><a href="#" data-key="t-product-detail">Attendance Reports</a></li>
+                        <li><a href="#" data-key="t-product-detail">My Future Calls</a></li>
+                        <li><a href="#" key="t-products">No Touch Clints</a></li>
+                        <li><a href="#" data-key="t-product-detail">No Meetings Reports</a></li>
+                    </ul>
+                </li>
 
-							<li>
-                                <a href="javascript: void(0);" class="has-arrow">
-                                    <i data-feather="briefcase"></i>
-                                    <span data-key="t-ecommerce">Others</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-products">Sent Package</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Print Request</a></li>
-									<li><a href="#" key="t-products">Fix/Active</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
-									<li><a href="#" key="t-products">View Massage</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Add Attendance</a></li>
-									<li><a href="#" key="t-products">Reminder</a></li>
-                                    <li><a href="#" data-key="t-product-detail">Wrong Email</a></li>
-									<li><a href="#" data-key="t-product-detail">Web Data</a></li>
-									<li><a href="#" key="t-products">Chat Report</a></li>
-                                </ul>
-                            </li>
+                <li>
+                    <a href="#">
+                        <i data-feather="message-square"></i>
+                        <span data-key="t-chat">Chat</span>
+                    </a>
+                </li>
 
-                        </ul>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i data-feather="briefcase"></i>
+                        <span data-key="t-ecommerce">Others</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="#" key="t-products">Sent Package</a></li>
+                        <li><a href="#" data-key="t-product-detail">Print Request</a></li>
+                        <li><a href="#" key="t-products">Fix/Active</a></li>
+                        <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
+                        <li><a href="#" key="t-products">View Massage</a></li>
+                        <li><a href="#" data-key="t-product-detail">Add Attendance</a></li>
+                        <li><a href="#" key="t-products">Reminder</a></li>
+                        <li><a href="#" data-key="t-product-detail">Wrong Email</a></li>
+                        <li><a href="#" data-key="t-product-detail">Web Data</a></li>
+                        <li><a href="#" key="t-products">Chat Report</a></li>
+                    </ul>
+                </li>
 
-                        <!--<div class="card sidebar-alert shadow-none text-center mx-4 mb-0 mt-5">
+            </ul>
+
+            <!--<div class="card sidebar-alert shadow-none text-center mx-4 mb-0 mt-5">
                             <div class="card-body">
                                 <img src="assets/images/giftbox.png" alt="">
                                 <div class="mt-4">
@@ -457,8 +462,8 @@
                                 </div>
                             </div>
                         </div>-->
-                    </div>
-                    <!-- Sidebar -->
-                </div>
-            </div>
-            <!-- Left Sidebar End -->
+        </div>
+        <!-- Sidebar -->
+    </div>
+</div>
+<!-- Left Sidebar End -->

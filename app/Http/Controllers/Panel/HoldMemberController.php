@@ -21,7 +21,7 @@ class HoldMemberController extends Controller
      */
     public function index(Request $request)
     {
-        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1]);
         $data['members'] = $this->customerService->getHoldMembers($request);
         return view('panel.Data.hold-list', $data);
     }

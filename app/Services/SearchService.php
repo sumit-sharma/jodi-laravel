@@ -13,12 +13,19 @@ class SearchService
 {
     public function search(array $input, int $perPage = 20,  int $page = 1)
     {
-        $searchField = $input['searchinfield'];
-        $searchValue = trim($input['searchvalue']);
-        $dtype       = $input['dtype'] ?? [];
-        $status      = $input['chkstatus'] ?? [];
+        $searchField  = $input['searchinfield'];
+        $searchValue  = trim($input['searchvalue']);
+        $dtype        = $input['dtype'] ?? [];
+        $status       = $input['chkstatus'] ?? [];
+        $gender       = $input['g'] ?? '';
+        $fromAge      = $input['from_age'] ?? 17;
+        $toAge        = $input['to_age'] ?? 70;
+        $ast          = $input['ast'] ?? '';
+        $arealocation = $input['arealocation'] ?? '';
+        $ms           = $input['ms'] ?? '';
+        $searchterm  = $input['searchterm'] ?? '';
 
-        $cacheKey = 'search_results_' . md5(json_encode(['searchField' => $searchField, 'searchValue' => $searchValue, 'dtype' => $dtype, 'status' => $status, 'page'  => $page, 'perPage' => $perPage]));
+        $cacheKey = 'search_results_' . md5(json_encode(['searchField' => $searchField, 'searchValue' => $searchValue, 'searchterm' => $searchterm, 'g' => $gender, 'fromAge' => $fromAge, 'toAge' => $toAge, 'ast' => $ast, 'arealocation' => $arealocation, 'ms' => $ms, 'dtype' => $dtype, 'status' => $status, 'page'  => $page, 'perPage' => $perPage]));
 
         if ($searchField === 'dob') {
             $searchValue = date('Y-m-d', strtotime(str_replace('/', '-', $searchValue)));
@@ -125,6 +132,46 @@ class SearchService
                 $occList = self::get_occdetail($searchValue);
                 $query->whereIn('oc', $occList);
                 break;
+        }
+        if (isset($input['gender']) && $input['gender'] != '') {
+            $query =  $query->when($input['gender'], fn($q) => $q->where('g', $input['gender']));
+        }
+
+        if (isset($input['from_age']) && $input['from_age'] != '') {
+            // $query =  $query->when($input['from_age'], fn($q) => $q->where('age', '>=', $input['from_age']));
+            $query->whereHas(
+                'bio',
+                fn($q) =>
+                $q->where('dob', '<=', now()->subYears($fromAge + 1)->addDay())
+            );
+        }
+        if (isset($input['to_age']) && $input['to_age'] != '') {
+            $query->whereHas(
+                'bio',
+                fn($q) =>
+                $q->where('dob', '>=', now()->subYears($toAge + 1)->addDay())
+            );
+        }
+
+        if (isset($input['ast']) && $input['ast'] != '') {
+            $query =  $query->when($input['ast'], fn($q) => $q->where('ast', $input['ast']));
+        }
+
+        if (isset($input['arealocation']) && $input['arealocation'] != '') {
+            // $query =  $query->when($input['arealocation'], fn($q) => $q->where('ast', $input['ast']));
+            $query->whereHas(
+                'personal',
+                fn($q) =>
+                $q->where('arealocation', 'like', "%{$input['arealocation']}%")
+            );
+        }
+
+        if (isset($input['ms']) && $input['ms'] != '') {
+            $query =  $query->when($input['ms'], fn($q) => $q->where('ms', $input['ms']));
+        }
+
+        if (isset($input['searchterm']) && $input['searchterm'] != '') {
+            $query =  $query->when($input['searchterm'], fn($q) => $q->where('refname', 'like', "%{$input['searchterm']}%"));
         }
 
         // Sort latest profiles first

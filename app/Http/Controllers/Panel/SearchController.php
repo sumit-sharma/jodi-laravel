@@ -40,8 +40,8 @@ class SearchController extends Controller
             }
 
             $searchLog = $this->searchService->saveSearchLog($data);
-
-            return view('panel.Services.SearchMembersResult', compact('results'));
+            $inputdata = $data;
+            return view('panel.Services.SearchMembersResult', compact('results', 'inputdata'));
         } catch (\Throwable $th) {
             //throw $th;
             return $th;

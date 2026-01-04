@@ -40,22 +40,23 @@
 
                             <div class="col-md-8">
                                 <div class="mb-3">
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
+                                    <button data-bs-toggle="offcanvas" data-bs-target="#filterModal" type="button"
+                                        class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bx-filter-alt label-icon"></i> Filter</button>
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
+                                    {{-- <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bxs-eraser label-icon"></i> Remove</button>
-                                    &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
+                                    &nbsp;&nbsp; --}}
+                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light" onclick="resetSearch()"><i
                                             class="bx bx-reset label-icon"></i> Reset</button>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <form class="app-search d-none d-lg-block pt-0 pb-0">
                                     <div class="position-relative">
-                                        <input type="search" class="form-control bg-black opacity-50"
-                                            placeholder="Search...">
-                                        <button class="btn btn-primary" type="button"><i
+                                        <input id="searchFilterText" type="search" class="form-control bg-black opacity-50" value="{{ $inputdata['searchterm'] ?? '' }}"
+                                            placeholder="Search..." autocomplete="off">
+                                        <button id="searchFilterBtn" class="btn btn-primary" type="button"><i
                                                 class="bx bx-search-alt align-middle"></i></button>
                                     </div>
                                 </form>
@@ -145,22 +146,11 @@
                                             <tbody class="pdng_d">
                                                 @foreach ($results as $data)
                                                     <tr>
-                                                        <td>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input chkrno" type="radio"
-                                                                    name="formRadios" data-refname="{{ $data->refname }}"
-                                                                    value="{{ $data->rno }}">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <a href="#" class="biodata_modal" data-bs-toggle="modal"
-                                                                data-bs-target="#Modal_biodata"
-                                                                data-rno="{{ $data->rno }}">{{ $data->rno }}</a>
-                                                        </td>
+                                                        <td><div class="form-check"><input class="form-check-input chkrno" type="radio" name="formRadios" data-refname="{{ $data->refname }}" value="{{ $data->rno }}"></div></td>
+                                                        <td><a href="#" class="biodata_modal" data-bs-toggle="modal" data-bs-target="#Modal_biodata" data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
                                                         <td>{{ $data->g }}</td>
                                                         <td>{{ $data->refname }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->dob)->format('M d Y') }}
-                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->bio->dob)->format('M d Y') }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->bio->dob)->age }}</td>
                                                         <td>{{ msValue($data->ms) }}</td>
                                                         <td>{{ $data->cst }}</td>
@@ -174,14 +164,10 @@
                                                         <td>{{ rsValue($data->rs) }}</td>
                                                         <td>{{ $data->tc }}</td>
                                                         <td>{{ $data->rm }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->profiledate)->format('M d Y') }}
-                                                        </td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->bio->profiledate)->format('M d Y') }}</td>
                                                         <td>
                                                             <div class="btn-group me-1 mt-2">
                                                                 <span class="dropdown-toggle  dropstart dropdown-toggle-split"
@@ -228,6 +214,94 @@
         <!-- end row-->
 
 
+
+        <!-- right offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="filterModal" aria-labelledby="filterModalLabel">
+            <div class="offcanvas-header">
+                <h5 id="filterModalLabel">Set Filters</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form id="searchFilterForm" method="GET" action="{{ route('search-data') }}">
+                    <input type="hidden" name="searchinfield" value="{{ $inputdata['searchinfield'] }}">
+                    <input type="hidden" name="searchvalue" value="{{ $inputdata['searchvalue'] }}">
+                    <input type="hidden" id="hiddenSearchTerm" name="searchterm" value="">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Gender:</label>
+                            <select name="gender" class="form-select">
+                                <option value="">Select</option>
+                                <option value="M" {{ isset($inputdata['gender']) && $inputdata['gender'] == 'M' ? 'selected' : '' }}>Male</option>
+                                <option value="F" {{ isset($inputdata['gender']) && $inputdata['gender'] == 'F' ? 'selected' : '' }}>Female</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">From Age:</label>
+                            <input class="form-control" name="from_age" type="number" min="18" value="{{ $inputdata['from_age'] ?? '' }}">
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">To Age:</label>
+                            <input class="form-control" name="to_age" type="number" max="70" value="{{ $inputdata['to_age'] ?? '' }}">
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Astro Status:</label>
+                            <select name="ast" id="ast" class="form-select">
+                                <option value="">Select</option>
+                                <option value="1" {{ isset($inputdata['ast']) && $inputdata['ast'] == '1' ? 'selected' : '' }}>Manglik</option>
+                                <option value="2" {{ isset($inputdata['ast']) && $inputdata['ast'] == '2' ? 'selected' : '' }}>Slightly Manglik</option>
+                                <option value="3" {{ isset($inputdata['ast']) && $inputdata['ast'] == '3' ? 'selected' : '' }}>Non Manglik</option>
+                                <option value="4" {{ isset($inputdata['ast']) && $inputdata['ast'] == '4' ? 'selected' : '' }}>Don't Believe</option>
+                                <option value="5" {{ isset($inputdata['ast']) && $inputdata['ast'] == '5' ? 'selected' : '' }}>Don't Know</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Location:</label>
+                            <input class="form-control" type="text" value="{{ $inputdata['arealocation'] ?? '' }}" name="arealocation">
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Marital:</label>
+                            <select name="ms" id="ms" class="form-select">
+                                <option value="">Select</option>
+                                <option value="1" {{ isset($inputdata['ms']) && $inputdata['ms'] == '1' ? 'selected' : '' }}>Never Married</option>
+                                <option value="2" {{ isset($inputdata['ms']) && $inputdata['ms'] == '2' ? 'selected' : '' }}>Divorced</option>
+                                <option value="3" {{ isset($inputdata['ms']) && $inputdata['ms'] == '3' ? 'selected' : '' }}>Widow</option>
+                                <option value="4" {{ isset($inputdata['ms']) && $inputdata['ms'] == '4' ? 'selected' : '' }}>Separated</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Search</button>
+                        </div>
+                        <div class="clearfix"></div>
+
+
+
+
+
+                    </div><!--end row-->
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
     </div> <!-- container-fluid -->
 @endsection
 @section('footer-script')
@@ -244,6 +318,42 @@
                 selected_rno = rno;
                 selected_refname = refname;
             });
+            $('#searchFilterBtn').on('click', function () {
+                let search_term =  $("#searchFilterText").val();
+                if(search_term.trim() == ""){
+                    return false;
+                }
+                $("#hiddenSearchTerm").val(search_term);
+                $("#searchFilterForm").submit();
+            });
+            
+            // Trigger search button click on Enter key press
+            $('#searchFilterText').on('keypress', function (e) {
+                if (e.which === 13 || e.keyCode === 13) {
+                    e.preventDefault();
+                    $('#searchFilterBtn').click();
+                }
+            });
         });
     </script>
+
+<script>
+function resetSearch() {
+    const url = new URL(window.location.href);
+
+    const searchinfield = url.searchParams.get('searchinfield');
+    const searchvalue   = url.searchParams.get('searchvalue');
+
+    // Clear all params
+    url.search = '';
+
+    // Re-add only required params
+    if (searchinfield) url.searchParams.set('searchinfield', searchinfield);
+    if (searchvalue)   url.searchParams.set('searchvalue', searchvalue);
+
+    // Reload page
+    window.location.href = url.toString();
+}
+</script>
+
 @endsection
