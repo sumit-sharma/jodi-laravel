@@ -17,7 +17,7 @@ class SearchService
         $searchValue  = trim($input['searchvalue']);
         $dtype        = $input['dtype'] ?? [];
         $status       = $input['chkstatus'] ?? [];
-        $gender       = $input['g'] ?? '';
+        $gender       = $input['gender'] ?? '';
         $fromAge      = $input['from_age'] ?? 17;
         $toAge        = $input['to_age'] ?? 70;
         $ast          = $input['ast'] ?? '';
