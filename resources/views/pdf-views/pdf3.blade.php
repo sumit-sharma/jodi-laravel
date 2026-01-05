@@ -94,7 +94,8 @@
 			<table width="100%">
 				<tr>
 					<td align="center" style="padding: 0;">
-						<img src="https://jodi-v2.cswebgroup.com/assets/images/pdf-banner.jpg" width="100%" />
+						{{-- <img src="https://jodi-v2.cswebgroup.com/assets/images/pdf-banner.jpg" width="100%" /> --}}
+						<img src="{{ public_path('assets/images/pdf-banner.jpg') }}" width="100%" />
 					</td>
 				</tr>
 			</table>

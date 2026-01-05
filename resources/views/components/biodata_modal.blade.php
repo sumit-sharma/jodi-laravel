@@ -33,8 +33,23 @@
                             <a href="#bio_photos">
                                 <button type="button" class="btn btn-outline-primary">Photos</button>
                             </a>
-                            <a class="btn btn-outline-primary" id="btn_pdf" href="#" target="_blank">PDF <i
-                                    data-feather="download"></i></a>
+                            {{-- <a class="btn btn-outline-primary" id="btn_pdf" href="#" target="_blank">PDF <i
+                                    data-feather="download"></i></a> --}}
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-outline-primary dropdown-toggle"
+                                    data-bs-toggle="dropdown">
+                                    PDF <i data-feather="download"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item btn_pdf" href="javascript:;" data-pdf="pdf1">Pdf
+                                            1</a></li>
+                                    <li><a class="dropdown-item btn_pdf" href="javascript:;" data-pdf="pdf2">Pdf
+                                            2</a></li>
+                                    <li><a class="dropdown-item btn_pdf" href="javascript:;" data-pdf="pdf3">Pdf
+                                            3</a></li>
+                                </ul>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -357,6 +372,16 @@
 
 @section('bottom-section')
     <script>
+        // Handle PDF button clicks
+        $(document).on("click", ".btn_pdf", function (e) {
+            e.preventDefault();
+            const pdfType = $(this).data("pdf"); // Get pdf1, pdf2, or pdf3
+            const rno = $("#Modal_biodata").data("current-rno");
+            if (rno && pdfType) {
+                window.open(`/pdfview/${pdfType}/${rno}`, '_blank');
+            }
+        });
+
         $(document).on("click", ".biodata_modal", function () {
             let rno = $(this).data("rno"); // auto-parsed JSON
             const options = {
@@ -539,7 +564,8 @@
                             break;
                     }
 
-                    $("#Modal_biodata #btn_pdf").attr("href", `/pdfview/pdf1/${item.rno}`);
+                    // Store rno for PDF button clicks
+                    $("#Modal_biodata").data("current-rno", item.rno);
 
                     // $("#Modal_biodata #rno").text(item.rno);
                     $("#Modal_biodata #gender").text(item.g);
@@ -619,7 +645,7 @@
 
                     item.organisation.forEach(org => {
                         companyhtml += `<tr class="company_row"> <td><strong>Company Name:</strong></td> <td>${org.orgname}</td> <td><strong>Designation:</strong></td> <td>${org.orgdept}</td> <td><strong>Working Year:</strong></td> <td>${org.orgyear}</td>
-                                                                                                                                                                                                                                                        </tr>`;
+                                                                                                                                                                                                                                                                                                        </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
