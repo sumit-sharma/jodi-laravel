@@ -8,6 +8,7 @@ use App\Http\Resources\BasicSentMailResource;
 use App\Services\SearchService;
 use App\Services\SendMailService;
 use App\Services\MatchService;
+use App\Services\MiscService;
 use Illuminate\Http\Request;
 
 class SendMailController extends Controller
@@ -43,6 +44,10 @@ class SendMailController extends Controller
     {
         $request->merge(['sentmail' => $rno, 'limit' => $request->limit ?? 20, 'page' => $request->page ?? 1]);
         $data['sendMails'] = $this->sendMailService->index($request);
+        $data['sendMailProposals'] = $this->sendMailService->sendMailProposals($rno, 1);
+        $data['feedbackOptions'] = MiscService::getTableData('feedback_option', ['id', 'feedback']);
+        $data['rno'] = $rno;
+        // dd($data['sendMailProposals']);
         return view('panel.Customer.sent-mail-list', $data);
     }
 

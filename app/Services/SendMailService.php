@@ -26,6 +26,13 @@ class SendMailService
             ->when($request->sentmail, fn($query) => $query->where('rno', $request->sentmail)->orWhere('proposal', $request->sentmail));
     }
 
+    public function sendMailProposals($rno, $status)
+    {
+        return Sendmail::with(['receiver'])
+            ->where('rno', $rno)
+            ->where('status', $status)
+            ->get();
+    }
 
     public function store(array $data)
     {

@@ -207,8 +207,8 @@ class CustomerService
 
     public function saveProfileMoreInfo($data)
     {
-        $data['dated'] = $data['dated'] ?? now()->format('y-m-d');
-        $data['time']  = $data['time'] ?? now()->format('h:i:s');
+        $data['dated'] = $data['dated'] ?? now()->format('Y-m-d');
+        $data['time']  = $data['time'] ?? now()->format('H:i:s');
         $data['empid'] = $data['empid'] ?? auth()->user()->username;
 
         return ProfileMoreInfo::updateOrCreate(['rno' => $data['rno']], $data);
@@ -340,10 +340,21 @@ class CustomerService
         });
     }
 
+
+    public function storeFeedback($data)
+    {
+        $data['fdate'] = $data['dated'] ?? now()->format('Y-m-d');
+        $data['time']  = $data['time'] ?? now()->format('H:i:s');
+        $data['empby'] = $data['empid'] ?? auth()->user()->username;
+        return Feedback::create($data);
+    }
+
+
     public function storeFixMember($data)
     {
-        $data['dated'] = $data['dated'] ?? now()->format('y-m-d');
-        $data['time']  = $data['time'] ?? now()->format('h:i:s');
+        $data['dated'] = $data['dated'] ?? now()->format('Y-m-d');
+        $data['time']  = $data['time'] ?? now()->format('H:i:s');
+
         // $data['empid'] = $data['empid'] ?? auth()->user()->username;
         return FixMember::create($data);
     }

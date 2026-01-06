@@ -42,4 +42,31 @@ class FeedbackController extends Controller
         $feedbacks = $this->customerService->getFeedbackListByType($type, $request);
         return $feedbacks;
     }
+
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'rno' => 'required',
+            'proposal' => 'required',
+            'fstatus'   => 'required',
+            'feedback' => 'required',
+        ], [
+            'rno.required' => 'Rno is required',
+            'proposal.required' => 'Proposal is required',
+            'fstatus.required' => 'Feedback status is required',
+            'feedback.required' => 'Feedback Details is required',
+        ]);
+        $result = $this->customerService->storeFeedback($validated);
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Feedback saved successfully',
+            ]);
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Feedback unable to save',
+        ]);
+    }
 }

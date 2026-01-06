@@ -5,9 +5,7 @@
     <div class="container-fluid">
 
         <div class="row">
-
-
-            <div class="col-xl-12">
+            <div id="feedback_section" class="col-xl-12">
                 <!-- card -->
                 <div class="card">
                     <!-- card body -->
@@ -25,6 +23,73 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
+
+                            <form id="frmSaveFeedback" action="{{ route('save-feedback') }}" method="POST">
+                                @csrf
+                                <div class="col-12">
+                                    <div class="row">
+                                    <div class="col-md-2 mt-2">
+                                        <label for="example-text-input" class="form-label">Reference No:</label>
+                                        <input class="form-control bg-secondary-subtle" type="text" value="{{ $rno }}" id=""
+                                            disabled>
+                                    </div>
+                                    <div class="col-md-2 mt-2">
+                                        <label for="example-text-input" class="form-label">Name: </label>
+                                        <input class="form-control bg-secondary-subtle" type="text" value="{{ fetchCustomerByrno($rno)->refname }}"
+                                            id="" disabled>
+                                    </div>
+                                    <div class="col-md-2 mt-2">
+                                        <label for="example-text-input" class="form-label"> Proposal </label>
+                                        <select name="proposal" class="form-select select2-notag" required>
+                                            <option value="">Select</option>
+                                            @foreach ($sendMailProposals as $proposal)
+                                                <option value="{{ $proposal->proposal }}">{{ $proposal->proposal.'-'.$proposal->receiver->refname }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mt-2">
+                                        <label for="example-text-input" class="form-label"> Feedback Status </label>
+                                        <select name="fstatus" class="form-select" required>
+                                            <option value="0">No</option>
+                                            <option value="1" selected="selected">Yes</option>
+                                            <option value="2">Can't Decide Now</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mt-2">
+                                        <label for="example-text-input" class="form-label"> Feedback Details </label>
+                                        <select id="feedback" name="feedback" class="form-select select2-notag" required>
+                                            <option value="">Select</option>
+                                            @foreach ($feedbackOptions as $item)
+                                                <option value="{{ $item->feedback }}">{{ $item->feedback }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"></div>
+
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <input type="hidden" name="rno" value="{{ $rno }}">
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary w-lg waves-effect waves-light">Send
+                                        Feedback</button>
+                                </div>
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div><!-- end card -->
+                </div><!-- end col -->
+            </div>
+            <div class="clearfix"></div>
+
+
+            <div class="col-xl-12">
+                <!-- card -->
+                <div class="card">
+                    <!-- card body -->
+                    <div class="card-body">
+                        <div class="row">
 
                             <div class="col-md-8 col-12">
                                 {{-- <div class="mb-3">
@@ -99,6 +164,8 @@
                                                                     // If no extension, suffix .jpg to the photo filename
                                                                     $photoWithExtension = $extension ? $photo : $photo . '.jpg';
                                                                 @endphp
+
+                                                                @if (file_exists(url('/uploads/customer/' . $photoWithExtension)))
                                                                 <a href="{{ url('/uploads/customer/' . $photoWithExtension) }}"
                                                                     class="image-popup"
                                                                     data-lightbox="{{ 'gallery_' . $row->rno . '_' . $row->proposal }}">
@@ -106,6 +173,10 @@
                                                                     --}}
                                                                     {{ 'Photo ' . ++$key }}
                                                                 </a>
+                                                                    
+                                                                @endif
+
+
                                                             @endforeach
                                                         </td>
                                                         <td>{{ $row->wc == 1 ? 'C' : '--' }}</td>
@@ -140,5 +211,90 @@
     <!-- lightbox2 -->
     <link href="/assets/plugins/lightbox2/css/lightbox.css" rel="stylesheet">
     <script src="/assets/plugins/lightbox2/js/lightbox.js"></script>
+
+    <script>
+        $(function(){
+            $('#frmSaveFeedback').validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    'proposal': {
+                        required: true
+                    },
+                    'fstatus': {
+                        required: true
+                    },
+                    'feedback': {
+                        required: true
+                    }      
+                },
+                messages: {
+                    'proposal': {
+                        required: 'Proposal is required'
+                    },
+                    'fstatus': {
+                        required: 'Status is required'
+                    },
+                    'feedback': {
+                        required: 'Feedback is required'
+                    }      
+                },
+                submitHandler: function (form) {
+                    // form.submit();
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                            });
+                        }
+                    });
+
+                }
+            });
+        });
+    </script>
+
 
 @endsection
