@@ -11,6 +11,7 @@ use App\Services\MiscService;
 use App\Services\SearchService;
 use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -324,8 +325,18 @@ class CustomerController extends Controller
             'old_tl' => 'nullable',
             'old_rm' => 'nullable',
         ]);
-        // dd($validated);
         $result = $this->customerService->saveTctlrmMember($validated);
         return response()->json(['status' => 'success', 'data' => $result]);
+    }
+
+    public function toggleVisited(Request $request, $rno)
+    {
+        // return $rno;
+        $result = $this->customerService->toggleVisited($rno);
+        if ($result) {
+            Cache::forget($request->cacheKey);
+            return response()->json(['status' => 'success', 'data' => $result]);
+        }
+        return response()->json(['status' => 'error', 'data' => 'There are some error, please try again!']);
     }
 }

@@ -177,10 +177,12 @@ class SearchService
         // Sort latest profiles first
         $query->orderByDesc('id');
 
-        return Cache::remember($cacheKey, now()->addMinutes(30), function () use ($query, $perPage, $page) {
+        $resultData = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($query, $perPage, $page) {
             // Return paginated result
             return $query->paginate($perPage, ['*'], 'page', $page)->withQueryString();
         });
+
+        return ['resultData' => $resultData, 'cacheKey' => $cacheKey];
     }
 
     public static function get_zonedetail($searchValue)

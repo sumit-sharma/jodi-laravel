@@ -24,11 +24,12 @@
                                     {{--
                                     <a href="#" class="dropdown-item" data-key="t-chat">Change TC/TL/RM</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Classified</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Visited/Non Visited </a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a>
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a> --}}
+                                    <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a> --}}
+                                    <a href="#" class="dropdown-item" id="btnToggleVisited"
+                                        data-key="t-chat">Visited/Non Visited </a>
+                                    {{-- <a href="#" class="dropdown-item" data-key="t-chat">OC / non oc</a> --}}
+                                    {{-- <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a> --}}
+                                    {{-- <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a> --}}
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_hold"
                                         data-key="holdMemberModal">Hold/ release</a>
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_fix"
@@ -885,8 +886,62 @@
                         }
                     });
                 }
-            })
-
+            });
+            $("#btnToggleVisited").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                var txtMsh = "You want to mark this candidate as visited";
+                if (selected_vc == 1) {
+                    txtMsh = "You want to remove visited status";
+                }
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: txtMsh,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, do it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var url = "{{ route('toggle-visited', ['rno' => ':rno']) }}";
+                        url = url.replace(':rno', selected_rno);
+                        $.ajax({
+                            url: url,
+                            type: "PUT",
+                            data: {
+                                cacheKey: cacheKey
+                            },
+                            success: function (response) {
+                                if (response.status === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: response.message,
+                                    }).then((result) => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: response.message,
+                                    });
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: xhr.responseJSON.message,
+                                });
+                            }
+                        });
+                    }
+                })
+            });
         });
     </script>
 @endsection

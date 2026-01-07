@@ -541,4 +541,16 @@ class CustomerService
             return true;
         });
     }
+
+    public function toggleVisited($rno)
+    {
+        $vp = ViewProfile::where('rno', $rno)->first();
+        if ($vp) {
+            $vp->vc = $vp->vc == 1 ? 0 : 1;
+            if ($vp->save()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

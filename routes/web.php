@@ -124,4 +124,6 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/fetch-tctlrm-member/{rno}', [CustomerController::class, 'fetchTctlrmMember'])->name('fetch-tctlrm-member');
     Route::post('/edit-tctlrm-member', [CustomerController::class, 'editTctlrmMember'])->name('edit-tctlrm-member');
+
+    Route::put('/toggle-visited/{rno}', [CustomerController::class, 'toggleVisited'])->name('toggle-visited');
 });
