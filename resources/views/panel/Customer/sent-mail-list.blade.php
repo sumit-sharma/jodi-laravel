@@ -165,7 +165,7 @@
                                                                     $photoWithExtension = $extension ? $photo : $photo . '.jpg';
                                                                 @endphp
 
-                                                                @if (file_exists(url('/uploads/customer/' . $photoWithExtension)))
+                                                                @if (Storage::disk('public')->exists('uploads/customer/' . $photoWithExtension))
                                                                 <a href="{{ url('/uploads/customer/' . $photoWithExtension) }}"
                                                                     class="image-popup"
                                                                     data-lightbox="{{ 'gallery_' . $row->rno . '_' . $row->proposal }}">
@@ -175,8 +175,6 @@
                                                                 </a>
                                                                     
                                                                 @endif
-
-
                                                             @endforeach
                                                         </td>
                                                         <td>{{ $row->wc == 1 ? 'C' : '--' }}</td>

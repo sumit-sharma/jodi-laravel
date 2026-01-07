@@ -118,4 +118,10 @@ Route::middleware("auth")->group(function () {
     Route::get('/hold-member-list', [HoldMemberController::class, 'index'])->name('hold-member.index');
     Route::post('/save-hold-member', [HoldMemberController::class, 'store'])->name('save-hold-member');
     Route::get('/check-hold-member/{rno}', [HoldMemberController::class, 'checkHoldMember'])->name('check-hold-member');
+
+
+
+
+    Route::get('/fetch-tctlrm-member/{rno}', [CustomerController::class, 'fetchTctlrmMember'])->name('fetch-tctlrm-member');
+    Route::post('/edit-tctlrm-member', [CustomerController::class, 'editTctlrmMember'])->name('edit-tctlrm-member');
 });

@@ -83,9 +83,16 @@ class CustomerSeeder extends Seeder
         echo nl2br("start hold_member import\n");
         DB::statement("insert ignore into jodi_laravel.hold_member (rno, hold_req_by, hold_by, dated, time, reason, status) SELECT li.rno, li.hold_req_by, li.hold_by, li.dated, li.time, li.reason, li.status FROM old_jodi.hold_member as li");
         echo nl2br("finish hold_member import\n");
-         */
+
+
         echo nl2br("start feedback_option import\n");
         DB::statement("insert ignore into jodi_laravel.feedback_option (feedback, status, created_at, updated_at) SELECT li.feedback, 1, NOW(), NOW() FROM old_jodi.feedback_option as li");
         echo nl2br("finish feedback_option import\n");
+        
+        echo nl2br("start profile_details import\n");
+        DB::statement("insert ignore into jodi_laravel.profile_details (rno, package, service, tc, mc, rm, otherdetails, reference, duration, created_at, updated_at) SELECT li.rno, li.package, li.service, li.tc, li.mc, li.rm, li.otherdetails, li.reference, li.duration, NOW(), NOW() FROM old_jodi.profile_details as li");
+        echo nl2br("finish profile_details import\n");
+        
+         */
     }
 }

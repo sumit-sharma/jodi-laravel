@@ -1,19 +1,19 @@
 <!-- Modal -->
-<div class="modal fade" id="IntractionPageModal" tabindex="-1" role="dialog" aria-labelledby="IntractionPageTitle"
+<div class="modal fade" id="ConvertPageModal" tabindex="-1" role="dialog" aria-labelledby="ConvertPageTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content biodata-popup-h">
             <div class="modal-header">
                 <div class="row">
                     <div class="col-12">
-                        <h5 class="modal-title font-size-16" id="IntractionPageTitle">Add Interaction</h5>
+                        <h5 class="modal-title font-size-16" id="ConvertPageTitle">Convert Member</h5>
                     </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
-                <form id="frmAddInteraction" action="{{ route('save-interaction') }}" method="POST">
+                <form id="frmConvertMember" action="#" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-6 mt-0">

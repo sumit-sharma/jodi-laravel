@@ -17,9 +17,11 @@
                                     >
 
 
+                                    {{-- <a href="#" class="dropdown-item" data-key="t-calendar">Delete member </a> --}}
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal"
+                                        id="modl_change_tctlrm" data-key="ChangeTCTLRMPageModal">Change TC/TL/RM</a>
 
-                                    {{-- <a href="#" class="dropdown-item" data-key="t-calendar">Delete member </a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Convert member </a>
+                                    {{--
                                     <a href="#" class="dropdown-item" data-key="t-chat">Change TC/TL/RM</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Classified</a>
                                     <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a>
@@ -194,6 +196,7 @@
     @include('components.enquiry_modal')
     @include('components.fix-member-modal')
     @include('components.hold-member-modal')
+    @include('components.change_tctlrm_modal')
 </div>
 
 @section('bottom-js')
@@ -262,7 +265,6 @@
             $(".inner-menu-item").click(function () {
                 if (selected_rno) {
                     URL = $(this).data('key') + selected_rno
-                    console.log("url", URL);
                     window.open(URL, "_blank").focus();
                 } else {
                     toastr.error("please check candidate first")
@@ -279,6 +281,7 @@
             let enqModalEl = document.getElementById('EnquiryPageModal');
             let fixModalEl = document.getElementById('fixMemberModal');
             let holdModalEl = document.getElementById('holdMemberModal');
+            let changeTctlrmModalEl = document.getElementById('ChangeTCTLRMPageModal');
 
 
             $(".timepicker").timepicker({
@@ -315,7 +318,6 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 }).then(response => response.json()).then(data => {
-                    console.log(data)
                     if (data.status == 'success' && data?.data?.status == 0) {
                         toastr.error("Enquiry already entered and not updated yet")
                         return;
@@ -364,7 +366,7 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 }).then(response => response.json()).then(data => {
-                    console.log(data);
+
                     let options = '<option value="">Select</option>';
 
                     data.forEach(element => {
@@ -477,7 +479,7 @@
                 });
 
                 let data = await response.json();
-                console.log(data);
+
                 if (data.status === 'error') {
                     document.getElementById('error_msg').textContent = data.message;
                 } else {
@@ -688,7 +690,6 @@
                 ignore: ':hidden:not(.select2-hidden-accessible)',
                 errorClass: 'is-invalid',
                 validClass: 'is-valid',
-
                 errorPlacement: function (error, element) {
                     if (element.hasClass('select2-hidden-accessible')) {
                         error.insertAfter(element.next('.select2')); // place after Select2
@@ -750,6 +751,141 @@
 
                 }
             });
+
+
+
+            $('#modl_change_tctlrm').click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                $("#ChangeTCTLRMPageModal #chg_tctlrm_refno").text(selected_rno);
+                $("#ChangeTCTLRMPageModal #chg_tctlrm_refname").text(selected_refname)
+                $("#ChangeTCTLRMPageModal #tctlrm_rno").val(selected_rno)
+
+                let url = "{{ route('fetch-tctlrm-member', ['rno' => ':rno']) }}";
+                url = url.replace(':rno', selected_rno);
+                fetch(url, {
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                }).then(response => response.json()).then(data => {
+                    let modal = bootstrap.Modal.getInstance(changeTctlrmModalEl) ||
+                        new bootstrap.Modal(changeTctlrmModalEl);
+                    modal.show()
+
+                    fetchActiveEmployee().then((employeeData) => {
+                        let options = '<option value="">Select</option>';
+                        employeeData.data.forEach(element => {
+                            options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                        });
+                        $('#ChangeTCTLRMPageModal #tc').html(options).select2({
+                            dropdownParent: $('#ChangeTCTLRMPageModal'),
+                            placeholder: "Select",
+                            allowClear: true
+                        });
+                        $('#ChangeTCTLRMPageModal #tl').html(options).select2({
+                            dropdownParent: $('#ChangeTCTLRMPageModal'),
+                            placeholder: "Select",
+                            allowClear: true
+                        });
+                        $('#ChangeTCTLRMPageModal #rm').html(options).select2({
+                            dropdownParent: $('#ChangeTCTLRMPageModal'),
+                            placeholder: "Select",
+                            allowClear: true
+                        });
+                        if (data.status == 'success') {
+                            $('#ChangeTCTLRMPageModal #tc').val(data.data.tc).trigger('change')
+                            $('#ChangeTCTLRMPageModal #tl').val(data.data.mc).trigger('change')
+                            $('#ChangeTCTLRMPageModal #rm').val(data.data.rm).trigger('change')
+                            $('#ChangeTCTLRMPageModal #old_tc').val(data.data.tc)
+                            $('#ChangeTCTLRMPageModal #old_tl').val(data.data.mc)
+                            $('#ChangeTCTLRMPageModal #old_rm').val(data.data.rm)
+                        }
+                    });
+
+
+                })
+
+            });
+
+            $("#frmConvertMember").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    tc: {
+                        required: true
+                    },
+                    tl: {
+                        required: true
+                    },
+                    rm: {
+                        required: true
+                    }
+                },
+                messages: {
+                    tc: {
+                        required: "Please select a TC"
+                    },
+                    tl: {
+                        required: "Please select a TL"
+                    },
+                    rm: {
+                        required: "Please select a RM"
+                    }
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                }).then((result) => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                            });
+                        }
+                    });
+                }
+            })
 
         });
     </script>

@@ -12,6 +12,7 @@ use App\Models\Interaction;
 use App\Models\Meeting;
 use App\Models\ProfileBio;
 use App\Models\ProfileBs;
+use App\Models\ProfileDetail;
 use App\Models\ProfileEducation;
 use App\Models\ProfileMoreInfo;
 use App\Models\ProfileOrganisation;
@@ -483,5 +484,61 @@ class CustomerService
             ->whereHas('viewProfile', fn($query) => $query->where('ost', 'F'))
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
         return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+
+    public function fetchTctlrmMember($rno)
+    {
+        $pd = ProfileDetail::where('rno', $rno)->first();
+        if ($pd) {
+            return [
+                'tc' => $pd->tc,
+                'mc' => $pd->mc,
+                'rm' => $pd->rm,
+            ];
+        }
+
+        $vp = ViewProfile::where('rno', $rno)->first();
+        if ($vp) {
+            return [
+                'tc' => $vp->tc,
+                'mc' => $vp->mc,
+                'rm' => $vp->rm,
+            ];
+        }
+
+        return [];
+    }
+
+
+
+    public function saveTctlrmMember($data)
+    {
+        return DB::transaction(function () use ($data) {
+            $pd = ProfileDetail::where('rno', $data['rno'])->first();
+            if ($pd) {
+                $pd->tc = $data['tc'];
+                $pd->mc = $data['tl'];
+                $pd->rm = $data['rm'];
+                $pd->save();
+            }
+            $vp = ViewProfile::where('rno', $data['rno'])->first();
+            if ($vp) {
+                $vp->tc = $data['tc'];
+                $vp->mc = $data['tl'];
+                $vp->rm = $data['rm'];
+                $vp->save();
+            }
+            // TODO:: send Notification if old and new values are different
+            /**
+             * if ($data['tc'] !== $data['old_tc']) {
+             * }
+             * if ($data['mc'] !== $data['old_mc']) {
+             * }
+             * if ($data['rm'] !== $data['old_rm']) {
+             * }
+             */
+            return true;
+        });
     }
 }

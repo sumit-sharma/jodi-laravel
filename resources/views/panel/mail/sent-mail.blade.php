@@ -245,6 +245,7 @@
                                                                     // If no extension, suffix .jpg to the photo filename
                                                                     $photoWithExtension = $extension ? $photo : $photo . '.jpg';
                                                                 @endphp
+                                                                @if (Storage::disk('public')->exists('uploads/customer/' . $photoWithExtension))
                                                                 <a href="{{ url('/uploads/customer/' . $photoWithExtension) }}"
                                                                     class="image-popup"
                                                                     data-lightbox="{{ 'gallery_' . $row->rno . '_' . $row->proposal }}">
@@ -252,6 +253,7 @@
                                                                     --}}
                                                                     {{ 'Photo ' . ++$key }}
                                                                 </a>
+                                                                @endif
                                                             @endforeach
                                                         </td>
                                                         <td>{{ $row->wc == 1 ? 'C' : '--' }}</td>

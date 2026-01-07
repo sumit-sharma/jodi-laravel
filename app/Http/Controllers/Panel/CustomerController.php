@@ -305,4 +305,27 @@ class CustomerController extends Controller
         $result = $this->customerService->destroyInteraction($request->interaction_id);
         return response()->json(['status' => 'success', 'data' => $result]);
     }
+
+    public function fetchTctlrmMember(Request $request, $rno)
+    {
+        $result = $this->customerService->fetchTctlrmMember($rno);
+        return response()->json(['status' => 'success', 'data' => $result]);
+    }
+
+
+    public function editTctlrmMember(Request $request)
+    {
+        $validated = $request->validate([
+            'rno' => 'required',
+            'tc' => 'required',
+            'tl' => 'required',
+            'rm' => 'required',
+            'old_tc' => 'nullable',
+            'old_tl' => 'nullable',
+            'old_rm' => 'nullable',
+        ]);
+        // dd($validated);
+        $result = $this->customerService->saveTctlrmMember($validated);
+        return response()->json(['status' => 'success', 'data' => $result]);
+    }
 }
