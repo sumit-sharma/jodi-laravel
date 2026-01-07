@@ -126,4 +126,5 @@ Route::middleware("auth")->group(function () {
     Route::post('/edit-tctlrm-member', [CustomerController::class, 'editTctlrmMember'])->name('edit-tctlrm-member');
 
     Route::put('/toggle-visited/{rno}', [CustomerController::class, 'toggleVisited'])->name('toggle-visited');
+    Route::put('/toggle-oc/{rno}', [CustomerController::class, 'toggleOC'])->name('toggle-oc');
 });

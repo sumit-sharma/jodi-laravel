@@ -339,4 +339,15 @@ class CustomerController extends Controller
         }
         return response()->json(['status' => 'error', 'data' => 'There are some error, please try again!']);
     }
+
+    public function toggleOC(Request $request, $rno)
+    {
+        // return $rno;
+        $result = $this->customerService->toggleOC($rno);
+        if ($result) {
+            Cache::forget($request->cacheKey);
+            return response()->json(['status' => 'success', 'data' => $result]);
+        }
+        return response()->json(['status' => 'error', 'data' => 'There are some error, please try again!']);
+    }
 }

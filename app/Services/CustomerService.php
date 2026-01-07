@@ -553,4 +553,17 @@ class CustomerService
         }
         return false;
     }
+
+
+    public function toggleOC($rno)
+    {
+        $vp = ViewProfile::where('rno', $rno)->first();
+        if ($vp) {
+            $vp->oc = $vp->oc == 1 ? 0 : 1;
+            if ($vp->save()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

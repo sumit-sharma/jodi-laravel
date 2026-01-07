@@ -146,10 +146,10 @@
                                             <tbody class="pdng_d">
                                                 @foreach ($results as $data)
                                                     <tr>
-                                                        <td><div class="form-check"><input class="form-check-input chkrno" type="radio" name="formRadios" data-vc="{{ $data->vc }}" data-refname="{{ $data->refname }}" value="{{ $data->rno }}" data-cachekey="{{ $cacheKey }}"></div></td>
+                                                        <td><div class="form-check"><input class="form-check-input chkrno" type="radio" name="formRadios" data-vc="{{ $data->vc }}" data-refname="{{ $data->refname }}" value="{{ $data->rno }}" data-cachekey="{{ $cacheKey }}" data-oc="{{ $data->oc }}"></div></td>
                                                         <td><a href="#" class="biodata_modal" data-bs-toggle="modal" data-bs-target="#Modal_biodata" data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
                                                         <td>{{ $data->g }}</td>
-                                                        <td>{{ $data->refname }} {!! $data->vc == 1? '<i class="bi bi-vimeo"></i>' : '' !!}</td>
+                                                        <td>{{ $data->refname }} {!! $data->vc == 1? '<i class="bi bi-vimeo"></i>' : '' !!} {!! $data->oc == 1? '<i class="text-danger"><strong>O</strong></i>' : '' !!}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->bio->dob)->format('M d Y') }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->bio->dob)->age }}</td>
                                                         <td>{{ msValue($data->ms) }}</td>
@@ -311,6 +311,7 @@
         var selected_rno = "";
         var selected_refname = "";
         var selected_vc = "";
+        var selected_oc = "";
         var cacheKey = "";
 
         $(function () {
@@ -318,9 +319,11 @@
                 rno = $(this).val()
                 refname = $(this).data('refname');
                 vc = $(this).data('vc');
+                oc = $(this).data('oc');
                 selected_rno = rno;
                 selected_refname = refname;
                 selected_vc = vc;
+                selected_oc = oc;
                 cacheKey = $(this).data('cachekey');
             });
             $('#searchFilterBtn').on('click', function () {
