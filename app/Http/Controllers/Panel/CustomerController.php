@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProfileMoreInfoRequest;
 use App\Models\CounterNumber;
 use App\Models\ProfileMoreInfo;
+use App\Models\ViewProfile;
 use App\Services\CustomerService;
 use App\Services\MiscService;
 use App\Services\SearchService;
@@ -14,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -342,8 +344,46 @@ class CustomerController extends Controller
 
     public function toggleOC(Request $request, $rno)
     {
-        // return $rno;
         $result = $this->customerService->toggleOC($rno);
+        if ($result) {
+            Cache::forget($request->cacheKey);
+            return response()->json(['status' => 'success', 'data' => $result]);
+        }
+        return response()->json(['status' => 'error', 'data' => 'There are some error, please try again!']);
+    }
+
+
+    public function toggleClassified($rno)
+    {
+        $result = $this->customerService->toggleClassified($rno);
+        if ($result) {
+            return response()->json(['status' => 'success', 'data' => $result]);
+        }
+        return response()->json(['status' => 'error', 'data' => 'There are some error, please try again!']);
+    }
+
+    public function getClassified($rno)
+    {
+        $result = $this->customerService->getClassified($rno);
+        return response()->json(['status' => 'success', 'data' => $result]);
+    }
+
+    public function toggleNonActive(Request $request, $rno)
+    {
+        $erro = false;
+        // if (Str::startsWith($rno, '4')) {
+        //     $erro = true;
+        //     $msg = 'Applicable only to paid customers';
+        // }
+        // $viewProfile = ViewProfile::where('rno', $rno)->where('ost', 'F')->first();
+        // if ($viewProfile) {
+        //     $erro = true;
+        //     $msg = 'Member Already in Hold';
+        // }
+        // if ($erro) {
+        //     return response()->json(['status' => 'error', 'data' => $msg]);
+        // }
+        $result = $this->customerService->toggleNonActive($rno);
         if ($result) {
             Cache::forget($request->cacheKey);
             return response()->json(['status' => 'success', 'data' => $result]);

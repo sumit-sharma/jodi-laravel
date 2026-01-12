@@ -8,6 +8,8 @@ use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\EnquiryController;
 use App\Http\Controllers\Panel\FeedbackController;
 use App\Http\Controllers\Panel\FixMemberController;
+use App\Http\Controllers\Panel\FollowupController;
+use App\Http\Controllers\Panel\FormTransferController;
 use App\Http\Controllers\Panel\HoldMemberController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
@@ -30,6 +32,7 @@ Route::get('/uploads/customer/{filename}', [CustomerUploadController::class, 'sh
 
 
 Route::middleware("auth")->group(function () {
+    Route::post('/cache-clear', [DashboardController::class, 'cacheClear'])->name('cache-clear');
     Route::any("/logout", [AuthController::class, "logout"])->name("logout");
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -127,4 +130,16 @@ Route::middleware("auth")->group(function () {
 
     Route::put('/toggle-visited/{rno}', [CustomerController::class, 'toggleVisited'])->name('toggle-visited');
     Route::put('/toggle-oc/{rno}', [CustomerController::class, 'toggleOC'])->name('toggle-oc');
+
+    Route::put('/toggle-classified/{rno}', [CustomerController::class, 'toggleClassified'])->name('toggle-classified');
+    Route::get('/get-classified/{rno}', [CustomerController::class, 'getClassified'])->name('get-classified');
+
+    Route::put('/toggle-non-active/{rno}', [CustomerController::class, 'toggleNonActive'])->name('toggle-non-active');
+
+    Route::get('/my-followup', [FollowupController::class, 'index'])->name('my-followup');
+    Route::get('/fetch-followup/{rno}', [FollowupController::class, 'show'])->name('fetch-followup');
+    Route::post('/save-followup', [FollowupController::class, 'store'])->name('save-followup');
+    Route::get('/check-limit', [FollowupController::class, 'checkLimit'])->name('check-limit');
+
+    Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');
 });

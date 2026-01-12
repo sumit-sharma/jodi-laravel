@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Caste;
+use App\Models\Classified;
 use App\Models\Enquiry;
 use App\Models\Feedback;
 use App\Models\FixMember;
@@ -560,6 +561,45 @@ class CustomerService
         $vp = ViewProfile::where('rno', $rno)->first();
         if ($vp) {
             $vp->oc = $vp->oc == 1 ? 0 : 1;
+            if ($vp->save()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function toggleClassified($rno)
+    {
+        $classified = Classified::where('rno', $rno)->first();
+        if ($classified) {
+            $status = $classified->status == 1 ? 0 : 1;
+        } else {
+            $classified      = new Classified();
+            $classified->rno = $rno;
+            $status          = 1;
+            $classified->created_at = now();
+        }
+        $classified->status     = $status;
+        $classified->empid      = auth()->user()->username;
+        $classified->dated      = now()->format('Y-m-d');
+        $classified->time       = now()->format('H:i:s');
+        $classified->updated_at = now();
+        if ($classified->save()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getClassified($rno)
+    {
+        return Classified::where('rno', $rno)->first();
+    }
+
+    public function toggleNonActive($rno)
+    {
+        $vp = ViewProfile::where('rno', $rno)->first();
+        if ($vp) {
+            $vp->ost = $vp->ost == 'N' ? '' : 'N';
             if ($vp->save()) {
                 return true;
             }

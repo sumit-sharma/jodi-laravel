@@ -7,6 +7,7 @@ use App\Services\MiscService;
 use App\Services\SearchService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -80,5 +81,15 @@ class DashboardController extends Controller
     {
         $data = $this->searchService->searchByrno($rno);
         return response()->json(['data' => $data]);
+    }
+
+    public function cacheClear(Request $request)
+    {
+        if ($request->has('cacheKey')) {
+            Cache::forget($request->cacheKey);
+        } else {
+            Cache::flush();
+        }
+        return response()->json(['status' => 'success']);
     }
 }

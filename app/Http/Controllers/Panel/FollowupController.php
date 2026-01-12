@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers\Panel;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Services\FollowupService;
+
+class FollowupController extends Controller
+{
+
+    protected $followupService;
+    public function __construct(FollowupService $followupService)
+    {
+        $this->followupService = $followupService;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1, 'empid' => $request->empid ?? auth()->user()->username, 'status' => 'A']);
+        $data['followups'] = $this->followupService->index($request);
+        // dd($data['followups'][0]->viewProfile->bio);
+        return view('panel.Follow.my-all-follow-ups', $data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'rno' => 'required',
+            'empid' => 'required',
+        ]);
+        $data = $this->followupService->store($validated);
+        return response()->json(['status' => 'success', 'message' => 'Followup Added Successfully']);
+    }
+
+    public function checkLimit(Request $request)
+    {
+        $result = $this->followupService->checkLimit($request->empid, $request->rno);
+        return response()->json($result);
+    }
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $rno)
+    {
+        $data = $this->followupService->show($rno);
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}

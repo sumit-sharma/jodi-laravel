@@ -236,7 +236,7 @@
                         <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
                         </li>
                         <li><a href="{{ route('hold-member.index') }}" data-key="t-cart">Show Hold Data</a></li>
-                        {{-- 
+                        {{--
                         <li><a href="show-all-hold-data.php" data-key="t-checkout">Show All Hold Data</a></li>
                         <li><a href="show-other-data.php" data-key="t-shops">Show Other Data</a></li>
                         <li><a href="show-website-data.php" data-key="t-add-product">Show Website Data</a></li>
@@ -260,20 +260,19 @@
                         <li><a href="#" key="t-products">All Pending Mail</a></li>
                         <li><a href="#" data-key="t-product-detail">Sent Self Profile</a></li>
                     </ul>
-                </li>
-
+                </li> --}}
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="user-plus"></i>
                         <span data-key="t-ecommerce">Follow</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="my-all-follow-ups.php" key="t-products">My All Follow UPS</a></li>
-                        <li><a href="my-prospective.php" data-key="t-product-detail">My Prospective</a></li>
-                        <li><a href="transfer-followup.php" key="t-products">Transfer Followup</a></li>
-                        <li><a href="followup-records.php" data-key="t-product-detail">Follow Records</a></li>
+                        <li><a href="{{ route('my-followup') }}" key="t-products">My All Follow UPS</a></li>
+                        {{-- <li><a href="my-prospective.php" data-key="t-product-detail">My Prospective</a></li> --}}
+                        {{-- <li><a href="transfer-followup.php" key="t-products">Transfer Followup</a></li> --}}
+                        {{-- <li><a href="followup-records.php" data-key="t-product-detail">Follow Records</a></li> --}}
                     </ul>
-                </li> --}}
+                </li>
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">

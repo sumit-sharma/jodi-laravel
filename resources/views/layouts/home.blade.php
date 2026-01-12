@@ -108,6 +108,31 @@
                 timeout = setTimeout(() => func.apply(this, args), delay);
             };
         }
+
+        function cacheClear(key = null) {
+            fetch("{{ route('cache-clear') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    cacheKey: key
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+
+        function convertDate(date, format = 'MMM D, YYYY') {
+            return dayjs(date).format(format);
+        }
+
     </script>
 
     @yield('footer-script')

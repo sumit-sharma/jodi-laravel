@@ -21,20 +21,24 @@
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                         id="modl_change_tctlrm" data-key="ChangeTCTLRMPageModal">Change TC/TL/RM</a>
 
-                                    {{--
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Classified</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Make non Act </a> --}}
+                                    <a href="javascript:;" class="dropdown-item" id="btnToggleClassified"
+                                        data-key="t-chat">Classified</a>
+                                    <a href="javascript:;" class="dropdown-item" id="btnToggleNonActive"
+                                        data-key="t-chat">Make Non Active </a>
                                     <a href="javascript:;" class="dropdown-item" id="btnToggleVisited"
                                         data-key="t-chat">Visited/Non Visited </a>
                                     <a href="javascript:;" class="dropdown-item" id="btnToggleOC" data-key="t-chat">OC /
-                                        non oc</a>
-                                    {{-- <a href="#" class="dropdown-item" data-key="t-calendar">To follow up </a> --}}
+                                        Non-OC</a>
+                                    <a href="javascript:;" class="dropdown-item" id="btnFollowUp"
+                                        data-key="t-calendar">To follow up </a>
                                     {{-- <a href="#" class="dropdown-item" data-key="t-chat">Prospective </a> --}}
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_hold"
-                                        data-key="holdMemberModal">Hold/ release</a>
+                                        data-key="holdMemberModal">Hold/Release</a>
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_fix"
                                         data-key="fixMemberModal">Fix/Active </a>
-                                    {{-- <a href="#" class="dropdown-item" data-key="t-chat">Form Transfer</a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal"
+                                        id="modl_form_transfer" data-key="formTransferModal">Form Transfer</a>
+                                    {{--
                                     <a href="#" class="dropdown-item" data-key="t-chat">Sent package</a> --}}
 
 
@@ -55,30 +59,6 @@
                                 </div>
                             </li>
 
-                            {{-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-data" role="button">
-                                    <span data-key="t-apps">Services</span>
-                                    <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
-                                    <a href="#" class="dropdown-item" data-key="t-chat">Coming soon</a>
-                                </div>
-                            </li> --}}
-
-
-                            {{-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-follow"
-                                    role="button">
-                                    <span data-key="t-apps">Feedback</span>
-                                    <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
-
-                                    <a href="#" class="dropdown-item" data-key="t-calendar">Coming soon</a>
-
-                                </div>
-                            </li> --}}
 
 
                             <li class="nav-item dropdown">
@@ -120,7 +100,6 @@
                                 <div class="dropdown-menu" aria-labelledby="topnav-pages">
                                     <a href="javascript:;" class="dropdown-item inner-menu-item"
                                         data-key="/update-match-prefrence/">Update Match Preference </a>
-
                                     <a href="javascript:;" class="dropdown-item inner-menu-item"
                                         data-key="/find-match/">Find Match </a>
                                 </div>
@@ -165,12 +144,6 @@
 
 
 
-                            {{-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" role="button">
-                                    <span data-key="t-horizontal">Documents</span>
-                                </a>
-                            </li> --}}
-
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
                                     <span data-key="t-apps">ShortList</span>
@@ -198,6 +171,8 @@
     @include('components.fix-member-modal')
     @include('components.hold-member-modal')
     @include('components.change_tctlrm_modal')
+    @include('components.followup_modal')
+    @include('components.form-transfer-modal')
 </div>
 
 @section('bottom-js')
@@ -283,7 +258,8 @@
             let fixModalEl = document.getElementById('fixMemberModal');
             let holdModalEl = document.getElementById('holdMemberModal');
             let changeTctlrmModalEl = document.getElementById('ChangeTCTLRMPageModal');
-
+            let followUpModalEl = document.getElementById('FollowUpModal');
+            let formTransferModalEl = document.getElementById('FormTransferModal');
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -717,7 +693,6 @@
                     reason: "Please enter reason",
                 },
                 submitHandler: function (form) {
-                    // form.submit();
                     $.ajax({
                         url: form.action,
                         type: form.method,
@@ -726,6 +701,7 @@
                         contentType: false,
                         success: function (response) {
                             if (response.status === 'success') {
+                                cacheClear(cacheKey);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -894,12 +870,14 @@
                     toastr.error("please check candidate first")
                     return;
                 }
-                var txtMsh = "You want to mark this candidate as visited";
+                var txtMsh = "Are you sure to mark this candidate as visited ?";
                 if (selected_vc == 1) {
-                    txtMsh = "You want to remove visited status";
+                    txtMsh = "Are you sure to remove visited status ?";
                 }
+                var title = selected_rno + " - " + selected_refname
+
                 Swal.fire({
-                    title: 'Are you sure?',
+                    title: title,
                     text: txtMsh,
                     icon: 'warning',
                     showCancelButton: true,
@@ -951,12 +929,14 @@
                     toastr.error("please check candidate first")
                     return;
                 }
-                var txtMsh = "move to open community";
+                var txtMsh = "Are you sure to move to open community ?";
                 if (selected_oc == 1) {
-                    txtMsh = "remove from open community";
+                    txtMsh = "Are you sure to remove from open community ?";
                 }
+                var title = selected_rno + " - " + selected_refname
+
                 Swal.fire({
-                    title: 'Are you sure?',
+                    title: title,
                     text: txtMsh,
                     icon: 'warning',
                     showCancelButton: true,
@@ -1003,7 +983,391 @@
             });
 
 
+            $("#btnToggleClassified").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
 
+                fetch("{{ route('get-classified', ['rno' => ':rno']) }}".replace(':rno', selected_rno))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            if (data?.data?.status == 1) {
+                                txtMsg = "You want to make this candidate as non-classified";
+                                btnText = "Make Non-Classified";
+                            } else {
+                                txtMsg = "You want to make this candidate as classified";
+                                btnText = "Make Classified";
+                            }
+                            var title = selected_rno + " - " + selected_refname
+                            Swal.fire({
+                                title: title,
+                                text: txtMsg,
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: btnText,
+                                showLoaderOnConfirm: true,
+
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var url = "{{ route('toggle-classified', ['rno' => ':rno']) }}";
+                                    url = url.replace(':rno', selected_rno);
+                                    $.ajax({
+                                        url: url,
+                                        type: "PUT",
+                                        success: function (response) {
+                                            if (response.status === 'success') {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Success',
+                                                    text: response.message,
+                                                })
+                                            } else {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error',
+                                                    text: response.message,
+                                                });
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: xhr.responseJSON.message,
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+                    });
+            });
+
+            $("#btnToggleNonActive").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+
+                if (selected_rno.charAt(0) != '4') {
+                    toastr.error("Applicable only to paid customers")
+                    return;
+                }
+                if (selected_ost == "F") {
+                    toastr.error("Customer is already on-hold")
+                    return;
+                }
+                var title = selected_rno + " - " + selected_refname
+                var actText = ""
+                if (selected_ost == "N") {
+                    actText = "Do you want to this candidate release from non active?"
+                } else {
+                    actText = "Do you want to this candidate put into non active?"
+                }
+                Swal.fire({
+                    title: title,
+                    text: actText,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: "Yes",
+                    showLoaderOnConfirm: true,
+
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let url = "{{ route('toggle-non-active', ['rno' => ':rno']) }}";
+                        url = url.replace(':rno', selected_rno);
+
+                        $.ajax({
+                            url: url,
+                            type: "PUT",
+                            data: {
+                                cacheKey: cacheKey
+                            },
+                            success: function (response) {
+                                if (response.status === 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: response.message,
+                                    }).then((result) => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: response.message,
+                                    });
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: xhr.responseJSON.message,
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            $("#btnFollowUp").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                if (selected_rno.charAt(0) == '4') {
+                    toastr.error("Applicable only to non paid customers")
+                    return;
+                }
+
+                let modal = bootstrap.Modal.getInstance(followUpModalEl) || new bootstrap.Modal(followUpModalEl);
+                modal.show();
+                $("#frmFollowUp #followup_refno").text(selected_rno);
+                $("#frmFollowUp #followup_refname").text(selected_refname);
+                $("#frmFollowUp #followup_rno").val(selected_rno);
+                let empid = "";
+                let url = "{{ route('fetch-followup', ['rno' => ':rno']) }}".replace(':rno', selected_rno)
+
+                $("label#followup_empid-error").text("");
+
+                Promise.all([
+                    fetch(url).then(r => r.json()),
+                    fetchActiveEmployee()
+                ]).then(([followupRes, employeeData]) => {
+
+                    if (followupRes?.data?.dated) {
+                        $(".prev_date").removeClass("d-none");
+                        $("#frmFollowUp #followup_prev_date").text(convertDate(followupRes.data.dated));
+                        empid = followupRes.data.empid;
+                    } else {
+                        $(".prev_date").addClass("d-none");
+                    }
+
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    const $emp = $("#frmFollowUp #followup_empid");
+
+                    $emp.html(options).select2({
+                        dropdownParent: $('#FollowUpModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                    if (empid) {
+                        $emp.val(String(empid)).trigger("change");
+                    }
+
+                }).catch(err => console.error(err));
+
+            });
+
+            $("#frmFollowUp").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    empid: {
+                        required: true,
+                        remote: {
+                            url: "{{ route('check-limit') }}",
+                            type: "GET",
+                            data: {
+                                empid: function () {
+                                    return $("#frmFollowUp #followup_empid").val();
+                                },
+                                rno: function () {
+                                    return $("#frmFollowUp #followup_rno").val();
+                                }
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    empid: {
+                        required: "Please select employee",
+                        remote: "Reached Maximum Limit of Followup ({{ config('constants.FOLLOWUP_LIMIT') }})"
+                    }
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status == "success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                $("#FollowUpModal").modal("hide");
+                                $("#frmFollowUp").trigger("reset");
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    });
+                }
+            });
+
+
+            $("#modl_form_transfer").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                if (selected_rno.charAt(0) == '4') {
+                    toastr.error("Applicable only to non paid customers")
+                    return;
+                }
+
+                let modal = bootstrap.Modal.getInstance(formTransferModalEl) || new bootstrap.Modal(formTransferModalEl);
+                modal.show();
+                $("#frmFormTransfer #form_transfer_refno").text(selected_rno);
+                $("#frmFormTransfer #form_transfer_refname").text(selected_refname);
+                $("#frmFormTransfer #form_transfer_rno").val(selected_rno);
+
+
+
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+                    $("#frmFormTransfer #form_transfer_empid").html(options)
+                        .select2({
+                            dropdownParent: $('#FormTransferModal'),
+                            placeholder: "Select",
+                            allowClear: true
+                        });
+                });
+            });
+            $("#frmFormTransfer").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    assign_to: {
+                        required: true
+                    },
+                    remarks: {
+                        required: true
+                    }
+                },
+                messages: {
+                    assign_to: {
+                        required: "Please select assign to"
+                    },
+                    remarks: {
+                        required: "Please enter remarks"
+                    }
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status == "success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                $("#FormTransferModal").modal("hide");
+                                $("#frmFormTransfer").trigger("reset");
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    });
+                }
+            })
         });
     </script>
 @endsection
