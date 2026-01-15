@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerUploadController;
+use App\Http\Controllers\Panel\AdvtdataController;
 use App\Http\Controllers\Panel\AppointmentController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DashboardController;
+use App\Http\Controllers\Panel\DataController;
+use App\Http\Controllers\Panel\EmployeeController;
 use App\Http\Controllers\Panel\EnquiryController;
 use App\Http\Controllers\Panel\FeedbackController;
 use App\Http\Controllers\Panel\FixMemberController;
@@ -100,6 +103,7 @@ Route::middleware("auth")->group(function () {
     Route::post('/save-enquiry', [EnquiryController::class, 'store'])->name('save-enquiry');
     Route::get('/customer-enquiry/{rno}', [EnquiryController::class, 'show'])->name('get-enquiry');
     Route::put('/update-enquiry/{id}', [EnquiryController::class, 'update'])->name('update-enquiry');
+    Route::get('/all-enquiries', [EnquiryController::class, 'index'])->name('all-enquiries');
     // Route::delete('/delete-enquiry/{id}', [EnquiryController::class, 'destroy'])->name('delete-enquiry');
 
     Route::get('/fetch-images/{rno}', [CustomerController::class, 'fetchImages'])->name('fetch-images');
@@ -121,7 +125,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/hold-member-list', [HoldMemberController::class, 'index'])->name('hold-member.index');
     Route::post('/save-hold-member', [HoldMemberController::class, 'store'])->name('save-hold-member');
     Route::get('/check-hold-member/{rno}', [HoldMemberController::class, 'checkHoldMember'])->name('check-hold-member');
-
+    Route::get('/show-all-hold-records', [HoldMemberController::class, 'showAllHoldRecords'])->name('show-all-hold-records');
 
 
 
@@ -142,4 +146,16 @@ Route::middleware("auth")->group(function () {
     Route::get('/check-limit', [FollowupController::class, 'checkLimit'])->name('check-limit');
 
     Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');
+
+    Route::get('/show-all-rm-data', [EmployeeController::class, 'showAllRmData'])->name('show-all-rm-data');
+
+    Route::get('/list-advtdata', [AdvtdataController::class, 'index'])->name('list-advtdata');
+    Route::get('/add-advtdata', [AdvtdataController::class, 'create'])->name('add-advtdata');
+    Route::post('/save-advtdata', [AdvtdataController::class, 'store'])->name('save-advtdata');
+
+    Route::get('/show-all-other-data', [DataController::class, 'showallotherdata'])->name('show-all-other-data');
+    Route::get('/show-website-data', [DataController::class, 'showwebsiteData'])->name('show-website-data');
+    Route::get('/show-done-list', [DataController::class, 'showdoneList'])->name('show-done-list');
+    Route::get('/show-all-nadata', [DataController::class, 'showmyNaData'])->name('show-all-nadata');
+    Route::get('/show-all-non-nadata', [DataController::class, 'showallnonnadata'])->name('show-all-non-nadata');
 });

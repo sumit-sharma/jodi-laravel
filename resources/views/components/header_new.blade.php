@@ -206,8 +206,8 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('seach-members') }}" key="t-products">Search Members</a></li>
                         {{-- <li><a href="form-transfer.php" data-key="t-product-detail">Form Transfer</a></li> --}}
-                        {{-- <li><a href="show-all-enquiry.php" data-key="t-orders">Show All Enquiry</a></li> --}}
-                        {{-- <li><a href="show-all-rm-data.php" data-key="t-customers">Show All RM Data</a></li> --}}
+                        <li><a href="{{ route('all-enquiries') }}" data-key="t-orders">Show All Enquiry</a></li>
+                        <li><a href="{{ route('show-all-rm-data') }}" data-key="t-customers">Show All RM Data</a></li>
                     </ul>
                 </li>
 
@@ -230,19 +230,19 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li>
-                        {{-- <li><a href="add-fresh-data.php" key="t-products">Add Fresh Data</a></li>
-                        <li><a href="add-advt-data.php" data-key="t-product-detail">Add Advt Data</a></li>
-                        <li><a href="show-advt-data.php" data-key="t-orders">Show Advt Data</a></li> --}}
+                        {{-- <li><a href="add-fresh-data.php" key="t-products">Add Fresh Data</a></li> --}}
+                        <li><a href="{{ route('add-advtdata') }}" data-key="t-product-detail">Add Advt Data</a></li>
+                        <li><a href="{{ route('list-advtdata') }}" data-key="t-orders">Show Advt Data</a></li>
                         <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
                         </li>
                         <li><a href="{{ route('hold-member.index') }}" data-key="t-cart">Show Hold Data</a></li>
+                        <li><a href="{{ route('show-all-hold-records') }}" data-key="t-checkout">Show All Hold Data</a></li>
+                        <li><a href="{{ route('show-all-other-data') }}" data-key="t-shops">Show Other Data</a></li>
+                        <li><a href="{{ route('show-website-data') }}" data-key="t-add-product">Show Website Data</a></li>
+                        {{-- <li><a href="{{ route('show-done-list') }}" data-key="t-sale-details">Show Done List</a></li> --}}
+                        <li><a href="{{ route('show-all-nadata') }}" data-key="t-sale-details">Show All NA-Data</a></li>
+                        <li><a href="{{ route('show-all-non-nadata') }}" data-key="t-shops">Show All None NA-Data</a></li>
                         {{--
-                        <li><a href="show-all-hold-data.php" data-key="t-checkout">Show All Hold Data</a></li>
-                        <li><a href="show-other-data.php" data-key="t-shops">Show Other Data</a></li>
-                        <li><a href="show-website-data.php" data-key="t-add-product">Show Website Data</a></li>
-                        <li><a href="show-done-list.php" data-key="t-seller">Show Done List</a></li>
-                        <li><a href="show-my-na-data.php" data-key="t-sale-details">Show My NA Data</a></li>
-                        <li><a href="show-my-non-na-data.php" data-key="t-shops">Show My None-NA Data</a></li>
                         <li><a href="#" data-key="t-add-product">Direct Meeting</a></li>
                         <li><a href="fresh-calls.php" data-key="t-seller">Fresh Call</a></li>
                         <li><a href="daily-moment.php" data-key="t-sale-details">Daily Moment</a></li> --}}

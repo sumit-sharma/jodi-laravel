@@ -23,6 +23,7 @@ class HoldMemberController extends Controller
     {
         $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1]);
         $data['members'] = $this->customerService->getHoldMembers($request);
+        $data['heading'] = 'Show Hold Data';
         return view('panel.Data.hold-list', $data);
     }
 
@@ -92,5 +93,14 @@ class HoldMemberController extends Controller
             'status' => 'success',
             'message' => 'Member is not in Hold/Followup',
         ]);
+    }
+
+
+    public function showAllHoldRecords(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1]);
+        $data['members'] = $this->customerService->getAllHoldRecords($request);
+        $data['heading'] = 'Show All Hold Records';
+        return view('panel.Data.hold-list', $data);
     }
 }

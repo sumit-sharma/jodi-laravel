@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Controllers\Panel;
+
+use App\Http\Controllers\Controller;
+use App\Services\DataService;
+use Illuminate\Http\Request;
+
+class DataController extends Controller
+{
+    protected $dataService;
+    public function __construct(DataService $dataService)
+    {
+        $this->dataService = $dataService;
+    }
+
+    public function showallotherdata(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['TableData'] = $this->dataService->showallotherdata($request, auth()->user()->username);
+        $data['headings'] = "Show Other Data";
+        return view('panel.Data.show-other-data', $data);
+    }
+
+
+    public function showwebsiteData(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['TableData'] = $this->dataService->showwebsiteData($request);
+        $data['headings'] = "Show Website Data";
+        return view('panel.Data.show-other-data', $data);
+    }
+
+
+    public function showdoneList(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        // $data['TableData'] = $this->dataService->showdoneList($request);
+        $data['headings'] = "Show Done List";
+        return view('panel.Data.show-other-data', $data);
+    }
+
+    public function showmyNaData(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['TableData'] = $this->dataService->showmyNaData($request, auth()->user()->username);
+        $data['headings'] = "Show My NA Data";
+        return view('panel.Data.show-other-data', $data);
+    }
+
+
+    public function showallnonnadata(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['TableData'] = $this->dataService->showallnonnadata($request, auth()->user()->username);
+        $data['headings'] = "Show All Non NA Data";
+        return view('panel.Data.show-other-data', $data);
+    }
+}

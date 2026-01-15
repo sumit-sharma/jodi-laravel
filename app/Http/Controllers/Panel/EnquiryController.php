@@ -19,14 +19,18 @@ class EnquiryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, $viewData = false)
+    public function index(Request $request, $viewData = true)
     {
+        $showAllEnquiries = false;
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
-        $result = $this->customerService->getEnquiryList($request);
+        $enquiries = $this->customerService->getEnquiryList($request);
         if (!$viewData) {
-            return $result;
+            return $enquiries;
+        } else {
+            $showAllEnquiries = true;
         }
-        return view('panel.Customer.enquiry-list', compact('result'));
+
+        return view('panel.Customer.enquiry-list', compact('enquiries', 'showAllEnquiries'));
     }
 
     /**
@@ -89,7 +93,26 @@ class EnquiryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'furtheraction' => 'required',
+            'status'        => 'required',
+            'updatedby'     => 'required',
+        ]);
+        $validated['updatedatetime'] = now();
+        // return $request->all();
+        $result = $this->customerService->updateEnquiry(['id' => $id], $validated);
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Enquiry updated successfully',
+                'data' => $result,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Enquiry updated failed',
+        ]);
     }
 
     /**

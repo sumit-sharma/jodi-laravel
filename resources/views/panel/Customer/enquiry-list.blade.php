@@ -17,7 +17,11 @@
                             <div class="col-md-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                                     <h4 class="mb-sm-0 font-size-18">
+                                        @if (isset($rno))
                                         {{ fetchCustomerByrno($rno)?->refname . ': ' . $rno }}
+                                        @else
+                                        Show All Enquiry
+                                        @endif
                                     </h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -72,17 +76,19 @@
                                             style="table-layout: fixed; width: 100%;">
                                             <thead class="table-primary pdng_d">
                                                 <tr>
-                                                    <th data-priority="1" style="width: 5%;">SI No.</th>
-                                                    <th data-priority="2" style="width: 5%;">Dated</th>
-                                                    <th data-priority="3" style="width: 5%;">Time</th>
-                                                    <th data-priority="4" style="width: 5%;">EmpId</th>
-                                                    <th data-priority="5" style="width: 5%;">Enq. Purpose</th>
-                                                    <th data-priority="6" style="width: 5%;">Remarks</th>
-                                                    <th data-priority="7" style="width: 3%;">Further Action</th>
-                                                    <th data-priority="8" style="width: 5%;">SL</th>
-                                                    <th data-priority="9" style="width: 5%;">Up By</th>
-                                                    <th data-priority="10" style="width: 5%;">Update Date</th>
-                                                    <th data-priority="11" style="width: 5%;">Status</th>
+                                                    <th data-priority="1">SI No.</th>
+                                                    <th data-priority="2">Ref No.</th>
+                                                    <th data-priority="3">Ref Name</th>
+                                                    <th data-priority="4">Dated</th>
+                                                    <th data-priority="5">Time</th>
+                                                    <th data-priority="6">EmpId</th>
+                                                    <th data-priority="7">Enq. Purpose</th>
+                                                    <th data-priority="8">Remarks</th>
+                                                    <th data-priority="9">Further Action</th>
+                                                    <th data-priority="10">SL</th>
+                                                    <th data-priority="11">Up By</th>
+                                                    <th data-priority="12">Update Date</th>
+                                                    <th data-priority="13">Status</th>
                                                 </tr>
                                             </thead>
 
@@ -90,12 +96,21 @@
                                                 @forelse ($enquiries as $item)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $item->dated }}</td>
-                                                        <td>{{ $item->time }}</td>
+                                                        <td>{{ $item->rno }}</td>
+                                                        <td>{{ fetchCustomerByrno($item->rno)?->refname }}</td>
+                                                        <td>{{ convertCommonDate($item->dated) }}</td>
+                                                        <td>{{ convertCommonDate($item->time, 'h:i A') }}</td>
                                                         <td>{{ $item->empid }}</td>
-                                                        <td>{{ $item->enq_purpose }}</td>
+                                                        <td>{{ $item->enqpur }}</td>
                                                         <td>{{ $item->remarks }}</td>
-                                                        <td>{{ $item->further_action }}</td>
+
+                                                        <td>
+                                                            @if ($item->status == 0)
+                                                            <a  href="javascript:;" data-rno="{{ $item->rno }}" data-refname="{{ fetchCustomerByrno($item->rno)?->refname }}" data-enquiry_id="{{ $item->id }}" class="btnUpdateEnquiry">Update</a>
+                                                            @else
+                                                            {{ $item->furtheraction }}
+                                                            @endif
+                                                        </td>
                                                         <td>{{ $item->slfor }}</td>
                                                         <td>{{ $item->updatedby }}</td>
                                                         <td>{{ $item->updatedatetime }}</td>
@@ -124,7 +139,69 @@
 
         </div>
         <!-- end row-->
-
+        @include('components.update-enquiry-modal')
 
     </div> <!-- container-fluid -->
+@endsection
+
+@section('footer-script')
+<script>
+    $(function(){
+        $(".btnUpdateEnquiry").click(function(){
+            var enquiry_id = $(this).data('enquiry_id');
+            $("#updateEnquiryModal #updateEnquiryModal_enquiry_id").data('enquiry_id', enquiry_id);
+            $("#updateEnquiryModal #updateEnquiryModal_rno").val($(this).data('rno'));
+            $("#updateEnquiryModal #updateEnquiryModal_refname").val($(this).data('refname'));
+            $("#updateEnquiryModal").modal('show');
+        })
+
+        $("#frmUpdateEnquiry").validate({
+            rules: {
+                further_action: {
+                    required: true,
+                },
+            },
+            messages: {
+                further_action: {
+                    required: "Please enter further action",
+                },
+            },
+            submitHandler: function(form) {
+                var enquiry_id = $("#updateEnquiryModal #updateEnquiryModal_enquiry_id").data('enquiry_id');
+                var url = "{{ route('update-enquiry', ['id' => ':id']) }}";
+                url = url.replace(':id', enquiry_id);
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: new FormData(form),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.status == 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    },
+                    error: function(response) {
+                        alert(response.responseJSON.message);
+                    }
+                });
+            }
+        });
+    });
+</script>
 @endsection

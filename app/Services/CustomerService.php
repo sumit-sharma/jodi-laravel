@@ -310,6 +310,11 @@ class CustomerService
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
+    public function updateEnquiry($identifier, $data)
+    {
+        return Enquiry::where($identifier)->update($data);
+    }
+
 
     public function getFeedbackList($request)
     {
@@ -487,6 +492,26 @@ class CustomerService
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
+    public function getAllHoldRecords($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = HoldMember::with('viewProfile')->orderBy($sortBy, $orderBy)
+            ->whereHas(
+                'viewProfile',
+                fn($query) =>
+                $query->where('ost', 'F')
+                    ->where('status', 'A')
+                    ->whereIn('dtype', ['P', 'N'])
+            )
+            ->whereNotExists(function ($query) {
+                $query->from('followup')
+                    ->whereColumn('followup.rno', '=', 'hold_member.rno');
+            })
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
 
     public function fetchTctlrmMember($rno)
     {

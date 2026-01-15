@@ -578,7 +578,6 @@
                     remarks: "Please enter remarks",
                 },
                 submitHandler: function (form) {
-                    // form.submit();
                     $.ajax({
                         url: form.action,
                         type: form.method,

@@ -97,6 +97,11 @@ class CustomerSeeder extends Seeder
         echo nl2br("start form_transfer import\n");
         DB::statement("insert ignore into jodi_laravel.form_transfer (rno, assign_from, assign_date, assign_time, assign_to, received_date, received_time, remarks, created_at, updated_at) SELECT li.rno, li.assign_from, li.assign_date, li.assign_time, li.assign_to, li.received_date, li.received_time, li.remarks, NOW(), NOW() FROM old_jodi.form_transfer as li");
         echo nl2br("finish form_transfer import\n");
+
+
+        echo nl2br("start from advtdata import\n");
+        DB::statement("insert ignore into jodi_laravel.advtdata (rno, matchfor, age, hght, community, education, occupation, mobile, email, remarks, assignto, empid, edate) SELECT li.rno, li.matchfor, li.age, li.hght, li.community, li.education, li.occupation, li.mobile, li.email, li.remarks, li.assignto, li.empid, li.edate FROM old_jodi.advtdata as li");
+        echo nl2br("finish advtdata import\n");
          */
     }
 }
