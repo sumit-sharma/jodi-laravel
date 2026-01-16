@@ -144,8 +144,11 @@
                         <button type="submit" class="dropdown-item"><i
                                 class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</button>
                     </form>
-
+                    <a href="{{ route("change-password") }}" class="dropdown-item"><i
+                                class="mdi mdi-lock-reset font-size-16 align-middle me-1"></i>Change Password</a>
+                    
                 </div>
+
             </div>
 
 
