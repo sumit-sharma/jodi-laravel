@@ -78,6 +78,7 @@ Route::middleware("auth")->group(function () {
         Route::post('/store-occupation', [MasterController::class, 'storeOccupation'])->name('panel.store-occupation');
         Route::get('/get-active-employee', [MasterController::class, 'getActiveEmployee'])->name('panel.get-active-employee');
         Route::get('/change-password', [MasterController::class, 'changePassword'])->name('change-password');
+        Route::get('/link-tl-tc', [MasterController::class, 'linkTlTc'])->name('link-tl-tc');
         Route::post('/change-password', [MasterController::class, 'changePasswordStore'])->name('panel.change-password');
     });
 

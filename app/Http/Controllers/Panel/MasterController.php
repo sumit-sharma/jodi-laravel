@@ -4,18 +4,20 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Services\MasterService;
+use App\Services\UserService;
 use App\Services\MiscService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\Hash;
 class MasterController extends Controller
 {
     protected $masterService;
+    protected $userService;
 
-    public function __construct(MasterService $masterService)
+    public function __construct(MasterService $masterService, UserService $userService)
     {
         $this->masterService = $masterService;
+        $this->userService = $userService;
     }
 
     public function viewCasteManager(Request $request)
@@ -116,16 +118,15 @@ class MasterController extends Controller
                     ->symbols(),
             ],
         ]);
-        $user = auth()->user();
-        if (!Hash::check($request->old_password, $user->password)) {
-            return back()->withErrors([
-                'old_password' => 'Old password is incorrect.',
-            ]);
-        }
+        $result = $this->userService->changePassword($request);
+        if ($result) {
+            return back()->with('success', 'Password changed successfully.');
 
-        $user->update([
-        'password' => Hash::make($request->password),
-    ]);
-    return back()->with('success', 'Password changed successfully.');
+        }
+    }
+    public function linkTlTc()
+    {
+        return view('panel.main.link-tl-tc');
+
     }
 }
