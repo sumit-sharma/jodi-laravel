@@ -209,7 +209,8 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('seach-members') }}" key="t-products">Search Members</a></li>
-                        {{-- <li><a href="form-transfer.php" data-key="t-product-detail">Form Transfer</a></li> --}}
+                        <li><a href="{{ route('all-form-transfer') }}" data-key="t-product-detail">Form Transfer</a>
+                        </li>
                         <li><a href="{{ route('all-enquiries') }}" data-key="t-orders">Show All Enquiry</a></li>
                         <li><a href="{{ route('show-all-rm-data') }}" data-key="t-customers">Show All RM Data</a></li>
                     </ul>
@@ -253,8 +254,8 @@
                         <li><a href="javascript:;" id="directMeeting_menu" data-bs-toggle="modal"
                                 data-bs-target="#DirectMeetingPageModal" data-key="t-add-product">Direct
                                 Meeting</a></li>
+                        <li><a href="{{ route('fresh-call') }}" data-key="t-seller">Fresh Call</a></li>
                         {{--
-                        <li><a href="fresh-calls.php" data-key="t-seller">Fresh Call</a></li>
                         <li><a href="daily-moment.php" data-key="t-sale-details">Daily Moment</a></li> --}}
                     </ul>
                 </li>

@@ -19,9 +19,11 @@ class FormTransferController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1]);
+        $data['formTransfers'] = $this->formTransferService->index($request);
+        return view('panel.Services.all-form-transfers', $data);
     }
 
     /**

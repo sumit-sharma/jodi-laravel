@@ -40,5 +40,11 @@ class MasterSeeder extends Seeder
         // echo nl2br("start from link_tl_tc import\n");
         // DB::statement("insert ignore into jodi_laravel.link_tl_tc (tl, tc, created_at, updated_at) SELECT li.tl, li.tc, NOW(), NOW() FROM old_jodi.link_tl_tc as li");
         // echo nl2br("finish link_tl_tc import\n");
+
+        // echo nl2br("start from freshcalls import\n");
+        // DB::statement("insert ignore into jodi_laravel.freshcalls (dated, empid, callsource, noofcalls, callsconnected, followupcalls, created_at, updated_at) SELECT li.dated, li.empid, li.callsource, li.noofcalls, li.callsconnected, li.followupcalls, NOW(), NOW() FROM old_jodi.freshcalls as li");
+        // echo nl2br("finish freshcalls import\n");
+
+
     }
 }

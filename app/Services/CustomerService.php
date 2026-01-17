@@ -240,7 +240,6 @@ class CustomerService
 
     public function storeMeeting($data)
     {
-        info(json_encode($data));
         try {
             DB::transaction(function () use ($data) {
                 $result = Meeting::create($data);

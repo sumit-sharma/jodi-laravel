@@ -13,6 +13,7 @@ use App\Http\Controllers\Panel\FeedbackController;
 use App\Http\Controllers\Panel\FixMemberController;
 use App\Http\Controllers\Panel\FollowupController;
 use App\Http\Controllers\Panel\FormTransferController;
+use App\Http\Controllers\Panel\FreshCallController;
 use App\Http\Controllers\Panel\HoldMemberController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
@@ -149,7 +150,11 @@ Route::middleware("auth")->group(function () {
     Route::post('/save-followup', [FollowupController::class, 'store'])->name('save-followup');
     Route::get('/check-limit', [FollowupController::class, 'checkLimit'])->name('check-limit');
 
+    Route::get('/all-form-transfer', [FormTransferController::class, 'index'])->name('all-form-transfer');
     Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');
+
+    Route::get('/fresh-call', [FreshCallController::class, 'create'])->name('fresh-call');
+    Route::post('/save-fresh-call', [FreshCallController::class, 'store'])->name('save-fresh-call');
 
     Route::get('/show-all-rm-data', [EmployeeController::class, 'showAllRmData'])->name('show-all-rm-data');
 
