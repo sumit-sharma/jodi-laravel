@@ -46,6 +46,7 @@ Route::middleware("auth")->group(function () {
     Route::delete('/delete-customer-photo', [CustomerController::class, 'deleteFile'])->name('customer.photo-delete');
     Route::post('/customer-upload', [CustomerController::class, 'upload'])->name('customer.upload');
     Route::get('/customer/picklistbiodata', [CustomerController::class, 'pickListBioData'])->name('customer.picklistbiodata');
+    Route::get('/customer/picklist-viewprofile-data', [CustomerController::class, 'pickListViewProfileData'])->name('customer.picklist-viewprofile-data');
     Route::resource('customer', CustomerController::class);
 
     Route::get('/dashboard/get-castes/{religion}', [DashboardController::class, 'getCaste'])->name('get-caste');

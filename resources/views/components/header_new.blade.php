@@ -236,14 +236,20 @@
                         <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
                         </li>
                         <li><a href="{{ route('hold-member.index') }}" data-key="t-cart">Show Hold Data</a></li>
-                        <li><a href="{{ route('show-all-hold-records') }}" data-key="t-checkout">Show All Hold Data</a></li>
+                        <li><a href="{{ route('show-all-hold-records') }}" data-key="t-checkout">Show All Hold Data</a>
+                        </li>
                         <li><a href="{{ route('show-all-other-data') }}" data-key="t-shops">Show Other Data</a></li>
-                        <li><a href="{{ route('show-website-data') }}" data-key="t-add-product">Show Website Data</a></li>
-                        {{-- <li><a href="{{ route('show-done-list') }}" data-key="t-sale-details">Show Done List</a></li> --}}
+                        <li><a href="{{ route('show-website-data') }}" data-key="t-add-product">Show Website Data</a>
+                        </li>
+                        {{-- <li><a href="{{ route('show-done-list') }}" data-key="t-sale-details">Show Done List</a>
+                        </li> --}}
                         <li><a href="{{ route('show-all-nadata') }}" data-key="t-sale-details">Show All NA-Data</a></li>
-                        <li><a href="{{ route('show-all-non-nadata') }}" data-key="t-shops">Show All None NA-Data</a></li>
+                        <li><a href="{{ route('show-all-non-nadata') }}" data-key="t-shops">Show All None NA-Data</a>
+                        </li>
+                        <li><a href="javascript:;" id="directMeeting_menu" data-bs-toggle="modal"
+                                data-bs-target="#DirectMeetingPageModal" data-key="t-add-product">Direct
+                                Meeting</a></li>
                         {{--
-                        <li><a href="#" data-key="t-add-product">Direct Meeting</a></li>
                         <li><a href="fresh-calls.php" data-key="t-seller">Fresh Call</a></li>
                         <li><a href="daily-moment.php" data-key="t-sale-details">Daily Moment</a></li> --}}
                     </ul>
@@ -347,3 +353,5 @@
     </div>
 </div>
 <!-- Left Sidebar End -->
+
+@include('components.direct-meeting-modal')

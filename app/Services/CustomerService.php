@@ -240,6 +240,7 @@ class CustomerService
 
     public function storeMeeting($data)
     {
+        info(json_encode($data));
         try {
             DB::transaction(function () use ($data) {
                 $result = Meeting::create($data);
@@ -250,6 +251,7 @@ class CustomerService
             });
             return true;
         } catch (\Exception $e) {
+            dd($e);
             // Log the exception or handle it as needed
             return false;
         }
@@ -630,5 +632,27 @@ class CustomerService
             }
         }
         return false;
+    }
+
+
+    public function pickListViewProfileData($request, $selectArray = ['rno', 'refname'], $excludeArray = [])
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+        $limit   = $request->limit ?? 20;
+
+        $query = ViewProfile::select($selectArray)->orderBy($sortBy, $orderBy)
+            ->when($request->q, function ($query) use ($request) {
+                $query->where('refname', 'like', "%{$request->q}%")
+                    ->orWhere('rno', 'like', "%{$request->q}%");
+            })
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->refname, fn($query) => $query->where('refname', 'like', "%{$request->refname}%"));
+
+        if (!empty($excludeArray)) {
+            $query->whereNotIn('rno', $excludeArray);
+        }
+
+        return  $query->paginate($limit);
     }
 }

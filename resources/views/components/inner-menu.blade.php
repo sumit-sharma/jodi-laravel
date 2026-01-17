@@ -193,17 +193,6 @@
             }
 
 
-            const fetchActiveEmployee = async () => {
-                const response = await fetch("{{ route('panel.get-active-employee') }}", {
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-                const data = await response.json();
-                return data;
-            }
-
             const fetchBioDataPickList = async (rno) => {
                 try {
                     const tbody = document.querySelector('#table-sl-result tbody');

@@ -37,5 +37,8 @@ class MasterSeeder extends Seeder
         // DB::statement("truncate table edupref");
         // DB::statement("insert ignore into jodi_laravel.edupref (sno, education, created_at, updated_at)  Select li.sno, li.education, NOW(), NOW() from old_jodi.edupref as li");
 
+        // echo nl2br("start from link_tl_tc import\n");
+        // DB::statement("insert ignore into jodi_laravel.link_tl_tc (tl, tc, created_at, updated_at) SELECT li.tl, li.tc, NOW(), NOW() FROM old_jodi.link_tl_tc as li");
+        // echo nl2br("finish link_tl_tc import\n");
     }
 }

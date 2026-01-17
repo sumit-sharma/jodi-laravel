@@ -220,25 +220,33 @@ class CustomerController extends Controller
 
     public function storeInteraction(Request $request)
     {
-        $data = $request->all();
-        unset($data['_token']);
-        $result = $this->customerService->storeInteraction($data);
-        if ($result) {
-            return response()->json(['status' => 'success', 'message' => 'Interaction has been saved successfully']);
+        try {
+            $data = $request->all();
+            unset($data['_token']);
+            $result = $this->customerService->storeInteraction($data);
+            if ($result) {
+                return response()->json(['status' => 'success', 'message' => 'Interaction has been saved successfully']);
+            }
+            dd($result);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'error', 'message' => $th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile()]);
         }
-        return response()->json(['status' => 'error', 'message' => 'There are some error, please try again!']);
     }
 
     public function storeMeeting(Request $request)
     {
-        $data = $request->all();
-        // return $data;
-        unset($data['_token']);
-        $result = $this->customerService->storeMeeting($data);
-        if ($result) {
-            return response()->json(['status' => 'success', 'message' => 'Meeting has been saved successfully']);
+        try {
+            $data = $request->all();
+            // return $data;
+            unset($data['_token']);
+            $result = $this->customerService->storeMeeting($data);
+            if ($result) {
+                return response()->json(['status' => 'success', 'message' => 'Meeting has been saved successfully']);
+            }
+            dd($result);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'error', 'message' => $th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile()]);
         }
-        return response()->json(['status' => 'error', 'message' => 'There are some error, please try again!']);
     }
 
     public function pickListBioData(Request $request)
@@ -389,5 +397,26 @@ class CustomerController extends Controller
             return response()->json(['status' => 'success', 'data' => $result]);
         }
         return response()->json(['status' => 'error', 'data' => 'There are some error, please try again!']);
+    }
+
+
+    public function pickListViewProfileData(Request $request)
+    {
+        $data = $this->customerService->pickListViewProfileData($request, ['rno', 'refname']);
+        if ($request->expectsJson()) {
+            $formattedData = $data->getCollection()->transform(function ($item) {
+                return [
+                    'id'   => $item->rno,
+                    'text' => $item->rno . ' - ' . $item->refname,
+                ];
+            });
+
+            return response()->json([
+                'results'    => $formattedData,
+                'pagination' => [
+                    'more' => $data->hasMorePages()
+                ]
+            ]);
+        }
     }
 }
