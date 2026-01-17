@@ -80,6 +80,7 @@ Route::middleware("auth")->group(function () {
         Route::get('/change-password', [MasterController::class, 'changePassword'])->name('change-password');
         Route::post('/change-password', [MasterController::class, 'changePasswordStore'])->name('panel.change-password');
         Route::get('/link-tl-tc', [MasterController::class, 'linkTlTc'])->name('link-tl-tc');
+        Route::post('/link-tl-tc', [MasterController::class, 'linkTlTcStore'])->name('panel.link-tl-tc');
     });
 
     Route::resource('references', ReferenceController::class);

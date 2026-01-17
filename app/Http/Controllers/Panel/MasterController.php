@@ -124,9 +124,19 @@ class MasterController extends Controller
 
         }
     }
-    public function linkTlTc()
+    public function linkTlTc(Request $request)
     {
-        return view('panel.main.link-tl-tc');
+        $data['tltcData'] = $this->userService->fetchuserTltc();
+        $data['linkedData'] = $this->userService->fetchTltcData();
+        $data['tcData']= $this->userService->fetchuserTc();
+        return view('panel.main.link-tl-tc',$data);
 
+    }
+    public function linkTlTcStore(Request $request){
+        $result = $this->userService->storeTltcData($request);
+        if($result){
+            return back()->with('success', 'Link TL successfuly!.');
+
+        }
     }
 }

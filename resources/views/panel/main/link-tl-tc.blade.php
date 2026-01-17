@@ -24,29 +24,39 @@
                             </div>
 
                             <hr>
-                            <form id="frmAddCaste" action="{{ route('panel.change-password') }}" method="POST">
+                            <form id="frmAddCaste" action="{{ route('panel.link-tl-tc') }}" method="POST">
                                 @csrf
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-3">
                                             <label class="form-label">Select TL</label>
-                                            <select class="form-control" name="" required>
-                                            <option value="">--Select--</option>
+                                            <select class="form-control" name="tl" id="tl" required>
+                                                <option value="">--Select--</option>
+                                                @foreach($tltcData as $tltc)
+                                                    <option value="{{ $tltc->username }}">{{ $tltc->details?$tltc->details->loginname:'' }}</option>
+                                                @endforeach
                                             </select>
-                                            
-                                           </div>
+
+                                        </div>
                                         <div class="col-3">
                                             <label class="form-label">All Linked TC</label>
-                                            <select class="form-control"name>
-                                                <option value="">--Select--</option>
+                                            <select class="form-control" name="linked" id="linked">
+                                                @foreach($linkedData as $link)
+                                                    <option value="">
+                                                        {{ $link->tl . '-' . $link->loginname . '::' . $link->tc . '-' . $link->loginname1 }}
+                                                    </option>
+                                                @endforeach
                                             </select>
-                                            
+
                                         </div>
                                         <div class="col-3">
                                             <div class="mb-3">
                                                 <label for="caste" class="form-label">Add New TC</label>
-                                                <select name="" class="form-control">
+                                                <select class="form-control" name="tc">
                                                     <option value="">--Select--</option>
+                                                    @foreach($tcData as $tc)
+                                                        <option value="{{ $tc->username }}">{{ $tc->details?$tc->details->loginname:'' }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
