@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\LinkTlTc;
 use App\Models\ViewProfile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -36,7 +37,7 @@ class UserService
     protected function loadData($request)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
-        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+        $sortBy = $request->has('sortBy') ? $request->sortBy : 'id';
 
         return User::with(['details'])->orderBy($sortBy, $orderBy)
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
@@ -44,17 +45,81 @@ class UserService
             ->when($request->status, fn($query) => $query->whereRelation('viewProfile', 'status', $request->status));
     }
 
-    public function changePassword($request){
-         $user = auth()->user();
-         if (!Hash::check($request->old_password, $user->password)) {
+    public function changePassword($request)
+    {
+        $user = auth()->user();
+        if (!Hash::check($request->old_password, $user->password)) {
             return back()->withErrors([
                 'old_password' => 'Old password is incorrect.',
             ]);
 
         }
-      return   $user->update([
-        'password' => Hash::make($request->password),
-    ]);
+        return $user->update([
+            'password' => Hash::make($request->password),
+        ]);
 
+    }
+    public function fetchTltcData()
+    {
+        return $data = DB::table('link_tl_tc as l')
+            ->join('emp_details as ed', 'ed.loginname', '=', 'l.tl')
+            ->join('emp_details as ed1', 'ed1.loginname', '=', 'l.tc')
+            ->select([
+                'l.tl',
+                'ed.loginname',
+                'l.tc',
+                'ed1.loginname as loginname1',
+            ])
+            ->orderBy('ed.loginname')
+            ->get();
+    }
+    public function storeTltcData($request)
+    {
+        return LinkTlTc::insert(['tl' => $request->tl, 'tc' => $request->tc]);
+    }
+    public function fetchuserTltc()
+    {
+        return User::with([
+            'details' => function ($query) {
+                $query->where(function ($q) {
+                    $q->where('department', 'TL')
+                        ->orWhere('department', 'BM')
+                        ->orWhere('department', 'HS');
+                });
+            }
+        ])
+            ->get();
+    }
+    public function fetchuserTc()
+    {
+        return User::with([
+            'details' => function ($query) {
+                $query->where('department', 'TC');
+            }
+        ])
+            ->get();
+    }
+
+    public function fetchRm()
+    {
+        return User::with(['details'])
+            ->get();
+
+    }
+    public function rmStore($request)
+    {
+        $pn = str_contains($request->pn, ',')
+            ? explode(',', $request->pn)
+            : [$request->pn];
+        $status = str_contains($request->status, ',')
+            ? explode(',', $request->status)
+            : [$request->status];
+            
+        return ViewProfile::where('rm', $request->oldrm)
+            ->whereIn('dtype', $pn)
+            ->whereIn('status', $status)
+            ->update([
+                'rm' => $request->newrm
+            ]);
     }
 }
