@@ -78,6 +78,9 @@ Route::middleware("auth")->group(function () {
         Route::get('/manage-occupation', [MasterController::class, 'viewOccupationManager'])->name('manage-occupation');
         Route::post('/store-occupation', [MasterController::class, 'storeOccupation'])->name('panel.store-occupation');
         Route::get('/get-active-employee', [MasterController::class, 'getActiveEmployee'])->name('panel.get-active-employee');
+        Route::get('/change-password', [MasterController::class, 'changePassword'])->name('change-password');
+        Route::post('/change-password', [MasterController::class, 'changePasswordStore'])->name('panel.change-password');
+        Route::get('/link-tl-tc', [MasterController::class, 'linkTlTc'])->name('link-tl-tc');
     });
 
     Route::resource('references', ReferenceController::class);

@@ -144,8 +144,11 @@
                         <button type="submit" class="dropdown-item"><i
                                 class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</button>
                     </form>
-
+                    <a href="{{ route("change-password") }}" class="dropdown-item"><i
+                                class="mdi mdi-lock-reset font-size-16 align-middle me-1"></i>Change Password</a>
+                    
                 </div>
+
             </div>
 
 
@@ -180,10 +183,10 @@
                         <span data-key="t-ecommerce">Main</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route("link-tl-tc") }}" data-key="t-customers">Link TL-TC</a></li>
                         {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
                         <li><a href="#" data-key="t-product-detail">Change Password</a></li>
                         <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
-                        <li><a href="#" data-key="t-customers">Link TL-TC</a></li>
                         <li><a href="#" data-key="t-cart">Transfer RM</a></li>
                         <li><a href="#" data-key="t-checkout">Transfer TC</a></li>
                         <li><a href="feedback-options.php" data-key="t-shops">Feedback Option</a></li> --}}

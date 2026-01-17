@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\ViewProfile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -41,5 +42,19 @@ class UserService
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
             ->when($request->empid, fn($query) => $query->where('empid', $request->empid))
             ->when($request->status, fn($query) => $query->whereRelation('viewProfile', 'status', $request->status));
+    }
+
+    public function changePassword($request){
+         $user = auth()->user();
+         if (!Hash::check($request->old_password, $user->password)) {
+            return back()->withErrors([
+                'old_password' => 'Old password is incorrect.',
+            ]);
+
+        }
+      return   $user->update([
+        'password' => Hash::make($request->password),
+    ]);
+
     }
 }
