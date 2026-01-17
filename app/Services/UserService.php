@@ -75,7 +75,7 @@ class UserService
     }
     public function storeTltcData($request)
     {
-        return LinkTlTc::insert(['tl'=>$request->tl,'tc'=>$request->tc]);
+        return LinkTlTc::insert(['tl' => $request->tl, 'tc' => $request->tc]);
     }
     public function fetchuserTltc()
     {
@@ -98,5 +98,28 @@ class UserService
             }
         ])
             ->get();
+    }
+
+    public function fetchRm()
+    {
+        return User::with(['details'])
+            ->get();
+
+    }
+    public function rmStore($request)
+    {
+        $pn = str_contains($request->pn, ',')
+            ? explode(',', $request->pn)
+            : [$request->pn];
+        $status = str_contains($request->status, ',')
+            ? explode(',', $request->status)
+            : [$request->status];
+            
+        return ViewProfile::where('rm', $request->oldrm)
+            ->whereIn('dtype', $pn)
+            ->whereIn('status', $status)
+            ->update([
+                'rm' => $request->newrm
+            ]);
     }
 }

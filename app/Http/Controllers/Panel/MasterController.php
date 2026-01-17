@@ -122,6 +122,8 @@ class MasterController extends Controller
         if ($result) {
             return back()->with('success', 'Password changed successfully.');
 
+        }else {
+            return back()->with('error', 'some error occurred, please try again.');
         }
     }
     public function linkTlTc(Request $request)
@@ -137,6 +139,25 @@ class MasterController extends Controller
         if($result){
             return back()->with('success', 'Link TL successfuly!.');
 
+        }else {
+            return back()->with('error', 'some error occurred, please try again.');
+        }
+    }
+    public function rmTransfer(){
+        $data['rmData']=$this->userService->fetchRm();
+        $data['newrmData']=$this->userService->fetchRm();
+
+        return view('panel.main.rm',$data);
+
+    }
+    public function rmTransferStore(Request $request){
+        //dd($request);
+        $result = $this->userService->rmStore($request);
+        if($result){
+            return back()->with('success', 'RM Transfer successfuly!.');
+
+        }else {
+            return back()->with('error', 'some error occurred, please try again.');
         }
     }
 }

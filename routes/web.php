@@ -81,6 +81,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/change-password', [MasterController::class, 'changePasswordStore'])->name('panel.change-password');
         Route::get('/link-tl-tc', [MasterController::class, 'linkTlTc'])->name('link-tl-tc');
         Route::post('/link-tl-tc', [MasterController::class, 'linkTlTcStore'])->name('panel.link-tl-tc');
+        Route::get('/rm-transfer', [MasterController::class, 'rmTransfer'])->name('rm-transfer');
+        Route::post('/rm-transfer', [MasterController::class, 'rmTransferStore'])->name('panel.rm-transfer');
     });
 
     Route::resource('references', ReferenceController::class);
