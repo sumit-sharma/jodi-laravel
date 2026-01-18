@@ -205,4 +205,12 @@ class UserService
                 "offday" => $request->offday
             ]);
     }
+    public function resetPassword($request)
+    {
+        $user = User::where('id', $request->user_id)->first();
+        return $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+    }
 }

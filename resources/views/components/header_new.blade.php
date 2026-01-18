@@ -189,8 +189,8 @@
                         <li><a href="{{ route('feedback-option') }}" data-key="t-shops">Feedback Option</a></li>
                         <li><a href="{{ route('update-my-info') }}" data-key="t-add-product">Update My Info</a></li>
                         <li><a href="{{ route('update-timings') }}" data-key="t-seller">Updates Timmings</a></li>
+                        <li><a href="{{ route('reset-password') }}" data-key="t-sale-details">Reset Password</a></li>
                         {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
-                        <li><a href="#" data-key="t-sale-details">Reset Password</a></li>
                         <li><a href="#" data-key="t-product-detail">Change Password</a></li>
                         <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
                         <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>

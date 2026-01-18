@@ -91,6 +91,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/update-my-info', [MasterController::class, 'myInfoUpdate'])->name('panel.update-my-info');
         Route::get('/update-timings', [MasterController::class, 'timings'])->name('update-timings');
         Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
+        Route::get('/reset-password', [MasterController::class, 'resetPassword'])->name('reset-password');
+        Route::post('/reset-password', [MasterController::class, 'resetPasswordStore'])->name('panel.reset-password');
     });
 
     Route::resource('references', ReferenceController::class);
