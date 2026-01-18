@@ -22,6 +22,11 @@ class EmpDetail extends Model
         "offday",
         "department",
         "signature",
+        "father_name",
+        "mobile_type",
+        "curr_address",
+        "per_address",
+
     ];
 
 

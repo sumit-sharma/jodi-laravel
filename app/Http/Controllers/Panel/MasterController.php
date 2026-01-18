@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmpDetail;
 use App\Services\MasterService;
 use App\Services\UserService;
 use App\Services\MiscService;
@@ -191,6 +192,19 @@ class MasterController extends Controller
       $result = $this->userService->feedbackOptionStore($request);
       if ($result) {
             return back()->with('success', 'Feedback added successfuly!.');
+
+        } else {
+            return back()->with('error', 'Error: Contact System Admin');
+        }
+    }
+    public function myInfo(){
+        $data['detail'] =EmpDetail::where('user_id',auth()->user()->id)->first();
+        return view('panel.main.my-info',$data);
+    }
+    public function myInfoUpdate(Request $request){
+        $result = $this->userService->updatemyInfo($request);
+        if ($result) {
+            return back()->with('success', 'Your info updated successfuly!.');
 
         } else {
             return back()->with('error', 'Error: Contact System Admin');

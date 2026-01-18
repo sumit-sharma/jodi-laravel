@@ -87,6 +87,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/tc-transfer', [MasterController::class, 'tcTransferStore'])->name('panel.tc-transfer');
         Route::get('/feedback-option', [MasterController::class, 'feedbackOption'])->name('feedback-option');
         Route::post('/feedback-option', [MasterController::class, 'feedbackOptionStore'])->name('panel.feedback-option');
+        Route::get('/update-my-info', [MasterController::class, 'myInfo'])->name('update-my-info');
+        Route::post('/update-my-info', [MasterController::class, 'myInfoUpdate'])->name('panel.update-my-info');
     });
 
     Route::resource('references', ReferenceController::class);
