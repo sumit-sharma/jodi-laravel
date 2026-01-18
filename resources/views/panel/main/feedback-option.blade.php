@@ -13,65 +13,38 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">TRANSFER RM</h4>
+                                    <h4 class="mb-sm-0 font-size-18">FEEDBACK OPTIONS</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Main</a></li>
-                                            <li class="breadcrumb-item active">TRANSFER RM</li>
+                                            <li class="breadcrumb-item active">FEEDBACK OPTIONS</li>
                                         </ol>
                                     </div>
                                 </div>
                             </div>
 
                             <hr>
-                            <form id="frmAddCaste" action="{{ route('panel.rm-transfer') }}" method="POST">
+                            <form id="frmAddCaste" action="{{ route('panel.feedback-option') }}" method="POST">
                                 @csrf
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-3">
-                                            <label class="form-label">Transfer all Cases from</label>
-                                            <select class="form-control" name="oldrm" id="oldrm" required>
+                                            <label class="form-label">Add Feedback</label>
+                                        <input type="text" class="form-control" name="feedback" >
+                                        </div>
+                                        <div class="col-3">
+                                            <label class="form-label">Feedbacks</label>
+                                            <select class="form-control" multiple="multiple" name="allfeedback" id="allfeedback">
                                                 <option value="">--Select--</option>
-                                                @foreach($rmData as $rm)
-                                                    <option value="{{ $rm->username }}">
-                                                        {{ $rm->details ? $rm->details->loginname : '' }}
+                                                @foreach($feedbacks as $feedback)
+                                                    <option value="{{ $feedback->feedback }}">
+                                                        {{ $feedback->feedback }}
                                                     </option>
                                                 @endforeach
                                             </select>
 
                                         </div>
-                                        <div class="col-3">
-                                            <label class="form-label">To New RM Code</label>
-                                            <select class="form-control" name="newrm" id="newrm">
-                                                <option value="">--Select--</option>
-                                                @foreach($newrmData as $rm)
-                                                    <option value="{{ $rm->username }}">
-                                                        {{ $rm->details ? $rm->details->loginname : '' }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="mb-3">
-                                                <label for="caste" class="form-label">Member Type</label>
-                                                <select class="form-control" name="pn">
-                                                    <option value="N" selected>Non Paid</option>
-                                                    <option value="P">Paid</option>
-                                                    <option value="N,P">Both</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="mb-3">
-                                                <label for="caste" class="form-label">Member Status</label>
-                                                <select class="form-control" name="status">
-                                                    <option value="A" selected="selected">Active</option>
-                                                    <option value="F">Fixed</option>
-                                                    <option value="A,F">Both</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="clearfix"></div>
 
                                         <div class="col-12 mt-3">

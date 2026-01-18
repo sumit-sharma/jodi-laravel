@@ -83,6 +83,10 @@ Route::middleware("auth")->group(function () {
         Route::post('/link-tl-tc', [MasterController::class, 'linkTlTcStore'])->name('panel.link-tl-tc');
         Route::get('/rm-transfer', [MasterController::class, 'rmTransfer'])->name('rm-transfer');
         Route::post('/rm-transfer', [MasterController::class, 'rmTransferStore'])->name('panel.rm-transfer');
+        Route::get('/tc-transfer', [MasterController::class, 'tcTransfer'])->name('tc-transfer');
+        Route::post('/tc-transfer', [MasterController::class, 'tcTransferStore'])->name('panel.tc-transfer');
+        Route::get('/feedback-option', [MasterController::class, 'feedbackOption'])->name('feedback-option');
+        Route::post('/feedback-option', [MasterController::class, 'feedbackOptionStore'])->name('panel.feedback-option');
     });
 
     Route::resource('references', ReferenceController::class);

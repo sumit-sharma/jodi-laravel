@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\FeedbackOption;
+use App\Models\ProfileDetail;
 use App\Models\User;
 use App\Models\LinkTlTc;
 use App\Models\ViewProfile;
@@ -114,12 +116,62 @@ class UserService
         $status = str_contains($request->status, ',')
             ? explode(',', $request->status)
             : [$request->status];
-            
-        return ViewProfile::where('rm', $request->oldrm)
+
+        $vpUpdated = ViewProfile::where('rm', $request->oldrm)
             ->whereIn('dtype', $pn)
             ->whereIn('status', $status)
             ->update([
                 'rm' => $request->newrm
             ]);
+        $pdUpdated = ProfileDetail::where('rm', $request->oldrm)
+            ->whereExists(function ($query) use ($pn, $status) {
+                $query->select(DB::raw(1))
+                    ->from('viewprofile')
+                    ->whereColumn('viewprofile.rno', 'profile_details.rno')
+                    ->whereIn('viewprofile.dtype', $pn)
+                    ->whereIn('viewprofile.status', $status);
+            })
+            ->update([
+                'rm' => $request->newrm
+            ]);
+
+        return ($vpUpdated > 0 && $pdUpdated > 0);
+    }
+    public function tcStore($request)
+    {
+        $pn = str_contains($request->pn, ',')
+            ? explode(',', $request->pn)
+            : [$request->pn];
+        $status = str_contains($request->status, ',')
+            ? explode(',', $request->status)
+            : [$request->status];
+
+        $vpUpdated = ViewProfile::where('tc', $request->oldtc)
+            ->whereIn('dtype', $pn)
+            ->whereIn('status', $status)
+            ->update([
+                'tc' => $request->newtc
+            ]);
+        $pdUpdated = ProfileDetail::where('tc', $request->oldtc)
+            ->whereExists(function ($query) use ($pn, $status) {
+                $query->select(DB::raw(1))
+                    ->from('viewprofile')
+                    ->whereColumn('viewprofile.rno', 'profile_details.rno')
+                    ->whereIn('viewprofile.dtype', $pn)
+                    ->whereIn('viewprofile.status', $status);
+            })
+            ->update([
+                'tc' => $request->newtc
+            ]);
+
+        return ($vpUpdated > 0 && $pdUpdated > 0);
+    }
+    public function fetchFeedbacks()
+    {
+        return FeedbackOption::orderBy('feedback', 'ASC')->get();
+    }
+    public function feedbackOptionStore($request)
+    {
+        return FeedbackOption::insert(['feedback'=>$request->feedback]);
     }
 }
