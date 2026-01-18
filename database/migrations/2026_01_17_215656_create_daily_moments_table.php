@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('link_tl_tc', function (Blueprint $table) {
-            $table->bigIncrements('srno');
-            $table->string('tl', 50);
-            $table->string('tc', 50);
+        Schema::create('daily_moment', function (Blueprint $table) {
+            $table->id();
+            $table->date('dated');
+            $table->time('timefrom');
+            $table->time('timeto');
+            $table->integer('empid');
+            $table->text('moment');
 
-            $table->timestamps();
-            // Indexes (important for joins)
-            $table->index('tl');
-            $table->index('tc');
+            $table->index(['dated', 'empid'], 'dated_empid');
+
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('link_tl_tc');
+        Schema::dropIfExists('daily_moment');
     }
 };

@@ -662,7 +662,6 @@
                         error.insertAfter(element);
                     }
                 },
-
                 highlight: function (element) {
                     $(element).next('.select2').find('.select2-selection')
                         .addClass('is-invalid');

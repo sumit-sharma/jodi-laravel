@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerUploadController;
 use App\Http\Controllers\Panel\AdvtdataController;
 use App\Http\Controllers\Panel\AppointmentController;
 use App\Http\Controllers\Panel\CustomerController;
+use App\Http\Controllers\Panel\DailyMomentController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\DataController;
 use App\Http\Controllers\Panel\EmployeeController;
@@ -170,4 +171,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/show-done-list', [DataController::class, 'showdoneList'])->name('show-done-list');
     Route::get('/show-all-nadata', [DataController::class, 'showmyNaData'])->name('show-all-nadata');
     Route::get('/show-all-non-nadata', [DataController::class, 'showallnonnadata'])->name('show-all-non-nadata');
+
+    Route::get('/daily-moment', [DailyMomentController::class, 'index'])->name('daily-moment.index');
+    Route::post('/save-daily-moment', [DailyMomentController::class, 'store'])->name('save-daily-moment');
 });
