@@ -177,7 +177,7 @@ class UserService
     }
     public function updatemyInfo($request)
     {
-        $emp= EmpDetail::where('user_id', auth()->user()->id)
+        $emp = EmpDetail::where('user_id', auth()->user()->id)
             ->update([
                 "loginname" => $request->loginname,
                 "dob" => $request->dob,
@@ -188,7 +188,21 @@ class UserService
                 "curr_address" => $request->curr_address,
                 "per_address" => $request->per_address
             ]);
-        $user = User::where('id', auth()->user()->id)->update(["mobile"=>$request->mobile]);    
-    return ($emp > 0 && $user > 0);
+        $user = User::where('id', auth()->user()->id)->update(["mobile" => $request->mobile]);
+        return ($emp > 0 && $user > 0);
+    }
+    public function empDetails()
+    {
+        return EmpDetail::get();
+
+    }
+    public function timngStore($request)
+    {
+        return EmpDetail::where('user_id', $request->user_id)
+            ->update([
+                "intime" => $request->intime,
+                "outtime" => $request->outtime,
+                "offday" => $request->offday
+            ]);
     }
 }

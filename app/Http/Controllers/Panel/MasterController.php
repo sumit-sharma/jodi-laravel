@@ -210,4 +210,17 @@ class MasterController extends Controller
             return back()->with('error', 'Error: Contact System Admin');
         }
     }
+    public function timings(){
+        $data['detail'] =$this->userService->empDetails();
+        return view('panel.main.update-timings',$data);
+    }
+    public function timingsStore(Request $request){
+        $result = $this->userService->timngStore($request);
+        if ($result) {
+            return back()->with('success', 'Emp timings updated successfuly!.');
+
+        } else {
+            return back()->with('error', 'Error: Contact System Admin');
+        }
+    }
 }

@@ -89,6 +89,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/feedback-option', [MasterController::class, 'feedbackOptionStore'])->name('panel.feedback-option');
         Route::get('/update-my-info', [MasterController::class, 'myInfo'])->name('update-my-info');
         Route::post('/update-my-info', [MasterController::class, 'myInfoUpdate'])->name('panel.update-my-info');
+        Route::get('/update-timings', [MasterController::class, 'timings'])->name('update-timings');
+        Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
     });
 
     Route::resource('references', ReferenceController::class);
