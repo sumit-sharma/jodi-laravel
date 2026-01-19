@@ -188,6 +188,9 @@
                         <li><a href="{{ route('rm-transfer') }}" data-key="t-cart">Transfer RM</a></li>
                         <li><a href="{{ route('tc-transfer') }}" data-key="t-checkout">Transfer TC</a></li>
                         <li><a href="{{ route('feedback-option') }}" data-key="t-shops">Feedback Option</a></li>
+                        <li><a href="{{ route('update-my-info') }}" data-key="t-add-product">Update My Info</a></li>
+                        <li><a href="{{ route('update-timings') }}" data-key="t-seller">Updates Timmings</a></li>
+                        <!-- <li><a href="{{ route('reset-password') }}" data-key="t-sale-details">Reset Password</a></li> -->
                         {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
                         <li><a href="#" data-key="t-product-detail">Change Password</a></li>
                         <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
@@ -195,9 +198,6 @@
                         <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
                         <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
                         {{-- <li><a href="#" data-key="t-shops">Enter Massage</a></li>
-                        <li><a href="update-my-info.php" data-key="t-add-product">Update My Info</a></li>
-                        <li><a href="#" data-key="t-seller">Updates Timmings</a></li>
-                        <li><a href="#" data-key="t-sale-details">Reset Password</a></li>
                         <li><a href="#" data-key="t-sale-details">Reference Graph</a></li> --}}
                     </ul>
                 </li>
