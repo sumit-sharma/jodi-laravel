@@ -419,4 +419,23 @@ class CustomerController extends Controller
             ]);
         }
     }
+
+
+
+    public function convertMember(Request $request)
+    {
+        // return $request->all();
+        $validated = $request->validate([
+            'rno' => 'required',
+            'tc_code' => 'required',
+            'tl_code' => 'required',
+            'rm_code' => 'required',
+        ]);
+        // return $validated;
+        $result = $this->customerService->convertMember($validated);
+        if ($result) {
+            return response()->json(['status' => 'success', 'data' => $result]);
+        }
+        return response()->json(['status' => 'error', 'data' => 'There are some error, please try again!']);
+    }
 }

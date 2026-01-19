@@ -93,7 +93,7 @@
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                                     <h4 class="mb-sm-0 font-size-18">All Moments</h4>
                                     <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Total
-                                        Result-1</button>
+                                        Result-{{ $dailyMoments->total() }}</button>
                                 </div>
                             </div>
 
@@ -116,20 +116,29 @@
                                             </thead>
 
                                             <tbody class="pdng_d">
-                                                <tr>
-                                                    <td>...</td>
-                                                    <td>...</td>
-                                                    <td>...</td>
-                                                    <td>...</td>
-                                                    <td>...</td>
-                                                    <td>...</td>
-                                                    <td>...</td>
-                                                </tr>
+                                                @forelse ($dailyMoments as $dailyMoment)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $dailyMoment->employee->name }}</td>
+                                                        <td>{{ $dailyMoment->empid }}</td>
+                                                        <td>{{ $dailyMoment->dated }}</td>
+                                                        <td>{{ $dailyMoment->timefrom }}</td>
+                                                        <td>{{ $dailyMoment->timeto }}</td>
+                                                        <td>{{ $dailyMoment->moment }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">No data found</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
 
                                         </table>
                                     </div>
 
+                                </div>
+                                <div class="col-12">
+                                    {{ $dailyMoments->withQueryString()->links() }}
                                 </div>
                             </div>
                             <div class="clearfix"></div>

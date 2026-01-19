@@ -150,13 +150,13 @@
                                                         <td><a href="#" class="biodata_modal" data-bs-toggle="modal" data-bs-target="#Modal_biodata" data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
                                                         <td>{{ $data->g }}</td>
                                                         <td>{{ $data->refname }} {!! $data->vc == 1? '<i class="bi bi-vimeo"></i>' : '' !!} {!! $data->oc == 1? '<i class="text-danger"><strong>O</strong></i>' : '' !!}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->dob)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->dob)->age }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data?->bio?->dob)->format('M d Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data?->bio?->dob)->age }}</td>
                                                         <td>{{ msValue($data->ms) }}</td>
                                                         <td>{{ $data->cst }}</td>
                                                         <td>{{ $data->hg }}</td>
-                                                        <td>{{ $data->bio->astrostatus->label() }}</td>
-                                                        <td>{{ $data->bio->education->label() }}</td>
+                                                        <td>{{ $data?->bio?->astrostatus->label() }}</td>
+                                                        <td>{{ $data?->bio?->education->label() }}</td>
                                                         <td>{{ $data->personal->budget }}</td>
                                                         <td>{{ $data?->income?->income }}</td>
                                                         <td>{{ $data->personal->arealocation }}</td>
@@ -167,7 +167,7 @@
                                                         <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->bio->profiledate)->format('M d Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data?->bio?->profiledate)->format('M d Y') }}</td>
                                                         <td>
                                                             <div class="btn-group me-1 mt-2">
                                                                 <span class="dropdown-toggle  dropstart dropdown-toggle-split"

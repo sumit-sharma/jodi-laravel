@@ -163,8 +163,31 @@
 <script src="/assets/libs/simplebar/simplebar.min.js"></script>
 <script src="/assets/libs/node-waves/waves.min.js"></script>
 <script src="/assets/libs/feather-icons/feather.min.js"></script>
+
+
 <!-- pace js -->
+{{--
+<link rel="stylesheet" href="/assets/libs/pace-js/themes/blue/pace-theme-center-simple.css"> --}}
+
 <script src="/assets/libs/pace-js/pace.min.js"></script>
+
+<script>
+    window.ManualLoader = {
+        start() {
+            if (window.Pace) {
+                Pace.stop();      // stop auto state
+                Pace.restart();   // force manual start
+            }
+        },
+        stop() {
+            if (window.Pace) {
+                Pace.stop();
+                Pace.bar.finish();
+            }
+        }
+    };
+</script>
+
 
 <!-- twitter-bootstrap-wizard js -->
 <script src="/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>

@@ -178,4 +178,7 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/daily-moment', [DailyMomentController::class, 'index'])->name('daily-moment.index');
     Route::post('/save-daily-moment', [DailyMomentController::class, 'store'])->name('save-daily-moment');
+
+    Route::any('/get-counter-number', [MasterController::class, 'getCounterNumber'])->name('get-counter-number');
+    Route::post('/convert-member', [CustomerController::class, 'convertMember'])->name('convert-member');
 });

@@ -17,7 +17,10 @@
                                     >
 
 
-                                    {{-- <a href="#" class="dropdown-item" data-key="t-calendar">Delete member </a> --}}
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal"
+                                        id="modl_delete_member" data-key="DeleteMemberModal">Delete Member </a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal"
+                                        id="modl_convert_member" data-key="ConvertMemberModal">Convert Member </a>
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                         id="modl_change_tctlrm" data-key="ChangeTCTLRMPageModal">Change TC/TL/RM</a>
 
@@ -173,6 +176,8 @@
     @include('components.change_tctlrm_modal')
     @include('components.followup_modal')
     @include('components.form-transfer-modal')
+    @include('components.convert_modal')
+    {{-- @include('components.delete_member_modal') --}}
 </div>
 
 @section('bottom-js')
@@ -249,6 +254,7 @@
             let changeTctlrmModalEl = document.getElementById('ChangeTCTLRMPageModal');
             let followUpModalEl = document.getElementById('FollowUpModal');
             let formTransferModalEl = document.getElementById('FormTransferModal');
+            let convertMemberModalEl = document.getElementById('ConvertMemberModal');
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -1354,7 +1360,159 @@
                         }
                     });
                 }
-            })
+            });
+            $("#modl_convert_member").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                if (selected_rno.charAt(0) == '4') {
+                    toastr.error("Applicable only to non paid customers")
+                    return;
+                }
+
+                let modal = bootstrap.Modal.getInstance(convertMemberModalEl) || new bootstrap.Modal(convertMemberModalEl);
+                modal.show();
+
+                $("#convert_loader").show();
+                $("#frmConvertMemberProcess").addClass("d-none");
+
+                let url = "{{ route('get-counter-number') }}?countername=PAID";
+                let maxPaidCounter;
+
+                Promise.all([
+                    fetch(url).then(r => r.json()),
+                    fetchActiveEmployee()
+                ]).then(([maxPaidCounterRes, employeeData]) => {
+                    $("#convert_loader").hide();
+                    $("#frmConvertMemberProcess").removeClass("d-none");
+                    if (maxPaidCounterRes?.status == "success") {
+                        maxPaidCounter = parseInt(maxPaidCounterRes?.data) + 1;
+                        $("#convert_to").val(`${maxPaidCounter} - ${selected_refname}`);
+                        $("#convert_from").val(`${selected_rno} - ${selected_refname}`);
+                        $("#convert_rno").val(selected_rno);
+                    }
+
+
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    const tc_code = $("#frmConvertMemberProcess #tc_code");
+                    const tl_code = $("#frmConvertMemberProcess #tl_code");
+                    const rm_code = $("#frmConvertMemberProcess #rm_code");
+
+                    tc_code.html(options).select2({
+                        dropdownParent: $('#ConvertMemberModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                    tl_code.html(options).select2({
+                        dropdownParent: $('#ConvertMemberModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                    rm_code.html(options).select2({
+                        dropdownParent: $('#ConvertMemberModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                    // tc_code.trigger("change");
+                    // tl_code.trigger("change");
+                    // rm_code.trigger("change");
+
+
+                }).catch(err => console.error(err));
+
+            });
+
+            $("#frmConvertMemberProcess").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    tc_code: {
+                        required: true
+                    },
+                    tl_code: {
+                        required: true
+                    },
+                    rm_code: {
+                        required: true
+                    }
+                },
+                messages: {
+                    tc_code: {
+                        required: "Please select TC"
+                    },
+                    tl_code: {
+                        required: "Please select TL"
+                    },
+                    rm_code: {
+                        required: "Please select RM"
+                    }
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status == "success") {
+                                cacheClear(cacheKey);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                $("#ConvertMemberModal").modal("hide");
+                                $("#frmConvertMemberProcess").trigger("reset");
+                                window.location.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection

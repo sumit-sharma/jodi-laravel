@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Caste;
 use App\Models\Classified;
+use App\Models\CounterNumber;
 use App\Models\Enquiry;
 use App\Models\Feedback;
 use App\Models\FixMember;
@@ -653,5 +654,30 @@ class CustomerService
         }
 
         return  $query->paginate($limit);
+    }
+
+
+    public function convertMember($data)
+    {
+
+        $new_rno = CounterNumber::nextNumber('PAID');
+        DB::statement('CALL memberconvert(?, ?, ?)', [$data['rno'], $new_rno, auth()->user()->username]);
+        return DB::transaction(function () use ($data, $new_rno) {
+            $model = ProfileDetail::where('rno', $new_rno)->first();
+            $pd = $model ?? new ProfileDetail();
+            $pd->rno = $new_rno;
+            $pd->tc = $data['tc_code'];
+            $pd->mc = $data['tl_code'];
+            $pd->rm = $data['rm_code'];
+            if ($pd->save()) {
+                Snap::where('rno', $data['rno'])->update([
+                    'rno' => $new_rno,
+                ]);
+                return true;
+            }
+
+            return false;
+            //TODO:: send notification to tc_code, tl_code and rm_code
+        });
     }
 }

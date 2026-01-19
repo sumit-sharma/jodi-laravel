@@ -510,7 +510,7 @@
                                                 <option value="refname">Name</option>
                                                 <option value="dob">Date of Birth</option>
                                                 <option value="birthyear">Birth Year</option>
-                                                <option value="caste">Caste</option>
+                                                <option value="cst">Caste</option>
                                                 <option value="occupation">Occupation</option>
                                                 <option value="familyincome">Family Income</option>
                                                 <option value="contactphone">Mobile</option>

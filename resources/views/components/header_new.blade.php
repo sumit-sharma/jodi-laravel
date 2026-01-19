@@ -189,8 +189,8 @@
                         <li><a href="{{ route('tc-transfer') }}" data-key="t-checkout">Transfer TC</a></li>
                         <li><a href="{{ route('feedback-option') }}" data-key="t-shops">Feedback Option</a></li>
                         {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
-                        <li><a href="#" data-key="t-product-detail">Change Password</a></li>
-                        <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
+                        <li><a href="#" data-key="t-product-detail">Change Password</a></li> --}}
+                        {{-- <li><a href="make-user.php" data-key="t-orders">Make User</a></li> --}}
                         <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>
                         <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
                         <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
@@ -254,7 +254,7 @@
                         <li><a href="javascript:;" id="directMeeting_menu" data-bs-toggle="modal"
                                 data-bs-target="#DirectMeetingPageModal" data-key="t-add-product">Direct
                                 Meeting</a></li>
-                        <li><a href="{{ route('fresh-call') }}" data-key="t-seller">Fresh Call</a></li>                        
+                        <li><a href="{{ route('fresh-call') }}" data-key="t-seller">Fresh Call</a></li>
                         <li><a href="{{ route('daily-moment.index') }}" data-key="t-sale-details">Daily Moment</a></li>
                     </ul>
                 </li>
