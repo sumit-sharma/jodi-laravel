@@ -90,6 +90,12 @@ Route::middleware("auth")->group(function () {
         Route::post('/tc-transfer', [MasterController::class, 'tcTransferStore'])->name('panel.tc-transfer');
         Route::get('/feedback-option', [MasterController::class, 'feedbackOption'])->name('feedback-option');
         Route::post('/feedback-option', [MasterController::class, 'feedbackOptionStore'])->name('panel.feedback-option');
+        Route::get('/update-my-info', [MasterController::class, 'myInfo'])->name('update-my-info');
+        Route::post('/update-my-info', [MasterController::class, 'myInfoUpdate'])->name('panel.update-my-info');
+        Route::get('/update-timings', [MasterController::class, 'timings'])->name('update-timings');
+        Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
+        Route::get('/reset-password', [MasterController::class, 'resetPassword'])->name('reset-password');
+        Route::post('/reset-password', [MasterController::class, 'resetPasswordStore'])->name('panel.reset-password');
     });
 
     Route::resource('references', ReferenceController::class);

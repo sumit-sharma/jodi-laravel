@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\EmpDetail;
 use App\Models\FeedbackOption;
 use App\Models\ProfileDetail;
 use App\Models\User;
@@ -172,6 +173,44 @@ class UserService
     }
     public function feedbackOptionStore($request)
     {
-        return FeedbackOption::insert(['feedback'=>$request->feedback]);
+        return FeedbackOption::insert(['feedback' => $request->feedback]);
+    }
+    public function updatemyInfo($request)
+    {
+        $emp = EmpDetail::where('user_id', auth()->user()->id)
+            ->update([
+                "loginname" => $request->loginname,
+                "dob" => $request->dob,
+                "joiningdate" => $request->joiningdate,
+                "anniversary" => $request->anniversary,
+                "father_name" => $request->father_name,
+                "mobile_type" => $request->mobile_type,
+                "curr_address" => $request->curr_address,
+                "per_address" => $request->per_address
+            ]);
+        $user = User::where('id', auth()->user()->id)->update(["mobile" => $request->mobile]);
+        return ($emp > 0 && $user > 0);
+    }
+    public function empDetails()
+    {
+        return EmpDetail::get();
+
+    }
+    public function timngStore($request)
+    {
+        return EmpDetail::where('user_id', $request->user_id)
+            ->update([
+                "intime" => $request->intime,
+                "outtime" => $request->outtime,
+                "offday" => $request->offday
+            ]);
+    }
+    public function resetPassword($request)
+    {
+        $user = User::where('id', $request->user_id)->first();
+        return $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
     }
 }
