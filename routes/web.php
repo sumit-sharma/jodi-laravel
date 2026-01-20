@@ -163,6 +163,8 @@ Route::middleware("auth")->group(function () {
     Route::get('/fetch-followup/{rno}', [FollowupController::class, 'show'])->name('fetch-followup');
     Route::post('/save-followup', [FollowupController::class, 'store'])->name('save-followup');
     Route::get('/check-limit', [FollowupController::class, 'checkLimit'])->name('check-limit');
+    Route::get('/transfer-all-followups', [FollowupController::class, 'transferFollowups'])->name('transfer-all-followups');
+    Route::post('/transfer-all-followups', [FollowupController::class, 'transferFollowupsStore'])->name('panel.transfer-all-followups');
 
     Route::get('/all-form-transfer', [FormTransferController::class, 'index'])->name('all-form-transfer');
     Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');
@@ -187,4 +189,6 @@ Route::middleware("auth")->group(function () {
 
     Route::any('/get-counter-number', [MasterController::class, 'getCounterNumber'])->name('get-counter-number');
     Route::post('/convert-member', [CustomerController::class, 'convertMember'])->name('convert-member');
+    Route::get('/sent-package', [DataController::class, 'sentpackage'])->name('sent-package');
+    Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
 });

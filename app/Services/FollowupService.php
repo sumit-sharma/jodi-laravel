@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\EmpDetail;
 use App\Models\Followup;
+use App\Models\Prospective;
+use App\Models\User;
 use App\Models\ViewProfile;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +21,7 @@ class FollowupService
     protected function loadData($request)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
-        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+        $sortBy = $request->has('sortBy') ? $request->sortBy : 'id';
 
         return Followup::with(['viewProfile', 'viewProfile.bio', 'ViewProfile.income', 'ViewProfile.personal'])->orderBy($sortBy, $orderBy)
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
@@ -56,10 +59,29 @@ class FollowupService
                 return true;
             }
         }
-        $limit =  Followup::where('empid', $empid)->count();
+        $limit = Followup::where('empid', $empid)->count();
         if ($limit < config('constants.FOLLOWUP_LIMIT')) {
             return true;
         }
         return false;
+    }
+    public function fetchFollowups()
+    {
+        return User::select('username', 'name')
+            ->whereIn('username', function ($query) {
+                $query->select('empid')
+                    ->from('followup');
+            })
+            ->orderBy('name')
+            ->get();
+    }
+    public function transferFollowupsStore($request)
+    {
+        $followup = Followup::where('empid', $request->followsfrom)
+            ->update(['empid' => $request->followsto]);
+        //$prospective = Prospective::where('empid', $request->followsfrom)
+            //->update(['empid' => $request->followupto]);
+        return $followup 
+        //&& $prospective > 0);
     }
 }

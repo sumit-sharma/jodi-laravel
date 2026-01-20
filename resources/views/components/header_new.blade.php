@@ -278,8 +278,8 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('my-followup') }}" key="t-products">My All Follow UPS</a></li>
+                        <li><a href="{{ route('transfer-all-followups') }}" key="t-products">Transfer Followup</a></li>
                         {{-- <li><a href="my-prospective.php" data-key="t-product-detail">My Prospective</a></li> --}}
-                        {{-- <li><a href="transfer-followup.php" key="t-products">Transfer Followup</a></li> --}}
                         {{-- <li><a href="followup-records.php" data-key="t-product-detail">Follow Records</a></li> --}}
                     </ul>
                 </li>
@@ -327,14 +327,14 @@
                         <span data-key="t-ecommerce">Others</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        {{-- <li><a href="#" key="t-products">Sent Package</a></li> --}}
+                        <li><a href="{{ route('sent-package') }}" key="t-products">Sent Package</a></li>
                         {{-- <li><a href="#" data-key="t-product-detail">Print Request</a></li> --}}
                         <li><a href="{{ route('fix-member.index') }}" key="t-products">Fix/Active</a></li>
+                        <li><a href="{{ route('wrong-email') }}" data-key="t-product-detail">Wrong Email</a></li>
                         {{-- <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
                         <li><a href="#" key="t-products">View Massage</a></li>
                         <li><a href="#" data-key="t-product-detail">Add Attendance</a></li>
                         <li><a href="#" key="t-products">Reminder</a></li>
-                        <li><a href="#" data-key="t-product-detail">Wrong Email</a></li>
                         <li><a href="#" data-key="t-product-detail">Web Data</a></li>
                         <li><a href="#" key="t-products">Chat Report</a></li> --}}
                     </ul>
