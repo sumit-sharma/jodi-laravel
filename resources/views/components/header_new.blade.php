@@ -138,15 +138,16 @@
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
+                    <a href="{{ route("change-password") }}" class="dropdown-item">
+                        <i class="mdi mdi-lock-reset font-size-16 align-middle me-1"></i>Change Password
+                    </a>
                     <div class="dropdown-divider"></div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="dropdown-item"><i
-                                class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</button>
+                        <button type="submit" class="dropdown-item">
+                            <i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout
+                        </button>
                     </form>
-                    <a href="{{ route("change-password") }}" class="dropdown-item"><i
-                                class="mdi mdi-lock-reset font-size-16 align-middle me-1"></i>Change Password</a>
-                    
                 </div>
 
             </div>
@@ -193,6 +194,8 @@
                         <!-- <li><a href="{{ route('reset-password') }}" data-key="t-sale-details">Reset Password</a></li> -->
                         {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
                         <li><a href="#" data-key="t-product-detail">Change Password</a></li>
+                        <li><a href="#" data-key="t-product-detail">Change Password</a></li> --}}
+                        {{-- <li><a href="make-user.php" data-key="t-orders">Make User</a></li> --}}
                         <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>
                         <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
                         <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
@@ -208,7 +211,8 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('seach-members') }}" key="t-products">Search Members</a></li>
-                        {{-- <li><a href="form-transfer.php" data-key="t-product-detail">Form Transfer</a></li> --}}
+                        <li><a href="{{ route('all-form-transfer') }}" data-key="t-product-detail">Form Transfer</a>
+                        </li>
                         <li><a href="{{ route('all-enquiries') }}" data-key="t-orders">Show All Enquiry</a></li>
                         <li><a href="{{ route('show-all-rm-data') }}" data-key="t-customers">Show All RM Data</a></li>
                     </ul>
@@ -239,16 +243,21 @@
                         <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
                         </li>
                         <li><a href="{{ route('hold-member.index') }}" data-key="t-cart">Show Hold Data</a></li>
-                        <li><a href="{{ route('show-all-hold-records') }}" data-key="t-checkout">Show All Hold Data</a></li>
+                        <li><a href="{{ route('show-all-hold-records') }}" data-key="t-checkout">Show All Hold Data</a>
+                        </li>
                         <li><a href="{{ route('show-all-other-data') }}" data-key="t-shops">Show Other Data</a></li>
-                        <li><a href="{{ route('show-website-data') }}" data-key="t-add-product">Show Website Data</a></li>
-                        {{-- <li><a href="{{ route('show-done-list') }}" data-key="t-sale-details">Show Done List</a></li> --}}
+                        <li><a href="{{ route('show-website-data') }}" data-key="t-add-product">Show Website Data</a>
+                        </li>
+                        {{-- <li><a href="{{ route('show-done-list') }}" data-key="t-sale-details">Show Done List</a>
+                        </li> --}}
                         <li><a href="{{ route('show-all-nadata') }}" data-key="t-sale-details">Show All NA-Data</a></li>
-                        <li><a href="{{ route('show-all-non-nadata') }}" data-key="t-shops">Show All None NA-Data</a></li>
-                        {{--
-                        <li><a href="#" data-key="t-add-product">Direct Meeting</a></li>
-                        <li><a href="fresh-calls.php" data-key="t-seller">Fresh Call</a></li>
-                        <li><a href="daily-moment.php" data-key="t-sale-details">Daily Moment</a></li> --}}
+                        <li><a href="{{ route('show-all-non-nadata') }}" data-key="t-shops">Show All None NA-Data</a>
+                        </li>
+                        <li><a href="javascript:;" id="directMeeting_menu" data-bs-toggle="modal"
+                                data-bs-target="#DirectMeetingPageModal" data-key="t-add-product">Direct
+                                Meeting</a></li>
+                        <li><a href="{{ route('fresh-call') }}" data-key="t-seller">Fresh Call</a></li>
+                        <li><a href="{{ route('daily-moment.index') }}" data-key="t-sale-details">Daily Moment</a></li>
                     </ul>
                 </li>
 
@@ -350,3 +359,5 @@
     </div>
 </div>
 <!-- Left Sidebar End -->
+
+@include('components.direct-meeting-modal')

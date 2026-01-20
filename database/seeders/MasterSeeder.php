@@ -37,5 +37,20 @@ class MasterSeeder extends Seeder
         // DB::statement("truncate table edupref");
         // DB::statement("insert ignore into jodi_laravel.edupref (sno, education, created_at, updated_at)  Select li.sno, li.education, NOW(), NOW() from old_jodi.edupref as li");
 
+        // echo nl2br("start from link_tl_tc import\n");
+        // DB::statement("insert ignore into jodi_laravel.link_tl_tc (tl, tc, created_at, updated_at) SELECT li.tl, li.tc, NOW(), NOW() FROM old_jodi.link_tl_tc as li");
+        // echo nl2br("finish link_tl_tc import\n");
+
+        // echo nl2br("start from freshcalls import\n");
+        // DB::statement("insert ignore into jodi_laravel.freshcalls (dated, empid, callsource, noofcalls, callsconnected, followupcalls, created_at, updated_at) SELECT li.dated, li.empid, li.callsource, li.noofcalls, li.callsconnected, li.followupcalls, NOW(), NOW() FROM old_jodi.freshcalls as li");
+        // echo nl2br("finish freshcalls import\n");
+
+        // echo nl2br("start from daily moment import\n");
+        // DB::statement("insert ignore into jodi_laravel.daily_moment (dated, empid, timefrom, timeto, moment, created_at, updated_at) SELECT li.dated, li.empid, li.timefrom, li.timeto, li.moment, NOW(), NOW() FROM old_jodi.dailymoment as li");
+        // echo nl2br("finish daily moment import\n");
+
+        echo nl2br("start from convert_log import\n");
+        DB::statement("insert ignore into jodi_laravel.convert_log (old_rno, new_rno, empid, dated, time, status, message, created_at, updated_at)  Select li.old_rno, li.new_rno, li.empid, li.dated, li.time, 'SUCCESS', 'Success', NOW(), NOW() from old_jodi.convert_log as li");
+        echo nl2br("finish convert_log import\n");
     }
 }

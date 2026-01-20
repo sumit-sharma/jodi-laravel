@@ -148,6 +148,28 @@
     </script>
 
     <script>
+        const fetchActiveEmployee = async () => {
+            const response = await fetch("{{ route('panel.get-active-employee') }}", {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const data = await response.json();
+            return data;
+        }
+
+        const fetchActiveCustomer = async () => {
+            const response = await fetch("{{ route('customer.picklist-viewprofile-data') }}", {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const data = await response.json();
+            return data;
+        }
+
         $(function () {
             $('.select2-tag').select2({
                 tags: true,
@@ -166,6 +188,189 @@
     @yield('bottom-section')
 
     @yield('bottom-js')
+
+    <script>
+        $(document).ready(function () {
+            $("#directMeeting_menu").click(function () {
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    $('#frmAddDirectMeeting #mtg_by1').html(options).select2({
+                        dropdownParent: $('#DirectMeetingPageModal'),
+                        placeholder: "Select or type to add",
+                        allowClear: true
+                    });
+                    $('#frmAddDirectMeeting #mtg_by2').html(options).select2({
+                        dropdownParent: $('#DirectMeetingPageModal'),
+                        placeholder: "Select or type to add",
+                        allowClear: true
+                    });
+                    $('#frmAddDirectMeeting #att_by1').html(options).select2({
+                        dropdownParent: $('#DirectMeetingPageModal'),
+                        placeholder: "Select or type to add",
+                        allowClear: true
+                    });
+                    $('#frmAddDirectMeeting #att_by2').html(options).select2({
+                        dropdownParent: $('#DirectMeetingPageModal'),
+                        placeholder: "Select or type to add",
+                        allowClear: true
+                    });
+                });
+
+                var picklistViewProfileUrl = "{{ route('customer.picklist-viewprofile-data') }}";
+                $("#frmAddDirectMeeting #meet_refno").select2({
+                    placeholder: 'Search rno or name.',
+                    dropdownParent: $('#DirectMeetingPageModal'),
+                    minimumInputLength: 4,
+                    ajax: {
+                        url: picklistViewProfileUrl,
+                        dataType: 'json',
+                        delay: 250,
+
+                        data: function (params) {
+                            return {
+                                q: params.term,       // search term
+                                page: params.page || 1
+                            };
+                        },
+
+                        processResults: function (data) {
+                            return {
+                                results: data.results,
+                                pagination: data.pagination
+                            };
+                        },
+
+                        cache: true
+                    }
+                });
+                $("#frmAddDirectMeeting #meet_with").select2({
+                    placeholder: 'Search rno or name.',
+                    dropdownParent: $('#DirectMeetingPageModal'),
+                    minimumInputLength: 4,
+                    ajax: {
+                        url: picklistViewProfileUrl,
+                        dataType: 'json',
+                        delay: 250,
+
+                        data: function (params) {
+                            return {
+                                q: params.term,       // search term
+                                page: params.page || 1
+                            };
+                        },
+
+                        processResults: function (data) {
+                            return {
+                                results: data.results,
+                                pagination: data.pagination
+                            };
+                        },
+
+                        cache: true
+                    }
+                });
+            });
+
+            $("#frmAddDirectMeeting").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    rno: {
+                        required: true
+                    },
+                    proposal: {
+                        required: true
+                    },
+                    dated: {
+                        required: true
+                    },
+                    time: {
+                        required: true
+                    },
+                    place: {
+                        required: true
+                    }
+                },
+                messages: {
+                    rno: {
+                        required: "Please select Meeting RNo"
+                    },
+                    proposal: {
+                        required: "Please select Proposal"
+                    },
+                    dated: {
+                        required: "Please select Meeting Date"
+                    },
+                    time: {
+                        required: "Please select Meeting Time"
+                    },
+                    place: {
+                        required: "Please select Meeting Place"
+                    }
+                },
+                submitHandler: function (form) {
+
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status == "success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                $("#DirectMeetingPageModal").modal("hide");
+                                $("#frmAddDirectMeeting").trigger("reset");
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    });
+                }
+            })
+        });
+    </script>
 
 </body>
 

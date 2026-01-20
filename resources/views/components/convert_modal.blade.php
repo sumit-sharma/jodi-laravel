@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="ConvertPageModal" tabindex="-1" role="dialog" aria-labelledby="ConvertPageTitle"
+<div class="modal fade" id="ConvertMemberModal" tabindex="-1" role="dialog" aria-labelledby="ConvertPageTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content biodata-popup-h">
@@ -13,69 +13,46 @@
             </div>
 
             <div class="modal-body">
-                <form id="frmConvertMember" action="#" method="POST">
+                <div id="convert_loader" class="text-center p-5" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <form id="frmConvertMemberProcess" action="{{ route('convert-member') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-6 mt-0">
-                            <label for="" class="form-label">Refrence No.</label>
-                            <label class="form-control" id="inter_refno"></label>
+                            <label for="" class="form-label">Convert From:</label>
+                            <input class="form-control" type="text" id="convert_from" name="convert_from"
+                                placeholder="Convert From" readonly>
                         </div>
                         <div class="col-6 mt-0">
-                            <label for="" class="form-label">Name:</label>
-                            <label class="form-control" id="inter_refname"></label>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="col-6 mt-0">
-                            <label for="" class="form-label">Intraction Date:</label>
-                            <input class="form-control" type="date" id="inter_dated" name="dated" placeholder=""
-                                max="{{ now()->format('Y-m-d') }}" value="{{ now()->format('Y-m-d') }}" required>
-                        </div>
-                        <div class="col-6 mt-0">
-                            <label for="" class="form-label">Intraction Time:</label>
-                            <input class="form-control timepicker" type="text" id="inter_tob" name="time"
-                                placeholder="Interaction Time" readonly>
+                            <label for="" class="form-label">Convert To:</label>
+                            <input class="form-control" type="text" id="convert_to" name="convert_to"
+                                placeholder="Convert To" readonly>
                         </div>
                         <div class="clearfix"></div>
 
                         <div class="col-4 mt-4">
-                            <label for="" class="form-label">Call Type:</label>
-                            <select name="calltype" id="calltype" class="form-select">
-                                <option value="0">Incoming</option>
-                                <option value="1" selected="selected">Outgoing</option>
-                                <option value="2">Sms</option>
-                                <option value="3">Email</option>
-                                <option value="4">Personal Visit</option>
-                                <option value="5">Home Visit</option>
-                                <option value="6">NR</option>
-                            </select>
+                            <label for="" class="form-label">TC Code:</label>
+                            <select name="tc_code" id="tc_code" class="form-select" required></select>
                         </div>
                         <div class="col-4 mt-4">
-                            <label for="" class="form-label">Call Status:</label>
-                            <select name="callstatus" id="callstatus" class="form-select">
-                                <option value="0">No</option>
-                                <option value="1">Yes</option>
-                            </select>
+                            <label for="" class="form-label">TL Code:</label>
+                            <select name="tl_code" id="tl_code" class="form-select" required></select>
                         </div>
                         <div class="col-4 mt-4">
-                            <label for="" class="form-label">Future Date:</label>
-                            <input name="futuredate" class="form-control" type="date" min="{{ now()->format('Y-m-d') }}"
-                                required>
+                            <label for="" class="form-label">RM Code:</label>
+                            <select name="rm_code" id="rm_code" class="form-select" required></select>
                         </div>
                         <div class="clearfix"></div>
-
-                        <div class="col-12 mt-4">
-                            <label for="" class="form-label">Description:</label>
-                            <textarea name="description" class="form-control" rows="4" placeholder="Enter Description"
-                                spellcheck="false" required></textarea>
-                        </div>
                         <div class="clearfix"></div>
 
-                        <input type="hidden" id="inter_rno" name="rno" />
+                        <input type="hidden" id="convert_rno" name="rno" />
 
-                        <div class="col-12 mt-4">
-                            <button type="button" id="btnAddInteraction"
-                                class="btn btn-primary waves-effect waves-light">Save
-                                Interaction</button>
+                        <div class="col-12 mt-4 pt-2">
+                            <button type="submit" id="btnConvertMember"
+                                class="btn btn-primary waves-effect waves-light">Convert Member and Apply Codes</button>
                         </div>
                         <div class="clearfix"></div>
 

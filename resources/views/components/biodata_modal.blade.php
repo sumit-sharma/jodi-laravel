@@ -58,7 +58,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="table-rep-plugin">
+                <div id="bio_loader" class="modal_loader text-center p-5" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="table-rep-plugin" id="tab_bio_data">
                     <div class="table-responsive mb-0" data-pattern="priority-columns">
                         <table id="tech-companies-1" class="table table-bordered bio_data">
                             <thead class="table-primary">
@@ -390,7 +396,8 @@
                 },
                 method: 'GET',
             }
-
+            $(".modal_loader").show();
+            $("#tab_bio_data").hide();
             // const url = `{{ route('search-data') }}?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
             // const url = `/services/search-result?searchinfield=rno&searchvalue=${encodeURIComponent(rno)}`
             let url = `{{ route('fetch-customer-data', ['rno' => ':rno']) }}`
@@ -398,6 +405,9 @@
             fetch(url, options)
                 .then(res => res.json())
                 .then(data => {
+                    $(".modal_loader").hide();
+                    $("#tab_bio_data").show();
+
                     const item = data.data;
                     console.log("itemssssssss", item);
                     let religion_name = ""
@@ -645,7 +655,7 @@
 
                     item.organisation.forEach(org => {
                         companyhtml += `<tr class="company_row"> <td><strong>Company Name:</strong></td> <td>${org.orgname}</td> <td><strong>Designation:</strong></td> <td>${org.orgdept}</td> <td><strong>Working Year:</strong></td> <td>${org.orgyear}</td>
-                                                                                                                                                                                                                                                                                                        </tr>`;
+                                                                                                                                                                                                                                                                                                                                                </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 

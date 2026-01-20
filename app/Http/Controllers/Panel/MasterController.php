@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\CounterNumber;
 use App\Models\EmpDetail;
 use App\Services\MasterService;
 use App\Services\UserService;
@@ -10,6 +11,7 @@ use App\Services\MiscService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
+
 class MasterController extends Controller
 {
     protected $masterService;
@@ -104,7 +106,6 @@ class MasterController extends Controller
     {
 
         return view('panel.main.change-password');
-
     }
     public function changePasswordStore(Request $request)
     {
@@ -122,7 +123,6 @@ class MasterController extends Controller
         $result = $this->userService->changePassword($request);
         if ($result) {
             return back()->with('success', 'Password changed successfully.');
-
         } else {
             return back()->with('error', 'some error occurred, please try again.');
         }
@@ -133,14 +133,12 @@ class MasterController extends Controller
         $data['linkedData'] = $this->userService->fetchTltcData();
         $data['tcData'] = $this->userService->fetchuserTc();
         return view('panel.main.link-tl-tc', $data);
-
     }
     public function linkTlTcStore(Request $request)
     {
         $result = $this->userService->storeTltcData($request);
         if ($result) {
             return back()->with('success', 'Link TL successfuly!.');
-
         } else {
             return back()->with('error', 'some error occurred, please try again.');
         }
@@ -151,14 +149,12 @@ class MasterController extends Controller
         $data['newrmData'] = $this->userService->fetchRm();
 
         return view('panel.main.rm-transfer', $data);
-
     }
     public function rmTransferStore(Request $request)
     {
         $result = $this->userService->rmStore($request);
         if ($result) {
             return back()->with('success', 'RM Transfer successfuly!.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin');
         }
@@ -169,14 +165,12 @@ class MasterController extends Controller
         $data['newrmData'] = $this->userService->fetchRm();
 
         return view('panel.main.tc-transfer', $data);
-
     }
     public function tcTransferStore(Request $request)
     {
         $result = $this->userService->tcStore($request);
         if ($result) {
             return back()->with('success', 'Transfer TC successfuly!.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin');
         }
@@ -185,14 +179,12 @@ class MasterController extends Controller
     {
         $data["feedbacks"] = $this->userService->fetchFeedbacks();
         return view('panel.main.feedback-option', $data);
-
     }
     public function feedbackOptionStore(Request $request)
     {
         $result = $this->userService->feedbackOptionStore($request);
         if ($result) {
             return back()->with('success', 'Feedback added successfuly!.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin');
         }
@@ -207,7 +199,6 @@ class MasterController extends Controller
         $result = $this->userService->updatemyInfo($request);
         if ($result) {
             return back()->with('success', 'Your info updated successfuly!.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin');
         }
@@ -222,7 +213,6 @@ class MasterController extends Controller
         $result = $this->userService->timngStore($request);
         if ($result) {
             return back()->with('success', 'Emp timings updated successfuly!.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin');
         }
@@ -247,7 +237,6 @@ class MasterController extends Controller
         $result = $this->userService->resetPassword($request);
         if ($result) {
             return back()->with('success', 'Password reset successfully.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin.');
         }
@@ -266,5 +255,10 @@ class MasterController extends Controller
             return back()->with('error', 'Error: Contact System Admin.');
         }
 
+    }
+    public function getCounterNumber(Request $request)
+    {
+        $result = CounterNumber::maxNumber($request->countername);
+        return response()->json(['status' => 'success', 'data' => $result]);
     }
 }

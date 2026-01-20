@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Caste;
 use App\Models\Classified;
+use App\Models\CounterNumber;
 use App\Models\Enquiry;
 use App\Models\Feedback;
 use App\Models\FixMember;
@@ -250,6 +251,7 @@ class CustomerService
             });
             return true;
         } catch (\Exception $e) {
+            dd($e);
             // Log the exception or handle it as needed
             return false;
         }
@@ -630,5 +632,52 @@ class CustomerService
             }
         }
         return false;
+    }
+
+
+    public function pickListViewProfileData($request, $selectArray = ['rno', 'refname'], $excludeArray = [])
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+        $limit   = $request->limit ?? 20;
+
+        $query = ViewProfile::select($selectArray)->orderBy($sortBy, $orderBy)
+            ->when($request->q, function ($query) use ($request) {
+                $query->where('refname', 'like', "%{$request->q}%")
+                    ->orWhere('rno', 'like', "%{$request->q}%");
+            })
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->refname, fn($query) => $query->where('refname', 'like', "%{$request->refname}%"));
+
+        if (!empty($excludeArray)) {
+            $query->whereNotIn('rno', $excludeArray);
+        }
+
+        return  $query->paginate($limit);
+    }
+
+
+    public function convertMember($data)
+    {
+
+        $new_rno = CounterNumber::nextNumber('PAID');
+        DB::statement('CALL memberconvert(?, ?, ?)', [$data['rno'], $new_rno, auth()->user()->username]);
+        return DB::transaction(function () use ($data, $new_rno) {
+            $model = ProfileDetail::where('rno', $new_rno)->first();
+            $pd = $model ?? new ProfileDetail();
+            $pd->rno = $new_rno;
+            $pd->tc = $data['tc_code'];
+            $pd->mc = $data['tl_code'];
+            $pd->rm = $data['rm_code'];
+            if ($pd->save()) {
+                Snap::where('rno', $data['rno'])->update([
+                    'rno' => $new_rno,
+                ]);
+                return true;
+            }
+
+            return false;
+            //TODO:: send notification to tc_code, tl_code and rm_code
+        });
     }
 }

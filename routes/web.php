@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerUploadController;
 use App\Http\Controllers\Panel\AdvtdataController;
 use App\Http\Controllers\Panel\AppointmentController;
 use App\Http\Controllers\Panel\CustomerController;
+use App\Http\Controllers\Panel\DailyMomentController;
 use App\Http\Controllers\Panel\DashboardController;
 use App\Http\Controllers\Panel\DataController;
 use App\Http\Controllers\Panel\EmployeeController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Panel\FeedbackController;
 use App\Http\Controllers\Panel\FixMemberController;
 use App\Http\Controllers\Panel\FollowupController;
 use App\Http\Controllers\Panel\FormTransferController;
+use App\Http\Controllers\Panel\FreshCallController;
 use App\Http\Controllers\Panel\HoldMemberController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
@@ -46,6 +48,7 @@ Route::middleware("auth")->group(function () {
     Route::delete('/delete-customer-photo', [CustomerController::class, 'deleteFile'])->name('customer.photo-delete');
     Route::post('/customer-upload', [CustomerController::class, 'upload'])->name('customer.upload');
     Route::get('/customer/picklistbiodata', [CustomerController::class, 'pickListBioData'])->name('customer.picklistbiodata');
+    Route::get('/customer/picklist-viewprofile-data', [CustomerController::class, 'pickListViewProfileData'])->name('customer.picklist-viewprofile-data');
     Route::resource('customer', CustomerController::class);
 
     Route::get('/dashboard/get-castes/{religion}', [DashboardController::class, 'getCaste'])->name('get-caste');
@@ -165,7 +168,11 @@ Route::middleware("auth")->group(function () {
     Route::get('/transfer-all-followups', [FollowupController::class, 'transferFollowups'])->name('transfer-all-followups');
     Route::post('/transfer-all-followups', [FollowupController::class, 'transferFollowupsStore'])->name('panel.transfer-all-followups');
 
+    Route::get('/all-form-transfer', [FormTransferController::class, 'index'])->name('all-form-transfer');
     Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');
+
+    Route::get('/fresh-call', [FreshCallController::class, 'create'])->name('fresh-call');
+    Route::post('/save-fresh-call', [FreshCallController::class, 'store'])->name('save-fresh-call');
 
     Route::get('/show-all-rm-data', [EmployeeController::class, 'showAllRmData'])->name('show-all-rm-data');
 
@@ -178,6 +185,12 @@ Route::middleware("auth")->group(function () {
     Route::get('/show-done-list', [DataController::class, 'showdoneList'])->name('show-done-list');
     Route::get('/show-all-nadata', [DataController::class, 'showmyNaData'])->name('show-all-nadata');
     Route::get('/show-all-non-nadata', [DataController::class, 'showallnonnadata'])->name('show-all-non-nadata');
+
+    Route::get('/daily-moment', [DailyMomentController::class, 'index'])->name('daily-moment.index');
+    Route::post('/save-daily-moment', [DailyMomentController::class, 'store'])->name('save-daily-moment');
+
+    Route::any('/get-counter-number', [MasterController::class, 'getCounterNumber'])->name('get-counter-number');
+    Route::post('/convert-member', [CustomerController::class, 'convertMember'])->name('convert-member');
     Route::get('/sent-package', [DataController::class, 'sentpackage'])->name('sent-package');
     Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
     Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data');
