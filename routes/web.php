@@ -99,6 +99,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
         Route::get('/reset-password', [MasterController::class, 'resetPassword'])->name('reset-password');
         Route::post('/reset-password', [MasterController::class, 'resetPasswordStore'])->name('panel.reset-password');
+        Route::get('/make-user', [MasterController::class, 'makeuser'])->name('make-user');
+        Route::post('/make-user', [MasterController::class, 'makeuserStore'])->name('panel.make-user');
     });
 
     Route::resource('references', ReferenceController::class);
@@ -133,6 +135,9 @@ Route::middleware("auth")->group(function () {
     Route::get('/sendmail/{rno}', [SendMailController::class, 'index'])->name('sendmail.index');
     Route::post('/sendmail', [SendMailController::class, 'store'])->name('sendmail.store');
     Route::get('/sendmail/show/{id}', [SendMailController::class, 'show'])->name('sendmail.show');
+    Route::get('/pending-mails', [SendMailController::class, 'pendingmails'])->name('pending-mails');
+    Route::get('/send-self-profile', [SendMailController::class, 'selfprofile'])->name('send-self-profile');
+    Route::post('/send-self-profile', [SendMailController::class, 'selfprofileStore'])->name('panel.send-self-profile');
 
     Route::get('/feedback/{rno}', [FeedbackController::class, 'feedbackList'])->name('feedback');
     Route::get('/fetch-feedback/{type}/{rno}', [FeedbackController::class, 'fetchFeedbackByType'])->name('fetch-feedback');
@@ -194,4 +199,5 @@ Route::middleware("auth")->group(function () {
     Route::post('/convert-member', [CustomerController::class, 'convertMember'])->name('convert-member');
     Route::get('/sent-package', [DataController::class, 'sentpackage'])->name('sent-package');
     Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
+    Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data');
 });

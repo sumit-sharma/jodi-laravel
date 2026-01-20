@@ -213,4 +213,24 @@ class UserService
         ]);
 
     }
+    public function makeuserStore($request)
+    {
+        $request->validate([
+            'department' => 'required',
+            'username' => 'required|unique:users,username',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'mobile' => 'required|digits:10|unique:users,mobile',
+            'password' => 'required|min:6|confirmed'
+        ]);
+        $password = Hash::make($request->password);
+        return User::insert([
+            'department' => $request->department,
+            'username' => $request->username,
+            'name' => $request->name,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'password' => $password
+        ]);
+    }
 }

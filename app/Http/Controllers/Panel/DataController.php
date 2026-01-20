@@ -67,4 +67,9 @@ class DataController extends Controller
         return view('panel.Data.wrong-email',$data);
 
     }
+    public function webdata(Request $request){
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['TableData'] = $this->dataService->showwebsiteData($request);
+        return view('panel.Data.web-data', $data);
+    }
 }
