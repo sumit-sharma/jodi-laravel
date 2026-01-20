@@ -37,6 +37,8 @@ Route::get('/uploads/customer/{filename}', [CustomerUploadController::class, 'sh
 
 
 Route::middleware("auth")->group(function () {
+    Route::post('confirm-password', [AuthController::class, 'confirmPassword'])->name('confirm-password');
+
     Route::post('/cache-clear', [DashboardController::class, 'cacheClear'])->name('cache-clear');
     Route::any("/logout", [AuthController::class, "logout"])->name("logout");
 
@@ -49,7 +51,8 @@ Route::middleware("auth")->group(function () {
     Route::post('/customer-upload', [CustomerController::class, 'upload'])->name('customer.upload');
     Route::get('/customer/picklistbiodata', [CustomerController::class, 'pickListBioData'])->name('customer.picklistbiodata');
     Route::get('/customer/picklist-viewprofile-data', [CustomerController::class, 'pickListViewProfileData'])->name('customer.picklist-viewprofile-data');
-    Route::resource('customer', CustomerController::class);
+    Route::resource('customer', CustomerController::class)->except(['destroy']);
+    Route::post('delete-customer', [CustomerController::class, 'destroy'])->name('customer.delete');
 
     Route::get('/dashboard/get-castes/{religion}', [DashboardController::class, 'getCaste'])->name('get-caste');
     Route::get('/dashboard/fetch-castes', [DashboardController::class, 'fetchCastes'])->name('fetch-castes');

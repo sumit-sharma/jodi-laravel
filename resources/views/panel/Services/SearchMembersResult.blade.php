@@ -145,7 +145,7 @@
 
                                             <tbody class="pdng_d">
                                                 @foreach ($results as $data)
-                                                    <tr>
+                                                    <tr data-rno="{{ $data->rno }}">
                                                         <td><div class="form-check"><input class="form-check-input chkrno" type="radio" name="formRadios" data-vc="{{ $data->vc }}" data-refname="{{ $data->refname }}" value="{{ $data->rno }}" data-cachekey="{{ $cacheKey }}" data-oc="{{ $data->oc }}" data-ost="{{ $data->ost }}"></div></td>
                                                         <td><a href="#" class="biodata_modal" data-bs-toggle="modal" data-bs-target="#Modal_biodata" data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
                                                         <td>{{ $data->g }}</td>

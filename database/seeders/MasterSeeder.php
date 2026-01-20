@@ -49,8 +49,12 @@ class MasterSeeder extends Seeder
         // DB::statement("insert ignore into jodi_laravel.daily_moment (dated, empid, timefrom, timeto, moment, created_at, updated_at) SELECT li.dated, li.empid, li.timefrom, li.timeto, li.moment, NOW(), NOW() FROM old_jodi.dailymoment as li");
         // echo nl2br("finish daily moment import\n");
 
-        echo nl2br("start from convert_log import\n");
-        DB::statement("insert ignore into jodi_laravel.convert_log (old_rno, new_rno, empid, dated, time, status, message, created_at, updated_at)  Select li.old_rno, li.new_rno, li.empid, li.dated, li.time, 'SUCCESS', 'Success', NOW(), NOW() from old_jodi.convert_log as li");
-        echo nl2br("finish convert_log import\n");
+        // echo nl2br("start from convert_log import\n");
+        // DB::statement("insert ignore into jodi_laravel.convert_log (old_rno, new_rno, empid, dated, time, status, message, created_at, updated_at)  Select li.old_rno, li.new_rno, li.empid, li.dated, li.time, 'SUCCESS', 'Success', NOW(), NOW() from old_jodi.convert_log as li");
+        // echo nl2br("finish convert_log import\n");
+
+        // echo nl2br("start from delete logs import\n");
+        // DB::statement("insert ignore into jodi_laravel.delete_logs (rno, refname, empid, dated, time, created_at, updated_at) Select li.rno, li.refname, li.empid, li.dated, li.time, NOW(), NOW() from old_jodi.delete_log as li");
+        // echo nl2br("finish delete logs import\n");
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Caste;
 use App\Models\Classified;
 use App\Models\CounterNumber;
+use App\Models\DeleteLog;
 use App\Models\Enquiry;
 use App\Models\Feedback;
 use App\Models\FixMember;
@@ -678,6 +679,24 @@ class CustomerService
 
             return false;
             //TODO:: send notification to tc_code, tl_code and rm_code
+        });
+    }
+
+
+    public function deleteCustomer($rno)
+    {
+        return DB::transaction(function () use ($rno) {
+            $vp = ViewProfile::where('rno', $rno)->first();
+            $refname = $vp->refname;
+            DB::statement('CALL deletedata(?)', [$rno]);
+            DeleteLog::create([
+                'rno' => $rno,
+                'refname' => $refname,
+                'empid' => auth()->user()->username,
+                'dated' => now()->format('Y-m-d'),
+                'time' => now()->format('H:i:s'),
+            ]);
+            return true;
         });
     }
 }

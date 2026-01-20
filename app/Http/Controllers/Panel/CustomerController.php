@@ -14,6 +14,7 @@ use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -151,9 +152,19 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        if (!Hash::check($request->password, auth()->user()->password)) {
+            return response()->json([
+                'message' => 'Incorrect password'
+            ], 422);
+        }
+
+        $this->customerService->deleteCustomer($request->rno);
+        return response()->json([
+            "status" => "success",
+            "message" => "Customer deleted successfully",
+        ]);
     }
 
     public function upload(Request $request)

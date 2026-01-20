@@ -40,4 +40,22 @@ class AuthController extends Controller
 
         return redirect()->route("login");
     }
+
+    public function confirmPassword(Request $request)
+    {
+        $credentials = $request->validate([
+            "password" => ["required"],
+        ]);
+        $credentials['username'] =  $request->username ?? Auth::user()->username;
+
+        if (Auth::attempt($credentials)) {
+            return response()->json([
+                "success" => true,
+            ]);
+        }
+
+        return response()->json([
+            "success" => false,
+        ]);
+    }
 }

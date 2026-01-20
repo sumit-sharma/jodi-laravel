@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bounced_emails', function (Blueprint $table) {
+        Schema::create('delete_logs', function (Blueprint $table) {
             $table->id();
+            $table->integer('rno');
+            $table->string('refname');
+            $table->integer('empid');
+            $table->date('dated');
+            $table->time('time');
+
+            $table->index('rno');
+
             $table->timestamps();
         });
     }
@@ -22,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bounced_emails');
+        Schema::dropIfExists('delete_logs');
     }
 };

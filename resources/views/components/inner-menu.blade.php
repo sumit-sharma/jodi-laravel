@@ -1513,6 +1513,81 @@
                     });
                 }
             });
+
+            $("#modl_delete_member").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+
+                let rno = selected_rno;
+
+                // STEP 1: Confirm
+                Swal.fire({
+                    title: 'Are you sure to delete this member?',
+                    text: 'This action cannot be undone!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    confirmButtonColor: "#dc3545",
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+
+                    if (!result.isConfirmed) return;
+
+                    // STEP 2: Ask password
+                    Swal.fire({
+                        title: 'Confirm Password',
+                        input: 'password',
+                        inputPlaceholder: 'Enter your password',
+                        inputAttributes: {
+                            autocomplete: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: 'Verify & Proceed',
+                        showLoaderOnConfirm: true,
+                        preConfirm: (password) => {
+
+                            if (!password) {
+                                Swal.showValidationMessage('Password is required');
+                                return false;
+                            }
+
+                            // STEP 3: AJAX call
+                            return $.ajax({
+                                url: "{{ route('customer.delete') }}",
+                                type: 'POST',
+                                data: {
+                                    rno: rno,
+                                    password: password,
+                                    _token: '{{ csrf_token() }}'
+                                }
+                            }).catch(xhr => {
+                                Swal.showValidationMessage(
+                                    xhr.responseJSON?.message || 'Invalid password'
+                                );
+                            });
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        cacheClear(cacheKey);
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Done!',
+                                text: 'Action completed successfully'
+                            });
+                            $('tr[data-rno="' + rno + '"]').fadeOut(300, function () {
+                                $(this).remove();
+                            });
+
+                            // Optional: reload / remove row
+                            // location.reload();
+                        }
+                    });
+
+                });
+            });
         });
     </script>
 @endsection
