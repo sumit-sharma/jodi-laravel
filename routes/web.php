@@ -93,6 +93,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
         Route::get('/reset-password', [MasterController::class, 'resetPassword'])->name('reset-password');
         Route::post('/reset-password', [MasterController::class, 'resetPasswordStore'])->name('panel.reset-password');
+        Route::get('/make-user', [MasterController::class, 'makeuser'])->name('make-user');
+        Route::post('/make-user', [MasterController::class, 'makeuserStore'])->name('panel.make-user');
     });
 
     Route::resource('references', ReferenceController::class);
@@ -178,4 +180,5 @@ Route::middleware("auth")->group(function () {
     Route::get('/show-all-non-nadata', [DataController::class, 'showallnonnadata'])->name('show-all-non-nadata');
     Route::get('/sent-package', [DataController::class, 'sentpackage'])->name('sent-package');
     Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
+    Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data');
 });

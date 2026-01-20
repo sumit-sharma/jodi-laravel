@@ -252,4 +252,19 @@ class MasterController extends Controller
             return back()->with('error', 'Error: Contact System Admin.');
         }
     }
+    public function makeuser()
+    {
+        return view('panel.main.make-user');
+    }
+    public function makeuserStore(Request $request)
+    {
+        $result = $this->userService->makeuserStore($request);
+        if ($result) {
+            return back()->with('success', 'User created successfully.');
+
+        } else {
+            return back()->with('error', 'Error: Contact System Admin.');
+        }
+
+    }
 }

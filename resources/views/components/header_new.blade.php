@@ -189,10 +189,10 @@
                         <li><a href="{{ route('feedback-option') }}" data-key="t-shops">Feedback Option</a></li>
                         <li><a href="{{ route('update-my-info') }}" data-key="t-add-product">Update My Info</a></li>
                         <li><a href="{{ route('update-timings') }}" data-key="t-seller">Updates Timmings</a></li>
+                        <li><a href="{{ route('make-user') }}" data-key="t-orders">Make User</a></li>
                         <!-- <li><a href="{{ route('reset-password') }}" data-key="t-sale-details">Reset Password</a></li> -->
                         {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
                         <li><a href="#" data-key="t-product-detail">Change Password</a></li>
-                        <li><a href="make-user.php" data-key="t-orders">Make User</a></li>
                         <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>
                         <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
                         <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
@@ -324,11 +324,11 @@
                         {{-- <li><a href="#" data-key="t-product-detail">Print Request</a></li> --}}
                         <li><a href="{{ route('fix-member.index') }}" key="t-products">Fix/Active</a></li>
                         <li><a href="{{ route('wrong-email') }}" data-key="t-product-detail">Wrong Email</a></li>
+                        <li><a href="{{ route('web-data') }}" data-key="t-product-detail">Web Data</a></li>
                         {{-- <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
                         <li><a href="#" key="t-products">View Massage</a></li>
                         <li><a href="#" data-key="t-product-detail">Add Attendance</a></li>
                         <li><a href="#" key="t-products">Reminder</a></li>
-                        <li><a href="#" data-key="t-product-detail">Web Data</a></li>
                         <li><a href="#" key="t-products">Chat Report</a></li> --}}
                     </ul>
                 </li>
