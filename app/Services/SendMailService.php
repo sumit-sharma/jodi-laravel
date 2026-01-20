@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Sendmail;
 use App\Models\ViewProfile;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SendMailService
@@ -92,5 +93,24 @@ class SendMailService
     return $request->limit ? $query->paginate($request->limit) : $query->get();
             
 
+    }
+    public function selfprofileStore($request){
+        $request->validate([
+            'rno' => 'required',
+            'pdftype' => 'required'
+        ]);
+        return Sendmail::insert([
+            'dated'=>Carbon::now()->format('Y-m-d'),
+            'time'=>Carbon::now()->format('H:i:s'),
+            'rno'=>$request->rno,
+            'proposal'=>$request->rno,
+            'photos'=>'Self Profile',
+            'matter'=>'',
+            'wc'=>0,
+            'pdftype'=>$request->pdftype,
+            'empid'=>auth()->user()->id,
+            'status'=>0,
+            'addl_st'=>'',
+        ]);
     }
 }

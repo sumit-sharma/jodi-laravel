@@ -32,7 +32,7 @@ class SendMailController extends Controller
         // dd($all->first()->vp->refname);
 
         $data['fresh'] = collect($all)->filter(fn($i) => !$i['has_sent_mail']);
-        $data['sent']  = collect($all)->filter(fn($i) => $i['has_sent_mail']);
+        $data['sent'] = collect($all)->filter(fn($i) => $i['has_sent_mail']);
 
         return view('panel.mail.sent-mail', $data);
     }
@@ -75,7 +75,7 @@ class SendMailController extends Controller
         foreach ($data as $item) {
             $item->cid = $id;
         }
-        $result =  BasicSentMailResource::collection($data);
+        $result = BasicSentMailResource::collection($data);
         $data = collect($result->resolve())->unique('id')->values();
         return response()->json($data);
     }
@@ -103,9 +103,25 @@ class SendMailController extends Controller
     {
         //
     }
-    public function pendingmails(Request $request){
+    public function pendingmails(Request $request)
+    {
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['TableData'] = $this->sendMailService->pendingMails($request);
-        return view('panel.mail.pending-mails',$data);
+        return view('panel.mail.pending-mails', $data);
+    }
+    public function selfprofile()
+    {
+        return view('panel.mail.send-self-profile');
+    }
+    public function selfprofileStore(Request $request)
+    {
+       
+        $result= $this->sendMailService->selfprofileStore($request);
+        if ($result) {
+            return back()->with('success', 'Self profile send successfully.');
+
+        } else {
+            return back()->with('error', 'Error: Contact System Admin.');
+        }
     }
 }

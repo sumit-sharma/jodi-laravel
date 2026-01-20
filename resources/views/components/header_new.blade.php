@@ -267,10 +267,10 @@
                         <span data-key="t-ecommerce">Mail</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('send-self-profile') }}" data-key="t-product-detail">Sent Self Profile</a></li>
                         <!-- <li><a href="#" key="t-products">Non Paid Mail/Download</a></li> -->
                         <!-- <li><a href="#" data-key="t-product-detail">Update None Paid Mail</a></li> -->
                         <li><a href="{{ route('pending-mails') }}" key="t-products">All Pending Mail</a></li>
-                        <!-- <li><a href="#" data-key="t-product-detail">Sent Self Profile</a></li> -->
                     </ul>
                 </li>
                 <li>
