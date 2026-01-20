@@ -103,4 +103,9 @@ class SendMailController extends Controller
     {
         //
     }
+    public function pendingmails(Request $request){
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['TableData'] = $this->sendMailService->pendingMails($request);
+        return view('panel.mail.pending-mails',$data);
+    }
 }

@@ -132,6 +132,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/sendmail/{rno}', [SendMailController::class, 'index'])->name('sendmail.index');
     Route::post('/sendmail', [SendMailController::class, 'store'])->name('sendmail.store');
     Route::get('/sendmail/show/{id}', [SendMailController::class, 'show'])->name('sendmail.show');
+    Route::get('/pending-mails', [SendMailController::class, 'pendingmails'])->name('pending-mails');
 
     Route::get('/feedback/{rno}', [FeedbackController::class, 'feedbackList'])->name('feedback');
     Route::get('/fetch-feedback/{type}/{rno}', [FeedbackController::class, 'fetchFeedbackByType'])->name('fetch-feedback');

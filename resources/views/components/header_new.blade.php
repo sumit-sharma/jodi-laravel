@@ -261,18 +261,18 @@
                     </ul>
                 </li>
 
-                {{-- <li>
+                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="mail"></i>
                         <span data-key="t-ecommerce">Mail</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="#" key="t-products">Non Paid Mail/Download</a></li>
-                        <li><a href="#" data-key="t-product-detail">Update None Paid Mail</a></li>
-                        <li><a href="#" key="t-products">All Pending Mail</a></li>
-                        <li><a href="#" data-key="t-product-detail">Sent Self Profile</a></li>
+                        <!-- <li><a href="#" key="t-products">Non Paid Mail/Download</a></li> -->
+                        <!-- <li><a href="#" data-key="t-product-detail">Update None Paid Mail</a></li> -->
+                        <li><a href="{{ route('pending-mails') }}" key="t-products">All Pending Mail</a></li>
+                        <!-- <li><a href="#" data-key="t-product-detail">Sent Self Profile</a></li> -->
                     </ul>
-                </li> --}}
+                </li>
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="user-plus"></i>
