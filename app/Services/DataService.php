@@ -11,8 +11,8 @@ class DataService
     public function showallotherdata($request, $userId)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
-        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
-        $query =  ViewProfile::with([
+        $sortBy = $request->has('sortBy') ? $request->sortBy : 'id';
+        $query = ViewProfile::with([
             'personal',
             'bio',
             'occupation',
@@ -32,8 +32,8 @@ class DataService
     public function showwebsiteData($request)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
-        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
-        $query =  ViewProfile::with([
+        $sortBy = $request->has('sortBy') ? $request->sortBy : 'id';
+        $query = ViewProfile::with([
             'personal',
             'bio',
             'occupation',
@@ -50,8 +50,8 @@ class DataService
     public function showmyNaData($request, $userId)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
-        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
-        $query =  ViewProfile::with([
+        $sortBy = $request->has('sortBy') ? $request->sortBy : 'id';
+        $query = ViewProfile::with([
             'personal',
             'bio',
             'occupation',
@@ -73,8 +73,8 @@ class DataService
     public function showallnonnadata($request, $userId)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
-        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
-        $query =  ViewProfile::with([
+        $sortBy = $request->has('sortBy') ? $request->sortBy : 'id';
+        $query = ViewProfile::with([
             'personal',
             'bio',
             'occupation',
@@ -93,4 +93,22 @@ class DataService
         }
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
+
+    public function bouncedEmail($request)
+    {
+        $sortBy = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = \DB::table('bouncedmail as b')
+            ->join('viewprofile as v', 'b.rno', '=', 'v.rno')
+            ->select(
+                'b.rno',
+                'v.refname',
+                'v.rm',
+                'b.email'
+            )
+            ->orderBy('v.rm');
+
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
 }

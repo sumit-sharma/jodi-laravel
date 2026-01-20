@@ -56,4 +56,15 @@ class DataController extends Controller
         $data['headings'] = "Show All Non NA Data";
         return view('panel.Data.show-other-data', $data);
     }
+    public function sentpackage()
+    {
+        return view('panel.Data.sent-package');
+    }
+    public function wrongemail(Request $request)
+    {
+        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['wrongData'] = $this->dataService->bouncedEmail($request);
+        return view('panel.Data.wrong-email',$data);
+
+    }
 }

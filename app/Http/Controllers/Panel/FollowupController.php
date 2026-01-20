@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Services\FollowupService;
 
@@ -10,9 +11,12 @@ class FollowupController extends Controller
 {
 
     protected $followupService;
-    public function __construct(FollowupService $followupService)
+    protected $userService;
+    public function __construct(FollowupService $followupService, UserService $userService)
     {
+
         $this->followupService = $followupService;
+        $this->userService = $userService;
     }
 
 
@@ -70,5 +74,20 @@ class FollowupController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function transferFollowups()
+    {
+        $data['followups'] = $this->followupService->fetchFollowups();
+        $data['followto'] = $this->userService->fetchRm();
+        return view('panel.Follow.transfer-follow-ups', $data);
+    }
+    public function transferFollowupsStore(Request $request){
+        $result = $this->followupService->transferFollowupsStore($request);
+        if ($result) {
+            return back()->with('success', 'Fllowups successfully.');
+
+        } else {
+            return back()->with('error', 'Error: Contact System Admin.');
+        }
     }
 }
