@@ -92,6 +92,7 @@ class UserService
     public function fetchRm()
     {
         return User::with(['details'])
+            ->where('status', 1)
             ->get();
     }
     public function rmStore($request)

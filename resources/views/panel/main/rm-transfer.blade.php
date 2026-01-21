@@ -30,11 +30,11 @@
                                     <div class="row">
                                         <div class="col-3">
                                             <label class="form-label">Transfer all Cases from</label>
-                                            <select class="form-control" name="oldtc" id="oldtc" required>
-                                                <option value="">--Select--</option>
+                                            <select class="form-control select2-notag" name="oldtc" id="oldtc" required>
+                                                <option value="">Select</option>
                                                 @foreach($rmData as $rm)
                                                     <option value="{{ $rm->username }}">
-                                                        {{ $rm->details ? $rm->details->loginname : '' }}
+                                                        {{ $rm->username . '-' . $rm->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -42,11 +42,11 @@
                                         </div>
                                         <div class="col-3">
                                             <label class="form-label">To New RM Code</label>
-                                            <select class="form-control" name="newtc" id="newtc">
-                                                <option value="">--Select--</option>
+                                            <select class="form-control select2-notag" name="newtc" id="newtc" required>
+                                                <option value="">Select</option>
                                                 @foreach($newrmData as $rm)
                                                     <option value="{{ $rm->username }}">
-                                                        {{ $rm->details ? $rm->details->loginname : '' }}
+                                                        {{ $rm->username . '-' . $rm->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
