@@ -21,4 +21,9 @@ class Enquiry extends Model
         'updatedatetime',
         'status',
     ];
+
+    public function viewProfile()
+    {
+        return $this->belongsTo(ViewProfile::class, 'rno', 'rno');
+    }
 }

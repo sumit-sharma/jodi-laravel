@@ -308,8 +308,17 @@ class CustomerService
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
         $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
 
-        $query = Enquiry::orderBy($sortBy, $orderBy)
-            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        $query = Enquiry::with('viewProfile')->orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->filled('status'), fn($query) => $query->where('status', $request->status))
+            ->when($request->filled('empid'), fn($query) => $query->where('empid', $request->empid))
+            ->when($request->filled('slfor'), fn($query) => $query->where('slfor', $request->slfor))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
+
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
