@@ -24,26 +24,28 @@
                             </div>
 
                             <hr>
-                            <form id="frmAddCaste" action="{{ route('panel.link-tl-tc') }}" method="POST">
+                            <form id="frmLinkTlTC" action="{{ route('panel.link-tl-tc') }}" method="POST">
                                 @csrf
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-3">
                                             <label class="form-label">Select TL</label>
-                                            <select class="form-control" name="tl" id="tl" required>
-                                                <option value="">--Select--</option>
+                                            <select class="form-control select2-notag" name="tl" id="tl" required>
+                                                <option value="">Select</option>
                                                 @foreach($tltcData as $tltc)
-                                                    <option value="{{ $tltc->username }}">{{ $tltc->details?$tltc->details->loginname:'' }}</option>
+                                                    <option value="{{ $tltc->username }}">
+                                                        {{ $tltc->username . '-' . $tltc->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
 
                                         </div>
                                         <div class="col-3">
                                             <label class="form-label">All Linked TC</label>
-                                            <select class="form-control" name="linked" id="linked">
+                                            <select name="linked" class="form-select" id="linked" disabled multiple>
                                                 @foreach($linkedData as $link)
-                                                    <option value="">
-                                                        {{ $link->tl . '-' . $link->loginname . '::' . $link->tc . '-' . $link->loginname1 }}
+                                                    <option>
+                                                        {{ $link->tl . '-' . $link->linkedTL?->name . '::' . $link->tc . '-' . $link->linkedTC?->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -52,16 +54,17 @@
                                         <div class="col-3">
                                             <div class="mb-3">
                                                 <label for="caste" class="form-label">Add New TC</label>
-                                                <select class="form-control" name="tc">
-                                                    <option value="">--Select--</option>
+                                                <select class="form-control select2-notag" name="tc" required>
+                                                    <option value="">Select</option>
                                                     @foreach($tcData as $tc)
-                                                        <option value="{{ $tc->username }}">{{ $tc->details?$tc->details->loginname:'' }}</option>
+                                                        <option value="{{ $tc->username }}">
+                                                            {{ $tc->username . '-' . $tc->name }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
-
                                         <div class="col-12 mt-3">
                                             <button type="submit"
                                                 class="btn btn-primary w-lg waves-effect waves-light">Save</button>
@@ -85,57 +88,41 @@
 @section('footer-script')
     <script>
         $(document).ready(function () {
-            $("#religion").change(function () {
-                let religionCode = $(this).val();
-                let url = "{{ route('get-caste', ['religion' => ':religion']) }}"; // placeholder :id
-                url = url.replace(':religion', religionCode);
 
-                fetch(url)
-                    .then(res => res.json())
-                    .then(data => {
-                        const select = document.getElementById('caste-list');
-                        select.innerHTML = '';
-                        console.log(data.data);
-                        data.data.forEach(element => {
-                            const option = document.createElement('option');
-                            option.value = element.id;
-                            option.textContent = element.name;
-                            select.appendChild(option);
-                        });
-                    })
-                    .catch(err => console.error(err));
-            });
-
-
-            $("#frmAddCaste").validate({
+            $("#frmLinkTlTC").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
                 rules: {
-                    religion: {
+                    tl: {
                         required: true
                     },
-                    caste: {
-                        required: true,
-                        remote: {
-                            url: "{{ route('panel.check-exist') }}",
-                            type: "POST",
-                            data: {
-                                table: 'castes',
-                                whereArray: {
-                                    religion_code: function () {
-                                        return $("#religion").val();
-                                    },
-                                    name: function () {
-                                        return $("#caste").val();
-                                    }
-                                }
-                            }
-                        }
+                    tc: {
+                        required: true
                     },
                 },
                 messages: {
-                    caste: {
-                        required: "Caste is required.",
-                        remote: "Caste already exists."
-                    }
+                    tl: {
+                        required: "TL is required"
+                    },
+                    tc: {
+                        required: "TC is required"
+                    },
                 },
                 submitHandler: function (form) {
                     form.submit();

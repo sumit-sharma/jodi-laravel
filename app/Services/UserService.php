@@ -55,51 +55,37 @@ class UserService
             return back()->withErrors([
                 'old_password' => 'Old password is incorrect.',
             ]);
-
         }
         return $user->update([
             'password' => Hash::make($request->password),
         ]);
-
     }
     public function fetchTltcData()
     {
-        return $data = DB::table('link_tl_tc as l')
-            ->join('emp_details as ed', 'ed.loginname', '=', 'l.tl')
-            ->join('emp_details as ed1', 'ed1.loginname', '=', 'l.tc')
-            ->select([
-                'l.tl',
-                'ed.loginname',
-                'l.tc',
-                'ed1.loginname as loginname1',
-            ])
-            ->orderBy('ed.loginname')
+        return LinkTlTc::with(['linkedTC', 'linkedTL'])
             ->get();
     }
     public function storeTltcData($request)
     {
-        return LinkTlTc::insert(['tl' => $request->tl, 'tc' => $request->tc]);
+        return LinkTlTc::updateOrCreate(
+            ['tc' => $request->tc],
+            ['tl' => $request->tl]
+        );
     }
     public function fetchuserTltc()
     {
-        return User::with([
-            'details' => function ($query) {
-                $query->where(function ($q) {
-                    $q->where('department', 'TL')
-                        ->orWhere('department', 'BM')
-                        ->orWhere('department', 'HS');
-                });
-            }
-        ])
+        return User::with('details')
+            ->whereHas('details', fn($q) => $q->whereIn('department', ['TL', 'BM', 'HS']))
+            ->where('status', 1)
+            ->orderBy('name', 'asc')
             ->get();
     }
     public function fetchuserTc()
     {
-        return User::with([
-            'details' => function ($query) {
-                $query->where('department', 'TC');
-            }
-        ])
+        return User::with('details')
+            ->whereRelation('details', 'department', 'TC')
+            ->where('status', 1)
+            ->orderBy('name', 'asc')
             ->get();
     }
 
@@ -107,7 +93,6 @@ class UserService
     {
         return User::with(['details'])
             ->get();
-
     }
     public function rmStore($request)
     {
@@ -194,7 +179,6 @@ class UserService
     public function empDetails()
     {
         return EmpDetail::get();
-
     }
     public function timngStore($request)
     {
@@ -211,7 +195,6 @@ class UserService
         return $user->update([
             'password' => Hash::make($request->password),
         ]);
-
     }
     public function makeuserStore($request)
     {

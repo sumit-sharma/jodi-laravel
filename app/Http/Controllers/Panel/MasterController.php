@@ -138,7 +138,7 @@ class MasterController extends Controller
     {
         $result = $this->userService->storeTltcData($request);
         if ($result) {
-            return back()->with('success', 'Link TL successfuly!.');
+            return redirect()->route('link-tl-tc')->with('success', 'Link TL successfuly!.');
         } else {
             return back()->with('error', 'some error occurred, please try again.');
         }
@@ -250,11 +250,9 @@ class MasterController extends Controller
         $result = $this->userService->makeuserStore($request);
         if ($result) {
             return back()->with('success', 'User created successfully.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin.');
         }
-
     }
     public function getCounterNumber(Request $request)
     {
