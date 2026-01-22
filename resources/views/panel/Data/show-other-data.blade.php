@@ -30,23 +30,25 @@
 
                             <div class="col-md-8 col-12">
                                 <div class="mb-3">
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
+                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                                        data-bs-toggle="offcanvas" data-bs-target="#filterModal"><i
                                             class="bx bx-filter-alt label-icon"></i> Filter</button>
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
-                                            class="bx bxs-eraser label-icon"></i> Remove</button>
-                                    &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
-                                            class="bx bx-reset label-icon"></i> Reset</button>
+
+                                    <a href="{{ request()->url() }}" type="button"
+                                        class="btn btn-primary waves-effect btn-label waves-light"><i
+                                            class="bx bx-reset label-icon"></i> Reset</a>
                                 </div>
                             </div>
                             <div class="col-md-2 col-12">
-                                <form class="app-search d-none d-lg-block pt-0 pb-0">
+                                <form class="app-search d-none d-lg-block pt-0 pb-0" method="GET"
+                                    action="{{ request()->url() }}">
                                     <div class="position-relative">
-                                        <input type="search" class="form-control bg-black opacity-50"
-                                            placeholder="Search...">
-                                        <button class="btn btn-primary" type="button"><i
+                                        <input type="search" name="search" class="form-control bg-black opacity-50"
+                                            placeholder="Search..." value="{{ request()->get('search') }}">
+                                        <button class="btn btn-primary" type="submit"><i
                                                 class="bx bx-search-alt align-middle"></i></button>
+
                                     </div>
                                 </form>
                             </div>
@@ -111,7 +113,7 @@
                                                         <td>{{ $data->occupation?->name }}</td>
                                                         <td>{{ rs_label($data->rs) }}</td>
                                                         <td>{{ $data->tc }}</td>
-                                                        <td>{{ $data->tl }}</td>
+                                                        <td>{{ $data->mc }}</td>
                                                         <td>{{ $data->rm }}</td>
                                                         <td>{{ convertCommonDate($data->last_call) }}</td>
                                                         <td>{{ convertCommonDate($data->last_mail) }}</td>
@@ -143,6 +145,70 @@
 
         </div>
         <!-- end row-->
+
+        <!-- right offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="filterModal" aria-labelledby="filterModalLabel">
+            <div class="offcanvas-header">
+                <h5 id="filterModalLabel">Set Filters</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form id="searchFilterForm" method="GET" action="{{ request()->url() }}">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Gender:</label>
+                            <select class="form-select" name="g">
+                                <option value="">Select</option>
+                                <option value="M" {{ request()->get('g') == 'M' ? 'selected' : '' }}>Male</option>
+                                <option value="F" {{ request()->get('g') == 'F' ? 'selected' : '' }}>Female</option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Occupation:</label>
+                            <select name="oc" class="form-select">
+                                <option value="">Select</option>
+                                @foreach ($occupations as $occupation)
+                                    <option value="{{ $occupation->occ_code }}" {{ request()->get('oc') == $occupation->occ_code ? 'selected' : '' }}>{{ $occupation->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">TC:</label>
+                            <input name="tc" class="form-control" type="text" value="{{ request()->get('tc') }}">
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">TL:</label>
+                            <input name="mc" class="form-control" type="text" value="{{ request()->get('mc') }}">
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">RM:</label>
+                            <input name="rm" class="form-control" type="text" value="{{ request()->get('rm') }}">
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Search</button>
+                        </div>
+                        <div class="clearfix"></div>
+
+
+
+
+
+                    </div><!--end row-->
+                </form>
+            </div>
+        </div>
 
 
     </div> <!-- container-fluid -->

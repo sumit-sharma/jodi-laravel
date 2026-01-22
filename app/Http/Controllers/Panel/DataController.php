@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Services\DataService;
+use App\Services\MiscService;
 use Illuminate\Http\Request;
 
 class DataController extends Controller
@@ -19,6 +20,7 @@ class DataController extends Controller
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['TableData'] = $this->dataService->showallotherdata($request, auth()->user()->username);
         $data['headings'] = "Show Other Data";
+        $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
         return view('panel.Data.show-other-data', $data);
     }
 
@@ -27,6 +29,7 @@ class DataController extends Controller
     {
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['TableData'] = $this->dataService->showwebsiteData($request);
+        $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
         $data['headings'] = "Show Website Data";
         return view('panel.Data.show-other-data', $data);
     }
@@ -35,6 +38,7 @@ class DataController extends Controller
     public function showdoneList(Request $request)
     {
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
         // $data['TableData'] = $this->dataService->showdoneList($request);
         $data['headings'] = "Show Done List";
         return view('panel.Data.show-other-data', $data);
@@ -45,12 +49,14 @@ class DataController extends Controller
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['TableData'] = $this->dataService->showmyNaData($request, auth()->user()->username);
         $data['headings'] = "Show My NA Data";
+        $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
         return view('panel.Data.show-other-data', $data);
     }
 
 
     public function showallnonnadata(Request $request)
     {
+        $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['TableData'] = $this->dataService->showallnonnadata($request, auth()->user()->username);
         $data['headings'] = "Show All Non NA Data";
@@ -64,10 +70,10 @@ class DataController extends Controller
     {
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['wrongData'] = $this->dataService->bouncedEmail($request);
-        return view('panel.Data.wrong-email',$data);
-
+        return view('panel.Data.wrong-email', $data);
     }
-    public function webdata(Request $request){
+    public function webdata(Request $request)
+    {
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['TableData'] = $this->dataService->showwebsiteData($request);
         return view('panel.Data.web-data', $data);

@@ -18,10 +18,21 @@ class AdvtService
         $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
 
         return Advtdata::with(['viewProfile'])->orderBy($sortBy, $orderBy)
+            ->when($request->matchfor, fn($query) => $query->where('matchfor', $request->matchfor))
+            ->when($request->community, fn($query) => $query->where('community', 'LIKE', "%{$request->community}%"))
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
             ->when($request->empid, fn($query) => $query->where('empid', $request->empid))
-            ->when($request->assignto, fn($query) => $query->where('assignto', $request->assignto));
-        // ->when($request->status, fn($query) => $query->whereRelation('viewProfile', 'status', $request->status));
+            ->when($request->assignto, fn($query) => $query->where('assignto', $request->assignto))
+            ->when($request->email, fn($query) => $query->where('email', 'LIKE', "%{$request->email}%"))
+            ->when($request->mobile, fn($query) => $query->where('mobile', 'LIKE', "%{$request->mobile}%"))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhere('email', 'LIKE', "%{$request->search}%")
+                        ->orWhere('mobile', 'LIKE', "%{$request->search}%");
+                });
+            })
+            ->orderBy($sortBy, $orderBy);
     }
 
 

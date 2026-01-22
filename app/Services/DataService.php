@@ -22,10 +22,22 @@ class DataService
             'payment',
             'profilebs',
             'personal.zone'
-        ])->orderBy($sortBy, $orderBy)->where('dtype', 'H');
+        ])
+            ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
+            ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
+            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
+            ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            })
+            ->orderBy($sortBy, $orderBy)->where('dtype', 'H');
         if (!in_array($userId, [3033, 1018, 1111, 5002])) {
             $query->where('rm', $userId);
         }
+
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
@@ -43,7 +55,19 @@ class DataService
             'payment',
             'profilebs',
             'personal.zone'
-        ])->orderBy($sortBy, $orderBy)->where('dtype', 'W');
+        ])
+            ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
+            ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
+            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
+            ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            })
+
+            ->orderBy($sortBy, $orderBy)->where('dtype', 'W');
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
@@ -61,7 +85,18 @@ class DataService
             'payment',
             'profilebs',
             'personal.zone'
-        ])->orderBy($sortBy, $orderBy)
+        ])
+            ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
+            ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
+            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
+            ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            })
+            ->orderBy($sortBy, $orderBy)
             ->where('ost', 'N')
             ->where('status', 'A');
         if (!in_array($userId, [3033, 1111])) {
@@ -84,7 +119,18 @@ class DataService
             'payment',
             'profilebs',
             'personal.zone'
-        ])->orderBy($sortBy, $orderBy)
+        ])
+            ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
+            ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
+            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
+            ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            })
+            ->orderBy($sortBy, $orderBy)
             ->where('ost', '<>', 'N')
             ->where('status', 'A')
             ->where('dtype', 'P');
@@ -97,18 +143,17 @@ class DataService
     public function bouncedEmail($request)
     {
         $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
-        
-        $query=\DB::table('bouncedmail as b')
-    ->join('viewprofile as v', 'b.rno', '=', 'v.rno')
-    ->select(
-        'b.rno',
-        'v.refname',
-        'v.rm',
-        'b.email'
-    )
-    ->orderBy('v.rm');
-    
-    return $request->limit ? $query->paginate($request->limit) : $query->get();
-    }
 
+        $query = \DB::table('bouncedmail as b')
+            ->join('viewprofile as v', 'b.rno', '=', 'v.rno')
+            ->select(
+                'b.rno',
+                'v.refname',
+                'v.rm',
+                'b.email'
+            )
+            ->orderBy('v.rm');
+
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
 }
