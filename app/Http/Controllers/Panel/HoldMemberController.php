@@ -24,6 +24,7 @@ class HoldMemberController extends Controller
         $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1]);
         $data['members'] = $this->customerService->getHoldMembers($request);
         $data['heading'] = 'Show Hold Data';
+        $data['reset_link'] = route('hold-member.index');
         return view('panel.Data.hold-list', $data);
     }
 
@@ -101,6 +102,7 @@ class HoldMemberController extends Controller
         $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1]);
         $data['members'] = $this->customerService->getAllHoldRecords($request);
         $data['heading'] = 'Show All Hold Records';
+        $data['reset_link'] = route('show-all-hold-records');
         return view('panel.Data.hold-list', $data);
     }
 }

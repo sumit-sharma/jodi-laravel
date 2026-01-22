@@ -500,7 +500,17 @@ class CustomerService
 
         $query = HoldMember::with('viewProfile')->orderBy($sortBy, $orderBy)
             ->whereHas('viewProfile', fn($query) => $query->where('ost', 'F'))
-            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->filled('status'), fn($query) => $query->where('status', $request->status))
+            ->when($request->filled('hold_req_by'), fn($query) => $query->where('hold_req_by', $request->hold_req_by))
+            ->when($request->filled('hold_by'), fn($query) => $query->where('hold_by', $request->hold_by))
+            ->when($request->filled('start_date'), fn($query) => $query->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($query) => $query->where('dated', '<=', $request->end_date))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
@@ -521,7 +531,18 @@ class CustomerService
                 $query->from('followup')
                     ->whereColumn('followup.rno', '=', 'hold_member.rno');
             })
-            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->filled('status'), fn($query) => $query->where('status', $request->status))
+            ->when($request->filled('hold_req_by'), fn($query) => $query->where('hold_req_by', $request->hold_req_by))
+            ->when($request->filled('hold_by'), fn($query) => $query->where('hold_by', $request->hold_by))
+            ->when($request->filled('start_date'), fn($query) => $query->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($query) => $query->where('dated', '<=', $request->end_date))
+
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 

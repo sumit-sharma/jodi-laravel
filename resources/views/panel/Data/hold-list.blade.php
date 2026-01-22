@@ -27,20 +27,23 @@
 
                             <div class="col-md-8 col-12">
                                 <div class="mb-3">
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
+                                    <button data-bs-toggle="offcanvas" data-bs-target="#filterModal" type="button"
+                                        class="btn btn-primary waves-effect btn-label waves-light"><i
                                             class="bx bx-filter-alt label-icon"></i> Filter</button>
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
-                                            class="bx bx-reset label-icon"></i> Reset</button>
+                                    <a href="{{ $reset_link}}" class="btn btn-primary waves-effect btn-label waves-light"><i
+                                            class="bx bx-reset label-icon"></i> Reset</a>
                                 </div>
                             </div>
                             <div class="col-md-2 col-12">
                                 <form class="app-search d-none d-lg-block pt-0 pb-0">
                                     <div class="position-relative">
-                                        <input type="search" class="form-control bg-black opacity-50"
-                                            placeholder="Search...">
-                                        <button class="btn btn-primary" type="button"><i
-                                                class="bx bx-search-alt align-middle"></i></button>
+                                        <form method="GET" action="{{ request()->url() }}">
+                                            <input type="search" name="search" class="form-control bg-black opacity-50"
+                                                placeholder="Search..." value="{{ request()->get('search') }}">
+                                            <button class="btn btn-primary" type="submit"><i
+                                                    class="bx bx-search-alt align-middle"></i></button>
+                                        </form>
                                     </div>
                                 </form>
                             </div>
@@ -103,14 +106,87 @@
         @include('components.biodata_modal')
 
 
+
+
+        <!-- right offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="filterModal" aria-labelledby="filterModalLabel">
+            <div class="offcanvas-header">
+                <h5 id="filterModalLabel">Set Filters</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form id="searchFilterForm" method="GET" action="{{ request()->url() }}">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Hold Req By:</label>
+                            <input name="hold_req_by" class="form-control" type="text"
+                                value="{{ request()->get('hold_req_by') }}">
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Hold By:</label>
+                            <input name="hold_by" class="form-control" type="text" value="{{ request()->get('hold_by') }}">
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Start Date:</label>
+                            <input id="start_date" name="start_date" class="form-control" type="text"
+                                value="{{ request()->get('start_date') }}" autocomplete="off">
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">End Date:</label>
+                            <input id="end_date" name="end_date" class="form-control" type="text"
+                                value="{{ request()->get('end_date') }}" autocomplete="off">
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Search</button>
+                        </div>
+                        <div class="clearfix"></div>
+
+
+
+
+
+                    </div><!--end row-->
+                </form>
+            </div>
+        </div>
+
+
+
+
+
     </div> <!-- container-fluid -->
 
 @endsection
 
 
 @section('footer-script')
+
+    <!-- timepicker -->
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
     <script>
         $(function () {
+
+            $("#start_date").datepicker({
+                uiLibrary: 'bootstrap5',
+                format: 'yyyy-mm-dd',
+            });
+            $("#end_date").datepicker({
+                uiLibrary: 'bootstrap5',
+                format: 'yyyy-mm-dd',
+            });
+
+
+
             $('button.btnAction').click(function () {
 
 
