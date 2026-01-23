@@ -32,27 +32,29 @@
 
 
 
-                            <div class="col-md-8">
-                                {{-- <div class="mb-3">
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
+                            <div class="col-md-8 col-12">
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"
+                                        data-bs-toggle="offcanvas" data-bs-target="#filterModal"><i
                                             class="bx bx-filter-alt label-icon"></i> Filter</button>
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
-                                            class="bx bxs-eraser label-icon"></i> Remove</button>
-                                    &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-primary waves-effect btn-label waves-light"><i
-                                            class="bx bx-reset label-icon"></i> Reset</button>
-                                </div> --}}
+
+                                    <a href="{{ request()->url() }}" type="button"
+                                        class="btn btn-primary waves-effect btn-label waves-light"><i
+                                            class="bx bx-reset label-icon"></i> Reset</a>
+                                </div>
                             </div>
-                            <div class="col-md-2">
-                                {{-- <form class="app-search d-none d-lg-block pt-0 pb-0">
+                            <div class="col-md-2 col-12">
+                                <form class="app-search d-none d-lg-block pt-0 pb-0" method="GET"
+                                    action="{{ request()->url() }}">
                                     <div class="position-relative">
-                                        <input type="search" class="form-control bg-black opacity-50"
-                                            placeholder="Search...">
-                                        <button class="btn btn-primary" type="button"><i
+                                        <input type="search" name="search" class="form-control bg-black opacity-50"
+                                            placeholder="Search..." value="{{ request()->get('search') }}">
+                                        <button class="btn btn-primary" type="submit"><i
                                                 class="bx bx-search-alt align-middle"></i></button>
+
                                     </div>
-                                </form> --}}
+                                </form>
                             </div>
                             <div class="col-md-2 text-right" style="text-align: right;">
                                 <div class="mb-4">
@@ -157,6 +159,54 @@
 
         </div>
         <!-- end row-->
+
+
+        <!-- right offcanvas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="filterModal" aria-labelledby="filterModalLabel">
+            <div class="offcanvas-header">
+                <h5 id="filterModalLabel">Set Filters</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <form id="searchFilterForm" method="GET" action="{{ request()->url() }}">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Email:</label>
+                            <input name="emailid" class="form-control" type="text" value="{{ request()->get('emailid') }}">
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Contact No:</label>
+                            <input name="contactno" class="form-control" type="text"
+                                value="{{ request()->get('contactno') }}">
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Assign To:</label>
+                            <input name="assignto" class="form-control" type="text"
+                                value="{{ request()->get('assignto') }}">
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary waves-effect waves-light">Search</button>
+                        </div>
+                        <div class="clearfix"></div>
+
+
+
+
+
+                    </div><!--end row-->
+                </form>
+            </div>
+        </div>
+
 
 
     </div> <!-- container-fluid -->
