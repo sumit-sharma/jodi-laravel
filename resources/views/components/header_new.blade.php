@@ -261,13 +261,14 @@
                     </ul>
                 </li>
 
-                 <li>
+                <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="mail"></i>
                         <span data-key="t-ecommerce">Mail</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('send-self-profile') }}" data-key="t-product-detail">Sent Self Profile</a></li>
+                        <li><a href="{{ route('send-self-profile') }}" data-key="t-product-detail">Sent Self Profile</a>
+                        </li>
                         <!-- <li><a href="#" key="t-products">Non Paid Mail/Download</a></li> -->
                         <!-- <li><a href="#" data-key="t-product-detail">Update None Paid Mail</a></li> -->
                         <li><a href="{{ route('pending-mails') }}" key="t-products">All Pending Mail</a></li>
@@ -282,7 +283,8 @@
                         <li><a href="{{ route('my-followup') }}" key="t-products">My All Follow UPS</a></li>
                         <li><a href="{{ route('transfer-all-followups') }}" key="t-products">Transfer Followup</a></li>
                         {{-- <li><a href="my-prospective.php" data-key="t-product-detail">My Prospective</a></li> --}}
-                        {{-- <li><a href="followup-records.php" data-key="t-product-detail">Follow Records</a></li> --}}
+                        <li><a href="{{ route('followup-records') }}" data-key="t-product-detail">Follow Records</a>
+                        </li>
                     </ul>
                 </li>
 

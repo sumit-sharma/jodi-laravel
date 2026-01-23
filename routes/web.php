@@ -173,6 +173,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/check-limit', [FollowupController::class, 'checkLimit'])->name('check-limit');
     Route::get('/transfer-all-followups', [FollowupController::class, 'transferFollowups'])->name('transfer-all-followups');
     Route::post('/transfer-all-followups', [FollowupController::class, 'transferFollowupsStore'])->name('panel.transfer-all-followups');
+    Route::get('/followup-records', [FollowupController::class, 'followUpRecords'])->name('followup-records');
 
     Route::get('/all-form-transfer', [FormTransferController::class, 'index'])->name('all-form-transfer');
     Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');

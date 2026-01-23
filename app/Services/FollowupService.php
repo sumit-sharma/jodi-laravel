@@ -26,7 +26,18 @@ class FollowupService
         return Followup::with(['viewProfile', 'viewProfile.bio', 'ViewProfile.income', 'ViewProfile.personal'])->orderBy($sortBy, $orderBy)
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
             ->when($request->empid, fn($query) => $query->where('empid', $request->empid))
-            ->when($request->status, fn($query) => $query->whereRelation('viewProfile', 'status', $request->status));
+            ->when($request->g, fn($query) => $query->whereRelation('viewProfile', 'g', $request->g))
+            ->when($request->d_by, fn($query) => $query->where('d_by', $request->d_by))
+            ->when($request->isFutureday, fn($query) => $query->where('futuredate', '>=', now()))
+            ->when($request->status, fn($query) => $query->whereRelation('viewProfile', 'status', $request->status))
+            ->when($request->filled('start_date'), fn($query) => $query->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($query) => $query->where('dated', '<=', $request->end_date))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
     }
 
 

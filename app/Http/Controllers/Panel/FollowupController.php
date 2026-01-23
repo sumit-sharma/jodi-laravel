@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Services\FollowupService;
+use App\Services\MiscService;
 
 class FollowupController extends Controller
 {
@@ -26,8 +27,25 @@ class FollowupController extends Controller
     public function index(Request $request)
     {
         $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1, 'empid' => $request->empid ?? auth()->user()->username, 'status' => 'A']);
+        $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
         $data['followups'] = $this->followupService->index($request);
+        $data['heading'] = 'All My Follow Ups';
         // dd($data['followups'][0]->viewProfile->bio);
+        return view('panel.Follow.my-all-follow-ups', $data);
+    }
+
+    public function followUpRecords(Request $request)
+    {
+        $requestInput = ['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1, 'status' => 'A', 'isFutureday' => 1];
+        //TODO:: if has permission to all followups records
+        // if (auth()->user()->hasPermission('followup_records')) {
+        //     $requestInput['empid'] = $request->empid ?? auth()->user()->username;
+        // }
+
+        $request->merge($requestInput);
+        $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
+        $data['followups'] = $this->followupService->index($request);
+        $data['heading'] = 'All Follow Ups Records';
         return view('panel.Follow.my-all-follow-ups', $data);
     }
 
@@ -81,11 +99,11 @@ class FollowupController extends Controller
         $data['followto'] = $this->userService->fetchRm();
         return view('panel.Follow.transfer-follow-ups', $data);
     }
-    public function transferFollowupsStore(Request $request){
+    public function transferFollowupsStore(Request $request)
+    {
         $result = $this->followupService->transferFollowupsStore($request);
         if ($result) {
             return back()->with('success', 'Fllowups successfully.');
-
         } else {
             return back()->with('error', 'Error: Contact System Admin.');
         }
