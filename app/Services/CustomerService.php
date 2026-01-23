@@ -404,8 +404,19 @@ class CustomerService
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
         $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
 
-        $query = FixMember::orderBy($sortBy, $orderBy)
-            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        $query = FixMember::with(['viewProfile'])
+            ->orderBy($sortBy, $orderBy)
+            ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
+            ->when($request->filled('fix_by'), fn($query) => $query->where('fix_by', $request->fix_by))
+            ->when($request->filled('start_date'), fn($query) => $query->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($query) => $query->where('dated', '<=', $request->end_date))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
+
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 

@@ -80,8 +80,8 @@ class FollowupService
         $followup = Followup::where('empid', $request->followsfrom)
             ->update(['empid' => $request->followsto]);
         //$prospective = Prospective::where('empid', $request->followsfrom)
-            //->update(['empid' => $request->followupto]);
-        return $followup 
+        //->update(['empid' => $request->followupto]);
+        return $followup;
         //&& $prospective > 0);
     }
 }
