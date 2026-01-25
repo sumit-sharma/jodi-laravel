@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum ReligionEnum: int
 {
+    case None = 0;
     case Hindu = 1;
     case Sikh = 2;
     case Jain = 3;
@@ -14,6 +15,7 @@ enum ReligionEnum: int
     public function label(): string
     {
         return match ($this) {
+            self::None => 'None',
             self::Hindu => 'Hindu',
             self::Sikh => 'Sikh',
             self::Jain => 'Jain',

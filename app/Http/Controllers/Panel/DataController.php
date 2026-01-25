@@ -75,7 +75,16 @@ class DataController extends Controller
     public function webdata(Request $request)
     {
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
-        $data['TableData'] = $this->dataService->showwebsiteData($request);
+        $data['TableData'] = $this->dataService->allWebsiteData($request);
         return view('panel.Data.web-data', $data);
+    }
+
+    public function toggleWebData($id)
+    {
+        $status = $this->dataService->toggleWebData($id);
+        if ($status) {
+            return response()->json(['status' => 'success', 'message' => 'Status updated successfully']);
+        }
+        return response()->json(['status' => 'error', 'message' => 'Something went wrong']);
     }
 }

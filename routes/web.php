@@ -201,4 +201,5 @@ Route::middleware("auth")->group(function () {
     Route::get('/sent-package', [DataController::class, 'sentpackage'])->name('sent-package');
     Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
     Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data');
+    Route::put('/toggle-web-data/{id}', [DataController::class, 'toggleWebData'])->name('toggle-web-data');
 });

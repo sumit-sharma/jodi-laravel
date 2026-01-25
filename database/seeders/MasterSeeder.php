@@ -56,5 +56,9 @@ class MasterSeeder extends Seeder
         // echo nl2br("start from delete logs import\n");
         // DB::statement("insert ignore into jodi_laravel.delete_logs (rno, refname, empid, dated, time, created_at, updated_at) Select li.rno, li.refname, li.empid, li.dated, li.time, NOW(), NOW() from old_jodi.delete_log as li");
         // echo nl2br("finish delete logs import\n");
+
+        // echo nl2br("start from update table import\n");
+        // DB::statement("insert ignore into jodi_laravel.update_table (rno, status, created_at, updated_at) Select li.rno, li.status, NOW(), NOW() from old_jodi.updatetable as li");
+        // echo nl2br("finish update table import\n");
     }
 }

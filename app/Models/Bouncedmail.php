@@ -12,4 +12,10 @@ class Bouncedmail extends Model
         'rno',
         'email',
     ];
+
+
+    public function viewProfile()
+    {
+        return $this->belongsTo(ViewProfile::class, 'rno', 'rno');
+    }
 }

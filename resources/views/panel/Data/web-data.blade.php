@@ -47,10 +47,22 @@
                                                     <tr>
                                                         <td>{{ ++$key }}</td>
                                                         <td>{{ $row->rno }}</td>
-                                                        <td>{{ $row->refname }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($row->bio->dob)->age }}</td>
-                                                        <td>{{ $row->personal->contactphone }}</td>
-                                                        <td>{{ '' }}</td>
+                                                        <td>{{ $row->viewProfile?->refname }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($row->bio?->dob)->age }}</td>
+                                                        <td>{{ $row->personal?->contactphone }}</td>
+                                                        <td>
+                                                            @if ($row->status == 1)
+                                                                <button class="btn btn-success btn-sm btnStatus"
+                                                                    data-id="{{ $row->id }}">
+                                                                    <i class="bi bi-check2-square"></i>
+                                                                </button>
+                                                            @else
+                                                                <button class="btn btn-primary btn-sm btnStatus"
+                                                                    data-id="{{ $row->id }}">
+                                                                    <i class="bi bi-ev-front"></i>
+                                                                </button>
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -75,4 +87,47 @@
 
 
     </div>
+@endsection
+@section('footer-script')
+    <script>
+        $(document).ready(function () {
+            $('.btnStatus').click(function () {
+                var id = $(this).data('id');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You want to change the status!",
+                    icon: "warning",
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, change it!',
+                    cancelButtonText: 'No, cancel!',
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            var url = "{{ route('toggle-web-data', ['id' => ':id']) }}";
+                            url = url.replace(':id', id);
+                            $.ajax({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                url: url,
+                                type: 'PUT',
+                                success: function (data) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: data.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    location.reload();
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
 @endsection
