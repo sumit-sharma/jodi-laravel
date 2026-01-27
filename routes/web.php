@@ -99,6 +99,8 @@ Route::middleware("auth")->group(function () {
         Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
         Route::get('/reset-password', [MasterController::class, 'resetPassword'])->name('reset-password');
         Route::post('/reset-password', [MasterController::class, 'resetPasswordStore'])->name('panel.reset-password');
+        Route::put('password-regenerate/{username}', [EmployeeController::class, 'passwordRegenerate'])->name('password-regenerate');
+        Route::put('toggle-employee-status/{username}', [EmployeeController::class, 'toggleEmployeeStatus'])->name('toggle-employee-status');
         Route::get('/make-user', [MasterController::class, 'makeuser'])->name('make-user');
         Route::post('/make-user', [MasterController::class, 'makeuserStore'])->name('panel.make-user');
     });
@@ -202,4 +204,8 @@ Route::middleware("auth")->group(function () {
     Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
     Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data');
     Route::put('/toggle-web-data/{id}', [DataController::class, 'toggleWebData'])->name('toggle-web-data');
+
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/employee-list', [EmployeeController::class, 'index'])->name('employee-list');
+    });
 });

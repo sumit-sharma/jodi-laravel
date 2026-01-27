@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\EmpDetail;
 use App\Models\FeedbackOption;
+use App\Models\Followup;
 use App\Models\ProfileDetail;
 use App\Models\User;
 use App\Models\LinkTlTc;
@@ -45,7 +46,16 @@ class UserService
         return User::with(['details'])->orderBy($sortBy, $orderBy)
             ->when($request->rno, fn($query) => $query->where('rno', $request->rno))
             ->when($request->empid, fn($query) => $query->where('empid', $request->empid))
-            ->when($request->status, fn($query) => $query->whereRelation('viewProfile', 'status', $request->status));
+            ->when($request->filled('status'), fn($query) => $query->where('status', $request->status))
+            ->when($request->filled('department'), fn($query) => $query->whereRelation('details', 'department', 'like', "%{$request->department}%"))
+            ->when($request->filled('offday'), fn($query) => $query->whereRelation('details', 'offday', 'like', "%{$request->offday}%"))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('username', 'LIKE', "%{$request->search}%")
+                        ->orWhere('name', 'LIKE', "%{$request->search}%")
+                        ->orWhere('mobile', 'LIKE', "%{$request->search}%");
+                });
+            });
     }
 
     public function changePassword($request)
@@ -197,6 +207,13 @@ class UserService
             'password' => Hash::make($request->password),
         ]);
     }
+    public function passwordRegenerate($username)
+    {
+        $user = User::where('username', $username)->first();
+        return $user->update([
+            'password' => Hash::make('12345678'),
+        ]);
+    }
     public function makeuserStore($request)
     {
         $request->validate([
@@ -215,6 +232,34 @@ class UserService
             'email' => $request->email,
             'mobile' => $request->mobile,
             'password' => $password
+        ]);
+    }
+    public function toggleEmployeeStatus($username)
+    {
+        $msg = 'Employee have been activated successfully';
+        $user = User::where('username', $username)->first();
+        if ($user->status == 1) {
+            $followupCount = Followup::where('empid', $username)->count();
+            if ($followupCount > 0) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Employee has followup data. Please remove followup data before deactivating.',
+                ]);
+            }
+            $msg = 'Employee have been deactivated successfully';
+        }
+
+        $user->status = $user->status == 1 ? 0 : 1;
+        $user->is_blocked = !$user->is_blocked;
+        if ($user->save()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => $msg,
+            ]);
+        }
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error: Contact System Admin.',
         ]);
     }
 }

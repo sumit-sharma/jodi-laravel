@@ -298,14 +298,14 @@
                     </ul>
                 </li>
 
-                {{-- <li>
+                <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="file-text"></i>
                         <span data-key="t-ecommerce">Report</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="employee-list.php" key="t-products">Employee List</a></li>
-                        <li><a href="#" data-key="t-product-detail">Appointment List</a></li>
+                        <li><a href="{{ route('reports.employee-list') }}" key="t-products">Employee List</a></li>
+                        {{-- <li><a href="#" data-key="t-product-detail">Appointment List</a></li>
                         <li><a href="daily-report.php" key="t-products">Daily Report</a></li>
                         <li><a href="#" data-key="t-product-detail">Finance Report</a></li>
                         <li><a href="meeting-report.php" key="t-products">Meetings Report</a></li>
@@ -315,9 +315,10 @@
                         <li><a href="#" data-key="t-product-detail">My Future Calls</a></li>
                         <li><a href="no-touch-client.php" key="t-products">No Touch Clints</a></li>
                         <li><a href="no-meeting-report.php" data-key="t-product-detail">No Meetings Reports</a></li>
+                        --}}
                     </ul>
                 </li>
-
+                {{--
                 <li>
                     <a href="#">
                         <i data-feather="message-square"></i>

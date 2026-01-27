@@ -53,10 +53,10 @@ return new class extends Migration
             $table->string('offday')->nullable();
             $table->string('department')->nullable();
             $table->text('signature')->nullable();
+            $table->string('ext')->nullable();
+            $table->integer('oldcode')->nullable();
             $table->timestamps();
-
         });
-
     }
 
     /**
