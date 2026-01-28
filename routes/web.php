@@ -59,6 +59,8 @@ Route::middleware("auth")->group(function () {
     Route::get('/dashboard/fetch-distinct-data', [DashboardController::class, 'getDistinctData'])->name('fetch-distinct-data');
     Route::get('/dashboard/fetch-table-data', [DashboardController::class, 'getTableData'])->name('fetch-table-data');
 
+    Route::get('/appointment-report', [AppointmentController::class, 'appointmentReport'])->name('appointment-report.index');
+    Route::post('/appointment-report', [AppointmentController::class, 'appointmentReportStore'])->name('appointment-report.store');
     Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment.index');
     Route::get('/appointment/{id}', [AppointmentController::class, 'show'])->name('appointment.show');
     Route::post('/appointment', [AppointmentController::class, 'saveAppointment'])->name('appointment.save');

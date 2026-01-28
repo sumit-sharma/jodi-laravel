@@ -49,4 +49,32 @@ class AppointmentController extends Controller
             return response()->json(['status' => 'success', 'data' => $result]);
         }
     }
+
+
+    public function appointmentReport(Request $request)
+    {
+        $request->merge(['limit' => 50]);
+        // if ($request->filled('from_date') && $request->filled('to_date')) {
+        $data['appointments'] = $this->appointmentService->index($request);
+        // }
+        $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc', "status = 1");
+        return view('panel.reports.appointment-report', $data);
+    }
+
+    // public function appointmentReportStore(Request $request)
+    // {
+    //     $data = $request->validated();
+    //     $data['empid'] = auth()->user()->username;
+    //     unset($data['appointment_id']);
+    //     if ($request->appointment_id) {
+    //         $data['update_date'] = now()->format('Y-m-d');
+    //         $result =   $this->appointmentService->updateAppointment($data, $request->appointment_id);
+    //     } else {
+    //         $result = $this->appointmentService->storeAppointment($data);
+    //     }
+
+    //     if ($request->expectsJson()) {
+    //         return response()->json(['status' => 'success', 'data' => $result]);
+    //     }
+    // }
 }

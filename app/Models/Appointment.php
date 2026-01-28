@@ -16,4 +16,9 @@ class Appointment extends Model
             'aptstatus' => AppointmentStatusEnum::class,
         ];
     }
+
+    public function viewProfile()
+    {
+        return $this->belongsTo(ViewProfile::class, 'rno', 'rno');
+    }
 }

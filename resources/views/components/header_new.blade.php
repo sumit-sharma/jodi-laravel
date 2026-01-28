@@ -305,7 +305,9 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('reports.employee-list') }}" key="t-products">Employee List</a></li>
-                        {{-- <li><a href="#" data-key="t-product-detail">Appointment List</a></li>
+                        <li><a href="{{ route('appointment-report.index') }}" data-key="t-product-detail">Appointment
+                                List</a></li>
+                        {{--
                         <li><a href="daily-report.php" key="t-products">Daily Report</a></li>
                         <li><a href="#" data-key="t-product-detail">Finance Report</a></li>
                         <li><a href="meeting-report.php" key="t-products">Meetings Report</a></li>

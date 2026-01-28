@@ -18,7 +18,11 @@ class AppointmentService
         $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
 
         return Appointment::orderBy($sortBy, $orderBy)
-            ->when($request->empid, fn($query) => $query->where('empid', $request->empid));
+            ->when($request->filled('empid'), fn($query) => $query->where('empid', $request->empid))
+            ->when($request->filled('from_date'), fn($query) => $query->where('aptdate', '>=', $request->from_date))
+            ->when($request->filled('to_date'), fn($query) => $query->where('aptdate', '<=', $request->to_date))
+            ->when($request->filled('apttype'), fn($query) => $query->where('apttype', $request->apttype))
+            ->when($request->filled('aptstatus'), fn($query) => $query->where('aptstatus', $request->aptstatus));
     }
 
     public function show($id)
