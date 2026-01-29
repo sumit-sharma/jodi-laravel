@@ -60,5 +60,9 @@ class MasterSeeder extends Seeder
         // echo nl2br("start from update table import\n");
         // DB::statement("insert ignore into jodi_laravel.update_table (rno, status, created_at, updated_at) Select li.rno, li.status, NOW(), NOW() from old_jodi.updatetable as li");
         // echo nl2br("finish update table import\n");
+
+        // echo nl2br("start from dailyfullreport import\n");
+        // DB::statement("insert ignore into jodi_laravel.dailyfullreport (userid, empid, empname, nde, edata, interaction, sl, ms, fu, ma, mat, mf, fc, nr, flc, refa, af, aa, nor, dm, created_at, updated_at) SELECT li.userid, li.empid, li.empname, li.nde, li.edata, li.interaction, li.sl, li.ms, li.fu, li.ma, li.mat, li.mf, li.fc, li.nr, li.flc, li.refa, li.af, li.aa, li.nor, li.dm, NOW(), NOW() FROM old_jodi.dailyfullreport as li");
+        // echo nl2br("finish dailyfullreport import\n");
     }
 }

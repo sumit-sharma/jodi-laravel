@@ -19,6 +19,7 @@ use App\Http\Controllers\Panel\HoldMemberController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
 use App\Http\Controllers\Panel\ReferenceController;
+use App\Http\Controllers\Panel\ReportController;
 use App\Http\Controllers\Panel\SearchController;
 use App\Http\Controllers\Panel\SendMailController;
 use App\Http\Controllers\RedirectController;
@@ -209,5 +210,6 @@ Route::middleware("auth")->group(function () {
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/employee-list', [EmployeeController::class, 'index'])->name('employee-list');
+        Route::get('/meeting-report', [ReportController::class, 'meetingReport'])->name('meeting-report');
     });
 });

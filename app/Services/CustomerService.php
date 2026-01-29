@@ -263,8 +263,24 @@ class CustomerService
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
         $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
 
-        $query = Meeting::orderBy($sortBy, $orderBy)
-            ->when($request->rno, fn($query) => $query->where('rno', $request->rno));
+        $query = Meeting::with('rnoData', 'proposalData')->orderBy($sortBy, $orderBy)
+            ->when($request->filled('rno'), fn($query) => $query->where('rno', $request->rno))
+            ->when($request->filled('proposal'), fn($query) => $query->where('proposal', $request->proposal))
+            ->when($request->filled('mtg_by1'), fn($query) => $query->where('mtg_by1', $request->mtg_by1))
+            ->when($request->filled('mtg_by2'), fn($query) => $query->where('mtg_by2', $request->mtg_by2))
+            ->when($request->filled('att_by1'), fn($query) => $query->where('att_by1', $request->att_by1))
+            ->when($request->filled('att_by2'), fn($query) => $query->where('att_by2', $request->att_by2))
+            ->when($request->filled('from_date'), fn($query) => $query->where('dated', '>=', $request->from_date))
+            ->when($request->filled('to_date'), fn($query) => $query->where('dated', '<=', $request->to_date))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhere('proposal', 'LIKE', "%{$request->search}%")
+                        ->orWhereRelation('rnoData', 'refname', 'LIKE', "%{$request->search}%")
+                        ->orWhereRelation('proposalData', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
+
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 

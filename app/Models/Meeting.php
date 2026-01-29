@@ -21,6 +21,10 @@ class Meeting extends Model
         'att_by2',
     ];
 
+    public function rnoData()
+    {
+        return $this->belongsTo(ViewProfile::class, 'rno', 'rno');
+    }
 
     public function proposalData()
     {

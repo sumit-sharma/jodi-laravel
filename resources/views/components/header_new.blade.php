@@ -307,17 +307,20 @@
                         <li><a href="{{ route('reports.employee-list') }}" key="t-products">Employee List</a></li>
                         <li><a href="{{ route('appointment-report.index') }}" data-key="t-product-detail">Appointment
                                 List</a></li>
-                        {{--
-                        <li><a href="daily-report.php" key="t-products">Daily Report</a></li>
-                        <li><a href="#" data-key="t-product-detail">Finance Report</a></li>
-                        <li><a href="meeting-report.php" key="t-products">Meetings Report</a></li>
-                        <li><a href="edit-log-report.php" data-key="t-product-detail">Edit Log Report</a></li>
-                        <li><a href="followup-auto-log.php" key="t-products">Followup Auto Report</a></li>
-                        <li><a href="attendance-report.php" data-key="t-product-detail">Attendance Reports</a></li>
-                        <li><a href="#" data-key="t-product-detail">My Future Calls</a></li>
-                        <li><a href="no-touch-client.php" key="t-products">No Touch Clints</a></li>
-                        <li><a href="no-meeting-report.php" data-key="t-product-detail">No Meetings Reports</a></li>
+                        {{-- <li><a href="{{ route('reports.daily-report') }}" key="t-products">Daily Report</a></li>
                         --}}
+                        {{--
+                        <li><a href="#" data-key="t-product-detail">Finance Report</a></li>--}}
+                        <li><a href="{{ route('reports.meeting-report') }}" key="t-products">Meetings Report</a></li>
+                        {{-- <li><a href="edit-log-report.php" data-key="t-product-detail">Edit Log Report</a></li> --}}
+                        {{-- <li><a href="followup-auto-log.php" key="t-products">Followup Auto Report</a></li> --}}
+                        {{-- <li><a href="attendance-report.php" data-key="t-product-detail">Attendance Reports</a></li>
+                        --}}
+                        {{-- <li><a href="#" data-key="t-product-detail">My Future Calls</a></li> --}}
+                        {{-- <li><a href="no-touch-client.php" key="t-products">No Touch Clints</a></li> --}}
+                        {{-- <li><a href="no-meeting-report.php" data-key="t-product-detail">No Meetings Reports</a>
+                        </li> --}}
+
                     </ul>
                 </li>
                 {{--
