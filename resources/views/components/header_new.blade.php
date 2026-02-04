@@ -248,8 +248,8 @@
                         <li><a href="{{ route('show-all-other-data') }}" data-key="t-shops">Show Other Data</a></li>
                         <li><a href="{{ route('show-website-data') }}" data-key="t-add-product">Show Website Data</a>
                         </li>
-                        {{-- <li><a href="{{ route('show-done-list') }}" data-key="t-sale-details">Show Done List</a>
-                        </li> --}}
+                        <li><a href="{{ route('show-done-list') }}" data-key="t-sale-details">Show Done List</a>
+                        </li>
                         <li><a href="{{ route('show-all-nadata') }}" data-key="t-sale-details">Show All NA-Data</a></li>
                         <li><a href="{{ route('show-all-non-nadata') }}" data-key="t-shops">Show All None NA-Data</a>
                         </li>

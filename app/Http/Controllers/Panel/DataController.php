@@ -39,9 +39,10 @@ class DataController extends Controller
     {
         $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
         $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
-        // $data['TableData'] = $this->dataService->showdoneList($request);
+        $data['TableData'] = $this->dataService->showdoneList($request);
+        $data['fixGroupedYear'] = $this->dataService->fixDoneListGroup();
         $data['headings'] = "Show Done List";
-        return view('panel.Data.show-other-data', $data);
+        return view('panel.Data.show-done-list', $data);
     }
 
     public function showmyNaData(Request $request)

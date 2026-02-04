@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\DoneList;
 use App\Models\UpdateTable;
 use App\Models\ViewProfile;
+use Illuminate\Support\Facades\DB;
 
 class DataService
 {
@@ -193,5 +195,30 @@ class DataService
             return true;
         }
         return false;
+    }
+
+
+    public function showdoneList($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+        $query =  DoneList::with(['bride', 'groom'])->orderBy($sortBy, $orderBy)
+            ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
+            ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
+            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
+            ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+    public function fixDoneListGroup()
+    {
+        $query = DB::select("select fix_year,count(id) as total from done_lists group by fix_year order by fix_year  limit 10");
+        return $query;
     }
 }

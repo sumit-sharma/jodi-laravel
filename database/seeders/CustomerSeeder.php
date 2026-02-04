@@ -110,8 +110,7 @@ class CustomerSeeder extends Seeder
         echo nl2br("start editdatalog import\n");
         DB::statement("insert ignore into jodi_laravel.editdatalog (dated, time, rno, empid, field, olddata, newdata, created_at, updated_at) SELECT li.dated, li.time, li.rno, li.empid, li.field, li.olddata, li.newdata, NOW(), NOW() FROM old_jodi.editdatalog as li");
         echo nl2br("finish editdatalog import\n");
-         */
-
+     
         echo nl2br("start edu_log import\n");
         DB::statement("insert ignore into jodi_laravel.edu_log (rno, educourse, eduinst, eduyear, dated, time, empid, created_at, updated_at) SELECT li.rno, li.educourse, li.eduinst, li.eduyear, li.dated, li.time, li.empid, NOW(), NOW() FROM old_jodi.edu_log as li");
         echo nl2br("finish edu_log import\n");
@@ -119,5 +118,10 @@ class CustomerSeeder extends Seeder
         echo nl2br("start org_log import\n");
         DB::statement("insert ignore into jodi_laravel.org_log (rno, orgname, orgdept, orgyear, dated, time, empid, created_at, updated_at) SELECT li.rno, li.orgname, li.orgdept, li.orgyear, li.dated, li.time, li.empid, NOW(), NOW() FROM old_jodi.org_log as li");
         echo nl2br("finish org_log import\n");
+
+        echo nl2br("start done_list import\n");
+        DB::statement("insert ignore into jodi_laravel.done_lists (br_rno, br_name, br_business, br_location, gr_rno, gr_name, gr_business, gr_location, fix_month, fix_year, rdate, wdate, done_by1, done_by2, empid, created_at, updated_at) SELECT li.br_rno, li.br_name, li.br_business, li.br_location, li.gr_rno, li.gr_name, li.gr_business, li.gr_location, li.fix_month, li.fix_year, li.rdate, li.wdate, li.done_by1, li.done_by2, li.empid, NOW(), NOW() FROM old_jodi.donelist as li");
+        echo nl2br("finish done_list import\n");
+         */
     }
 }
