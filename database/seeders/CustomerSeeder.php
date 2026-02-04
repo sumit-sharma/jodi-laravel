@@ -101,6 +101,23 @@ class CustomerSeeder extends Seeder
         echo nl2br("start from advtdata import\n");
         DB::statement("insert ignore into jodi_laravel.advtdata (rno, matchfor, age, hght, community, education, occupation, mobile, email, remarks, assignto, empid, edate) SELECT li.rno, li.matchfor, li.age, li.hght, li.community, li.education, li.occupation, li.mobile, li.email, li.remarks, li.assignto, li.empid, li.edate FROM old_jodi.advtdata as li");
         echo nl2br("finish advtdata import\n");
+        
+
+        echo nl2br("start attendance import\n");
+        DB::statement("insert ignore into jodi_laravel.attendances (empid, dated, intime, outtime, status, remarks, ent_by, created_at, updated_at) SELECT li.empid, li.dated, li.intime, li.outtime, li.status, li.remarks, li.ent_by, NOW(), NOW() FROM old_jodi.attendance as li");
+        echo nl2br("finish attendance import\n");
+
+        echo nl2br("start editdatalog import\n");
+        DB::statement("insert ignore into jodi_laravel.editdatalog (dated, time, rno, empid, field, olddata, newdata, created_at, updated_at) SELECT li.dated, li.time, li.rno, li.empid, li.field, li.olddata, li.newdata, NOW(), NOW() FROM old_jodi.editdatalog as li");
+        echo nl2br("finish editdatalog import\n");
          */
+
+        echo nl2br("start edu_log import\n");
+        DB::statement("insert ignore into jodi_laravel.edu_log (rno, educourse, eduinst, eduyear, dated, time, empid, created_at, updated_at) SELECT li.rno, li.educourse, li.eduinst, li.eduyear, li.dated, li.time, li.empid, NOW(), NOW() FROM old_jodi.edu_log as li");
+        echo nl2br("finish edu_log import\n");
+
+        echo nl2br("start org_log import\n");
+        DB::statement("insert ignore into jodi_laravel.org_log (rno, orgname, orgdept, orgyear, dated, time, empid, created_at, updated_at) SELECT li.rno, li.orgname, li.orgdept, li.orgyear, li.dated, li.time, li.empid, NOW(), NOW() FROM old_jodi.org_log as li");
+        echo nl2br("finish org_log import\n");
     }
 }

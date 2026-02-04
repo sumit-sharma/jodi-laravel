@@ -137,6 +137,11 @@
 
     @yield('footer-script')
 
+    <!--     timepicker -->
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
     <x-toast />
 
     <script>
@@ -369,6 +374,170 @@
                     });
                 }
             })
+
+            $("#addAttendance_menu").click(function () {
+                // $("#addAttendanceModal").modal("show");
+
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    $('#frmaddAttendanceModal #empid').html(options).select2({
+                        dropdownParent: $('#addAttendanceModal'),
+                        placeholder: "Select or type to search",
+                        allowClear: true
+                    });
+
+                });
+
+                $("#frmaddAttendanceModal #dated").datepicker({
+                    uiLibrary: 'bootstrap5',
+                    format: 'yyyy-mm-dd',
+                    maxDate: new Date(),
+                    change: function () {
+                        $('#frmaddAttendanceModal #dated').valid(); // 🔥 force validation on change
+                    }
+                });
+
+                $("#frmaddAttendanceModal #intime").timepicker({
+                    uiLibrary: 'bootstrap5',
+                    modal: true,
+                    footer: true,
+                    change: function () {
+                        $('#frmaddAttendanceModal #intime').valid(); // 🔥 force validation on change
+                    }
+                });
+
+                $("#frmaddAttendanceModal #outtime").timepicker({
+                    uiLibrary: 'bootstrap5',
+                    modal: true,
+                    footer: true,
+                    change: function () {
+                        $('#frmaddAttendanceModal #outtime').valid(); // 🔥 force validation on change
+                    }
+                });
+
+            });
+            $("#frmaddAttendanceModal .tp").on('focus', function () {
+                $(this).closest('.gj-timepicker').find('button').click();
+            });
+
+
+            $('#frmaddAttendanceModal #empid').on('change', function () {
+                let selectedValue = $(this).val();
+                let url = `{{ route('get-attendance', ['empid' => ':empid', 'dated' => ':dated']) }}`
+                let dated = $('#frmaddAttendanceModal #dated').val();
+                url = url.replace(':empid', selectedValue).replace(':dated', dated);
+                console.log(url);
+                fetch(url).then(response => response.json()).then(data => {
+                    console.log(data);
+                    if (data.status == "success") {
+                        $('#frmaddAttendanceModal #intime').val(data?.data?.intime);
+                        $('#frmaddAttendanceModal #outtime').val(data?.data?.outtime);
+                        $('#frmaddAttendanceModal #status').val(data?.data?.status);
+                        $('#frmaddAttendanceModal #remarks').val(data?.data?.remarks);
+                    }
+                })
+            })
+
+
+            $("#frmaddAttendanceModal").validate({
+                // ignore: ':hidden:not(.select2-hidden-accessible)',
+                ignore: [],
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    }
+                    else if (element.closest('.gj-datepicker, .gj-timepicker').length) {
+                        error.insertAfter(element.closest('.input-group'));
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    empid: {
+                        required: true
+                    },
+                    dated: {
+                        required: true
+                    },
+                    intime: {
+                        required: true
+                    },
+                    outtime: {
+                        required: true
+                    },
+                    status: {
+                        required: true
+                    }
+                },
+                messages: {
+                    empid: {
+                        required: "Please select Employee"
+                    },
+                    dated: {
+                        required: "Please select Date"
+                    },
+                    intime: {
+                        required: "Please select In Time"
+                    },
+                    outtime: {
+                        required: "Please select Out Time"
+                    },
+                    status: {
+                        required: "Please select Status"
+                    }
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                }).then((result) => {
+                                    $("#frmaddAttendanceModal").trigger("reset");
+                                    $("#addAttendanceModal").modal("hide");
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                            });
+                        }
+                    });
+
+                }
+            });
         });
     </script>
 

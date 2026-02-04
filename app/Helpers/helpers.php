@@ -24,6 +24,7 @@ if (!function_exists('rs_label')) {
             '1' => "Indian Citizen",
             '2' => "Temp. Residing Abroad",
             '3' => "Non Resident Indian",
+            default => "",
         };
     }
 }
@@ -36,6 +37,7 @@ if (!function_exists('ms_label')) {
             '2' => "Divorced",
             '3' => "Widowed",
             '4' => "Separated",
+            default => "",
         };
     }
 }

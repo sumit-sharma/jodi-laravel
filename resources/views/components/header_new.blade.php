@@ -312,14 +312,16 @@
                         {{--
                         <li><a href="#" data-key="t-product-detail">Finance Report</a></li>--}}
                         <li><a href="{{ route('reports.meeting-report') }}" key="t-products">Meetings Report</a></li>
-                        {{-- <li><a href="edit-log-report.php" data-key="t-product-detail">Edit Log Report</a></li> --}}
+                        <li><a href="{{ route('reports.edit-log-report') }}" data-key="t-product-detail">Edit Log
+                                Report</a></li>
                         {{-- <li><a href="followup-auto-log.php" key="t-products">Followup Auto Report</a></li> --}}
-                        {{-- <li><a href="attendance-report.php" data-key="t-product-detail">Attendance Reports</a></li>
-                        --}}
+                        <li><a href="{{ route('reports.attendance-report') }}" data-key="t-product-detail">Attendance
+                                Reports</a></li>
                         {{-- <li><a href="#" data-key="t-product-detail">My Future Calls</a></li> --}}
-                        {{-- <li><a href="no-touch-client.php" key="t-products">No Touch Clints</a></li> --}}
-                        {{-- <li><a href="no-meeting-report.php" data-key="t-product-detail">No Meetings Reports</a>
-                        </li> --}}
+                        <li><a href="{{ route('reports.no-touch-report') }}" key="t-products">No Touch Clients</a></li>
+                        <li><a href="{{ route('reports.no-meeting-report') }}" data-key="t-product-detail">No Meetings
+                                Reports</a>
+                        </li>
 
                     </ul>
                 </li>
@@ -342,11 +344,16 @@
                         <li><a href="{{ route('fix-member.index') }}" key="t-products">Fix/Active</a></li>
                         <li><a href="{{ route('wrong-email') }}" data-key="t-product-detail">Wrong Email</a></li>
                         <li><a href="{{ route('web-data') }}" data-key="t-product-detail">Web Data</a></li>
-                        {{-- <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
-                        <li><a href="#" key="t-products">View Massage</a></li>
-                        <li><a href="#" data-key="t-product-detail">Add Attendance</a></li>
-                        <li><a href="#" key="t-products">Reminder</a></li>
-                        <li><a href="#" key="t-products">Chat Report</a></li> --}}
+                        {{--
+                        <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
+                        <li><a href="#" key="t-products">View Massage</a></li> --}}
+                        <li><a href="javascript:;" id="addAttendance_menu" data-bs-toggle="modal"
+                                data-bs-target="#addAttendanceModal" data-key="t-add-product">
+                                Add Attendance
+                            </a></li>
+                        <li><a href="{{ route('show-reminders') }}" key="t-products">Show Reminders</a></li>
+                        <li><a href="{{ route('add-reminder') }}" key="t-products">Add Reminder</a></li>
+                        {{-- <li><a href="#" key="t-products">Chat Report</a></li> --}}
                     </ul>
                 </li>
 
@@ -369,3 +376,4 @@
 <!-- Left Sidebar End -->
 
 @include('components.direct-meeting-modal')
+@include('components.add-attendance-modal')

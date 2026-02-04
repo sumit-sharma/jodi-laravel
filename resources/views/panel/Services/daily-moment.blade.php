@@ -162,8 +162,9 @@
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <script>
-        $(document).ready(function () {
 
+
+        $(document).ready(function () {
             let today = new Date();
             let yesterday = new Date();
             let tomorrow = new Date();
@@ -183,7 +184,8 @@
             $("#timefrom").timepicker({
                 uiLibrary: 'bootstrap5',
                 format: 'HH:MM',
-                modal: false,
+                keyboardNavigation: false,
+                modal: true,
                 footer: true,
                 change: function () {
                     $('#timefrom').valid(); // 🔥 force validation on change
@@ -194,7 +196,8 @@
             $("#timeto").timepicker({
                 uiLibrary: 'bootstrap5',
                 format: 'HH:MM',
-                modal: false,
+                modal: true,
+                keyboardNavigation: false,
                 footer: true,
                 change: function () {
                     $('#timeto').valid(); // 🔥 force validation on change

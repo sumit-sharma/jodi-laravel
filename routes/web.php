@@ -200,6 +200,11 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/daily-moment', [DailyMomentController::class, 'index'])->name('daily-moment.index');
     Route::post('/save-daily-moment', [DailyMomentController::class, 'store'])->name('save-daily-moment');
+    Route::post('/add-attendance', [EmployeeController::class, 'addAttendance'])->name('add-attendance');
+    Route::get('/get-attendance/{empid}/{dated}', [EmployeeController::class, 'getAttendance'])->name('get-attendance');
+    Route::get('/add-reminder', [EmployeeController::class, 'addReminder'])->name('add-reminder');
+    Route::get('/show-reminders', [EmployeeController::class, 'showReminders'])->name('show-reminders');
+    Route::post('/store-message', [EmployeeController::class, 'storeMessage'])->name('store-message');
 
     Route::any('/get-counter-number', [MasterController::class, 'getCounterNumber'])->name('get-counter-number');
     Route::post('/convert-member', [CustomerController::class, 'convertMember'])->name('convert-member');
@@ -211,5 +216,9 @@ Route::middleware("auth")->group(function () {
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/employee-list', [EmployeeController::class, 'index'])->name('employee-list');
         Route::get('/meeting-report', [ReportController::class, 'meetingReport'])->name('meeting-report');
+        Route::get('/no-touch-report', [ReportController::class, 'noTouchReport'])->name('no-touch-report');
+        Route::get('/attendance-report', [ReportController::class, 'attendanceReport'])->name('attendance-report');
+        Route::get('/no-meeting-report', [ReportController::class, 'noMeetingReport'])->name('no-meeting-report');
+        Route::get('/edit-log-report', [ReportController::class, 'editLogReport'])->name('edit-log-report');
     });
 });

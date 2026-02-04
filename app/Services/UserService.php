@@ -2,13 +2,16 @@
 
 namespace App\Services;
 
+use App\Models\Attendance;
 use App\Models\EmpDetail;
 use App\Models\FeedbackOption;
 use App\Models\Followup;
 use App\Models\ProfileDetail;
 use App\Models\User;
 use App\Models\LinkTlTc;
+use App\Models\Message;
 use App\Models\ViewProfile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -261,5 +264,44 @@ class UserService
             'status' => 'error',
             'message' => 'Error: Contact System Admin.',
         ]);
+    }
+
+
+    public function addAttendance($data)
+    {
+        $identifier =   Arr::only($data, ['empid', 'dated']);
+        $data = Arr::except($data, ['empid', 'dated']);
+        return Attendance::updateOrCreate($identifier, $data);
+    }
+
+    public function getAttendance($empid, $dated)
+    {
+        return Attendance::where('empid', $empid)
+            ->where('dated', $dated)
+            ->first();
+    }
+
+
+
+    public function sendMessage($data)
+    {
+        return Message::create([
+            'dated'    => $data['dated'] ?? date('Y-m-d'),
+            'time'     => $data['time'] ?? date('H:i:s'),
+            'msgfrom'  => $data['msgfrom'] ?? auth()->user()->username,
+            'msgto'    => $data['msgto'],
+            'message'  => $data['message'],
+            'received' => $data['received'] ?? null,
+        ]);
+    }
+
+    public function getMessages($request)
+    {
+        return Message::with(['fromUser', 'toUser'])
+            ->when($request->filled('msgfrom'), fn($query) => $query->where('msgfrom', $request->msgfrom))
+            ->when($request->filled('msgto'), fn($query) => $query->where('msgto', $request->msgto))
+            ->orderBy('dated', 'desc')
+            ->orderBy('time', 'desc')
+            ->paginate();
     }
 }

@@ -96,4 +96,90 @@ class EmployeeController extends Controller
         $result = $this->userService->toggleEmployeeStatus($username);
         return $result;
     }
+
+    public function addAttendance(Request $request)
+    {
+        $validated = $request->validate([
+            'empid'   => 'required',
+            'dated'   => 'required',
+            'intime'  => 'required',
+            'outtime' => 'required',
+            'status'  => 'required',
+            'remarks' => 'nullable',
+        ]);
+        $validated['ent_by'] = auth()->user()->username;
+        $result = $this->userService->addAttendance($validated);
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Attendance added successfully',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error: Contact System Admin.',
+        ]);
+    }
+
+    public function getAttendance($empid, $dated)
+    {
+        try {
+            $msg = "No attendance found for the selected date";
+            $result = $this->userService->getAttendance($empid, $dated);
+            if ($result) {
+                $msg = "Attendance found successfully";
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => $msg,
+                'data' => $result ?? null,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+
+    public function storeMessage(Request $request)
+    {
+        $validated = $request->validate([
+            'dated' => 'nullable',
+            'time' => 'nullable',
+            'msgfrom' => 'nullable',
+            'msgto' => 'required',
+            'message' => 'required',
+        ]);
+
+        $result = $this->userService->sendMessage($validated);
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Message sent successfully',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error: Contact System Admin.',
+        ]);
+    }
+
+
+    public function addReminder(Request $request)
+    {
+        // $data['employees'] = $this->userService->getAllrmUsers($request);
+        return view('panel.others.reminders.add-message');
+    }
+
+    public function showReminders(Request $request)
+    {
+
+        $request->merge(['limit' => $request->limit ?? 25, 'page' => $request->page ?? 1, 'msgfrom' => auth()->user()->username, 'msgto' => auth()->user()->username]);
+        $data['messages'] = $this->userService->getMessages($request);
+        return view('panel.others.reminders.messages-list', $data);
+    }
 }
