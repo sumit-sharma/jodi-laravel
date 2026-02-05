@@ -34,4 +34,9 @@ class Interaction extends Model
     {
         return $this->belongsTo(User::class, 'empid', 'username');
     }
+
+    public function viewProfile()
+    {
+        return $this->belongsTo(ViewProfile::class, 'rno', 'rno');
+    }
 }

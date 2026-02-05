@@ -237,7 +237,6 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li>
-                        {{-- <li><a href="add-fresh-data.php" key="t-products">Add Fresh Data</a></li> --}}
                         <li><a href="{{ route('add-advtdata') }}" data-key="t-product-detail">Add Advt Data</a></li>
                         <li><a href="{{ route('list-advtdata') }}" data-key="t-orders">Show Advt Data</a></li>
                         <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
@@ -317,7 +316,10 @@
                         {{-- <li><a href="followup-auto-log.php" key="t-products">Followup Auto Report</a></li> --}}
                         <li><a href="{{ route('reports.attendance-report') }}" data-key="t-product-detail">Attendance
                                 Reports</a></li>
-                        {{-- <li><a href="#" data-key="t-product-detail">My Future Calls</a></li> --}}
+                        <li><a href="{{ route('reports.my-future-calls') }}" data-key="t-product-detail">My Future
+                                Calls</a></li>
+                        <li><a href="{{ route('reports.my-future-mails') }}" data-key="t-product-detail">My Future
+                                Mails</a></li>
                         <li><a href="{{ route('reports.no-touch-report') }}" key="t-products">No Touch Clients</a></li>
                         <li><a href="{{ route('reports.no-meeting-report') }}" data-key="t-product-detail">No Meetings
                                 Reports</a>

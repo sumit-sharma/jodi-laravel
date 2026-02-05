@@ -79,4 +79,26 @@ class ReportController extends Controller
         $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc');
         return view('panel.reports.edit-log-report', $data);
     }
+
+    public function myFutureCalls(Request $request)
+    {
+        $request->merge([
+            'page'   => $request->page ?? 1,
+            'limit'  => $request->limit ?? 25,
+        ]);
+        $data['TableData'] = $this->reportService->getMyFutureCalls($request);
+        // dd($data['TableData']);
+        // $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc');
+        return view('panel.reports.future-calls', $data);
+    }
+    public function myFutureMails(Request $request)
+    {
+        $request->merge([
+            'page'   => $request->page ?? 1,
+            'limit'  => $request->limit ?? 25,
+        ]);
+        $data['TableData'] = $this->reportService->getMyTodaysMails($request);
+        $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc');
+        return view('panel.reports.future-mails', $data);
+    }
 }

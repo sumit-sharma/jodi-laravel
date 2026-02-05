@@ -220,5 +220,7 @@ Route::middleware("auth")->group(function () {
         Route::get('/attendance-report', [ReportController::class, 'attendanceReport'])->name('attendance-report');
         Route::get('/no-meeting-report', [ReportController::class, 'noMeetingReport'])->name('no-meeting-report');
         Route::get('/edit-log-report', [ReportController::class, 'editLogReport'])->name('edit-log-report');
+        Route::get('/my-future-calls', [ReportController::class, 'myFutureCalls'])->name('my-future-calls');
+        Route::get('/my-future-mails', [ReportController::class, 'myFutureMails'])->name('my-future-mails');
     });
 });

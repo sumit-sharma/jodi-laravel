@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Attendance;
 use App\Models\EditDataLog;
+use App\Models\Interaction;
 use App\Models\Meeting;
+use App\Models\ProfileMatch;
 use App\Models\ViewProfile;
 use Illuminate\Support\Facades\DB;
 
@@ -230,5 +232,37 @@ class ReportService
             ->orderBy('dated', 'desc');
 
         return $request->limit ? $finalQuery->paginate($request->limit) : $finalQuery->get();
+    }
+
+    public function getMyFutureCalls($request)
+    {
+        $query =  Interaction::with('viewProfile')
+            ->where('empid', auth()->user()->username)
+            ->where('futuredate', today())
+            ->when($request->filled('start_date'), fn($q) => $q->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($q) => $q->where('dated', '<=', $request->end_date))
+            ->orderBy('dated', 'asc');
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+    public function getMyTodaysMails($request)
+    {
+
+        $rd = date('N');
+        $query = ProfileMatch::with('viewProfile')
+            ->whereRelation('viewProfile', 'rm', auth()->user()->username)
+            ->when($request->filled('tc'), fn($q) => $q->whereRelation('viewProfile', 'tc', $request->tc))
+            // ->where('mr', 'LIKE', "%{$rd}%")
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhereHas('viewProfile', function ($q) use ($request) {
+                            $q->where('refname', 'LIKE', "%{$request->search}%")
+                                ->orWhere('tc', 'LIKE', "%{$request->search}%");
+                        });
+                });
+            })
+            ->orderBy('id', 'desc');
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 }

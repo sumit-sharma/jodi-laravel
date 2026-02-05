@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfileMatch extends Model
 {
-protected $fillable = [
+    protected $fillable = [
         'rno',
         'agefrom',
         'ageupto',
@@ -48,4 +48,10 @@ protected $fillable = [
         'mr'          => '',
     ];
 
+
+
+    public function viewProfile()
+    {
+        return $this->belongsTo(ViewProfile::class, 'rno', 'rno');
+    }
 }
