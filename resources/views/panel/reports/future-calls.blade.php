@@ -104,6 +104,7 @@
                                             </tbody>
 
                                         </table>
+                                        {{ $TableData->withQueryString()->links() }}
                                     </div>
 
                                 </div>

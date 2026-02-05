@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Attendance;
 use App\Models\EditDataLog;
+use App\Models\FollowupAutolog;
 use App\Models\Interaction;
 use App\Models\Meeting;
 use App\Models\ProfileMatch;
@@ -263,6 +264,29 @@ class ReportService
                 });
             })
             ->orderBy('id', 'desc');
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+
+    public function getFollowupAutoLogs($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = FollowupAutolog::with('viewProfile')->orderBy($sortBy, $orderBy)
+            ->when($request->filled('start_date'), fn($q) => $q->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($q) => $q->where('dated', '<=', $request->end_date))
+            ->when($request->filled('rno'), fn($q) => $q->where('rno', $request->rno))
+            ->when($request->filled('empid'), fn($q) => $q->where('empid', $request->empid))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhereHas('viewProfile', function ($q) use ($request) {
+                            $q->where('refname', 'LIKE', "%{$request->search}%");
+                        });
+                });
+            });
+
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 }

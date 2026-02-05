@@ -313,7 +313,8 @@
                         <li><a href="{{ route('reports.meeting-report') }}" key="t-products">Meetings Report</a></li>
                         <li><a href="{{ route('reports.edit-log-report') }}" data-key="t-product-detail">Edit Log
                                 Report</a></li>
-                        {{-- <li><a href="followup-auto-log.php" key="t-products">Followup Auto Report</a></li> --}}
+                        <li><a href="{{ route('reports.followup-auto-logs-report') }}" key="t-products">Followup Auto
+                                Report</a></li>
                         <li><a href="{{ route('reports.attendance-report') }}" data-key="t-product-detail">Attendance
                                 Reports</a></li>
                         <li><a href="{{ route('reports.my-future-calls') }}" data-key="t-product-detail">My Future

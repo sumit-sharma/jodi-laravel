@@ -16,11 +16,11 @@
                         <div class="row">
                             <div class="col-md-12 col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">My Future Mails</h4>
+                                    <h4 class="mb-sm-0 font-size-18">Followup Auto Report</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Data</a></li>
-                                            <li class="breadcrumb-item active">My Future Mails</li>
+                                            <li class="breadcrumb-item active">Followup Auto Report</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -74,7 +74,8 @@
                                                     <th data-priority="1" width="">#</th>
                                                     <th data-priority="2" width="">RNo</th>
                                                     <th data-priority="3" width="">Name</th>
-                                                    <th data-priority="4" width="">TC</th>
+                                                    <th data-priority="4" width="">EmpID</th>
+                                                    <th data-priority="5" width="">Dated</th>
                                                 </tr>
                                             </thead>
 
@@ -88,11 +89,12 @@
                                                                 {{ $item->rno }}</a>
                                                         </td>
                                                         <td>{{ $item->viewProfile->refname }}</td>
-                                                        <td>{{ $item->viewProfile->tc }}</td>
+                                                        <td>{{ $item->empid }}</td>
+                                                        <td>{{ $item->dated }}</td>
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="4" class="text-center">No Data Found</td>
+                                                        <td colspan="5" class="text-center">No Data Found</td>
                                                     </tr>
                                                 @endforelse
                                             </tbody>

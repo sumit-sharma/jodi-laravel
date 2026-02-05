@@ -87,10 +87,9 @@ class ReportController extends Controller
             'limit'  => $request->limit ?? 25,
         ]);
         $data['TableData'] = $this->reportService->getMyFutureCalls($request);
-        // dd($data['TableData']);
-        // $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc');
         return view('panel.reports.future-calls', $data);
     }
+
     public function myFutureMails(Request $request)
     {
         $request->merge([
@@ -98,7 +97,16 @@ class ReportController extends Controller
             'limit'  => $request->limit ?? 25,
         ]);
         $data['TableData'] = $this->reportService->getMyTodaysMails($request);
-        $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc');
         return view('panel.reports.future-mails', $data);
+    }
+
+    public function getFollowupAutoLogsReport(Request $request)
+    {
+        $request->merge([
+            'page'   => $request->page ?? 1,
+            'limit'  => $request->limit ?? 25,
+        ]);
+        $data['TableData'] = $this->reportService->getFollowupAutoLogs($request);
+        return view('panel.reports.followup-autolog-report', $data);
     }
 }
