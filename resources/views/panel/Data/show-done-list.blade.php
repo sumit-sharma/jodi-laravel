@@ -30,12 +30,16 @@
                             <hr>
                             <div class="col-12">
                                 <table class="table table-bordered">
-                                    @foreach ($fixGroupedYear as $item)
-                                        <tr>
-                                            <td>{{ $item->fix_year }}</td>
+                                    <tr>
+                                        @foreach ($fixGroupedYear as $item)
                                             <td>{{ $item->total }}</td>
-                                        </tr>
-                                    @endforeach
+                                        @endforeach
+                                    </tr>
+                                    <tr>
+                                        @foreach ($fixGroupedYear as $item)
+                                            <th>{{ $item->fix_year }}</th>
+                                        @endforeach
+                                    </tr>
                                 </table>
                             </div>
 
@@ -113,7 +117,8 @@
                                                         <td>{{ $member->br_name }}</td>
                                                         <td>{{ $member->br_business }}</td>
                                                         <td>{{ $member->br_location }}</td>
-                                                        <td>{{ Carbon\Carbon::create()->month($member->fix_month)->format('F') }}</td>
+                                                        <td>{{ Carbon\Carbon::create()->month($member->fix_month)->format('F') }}
+                                                        </td>
                                                         <td>{{ $member->fix_year }}</td>
                                                         <td>{{ $member->gr_rno }}</td>
                                                         <td>{{ $member->gr_name }}</td>
@@ -165,31 +170,24 @@
                 <form id="searchFilterForm" method="GET" action="{{ request()->url() }}">
                     <div class="row">
                         <div class="col-12 mb-3">
-                            <label class="form-label">Hold Req By:</label>
-                            <input name="hold_req_by" class="form-control" type="text"
-                                value="{{ request()->get('hold_req_by') }}">
+                            <label class="form-label">Fix Month:</label>
+                            <select name="fix_month" class="form-control" id="fix_month">
+                                <option value="">Select Month</option>
+                                @foreach (range(1, 12) as $month)
+                                    <option value="{{ $month }}" {{ request()->get('fix_month') == $month ? 'selected' : '' }}>
+                                        {{ Carbon\Carbon::create()->month($month)->format('F') }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-12 mb-3">
-                            <label class="form-label">Hold By:</label>
-                            <input name="hold_by" class="form-control" type="text" value="{{ request()->get('hold_by') }}">
+                            <label class="form-label">Fix Year:</label>
+                            <input name="fix_year" class="form-control" type="text"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                value="{{ request()->get('fix_year') }}">
                         </div>
                         <div class="clearfix"></div>
-                        <div class="col-12 mb-3">
-                            <label class="form-label">Start Date:</label>
-                            <input id="start_date" name="start_date" class="form-control" type="text"
-                                value="{{ request()->get('start_date') }}" autocomplete="off">
-                        </div>
-
-                        <div class="clearfix"></div>
-                        <div class="col-12 mb-3">
-                            <label class="form-label">End Date:</label>
-                            <input id="end_date" name="end_date" class="form-control" type="text"
-                                value="{{ request()->get('end_date') }}" autocomplete="off">
-                        </div>
-
-                        <div class="clearfix"></div>
-
                         <div class="col-12 mt-3">
                             <button type="submit" class="btn btn-primary waves-effect waves-light">Search</button>
                         </div>
@@ -209,3 +207,7 @@
 
     </div> <!-- container-fluid -->
 @endsection
+
+<script>
+
+</script>

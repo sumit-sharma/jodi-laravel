@@ -208,9 +208,14 @@ class DataService
             ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
             ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
             ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
+            ->when($request->filled('fix_month'), fn($query) => $query->where('fix_month', $request->fix_month))
+            ->when($request->filled('fix_year'), fn($query) => $query->where('fix_year', $request->fix_year))
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where(function ($q) use ($request) {
-                    $q->where('rno', 'LIKE', "%{$request->search}%")->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                    $q->where('br_rno', 'LIKE', "%{$request->search}%")
+                        ->orWhere('gr_rno', 'LIKE', "%{$request->search}%")
+                        ->orWhere('br_name', 'LIKE', "%{$request->search}%")
+                        ->orWhere('gr_name', 'LIKE', "%{$request->search}%");
                 });
             });
         return $request->limit ? $query->paginate($request->limit) : $query->get();
