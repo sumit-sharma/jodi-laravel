@@ -109,4 +109,14 @@ class ReportController extends Controller
         $data['TableData'] = $this->reportService->getFollowupAutoLogs($request);
         return view('panel.reports.followup-autolog-report', $data);
     }
+
+    public function getFinanceReport(Request $request)
+    {
+        $request->merge([
+            'page'   => $request->page ?? 1,
+            'limit'  => $request->limit ?? 25,
+        ]);
+        $data['TableData'] = $this->reportService->getFinanceReport($request);
+        return view('panel.reports.finance-report', $data);
+    }
 }

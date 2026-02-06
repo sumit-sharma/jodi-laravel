@@ -223,5 +223,6 @@ Route::middleware("auth")->group(function () {
         Route::get('/my-future-calls', [ReportController::class, 'myFutureCalls'])->name('my-future-calls');
         Route::get('/my-future-mails', [ReportController::class, 'myFutureMails'])->name('my-future-mails');
         Route::get('/followup-auto-logs-report', [ReportController::class, 'getFollowupAutoLogsReport'])->name('followup-auto-logs-report');
+        Route::get('/finance-report', [ReportController::class, 'getFinanceReport'])->name('finance-report');
     });
 });

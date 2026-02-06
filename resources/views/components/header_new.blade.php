@@ -308,8 +308,9 @@
                                 List</a></li>
                         {{-- <li><a href="{{ route('reports.daily-report') }}" key="t-products">Daily Report</a></li>
                         --}}
-                        {{--
-                        <li><a href="#" data-key="t-product-detail">Finance Report</a></li>--}}
+
+                        <li><a href="{{ route('reports.finance-report') }}" data-key="t-product-detail">Finance
+                                Report</a></li>
                         <li><a href="{{ route('reports.meeting-report') }}" key="t-products">Meetings Report</a></li>
                         <li><a href="{{ route('reports.edit-log-report') }}" data-key="t-product-detail">Edit Log
                                 Report</a></li>

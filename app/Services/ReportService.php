@@ -8,6 +8,7 @@ use App\Models\FollowupAutolog;
 use App\Models\Interaction;
 use App\Models\Meeting;
 use App\Models\ProfileMatch;
+use App\Models\ProfilePayment;
 use App\Models\ViewProfile;
 use Illuminate\Support\Facades\DB;
 
@@ -281,9 +282,31 @@ class ReportService
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where(function ($q) use ($request) {
                     $q->where('rno', 'LIKE', "%{$request->search}%")
-                        ->orWhereHas('viewProfile', function ($q) use ($request) {
-                            $q->where('refname', 'LIKE', "%{$request->search}%");
-                        });
+                        ->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
+
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+
+    public function getFinanceReport($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = ProfilePayment::with('viewProfile')->orderBy($sortBy, $orderBy)
+            ->when($request->filled('start_date'), fn($q) => $q->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($q) => $q->where('dated', '<=', $request->end_date))
+            ->when($request->filled('rno'), fn($q) => $q->where('rno', $request->rno))
+            ->when($request->filled('tc'), fn($q) => $q->whereRelation('viewProfile', 'tc', $request->tc))
+            ->when($request->filled('tl'), fn($q) => $q->whereRelation('viewProfile', 'mc', $request->tl))
+            ->when($request->filled('rm'), fn($q) => $q->whereRelation('viewProfile', 'rm', $request->rm))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%")
+                        ->orWhere('details', 'LIKE', "%{$request->search}%");
                 });
             });
 
