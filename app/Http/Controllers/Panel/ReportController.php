@@ -119,4 +119,16 @@ class ReportController extends Controller
         $data['TableData'] = $this->reportService->getFinanceReport($request);
         return view('panel.reports.finance-report', $data);
     }
+
+
+    public function dailyReport(Request $request)
+    {
+        $request->merge([
+            'page'   => $request->page ?? 1,
+            'limit'  => $request->limit ?? 25,
+            'username' => $request->username ?? auth()->user()->username,
+        ]);
+        $data['TableData'] = $this->reportService->getDailyReport($request);
+        return view('panel.reports.daily-report', $data);
+    }
 }

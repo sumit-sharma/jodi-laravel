@@ -306,8 +306,10 @@
                         <li><a href="{{ route('reports.employee-list') }}" key="t-products">Employee List</a></li>
                         <li><a href="{{ route('appointment-report.index') }}" data-key="t-product-detail">Appointment
                                 List</a></li>
-                        {{-- <li><a href="{{ route('reports.daily-report') }}" key="t-products">Daily Report</a></li>
-                        --}}
+                        <li><a href="javascript:;" id="btnShowDailyRep" data-bs-toggle="modal"
+                                data-bs-target="#showDailyReportModal" key="t-products">Daily Report</a></li>
+
+
 
                         <li><a href="{{ route('reports.finance-report') }}" data-key="t-product-detail">Finance
                                 Report</a></li>
@@ -344,7 +346,7 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('sent-package') }}" key="t-products">Sent Package</a></li>
-                        {{-- <li><a href="#" data-key="t-product-detail">Print Request</a></li> --}}
+                        <li><a href="{{ route('print-request') }}" data-key="t-product-detail">Print Request</a></li>
                         <li><a href="{{ route('fix-member.index') }}" key="t-products">Fix/Active</a></li>
                         <li><a href="{{ route('wrong-email') }}" data-key="t-product-detail">Wrong Email</a></li>
                         <li><a href="{{ route('web-data') }}" data-key="t-product-detail">Web Data</a></li>
@@ -381,3 +383,4 @@
 
 @include('components.direct-meeting-modal')
 @include('components.add-attendance-modal')
+@include('components.daily-report-modal')

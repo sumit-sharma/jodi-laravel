@@ -538,6 +538,23 @@
 
                 }
             });
+            $("#btnShowDailyRep").click(function () {
+                console.log("dashdvhsad");
+                $("#frmShowDailyReportModal #daily_start_date").datepicker({
+                    uiLibrary: 'bootstrap5',
+                    format: 'yyyy-mm-dd',
+                    maxDate: new Date()
+                });
+
+                $("#frmShowDailyReportModal #daily_end_date").datepicker({
+                    uiLibrary: 'bootstrap5',
+                    format: 'yyyy-mm-dd',
+                    maxDate: new Date()
+                });
+
+
+            });
+
         });
     </script>
 

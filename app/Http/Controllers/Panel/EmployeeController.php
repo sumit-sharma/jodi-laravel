@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Services\MiscService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -181,5 +183,34 @@ class EmployeeController extends Controller
         $request->merge(['limit' => $request->limit ?? 25, 'page' => $request->page ?? 1, 'msgfrom' => auth()->user()->username, 'msgto' => auth()->user()->username]);
         $data['messages'] = $this->userService->getMessages($request);
         return view('panel.others.reminders.messages-list', $data);
+    }
+
+    public function printRequestList(Request $request)
+    {
+        $request->merge([
+            'limit' => $request->limit ?? 25,
+            'page' => $request->page ?? 1,
+        ]);
+        $data['printRequests'] = $this->userService->getPrintRequests($request);
+        $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc');
+        return view('panel.others.print-request', $data);
+    }
+
+    public function approveRejectPrintJob(Request $request)
+    {
+        $validated = $request->validate([
+            'action' => ['required', Rule::in(['approve', 'reject', 'delete'])],
+            'print_id' => ['required', 'exists:printprofile,id'],
+        ]);
+
+        $result = $this->userService->approveRejectPrintJob($validated);
+        if ($result) {
+            return response()->json(['status' => 'success', 'message' => 'Print job ' . $validated['action'] . ' successfully', 'data' => $result]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => "Unable to {$validated['action']}",
+        ]);
     }
 }

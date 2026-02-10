@@ -10,6 +10,7 @@ use App\Models\ProfileDetail;
 use App\Models\User;
 use App\Models\LinkTlTc;
 use App\Models\Message;
+use App\Models\Printprofile;
 use App\Models\ViewProfile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -303,5 +304,37 @@ class UserService
             ->orderBy('dated', 'desc')
             ->orderBy('time', 'desc')
             ->paginate();
+    }
+
+
+    public function getPrintRequests($request)
+    {
+        $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
+        $sortBy  = $request->has('sortBy') ? $request->sortBy : 'id';
+
+        $query = Printprofile::with(['viewProfile'])->orderBy($sortBy, $orderBy)
+            ->whereRelation('viewProfile', 'refname', '<>', '')
+            ->when($request->filled('status'), fn($query) => $query->where('status', $request->status))
+            ->when($request->filled('rno'), fn($query) => $query->where('rno', $request->rno))
+            ->when($request->filled('empid'), fn($query) => $query->where('empid', $request->empid))
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    $q->where('rno', 'LIKE', "%{$request->search}%")
+                        ->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%");
+                });
+            });
+
+        return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+    public function approveRejectPrintJob($data)
+    {
+        $status = match ($data['action']) {
+            'approve' => 0,
+            'reject'  => 3,
+            'delete'  => 4,
+        };
+
+        return Printprofile::where('id', $data['print_id'])->update(['status' => $status]);
     }
 }

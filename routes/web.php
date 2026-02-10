@@ -212,6 +212,8 @@ Route::middleware("auth")->group(function () {
     Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
     Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data');
     Route::put('/toggle-web-data/{id}', [DataController::class, 'toggleWebData'])->name('toggle-web-data');
+    Route::get('/print-request', [EmployeeController::class, 'printRequestList'])->name('print-request');
+    Route::put('/approve-reject-print-job', [EmployeeController::class, 'approveRejectPrintJob'])->name('approve-reject-print-job');
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/employee-list', [EmployeeController::class, 'index'])->name('employee-list');
@@ -224,5 +226,6 @@ Route::middleware("auth")->group(function () {
         Route::get('/my-future-mails', [ReportController::class, 'myFutureMails'])->name('my-future-mails');
         Route::get('/followup-auto-logs-report', [ReportController::class, 'getFollowupAutoLogsReport'])->name('followup-auto-logs-report');
         Route::get('/finance-report', [ReportController::class, 'getFinanceReport'])->name('finance-report');
+        Route::any('/daily-report', [ReportController::class, 'dailyReport'])->name('daily-report');
     });
 });

@@ -69,6 +69,8 @@ class MasterSeeder extends Seeder
         // DB::statement("insert ignore into jodi_laravel.followup_autolog (rno, empid, dated, created_at, updated_at) SELECT li.rno, li.empid, li.dated, NOW(), NOW() FROM old_jodi.followup_autolog as li");
         // echo nl2br("finish followup_autolog import\n");
 
-
+        echo nl2br("start from printprofile import\n");
+        DB::statement("insert ignore into jodi_laravel.printprofile (rno, dated, time, empid, wc, status, created_at, updated_at) SELECT li.rno, li.dated, li.time, li.empid, li.wc, li.status, NOW(), NOW() FROM old_jodi.printprofile as li");
+        echo nl2br("finish printprofile import\n");
     }
 }

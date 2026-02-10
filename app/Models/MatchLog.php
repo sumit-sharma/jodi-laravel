@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class MatchLog extends Model
+{
+    protected $table = "match_log";
+
+    protected $fillable = [
+        "dated",
+        "time",
+        "rno",
+        "empid",
+        "changes",
+    ];
+}

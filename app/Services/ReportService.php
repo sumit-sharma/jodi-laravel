@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Attendance;
+use App\Models\DailyFullReport;
 use App\Models\EditDataLog;
 use App\Models\FollowupAutolog;
 use App\Models\Interaction;
@@ -10,6 +11,7 @@ use App\Models\Meeting;
 use App\Models\ProfileMatch;
 use App\Models\ProfilePayment;
 use App\Models\ViewProfile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class ReportService
@@ -311,5 +313,34 @@ class ReportService
             });
 
         return $request->limit ? $query->paginate($request->limit) : $query->get();
+    }
+
+
+
+    public function getDailyReport($request)
+    {
+        $cache = md5($request->start_date . '_' . $request->end_date . '_' . $request->username);
+        Cache::remember($cache, now()->addMinutes(30), function () use ($request) {
+            DB::statement('CALL sp_generate_dailyfullreport(?, ?, ?)', [$request->username, $request->start_date, $request->end_date]);
+        });
+        $cacheKey = md5(json_encode($request->all()));
+        return Cache::remember($cacheKey, now()->addMinutes(30), function () use ($request) {
+            $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'asc';
+            $sortBy  = $request->has('sortBy') ? $request->sortBy : 'empid';
+
+            $query = DailyFullReport::orderBy($sortBy, $orderBy)
+                // ->when($request->filled('start_date'), fn($q) => $q->where('dated', '>=', $request->start_date))
+                // ->when($request->filled('end_date'), fn($q) => $q->where('dated', '<=', $request->end_date))
+                ->when($request->filled('empid'), fn($q) => $q->where('username', $request->empid))
+                ->when($request->filled('username'), fn($q) => $q->where('userid', $request->username));
+            // ->when($request->filled('search'), function ($q) use ($request) {
+            //     $q->where(function ($q) use ($request) {
+            //         $q->where('rno', 'LIKE', "%{$request->search}%")
+            //             ->orWhereRelation('viewProfile', 'refname', 'LIKE', "%{$request->search}%")
+            //             ->orWhere('details', 'LIKE', "%{$request->search}%");
+            //     });
+            // });
+            return $query->paginate($request->limit);
+        });
     }
 }
