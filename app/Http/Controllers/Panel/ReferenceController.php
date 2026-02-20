@@ -7,8 +7,10 @@ use App\Models\CounterNumber;
 use App\Services\MiscService;
 use App\Services\ReferenceService;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ReferenceController extends Controller
+class ReferenceController extends Controller implements HasMiddleware
 {
 
     private $referenceService;
@@ -17,6 +19,13 @@ class ReferenceController extends Controller
         $this->referenceService = $referenceService;
     }
 
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:View All References', ['index']),
+        ];
+    }
 
     /**
      * Display a listing of the resource.

@@ -15,11 +15,13 @@
                         <div class="row">
                             <div class="col-md-12 col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">All Employee</h4>
+                                    <h4 class="mb-sm-0 font-size-18">All Users</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Reports</a></li>
-                                            <li class="breadcrumb-item active">All Employee</li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Role &amp;
+                                                    Permission</a>
+                                            </li>
+                                            <li class="breadcrumb-item active">All Users</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -66,6 +68,11 @@
                                     </form>
                                     <button type="button" class="btn btn-secondary">Total Record -
                                         {{ $employees->total() }}</button>
+                                    &nbsp;&nbsp;
+                                    <a href="{{ route('roles-permissions.make-user') }}" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Create New User
+                                    </a>
+
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -108,9 +115,13 @@
                                                 <td>{{ $employee->details?->offday }}</td>
                                                 <td>{{ $employee->status == 1 ? 'Working' : 'Left' }}</td>
                                                 <td>
-                                                    <a href="javascript:;" class="btn btn-primary btn-sm btn-reset"
+                                                    <a href="{{ route('roles-permissions.edit-user', ['username' => $employee->username]) }}"
+                                                        class="btn btn-sm btn-primary" title="Edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    {{-- <a href="javascript:;" class="btn btn-primary btn-sm btn-reset"
                                                         data-username="{{ $employee->username }}"><i
-                                                            class="bi bi-r-circle"></i></a>
+                                                            class="bi bi-r-circle"></i></a> --}}
                                                     @if ($employee->status == 1)
                                                         <a href="javascript:;" class="btn btn-danger btn-sm btn-block-toggle"
                                                             data-username="{{ $employee->username }}" data-blocked="0">

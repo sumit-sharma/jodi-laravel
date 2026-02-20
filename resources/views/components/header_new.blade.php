@@ -176,7 +176,20 @@
                     </a>
                 </li>
 
-                <!--<li class="menu-title" data-key="t-apps">Apps</li>-->
+                {{-- <li class="menu-title" data-key="t-apps">Apps</li> --}}
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bi bi-person-fill-gear"></i>
+                        <span data-key="t-ecommerce">Roles & Permission</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('roles.index') }}" data-key="t-customers">Roles</a></li>
+                        <li><a href="{{ route('permissions.index') }}" data-key="t-cart">Permissions</a></li>
+                        @can('Make Users')
+                            <li><a href="{{ route('roles-permissions.employee-list') }}" data-key="t-cart">Users</a></li>
+                        @endcan
+                    </ul>
+                </li>
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
@@ -184,21 +197,25 @@
                         <span data-key="t-ecommerce">Main</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route("link-tl-tc") }}" data-key="t-customers">Link TL-TC</a></li>
-                        <li><a href="{{ route('rm-transfer') }}" data-key="t-cart">Transfer RM</a></li>
-                        <li><a href="{{ route('tc-transfer') }}" data-key="t-checkout">Transfer TC</a></li>
-                        <li><a href="{{ route('feedback-option') }}" data-key="t-shops">Feedback Option</a></li>
+                        @can('Link TL-TC')
+                            <li><a href="{{ route("link-tl-tc") }}" data-key="t-customers">Link TL-TC</a></li>
+                        @endcan
+                        @can('Transfer RM/TC')
+                            <li><a href="{{ route('rm-transfer') }}" data-key="t-cart">Transfer RM</a></li>
+                            <li><a href="{{ route('tc-transfer') }}" data-key="t-checkout">Transfer TC</a></li>
+                        @endcan
+                        @can('Add Options')
+                            <li><a href="{{ route('feedback-option') }}" data-key="t-shops">Feedback Option</a></li>
+                            <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>
+                            <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
+                            <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
+                        @endcan
                         <li><a href="{{ route('update-my-info') }}" data-key="t-add-product">Update My Info</a></li>
-                        <li><a href="{{ route('update-timings') }}" data-key="t-seller">Updates Timmings</a></li>
-                        <li><a href="{{ route('make-user') }}" data-key="t-orders">Make User</a></li>
+                        @can('Update Timmings')
+                            <li><a href="{{ route('update-timings') }}" data-key="t-seller">Updates Timmings</a></li>
+                        @endcan
                         <!-- <li><a href="{{ route('reset-password') }}" data-key="t-sale-details">Reset Password</a></li> -->
                         {{-- <li><a href="permission.php" key="t-products">Permission</a></li>
-                        <li><a href="#" data-key="t-product-detail">Change Password</a></li>
-                        <li><a href="#" data-key="t-product-detail">Change Password</a></li> --}}
-                        {{-- <li><a href="make-user.php" data-key="t-orders">Make User</a></li> --}}
-                        <li><a href="{{ route('manage-caste') }}" data-key="t-add-product">Caste Option</a></li>
-                        <li><a href="{{ route('manage-occupation') }}" data-key="t-seller">Occupation Option</a></li>
-                        <li><a href="{{ route('manage-zone') }}" data-key="t-sale-details">Zone Option</a></li>
                         {{-- <li><a href="#" data-key="t-shops">Enter Massage</a></li>
                         <li><a href="#" data-key="t-sale-details">Reference Graph</a></li> --}}
                     </ul>
@@ -211,9 +228,13 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('seach-members') }}" key="t-products">Search Members</a></li>
-                        <li><a href="{{ route('all-form-transfer') }}" data-key="t-product-detail">Form Transfer</a>
-                        </li>
-                        <li><a href="{{ route('all-enquiries') }}" data-key="t-orders">Show All Enquiry</a></li>
+                        @can('Form Transfer')
+                            <li><a href="{{ route('all-form-transfer') }}" data-key="t-product-detail">Form Transfer</a>
+                            </li>
+                        @endcan
+                        @can('Update all Enquiry')
+                            <li><a href="{{ route('all-enquiries') }}" data-key="t-orders">Show All Enquiry</a></li>
+                        @endcan
                         <li><a href="{{ route('show-all-rm-data') }}" data-key="t-customers">Show All RM Data</a></li>
                     </ul>
                 </li>
@@ -225,7 +246,10 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('references.create') }}" key="t-products">Add Reference</a></li>
-                        <li><a href="{{ route('references.index') }}" data-key="t-product-detail">Show References</a>
+                        @can('show_references')
+                            <li><a href="{{ route('references.index') }}" data-key="t-product-detail">Show References</a>
+
+                        @endcan
                         </li>
                     </ul>
                 </li>
@@ -238,9 +262,13 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li>
                         <li><a href="{{ route('add-advtdata') }}" data-key="t-product-detail">Add Advt Data</a></li>
-                        <li><a href="{{ route('list-advtdata') }}" data-key="t-orders">Show Advt Data</a></li>
-                        <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
-                        </li>
+                        @can('View All Advt Data')
+                            <li><a href="{{ route('list-advtdata') }}" data-key="t-orders">Show Advt Data</a></li>
+                        @endcan
+                        @can('Show All Appointment')
+                            <li><a href="{{ route('appointment.index') }}" data-key="t-customers">Add/Edit Appointment</a>
+                            </li>
+                        @endcan
                         <li><a href="{{ route('hold-member.index') }}" data-key="t-cart">Show Hold Data</a></li>
                         <li><a href="{{ route('show-all-hold-records') }}" data-key="t-checkout">Show All Hold Data</a>
                         </li>
@@ -252,11 +280,16 @@
                         <li><a href="{{ route('show-all-nadata') }}" data-key="t-sale-details">Show All NA-Data</a></li>
                         <li><a href="{{ route('show-all-non-nadata') }}" data-key="t-shops">Show All None NA-Data</a>
                         </li>
-                        <li><a href="javascript:;" id="directMeeting_menu" data-bs-toggle="modal"
-                                data-bs-target="#DirectMeetingPageModal" data-key="t-add-product">Direct
-                                Meeting</a></li>
+                        @can('DIRECT Meeting')
+                            <li><a href="javascript:;" id="directMeeting_menu" data-bs-toggle="modal"
+                                    data-bs-target="#DirectMeetingPageModal" data-key="t-add-product">Direct
+                                    Meeting</a></li>
+                        @endcan
+
                         <li><a href="{{ route('fresh-call') }}" data-key="t-seller">Fresh Call</a></li>
-                        <li><a href="{{ route('daily-moment.index') }}" data-key="t-sale-details">Daily Moment</a></li>
+                        @can('All Daily Moment')
+                            <li><a href="{{ route('daily-moment.index') }}" data-key="t-sale-details">Daily Moment</a></li>
+                        @endcan
                     </ul>
                 </li>
 
@@ -280,7 +313,9 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('my-followup') }}" key="t-products">My All Follow UPS</a></li>
-                        <li><a href="{{ route('transfer-all-followups') }}" key="t-products">Transfer Followup</a></li>
+                        @can('Transfer Followup')
+                            <li><a href="{{ route('transfer-all-followups') }}" key="t-products">Transfer Followup</a></li>
+                        @endcan
                         {{-- <li><a href="my-prospective.php" data-key="t-product-detail">My Prospective</a></li> --}}
                         <li><a href="{{ route('followup-records') }}" data-key="t-product-detail">Follow Records</a>
                         </li>
@@ -303,9 +338,12 @@
                         <span data-key="t-ecommerce">Report</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('reports.employee-list') }}" key="t-products">Employee List</a></li>
-                        <li><a href="{{ route('appointment-report.index') }}" data-key="t-product-detail">Appointment
-                                List</a></li>
+                        {{-- <li><a href="{{ route('reports.employee-list') }}" key="t-products">Employee List</a></li>
+                        --}}
+                        @can('Appointment Report')
+                            <li><a href="{{ route('appointment-report.index') }}" data-key="t-product-detail">Appointment
+                                    List</a></li>
+                        @endcan
                         <li><a href="javascript:;" id="btnShowDailyRep" data-bs-toggle="modal"
                                 data-bs-target="#showDailyReportModal" key="t-products">Daily Report</a></li>
 

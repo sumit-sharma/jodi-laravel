@@ -220,24 +220,82 @@ class UserService
     }
     public function makeuserStore($request)
     {
-        $request->validate([
-            'department' => 'required',
-            'username' => 'required|unique:users,username',
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'mobile' => 'required|digits:10|unique:users,mobile',
-            'password' => 'required|min:6|confirmed'
-        ]);
-        $password = Hash::make($request->password);
-        return User::insert([
-            'department' => $request->department,
-            'username' => $request->username,
-            'name' => $request->name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'password' => $password
-        ]);
+        return DB::transaction(function () use ($request) {
+
+            $password = Hash::make($request->password);
+            $user = User::create([
+                'username' => $request->username,
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'mobile'   => $request->mobile,
+                'password' => $password,
+                'status'   => 1,
+            ]);
+
+            $detail = new EmpDetail([
+                'department' => $request->department,
+                'loginname' => $request->name,
+            ]);
+
+            $user->details()->save($detail);
+            if ($request->has('roles')) {
+                $roles = array_map('intval', $request->roles);
+                $user->assignRole($roles);
+            }
+
+            if ($request->has('permissions')) {
+                $permissions = array_map('intval', $request->permissions);
+                $user->givePermissionTo($permissions);
+            }
+
+            return $user;
+        });
     }
+
+
+    public function updateUser($request, $username)
+    {
+        // dd($request->all());
+        return DB::transaction(function () use ($request, $username) {
+
+            $user = User::where('username', $username)->first();
+
+            if ($request->filled('password')) {
+                $password = Hash::make($request->password);
+                $user->password = $password;
+            }
+            $user->username = $request->username;
+            $user->name = $request->name;
+            $user->mobile = $request->mobile;
+            $user->email = $request->email;
+
+            $user->save();
+
+            EmpDetail::updateOrCreate(
+                [
+                    'user_id' =>  $user->id,
+                ],
+                [
+                    'department' => $request->department,
+                    'loginname'  => $request->name,
+                ]
+            );
+
+            if ($request->has('roles')) {
+                $roles = array_map('intval', $request->roles);
+                $user->syncRoles($roles);
+            }
+
+            if ($request->has('permissions')) {
+                $permissions = array_map('intval', $request->permissions);
+                $user->syncPermissions($permissions);
+            }
+
+            return $user;
+        });
+    }
+
+
     public function toggleEmployeeStatus($username)
     {
         $msg = 'Employee have been activated successfully';

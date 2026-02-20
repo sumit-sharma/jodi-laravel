@@ -23,6 +23,9 @@ use App\Http\Controllers\Panel\ReportController;
 use App\Http\Controllers\Panel\SearchController;
 use App\Http\Controllers\Panel\SendMailController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("guest")->group(function () {
@@ -60,9 +63,9 @@ Route::middleware("auth")->group(function () {
     Route::get('/dashboard/fetch-distinct-data', [DashboardController::class, 'getDistinctData'])->name('fetch-distinct-data');
     Route::get('/dashboard/fetch-table-data', [DashboardController::class, 'getTableData'])->name('fetch-table-data');
 
-    Route::get('/appointment-report', [AppointmentController::class, 'appointmentReport'])->name('appointment-report.index');
+    Route::get('/appointment-report', [AppointmentController::class, 'appointmentReport'])->name('appointment-report.index')->middleware('permission:Appointment Report');
     Route::post('/appointment-report', [AppointmentController::class, 'appointmentReportStore'])->name('appointment-report.store');
-    Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment.index');
+    Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment.index')->middleware('permission:Show All Appointment');
     Route::get('/appointment/{id}', [AppointmentController::class, 'show'])->name('appointment.show');
     Route::post('/appointment', [AppointmentController::class, 'saveAppointment'])->name('appointment.save');
 
@@ -78,34 +81,44 @@ Route::middleware("auth")->group(function () {
     });
 
     Route::prefix('main')->group(function () {
-        Route::get('/manage-caste', [MasterController::class, 'viewCasteManager'])->name('manage-caste');
-        Route::post('/store-caste', [MasterController::class, 'storeCaste'])->name('panel.caste-options.store');
+
+        Route::middleware('permission:Add Options')->group(function () {
+            Route::get('/feedback-option', [MasterController::class, 'feedbackOption'])->name('feedback-option');
+            Route::post('/feedback-option', [MasterController::class, 'feedbackOptionStore'])->name('panel.feedback-option');
+
+            Route::get('/manage-occupation', [MasterController::class, 'viewOccupationManager'])->name('manage-occupation');
+            Route::post('/store-occupation', [MasterController::class, 'storeOccupation'])->name('panel.store-occupation');
+
+            Route::get('/manage-caste', [MasterController::class, 'viewCasteManager'])->name('manage-caste');
+            Route::post('/store-caste', [MasterController::class, 'storeCaste'])->name('panel.caste-options.store');
+
+            Route::get('/manage-zone', [MasterController::class, 'viewZoneManager'])->name('manage-zone');
+            Route::post('/store-zone', [MasterController::class, 'storeZone'])->name('panel.store-zone');
+        });
+        Route::middleware('permission:Update Timmings')->group(function () {
+            Route::get('/update-timings', [MasterController::class, 'timings'])->name('update-timings');
+            Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
+        });
+
         Route::any('/check-exist', [MasterController::class, 'checkExists'])->name('panel.check-exist');
-        Route::get('/manage-zone', [MasterController::class, 'viewZoneManager'])->name('manage-zone');
-        Route::post('/store-zone', [MasterController::class, 'storeZone'])->name('panel.store-zone');
-        Route::get('/manage-occupation', [MasterController::class, 'viewOccupationManager'])->name('manage-occupation');
-        Route::post('/store-occupation', [MasterController::class, 'storeOccupation'])->name('panel.store-occupation');
         Route::get('/get-active-employee', [MasterController::class, 'getActiveEmployee'])->name('panel.get-active-employee');
         Route::get('/change-password', [MasterController::class, 'changePassword'])->name('change-password');
         Route::post('/change-password', [MasterController::class, 'changePasswordStore'])->name('panel.change-password');
-        Route::get('/link-tl-tc', [MasterController::class, 'linkTlTc'])->name('link-tl-tc');
+        Route::get('/link-tl-tc', [MasterController::class, 'linkTlTc'])->name('link-tl-tc')->middleware('permission:Link TL-TC');
         Route::post('/link-tl-tc', [MasterController::class, 'linkTlTcStore'])->name('panel.link-tl-tc');
-        Route::get('/rm-transfer', [MasterController::class, 'rmTransfer'])->name('rm-transfer');
+        Route::get('/rm-transfer', [MasterController::class, 'rmTransfer'])->name('rm-transfer')->middleware('permission:Transfer RM/TC');
         Route::post('/rm-transfer', [MasterController::class, 'rmTransferStore'])->name('panel.rm-transfer');
         Route::get('/tc-transfer', [MasterController::class, 'tcTransfer'])->name('tc-transfer');
         Route::post('/tc-transfer', [MasterController::class, 'tcTransferStore'])->name('panel.tc-transfer');
-        Route::get('/feedback-option', [MasterController::class, 'feedbackOption'])->name('feedback-option');
-        Route::post('/feedback-option', [MasterController::class, 'feedbackOptionStore'])->name('panel.feedback-option');
+
+
         Route::get('/update-my-info', [MasterController::class, 'myInfo'])->name('update-my-info');
         Route::post('/update-my-info', [MasterController::class, 'myInfoUpdate'])->name('panel.update-my-info');
-        Route::get('/update-timings', [MasterController::class, 'timings'])->name('update-timings');
-        Route::post('/update-timings', [MasterController::class, 'timingsStore'])->name('panel.update-timings');
+
         Route::get('/reset-password', [MasterController::class, 'resetPassword'])->name('reset-password');
         Route::post('/reset-password', [MasterController::class, 'resetPasswordStore'])->name('panel.reset-password');
         Route::put('password-regenerate/{username}', [EmployeeController::class, 'passwordRegenerate'])->name('password-regenerate');
         Route::put('toggle-employee-status/{username}', [EmployeeController::class, 'toggleEmployeeStatus'])->name('toggle-employee-status');
-        Route::get('/make-user', [MasterController::class, 'makeuser'])->name('make-user');
-        Route::post('/make-user', [MasterController::class, 'makeuserStore'])->name('panel.make-user');
     });
 
     Route::resource('references', ReferenceController::class);
@@ -132,7 +145,9 @@ Route::middleware("auth")->group(function () {
     Route::post('/save-enquiry', [EnquiryController::class, 'store'])->name('save-enquiry');
     Route::get('/customer-enquiry/{rno}', [EnquiryController::class, 'show'])->name('get-enquiry');
     Route::put('/update-enquiry/{id}', [EnquiryController::class, 'update'])->name('update-enquiry');
-    Route::get('/all-enquiries', [EnquiryController::class, 'index'])->name('all-enquiries');
+
+    Route::get('/all-enquiries', [EnquiryController::class, 'index'])->name('all-enquiries')->middleware('permission:Update all Enquiry');
+
     // Route::delete('/delete-enquiry/{id}', [EnquiryController::class, 'destroy'])->name('delete-enquiry');
 
     Route::get('/fetch-images/{rno}', [CustomerController::class, 'fetchImages'])->name('fetch-images');
@@ -176,19 +191,21 @@ Route::middleware("auth")->group(function () {
     Route::get('/fetch-followup/{rno}', [FollowupController::class, 'show'])->name('fetch-followup');
     Route::post('/save-followup', [FollowupController::class, 'store'])->name('save-followup');
     Route::get('/check-limit', [FollowupController::class, 'checkLimit'])->name('check-limit');
-    Route::get('/transfer-all-followups', [FollowupController::class, 'transferFollowups'])->name('transfer-all-followups');
-    Route::post('/transfer-all-followups', [FollowupController::class, 'transferFollowupsStore'])->name('panel.transfer-all-followups');
+    Route::get('/transfer-all-followups', [FollowupController::class, 'transferFollowups'])->name('transfer-all-followups')->middleware('permission:Transfer Followup');
+    Route::post('/transfer-all-followups', [FollowupController::class, 'transferFollowupsStore'])->name('panel.transfer-all-followups')->middleware('permission:Transfer Followup');
     Route::get('/followup-records', [FollowupController::class, 'followUpRecords'])->name('followup-records');
 
-    Route::get('/all-form-transfer', [FormTransferController::class, 'index'])->name('all-form-transfer');
-    Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');
+    Route::middleware('permission:Form Transfer')->group(function () {
+        Route::get('/all-form-transfer', [FormTransferController::class, 'index'])->name('all-form-transfer');
+        Route::post('/save-form-transfer', [FormTransferController::class, 'store'])->name('save-form-transfer');
+    });
 
     Route::get('/fresh-call', [FreshCallController::class, 'create'])->name('fresh-call');
     Route::post('/save-fresh-call', [FreshCallController::class, 'store'])->name('save-fresh-call');
 
     Route::get('/show-all-rm-data', [EmployeeController::class, 'showAllRmData'])->name('show-all-rm-data');
 
-    Route::get('/list-advtdata', [AdvtdataController::class, 'index'])->name('list-advtdata');
+    Route::get('/list-advtdata', [AdvtdataController::class, 'index'])->name('list-advtdata')->middleware('permission:View All Advt Data');
     Route::get('/add-advtdata', [AdvtdataController::class, 'create'])->name('add-advtdata');
     Route::post('/save-advtdata', [AdvtdataController::class, 'store'])->name('save-advtdata');
 
@@ -198,7 +215,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/show-all-nadata', [DataController::class, 'showmyNaData'])->name('show-all-nadata');
     Route::get('/show-all-non-nadata', [DataController::class, 'showallnonnadata'])->name('show-all-non-nadata');
 
-    Route::get('/daily-moment', [DailyMomentController::class, 'index'])->name('daily-moment.index');
+    Route::get('/daily-moment', [DailyMomentController::class, 'index'])->name('daily-moment.index')->middleware('permission:All Daily Moment');
     Route::post('/save-daily-moment', [DailyMomentController::class, 'store'])->name('save-daily-moment');
     Route::post('/add-attendance', [EmployeeController::class, 'addAttendance'])->name('add-attendance');
     Route::get('/get-attendance/{empid}/{dated}', [EmployeeController::class, 'getAttendance'])->name('get-attendance');
@@ -216,7 +233,6 @@ Route::middleware("auth")->group(function () {
     Route::put('/approve-reject-print-job', [EmployeeController::class, 'approveRejectPrintJob'])->name('approve-reject-print-job');
 
     Route::prefix('reports')->name('reports.')->group(function () {
-        Route::get('/employee-list', [EmployeeController::class, 'index'])->name('employee-list');
         Route::get('/meeting-report', [ReportController::class, 'meetingReport'])->name('meeting-report');
         Route::get('/no-touch-report', [ReportController::class, 'noTouchReport'])->name('no-touch-report');
         Route::get('/attendance-report', [ReportController::class, 'attendanceReport'])->name('attendance-report');
@@ -227,5 +243,17 @@ Route::middleware("auth")->group(function () {
         Route::get('/followup-auto-logs-report', [ReportController::class, 'getFollowupAutoLogsReport'])->name('followup-auto-logs-report');
         Route::get('/finance-report', [ReportController::class, 'getFinanceReport'])->name('finance-report');
         Route::any('/daily-report', [ReportController::class, 'dailyReport'])->name('daily-report');
+    });
+
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
+    Route::prefix('roles-permissions')->name('roles-permissions.')->middleware('permission:Make Users')->group(function () {
+        // Route::resource('users', UserController::class);
+        Route::get('/employee-list', [EmployeeController::class, 'index'])->name('employee-list');
+        Route::get('/make-user', [EmployeeController::class, 'create'])->name('make-user');
+        Route::post('/make-user', [EmployeeController::class, 'store'])->name('store-user');
+        Route::get('/edit-user/{username}', [EmployeeController::class, 'edit'])->name('edit-user');
+        Route::put('/update-user/{username}', [EmployeeController::class, 'update'])->name('update-user');
+        // Route::put('/toggle-user-status/{username}', [EmployeeController::class, 'toggleUserStatus'])->name('toggle-user-status');
     });
 });

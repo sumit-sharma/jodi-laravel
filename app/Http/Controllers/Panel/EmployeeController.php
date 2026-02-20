@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\MiscService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -34,9 +36,32 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function create(Request $request)
+    {
+        $data['roles'] = Role::all();
+        return view('panel.role-permission.make-user', $data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'department' => 'required',
+            'username'   => 'required|unique:users,username',
+            'name'       => 'required',
+            'email'      => 'required|email|unique:users,email',
+            'mobile'     => 'required|digits:10|unique:users,mobile',
+            'password'   => 'required|min:6|confirmed'
+        ]);
+
+        $result = $this->userService->makeuserStore($request);
+        if ($result) {
+            return back()->with('success', 'User created successfully.');
+        } else {
+            return back()->with('error', 'Error: Contact System Admin.');
+        }
     }
 
     /**
@@ -50,9 +75,31 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function edit(Request $request, string $username)
     {
-        //
+        $data['user'] = User::where('username', $username)->firstOrFail();
+        $data['roles'] = Role::all();
+        return view('panel.role-permission.edit-user', $data);
+    }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $username)
+    {
+        $request->validate([
+            'department' => 'required',
+            'name'       => 'required',
+            'email'      => ['required', Rule::unique('users')->ignore($username, 'username')],
+            'mobile'     => ['required', 'digits:10', Rule::unique('users')->ignore($username, 'username')],
+            'password'   => ['nullable', 'min:6', 'confirmed']
+        ]);
+
+        $result = $this->userService->updateUser($request, $username);
+        if ($result) {
+            return back()->with('success', 'User updated successfully.');
+        } else {
+            return back()->with('error', 'Error: Contact System Admin.');
+        }
     }
 
     /**

@@ -45,8 +45,22 @@ class MiscService
     }
 
 
-    public static function checkExists($table, $whereArray = []): bool
+    public static function checkExists($table, $whereArray = [], $ignoreId = null): bool
     {
-        return DB::table($table)->where($whereArray)->exists();
+        $query = DB::table($table);
+        if ($ignoreId) {
+            $query->where('id', '!=', $ignoreId);
+        }
+        return $query->where($whereArray)->exists();
+    }
+
+
+    public static function getSingleData(string $table, array $columns, $sortBy = 'id', $sortOrder = 'asc', $where = null)
+    {
+        $query = DB::table($table)->select($columns);
+        if ($where) {
+            $query = $query->whereRaw($where);
+        }
+        return $query->orderBy($sortBy, $sortOrder)->first();
     }
 }

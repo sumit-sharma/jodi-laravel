@@ -26,7 +26,11 @@ class FollowupController extends Controller
      */
     public function index(Request $request)
     {
-        $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1, 'empid' => $request->empid ?? auth()->user()->username, 'status' => 'A']);
+        $inputFilter = ['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1, 'status' => 'A'];
+        if (!auth()->user()->can('View All Followup')) {
+            $inputFilter['empid'] = $request->empid ?? auth()->user()->username;
+        }
+        $request->merge($inputFilter);
         $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
         $data['followups'] = $this->followupService->index($request);
         $data['heading'] = 'All My Follow Ups';
@@ -37,10 +41,9 @@ class FollowupController extends Controller
     public function followUpRecords(Request $request)
     {
         $requestInput = ['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1, 'status' => 'A', 'isFutureday' => 1];
-        //TODO:: if has permission to all followups records
-        // if (auth()->user()->hasPermission('followup_records')) {
-        //     $requestInput['empid'] = $request->empid ?? auth()->user()->username;
-        // }
+        if (auth()->user()->can('View All Followup')) {
+            $requestInput['empid'] = $request->empid ?? auth()->user()->username;
+        }
 
         $request->merge($requestInput);
         $data['occupations']   = MiscService::getTableData('occupations', ['occ_code', 'name']);
