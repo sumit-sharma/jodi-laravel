@@ -186,17 +186,19 @@
                         </div>
 
                         <div class="clearfix"></div>
+                        @if (!request()->has('empid'))
 
-                        <div class="col-12 mb-3">
-                            <label class="form-label">Meeting By-1:</label>
-                            <input name="mtg_by1" class="form-control" type="text" value="{{ request()->get('mtg_by1') }}">
-                        </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Meeting By-1:</label>
+                                <input name="mtg_by1" class="form-control" type="text" value="{{ request()->get('mtg_by1') }}">
+                            </div>
 
-                        <div class="clearfix"></div>
-                        <div class="col-12 mb-3">
-                            <label class="form-label">Meeting By-2:</label>
-                            <input name="mtg_by2" class="form-control" type="text" value="{{ request()->get('mtg_by2') }}">
-                        </div>
+                            <div class="clearfix"></div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Meeting By-2:</label>
+                                <input name="mtg_by2" class="form-control" type="text" value="{{ request()->get('mtg_by2') }}">
+                            </div>
+                        @endif
 
                         <div class="clearfix"></div>
                         <div class="col-12 mb-3">

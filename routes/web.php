@@ -165,7 +165,7 @@ Route::middleware("auth")->group(function () {
 
     Route::post('/save-fix-member', [FixMemberController::class, 'store'])->name('save-fix-member');
     Route::get('/check-fix-member/{rno}', [FixMemberController::class, 'checkFixMember'])->name('check-fix-member');
-    Route::get('/fix-member', [FixMemberController::class, 'index'])->name('fix-member.index');
+    Route::get('/fix-member', [FixMemberController::class, 'index'])->name('fix-member.index')->middleware('permission:Fix / Active Member');
     Route::put('/update-fix-active-job/{action}/{rno}', [FixMemberController::class, 'updateFixActiveJob'])->name('update-fix-active-job');
 
 
@@ -225,24 +225,24 @@ Route::middleware("auth")->group(function () {
 
     Route::any('/get-counter-number', [MasterController::class, 'getCounterNumber'])->name('get-counter-number');
     Route::post('/convert-member', [CustomerController::class, 'convertMember'])->name('convert-member');
-    Route::get('/sent-package', [DataController::class, 'sentpackage'])->name('sent-package');
+    Route::get('/sent-package', [DataController::class, 'sentpackage'])->name('sent-package')->middleware('permission:Edit All Data');
     Route::get('/wrong-email', [DataController::class, 'wrongemail'])->name('wrong-email');
-    Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data');
+    Route::get('/web-data', [DataController::class, 'webdata'])->name('web-data')->middleware('permission:Show Web Data');
     Route::put('/toggle-web-data/{id}', [DataController::class, 'toggleWebData'])->name('toggle-web-data');
-    Route::get('/print-request', [EmployeeController::class, 'printRequestList'])->name('print-request');
+    Route::get('/print-request', [EmployeeController::class, 'printRequestList'])->name('print-request')->middleware('permission:Print Job Approval');
     Route::put('/approve-reject-print-job', [EmployeeController::class, 'approveRejectPrintJob'])->name('approve-reject-print-job');
 
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/meeting-report', [ReportController::class, 'meetingReport'])->name('meeting-report');
-        Route::get('/no-touch-report', [ReportController::class, 'noTouchReport'])->name('no-touch-report');
-        Route::get('/attendance-report', [ReportController::class, 'attendanceReport'])->name('attendance-report');
-        Route::get('/no-meeting-report', [ReportController::class, 'noMeetingReport'])->name('no-meeting-report');
-        Route::get('/edit-log-report', [ReportController::class, 'editLogReport'])->name('edit-log-report');
+        Route::get('/no-touch-report', [ReportController::class, 'noTouchReport'])->name('no-touch-report')->middleware('permission:No Touch Client');
+        Route::get('/attendance-report', [ReportController::class, 'attendanceReport'])->name('attendance-report')->middleware('permission:Attendance Report');
+        Route::get('/no-meeting-report', [ReportController::class, 'noMeetingReport'])->name('no-meeting-report')->middleware('permission:No Meeting Report');
+        Route::get('/edit-log-report', [ReportController::class, 'editLogReport'])->name('edit-log-report')->middleware('permission:Edit Log Report');
         Route::get('/my-future-calls', [ReportController::class, 'myFutureCalls'])->name('my-future-calls');
         Route::get('/my-future-mails', [ReportController::class, 'myFutureMails'])->name('my-future-mails');
-        Route::get('/followup-auto-logs-report', [ReportController::class, 'getFollowupAutoLogsReport'])->name('followup-auto-logs-report');
-        Route::get('/finance-report', [ReportController::class, 'getFinanceReport'])->name('finance-report');
-        Route::any('/daily-report', [ReportController::class, 'dailyReport'])->name('daily-report');
+        Route::get('/followup-auto-logs-report', [ReportController::class, 'getFollowupAutoLogsReport'])->name('followup-auto-logs-report')->middleware('permission:Edit Log Report');
+        Route::get('/finance-report', [ReportController::class, 'getFinanceReport'])->name('finance-report')->middleware('permission:Finance Report');
+        Route::any('/daily-report', [ReportController::class, 'dailyReport'])->name('daily-report')->middleware('permission:Daily Report');
     });
 
     Route::resource('roles', RoleController::class);

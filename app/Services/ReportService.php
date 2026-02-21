@@ -116,6 +116,7 @@ class ReportService
             ->when($request->filled('rno'), fn($query) => $query->where('rno', $request->rno))
             ->when($request->filled('proposal'), fn($query) => $query->where('proposal', $request->proposal))
             ->when($request->filled('meeting_type'), fn($query) => $query->where('meeting_type', $request->meeting_type))
+            ->when($request->filled('empid'), fn($query) => $query->where('mtg_by1', $request->empid)->orWhere('mtg_by2', $request->empid))
             ->when($request->filled('mtg_by1'), fn($query) => $query->where('mtg_by1', $request->mtg_by1))
             ->when($request->filled('mtg_by2'), fn($query) => $query->where('mtg_by2', $request->mtg_by2))
             ->when($request->filled('att_by1'), fn($query) => $query->where('att_by1', $request->att_by1))

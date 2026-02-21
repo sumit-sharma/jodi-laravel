@@ -344,28 +344,40 @@
                             <li><a href="{{ route('appointment-report.index') }}" data-key="t-product-detail">Appointment
                                     List</a></li>
                         @endcan
-                        <li><a href="javascript:;" id="btnShowDailyRep" data-bs-toggle="modal"
-                                data-bs-target="#showDailyReportModal" key="t-products">Daily Report</a></li>
-
-
-
-                        <li><a href="{{ route('reports.finance-report') }}" data-key="t-product-detail">Finance
-                                Report</a></li>
+                        @can('Daily Report')
+                            <li><a href="javascript:;" id="btnShowDailyRep" data-bs-toggle="modal"
+                                    data-bs-target="#showDailyReportModal" key="t-products">Daily Report</a></li>
+                        @endcan
+                        @can('Finance Report')
+                            <li><a href="{{ route('reports.finance-report') }}" data-key="t-product-detail">Finance
+                                    Report</a></li>
+                        @endcan
                         <li><a href="{{ route('reports.meeting-report') }}" key="t-products">Meetings Report</a></li>
-                        <li><a href="{{ route('reports.edit-log-report') }}" data-key="t-product-detail">Edit Log
-                                Report</a></li>
-                        <li><a href="{{ route('reports.followup-auto-logs-report') }}" key="t-products">Followup Auto
-                                Report</a></li>
-                        <li><a href="{{ route('reports.attendance-report') }}" data-key="t-product-detail">Attendance
-                                Reports</a></li>
+                        @can('Edit Log Report')
+
+                            <li><a href="{{ route('reports.edit-log-report') }}" data-key="t-product-detail">Edit Log
+                                    Report</a></li>
+
+                            <li><a href="{{ route('reports.followup-auto-logs-report') }}" key="t-products">Followup Auto
+                                    Report</a></li>
+                        @endcan
+                        @can('Attendance Report')
+                            <li><a href="{{ route('reports.attendance-report') }}" data-key="t-product-detail">Attendance
+                                    Reports</a></li>
+                        @endcan
+
                         <li><a href="{{ route('reports.my-future-calls') }}" data-key="t-product-detail">My Future
                                 Calls</a></li>
                         <li><a href="{{ route('reports.my-future-mails') }}" data-key="t-product-detail">My Future
                                 Mails</a></li>
-                        <li><a href="{{ route('reports.no-touch-report') }}" key="t-products">No Touch Clients</a></li>
-                        <li><a href="{{ route('reports.no-meeting-report') }}" data-key="t-product-detail">No Meetings
-                                Reports</a>
-                        </li>
+                        @can('No Touch Client')
+                            <li><a href="{{ route('reports.no-touch-report') }}" key="t-products">No Touch Clients</a></li>
+                        @endcan
+                        @can('No Meeting Report')
+                            <li><a href="{{ route('reports.no-meeting-report') }}" data-key="t-product-detail">No Meetings
+                                    Reports</a>
+                            </li>
+                        @endcan
 
                     </ul>
                 </li>
@@ -383,18 +395,29 @@
                         <span data-key="t-ecommerce">Others</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('sent-package') }}" key="t-products">Sent Package</a></li>
-                        <li><a href="{{ route('print-request') }}" data-key="t-product-detail">Print Request</a></li>
-                        <li><a href="{{ route('fix-member.index') }}" key="t-products">Fix/Active</a></li>
+                        @can('Edit All Data')
+                            <li><a href="{{ route('sent-package') }}" key="t-products">Sent Package</a></li>
+                        @endcan
+                        @can('Print Job Approval')
+                            <li><a href="{{ route('print-request') }}" data-key="t-product-detail">Print Request</a></li>
+                        @endcan
+                        @can('Fix / Active Member')
+                            <li><a href="{{ route('fix-member.index') }}" key="t-products">Fix/Active</a></li>
+                        @endcan
                         <li><a href="{{ route('wrong-email') }}" data-key="t-product-detail">Wrong Email</a></li>
-                        <li><a href="{{ route('web-data') }}" data-key="t-product-detail">Web Data</a></li>
+                        @can('Show Web Data')
+                            <li><a href="{{ route('web-data') }}" data-key="t-product-detail">Web Data</a></li>
+                        @endcan
                         {{--
                         <li><a href="#" data-key="t-product-detail">Sent Massage</a></li>
                         <li><a href="#" key="t-products">View Massage</a></li> --}}
-                        <li><a href="javascript:;" id="addAttendance_menu" data-bs-toggle="modal"
-                                data-bs-target="#addAttendanceModal" data-key="t-add-product">
-                                Add Attendance
-                            </a></li>
+
+                        @can('Add Attendance')
+                            <li><a href="javascript:;" id="addAttendance_menu" data-bs-toggle="modal"
+                                    data-bs-target="#addAttendanceModal" data-key="t-add-product">
+                                    Add Attendance
+                                </a></li>
+                        @endcan
                         <li><a href="{{ route('show-reminders') }}" key="t-products">Show Reminders</a></li>
                         <li><a href="{{ route('add-reminder') }}" key="t-products">Add Reminder</a></li>
                         {{-- <li><a href="#" key="t-products">Chat Report</a></li> --}}
