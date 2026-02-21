@@ -69,13 +69,19 @@ class DataController extends Controller
     }
     public function wrongemail(Request $request)
     {
-        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $inputFilter = ['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1];
+        if (!auth()->user()->can('Show All Wrong Emails')) {
+            $inputFilter['rm'] = auth()->user()->username;
+        }
+        $request->merge($inputFilter);
         $data['wrongData'] = $this->dataService->bouncedEmail($request);
         return view('panel.Data.wrong-email', $data);
     }
     public function webdata(Request $request)
     {
-        $request->merge(['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1]);
+        $inputFilter = ['limit' => $request->limit ?? 10, 'page' => $request->page ?? 1];
+        $request->merge($inputFilter);
+
         $data['TableData'] = $this->dataService->allWebsiteData($request);
         return view('panel.Data.web-data', $data);
     }
