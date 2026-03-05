@@ -1,12 +1,20 @@
 <?php
 
 use App\Models\ProfileBio;
+use App\Models\User;
 use App\Traits\CommonTrait;
 
 if (!function_exists('fetchCustomerByrno')) {
     function fetchCustomerByrno($rno)
     {
         return ProfileBio::where('rno', $rno)->first();
+    }
+}
+
+if (!function_exists('fetchUserByUsername')) {
+    function fetchUserByUsername($username)
+    {
+        return User::where('username', $username)->first();
     }
 }
 

@@ -381,14 +381,14 @@
 
                     </ul>
                 </li>
-                {{--
+
                 <li>
-                    <a href="#">
+                    <a href="{{ route('chat.index') }}">
                         <i data-feather="message-square"></i>
                         <span data-key="t-chat">Chat</span>
                     </a>
                 </li>
-                --}}
+
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i data-feather="briefcase"></i>

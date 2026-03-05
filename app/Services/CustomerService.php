@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Models\BsLog;
 use App\Models\Caste;
 use App\Models\Classified;
 use App\Models\CounterNumber;
 use App\Models\DeleteLog;
+use App\Models\EduLog;
 use App\Models\Enquiry;
 use App\Models\Feedback;
 use App\Models\FixMember;
@@ -13,6 +15,7 @@ use App\Models\Followup;
 use App\Models\HoldMember;
 use App\Models\Interaction;
 use App\Models\Meeting;
+use App\Models\OrgLog;
 use App\Models\ProfileBio;
 use App\Models\ProfileBs;
 use App\Models\ProfileDetail;
@@ -108,7 +111,29 @@ class CustomerService
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+                $eduLogItems[] = [
+                    'rno'        => $rno,
+                    'educourse'  => $value,
+                    'eduinst'    => $inst[$key],
+                    'eduyear'    => $eyear[$key],
+                    'dated'      => now()->format('Y-m-d'),
+                    'time'       => now()->format('H:i:s'),
+                    'empid'      => auth()->user()->username,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
+
+            EduLog::create([
+                'rno'        => $rno,
+                'dated'      => now()->format('Y-m-d'),
+                'time'       => now()->format('H:i:s'),
+                'empid'      => auth()->user()->username,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            EduLog::insert($eduLogItems);
+
             return ProfileEducation::insert($items);
         });
     }
@@ -131,7 +156,28 @@ class CustomerService
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+                $orgLogItems[] = [
+                    'rno'        => $rno,
+                    'orgname'    => $value,
+                    'orgdept'    => $orgdept[$key],
+                    'orgyear'    => $orgyear[$key],
+                    'dated'      => now()->format('Y-m-d'),
+                    'time'       => now()->format('H:i:s'),
+                    'empid'      => auth()->user()->username,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
+
+            OrgLog::create([
+                'rno'        => $rno,
+                'dated'      => now()->format('Y-m-d'),
+                'time'       => now()->format('H:i:s'),
+                'empid'      => auth()->user()->username,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            OrgLog::insert($orgLogItems);
 
             return ProfileOrganisation::insert($items);
         });
@@ -159,7 +205,30 @@ class CustomerService
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+                $bsLogItems[] = [
+                    'rno'        => $rno,
+                    'bsname'     => $value,
+                    'bs'         => $bs[$key],
+                    'bsage'      => $bsage[$key] ?? 0,
+                    'bsmarriage' => $bsmarriage[$key],
+                    'bsdetails'  => $bsdetails[$key],
+                    'dated'      => now()->format('Y-m-d'),
+                    'time'       => now()->format('H:i:s'),
+                    'empid'      => auth()->user()->username,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
+            BsLog::create([
+                'rno'        => $rno,
+                'dated'      => now()->format('Y-m-d'),
+                'time'       => now()->format('H:i:s'),
+                'empid'      => auth()->user()->username,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            BsLog::insert($bsLogItems);
+
             return ProfileBs::insert($items);
         });
     }
@@ -230,8 +299,11 @@ class CustomerService
             DB::transaction(function () use ($data) {
                 $data['empid'] = auth()->user()->username;
                 $result = Interaction::create($data);
-                //TODO: update followup future date if needed
-                // Followup::where('rno', $data['rno'])->update(['futuredate' => $data['futuredate']]);
+                // update followup future date if needed
+                Followup::where('rno', $data['rno'])->update(['futuredate' => $data['futuredate']]);
+                if ($data['callstatus'] == 1) {
+                    ViewProfile::where('rno', $data['rno'])->update(['last_call' => now()->format('Y-m-d')]);
+                }
             });
             return true;
         } catch (\Exception $e) {
@@ -246,9 +318,6 @@ class CustomerService
             DB::transaction(function () use ($data) {
                 $result = Meeting::create($data);
                 ViewProfile::where('rno', $data['rno'])->update(['last_mtng' => $data['dated']]);
-
-                //TODO: update followup future date if needed
-                // Followup::where('rno', $data['rno'])->update(['futuredate' => $data['futuredate']]);
             });
             return true;
         } catch (\Exception $e) {

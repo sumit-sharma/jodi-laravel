@@ -22,9 +22,11 @@ class DailyMomentController extends Controller
      */
     public function index(Request $request)
     {
-        $request->merge(['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1]);
-        //TODO:: check if user has no "All Daily Moment"
-        // $request->merge(['empid' => $request->empid ?? auth()->user()->username]);
+        $inputFilter = ['limit' => $request->limit ?? 30, 'page' => $request->page ?? 1];
+        if (!auth()->user()->can('All Daily Moment')) {
+            $inputFilter['empid'] = auth()->user()->username;
+        }
+        $request->merge($inputFilter);
         $data['dailyMoments'] = $this->dailyMomentService->index($request);
         return view('panel.Services.daily-moment', $data);
     }

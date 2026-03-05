@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerUploadController;
 use App\Http\Controllers\Panel\AdvtdataController;
 use App\Http\Controllers\Panel\AppointmentController;
+use App\Http\Controllers\Panel\ChatController;
 use App\Http\Controllers\Panel\CustomerController;
 use App\Http\Controllers\Panel\DailyMomentController;
 use App\Http\Controllers\Panel\DashboardController;
@@ -255,5 +256,13 @@ Route::middleware("auth")->group(function () {
         Route::get('/edit-user/{username}', [EmployeeController::class, 'edit'])->name('edit-user');
         Route::put('/update-user/{username}', [EmployeeController::class, 'update'])->name('update-user');
         // Route::put('/toggle-user-status/{username}', [EmployeeController::class, 'toggleUserStatus'])->name('toggle-user-status');
+    });
+
+    Route::prefix('chat')->name('chat.')->group(function () {
+        Route::get('/', [ChatController::class, 'index'])->name('index');
+        Route::get('/recent-chat-list/{userId?}', [ChatController::class, 'recentChatList'])->name('recent-chat-list');
+        Route::get('/get-chat-messages/{userid}/{otherUser?}', [ChatController::class, 'getChatMessages'])->name('get-chat-messages');
+        Route::get('/set-chat-read/{userid}/{otherUser?}', [ChatController::class, 'setChatRead'])->name('set-chat-read');
+        // Route::post('/send-message', [ChatController::class, 'sendMessage'])->name('send-message');
     });
 });

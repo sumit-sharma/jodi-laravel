@@ -32,7 +32,7 @@
                                 </div>
                             </div>
                         </div>
-                        @dump($user->getAllPermissions()->pluck('name'))
+                        {{-- @dump($user->getAllPermissions()->pluck('name')) --}}
                         <!-- Form Start -->
                         <form id="frmAddUser" method="post"
                             action="{{ route('roles-permissions.update-user', ['username' => $user->username]) }}">

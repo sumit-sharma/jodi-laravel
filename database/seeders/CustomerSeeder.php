@@ -122,7 +122,6 @@ class CustomerSeeder extends Seeder
         echo nl2br("start done_list import\n");
         DB::statement("insert ignore into jodi_laravel.done_lists (br_rno, br_name, br_business, br_location, gr_rno, gr_name, gr_business, gr_location, fix_month, fix_year, rdate, wdate, done_by1, done_by2, empid, created_at, updated_at) SELECT li.br_rno, li.br_name, li.br_business, li.br_location, li.gr_rno, li.gr_name, li.gr_business, li.gr_location, li.fix_month, li.fix_year, li.rdate, li.wdate, li.done_by1, li.done_by2, li.empid, NOW(), NOW() FROM old_jodi.donelist as li");
         echo nl2br("finish done_list import\n");
-         */
 
         echo nl2br("start match_log import\n");
         DB::statement("insert ignore into jodi_laravel.match_log (dated, time, rno, empid, changes, created_at, updated_at) SELECT li.dated, li.time, li.rno, li.empid, li.changes, NOW(), NOW() FROM old_jodi.match_log as li");
@@ -131,5 +130,6 @@ class CustomerSeeder extends Seeder
         echo nl2br("start bs_log import\n");
         DB::statement("insert ignore into jodi_laravel.bs_log (rno, bsname, bs, bsage, bsmarriage, bsdetails, dated, time, empid, created_at, updated_at) SELECT li.rno, li.bsname, li.bs, li.bsage, li.bsmarriage, li.bsdetails, li.dated, li.time, li.empid, NOW(), NOW() FROM old_jodi.bs_log as li");
         echo nl2br("finish bs_log import\n");
+         */
     }
 }
