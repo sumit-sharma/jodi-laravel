@@ -183,8 +183,10 @@
                         <span data-key="t-ecommerce">Roles & Permission</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('roles.index') }}" data-key="t-customers">Roles</a></li>
-                        <li><a href="{{ route('permissions.index') }}" data-key="t-cart">Permissions</a></li>
+                        @can('Permission')
+                            <li><a href="{{ route('roles.index') }}" data-key="t-customers">Roles</a></li>
+                            <li><a href="{{ route('permissions.index') }}" data-key="t-cart">Permissions</a></li>
+                        @endcan
                         @can('Make Users')
                             <li><a href="{{ route('roles-permissions.employee-list') }}" data-key="t-cart">Users</a></li>
                         @endcan
