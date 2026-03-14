@@ -56,7 +56,7 @@
 </ul> --}}
 @push('scripts')
     <script>
-        function getRecentChats() {
+        window.getRecentChats = function() {
             var chatWindow = $('.recent-chat-list');
             fetch('{{ route('chat.recent-chat-list') }}')
                 .then(response => response.json())

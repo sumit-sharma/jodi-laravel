@@ -245,160 +245,240 @@
             let nextCursor = null;
             let isLoading = false;
             let lastMessageDate = null;
-                let firstMessageDate = null;
-                const currentUserId = "{{ auth()->user()->username }}";
-                const chatContainer = $('.chat-conversation');
-                const messageList = $('.chat-messages');
+            let firstMessageDate = null;
+            const currentUserId = "{{ auth()->user()->username }}";
+            const chatContainer = $('.chat-conversation');
+            const messageList = $('.chat-messages');
+            let echoChannel = null;
 
-                // Access existing SimpleBar instance
-                const simpleBarInstance = SimpleBar.instances.get(chatContainer[0]);
-                const scrollElement = simpleBarInstance.getScrollElement();
+            // Access existing SimpleBar instance
+            const simpleBarInstance = SimpleBar.instances.get(chatContainer[0]);
+            const scrollElement = simpleBarInstance.getScrollElement();
 
-                $(document).on('click', '.chat-list li a', function (e) {
-                    e.preventDefault();
-                    let listItem = $(this).closest('li');
-                    let otherUserName = listItem.data('otherusername');
-                    let otherName = listItem.data('othername');
+            $(document).on('click', '.chat-list li a', function (e) {
+                e.preventDefault();
+                let listItem = $(this).closest('li');
+                let otherUserName = listItem.data('otherusername');
+                let otherName = listItem.data('othername');
 
-                    if (currentOtherUserId === otherUserName) return;
+                if (currentOtherUserId === otherUserName) return;
 
-                    currentOtherUserId = otherUserName;
-                    nextCursor = null;
-                    lastMessageDate = null;
-                    firstMessageDate = null;
-                    $('#chat-profile-name').text(`${otherName}-${otherUserName}`);
-                    messageList.empty();
-                    loadMessages(false);
-                });
-
-                async function loadMessages(isPrepend = false) {
-                    if (isLoading || !currentOtherUserId) return;
-                    if (isPrepend && !nextCursor) return;
-
-                    isLoading = true;
-                    try {
-                        let response = await getChat(currentOtherUserId, nextCursor);
-                        if (response.status === 'success') {
-                            let messages = response.data.data;
-                            nextCursor = response.data.next_cursor;
-
-                            renderMessages(messages, isPrepend);
-
-                            if (!isPrepend) {
-                                setTimeout(scrollToBottom, 100);
-                            }
-                        }
-                    } catch (error) {
-                        console.error("Error loading messages:", error);
-                    } finally {
-                        isLoading = false;
-                    }
-                }
-
-                function renderMessages(messages, isPrepend) {
-                    let html = '';
-                    let batch = [...messages].reverse(); // Oldest first in this batch (ASC)
-
-                    batch.forEach((msg, index) => {
-                        let msgDate = dayjs(msg.createdAt).format('YYYY-MM-DD');
-                        let displayDate = formatDateLabel(msg.createdAt);
-
-                        // For Appending (Newer messages)
-                        if (!isPrepend) {
-                            if (msgDate !== lastMessageDate) {
-                                html += `<li class="chat-day-title"><span class="title">${displayDate}</span></li>`;
-                                lastMessageDate = msgDate;
-                            }
-                        }
-
-                        let isRight = msg.sender == currentUserId ? 'right' : '';
-                        let time = dayjs(msg.createdAt).format('hh:mm A');
-
-                        html += `
-                            <li class="${isRight}">
-                                <div class="conversation-list">
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1">
-                                            <div class="ctext-wrap">
-                                                <div class="ctext-wrap-content">
-                                                    <div class="conversation-name">
-                                                        <span class="time">${time}</span>
-                                                    </div>
-                                                    <p class="mb-0">${msg.message}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>`;
-                    });
-
-                    if (isPrepend) {
-                        // When prepending, we need to handle the date headers differently
-                        // To keep it simple but functional, we'll just prepend the batch
-                        // A more advanced version would merge date headers
-                        let previousHeight = scrollElement.scrollHeight;
-                        messageList.prepend(html);
-                        setTimeout(() => {
-                            let newHeight = scrollElement.scrollHeight;
-                            scrollElement.scrollTop = newHeight - previousHeight;
-                        }, 0);
-                    } else {
-                        messageList.append(html);
-                    }
-                }
-
-                function formatDateLabel(date) {
-                    const d = dayjs(date);
-                    if (d.isSame(dayjs(), 'day')) return 'Today';
-                    if (d.isSame(dayjs().subtract(1, 'day'), 'day')) return 'Yesterday';
-                    return d.format('DD MMM, YYYY');
-                }
-
-                function scrollToBottom() {
-                    scrollElement.scrollTop = scrollElement.scrollHeight;
-                }
-
-                // Infinite Scroll (Load older messages on scroll top)
-                scrollElement.addEventListener('scroll', function (e) {
-                    if (e.target.scrollTop === 0 && nextCursor && !isLoading) {
-                        loadMessages(true);
-                    }
-                });
-
-                // Demo send functionality
-                $('.chat-send').click(function () {
-                    let messageInput = $('input[placeholder="Enter Message..."]');
-                    let message = messageInput.val();
-                    if (message && currentOtherUserId) {
-                        let time = dayjs().format('hh:mm A');
-                        let html = `
-                            <li class="right">
-                                <div class="conversation-list">
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1">
-                                            <div class="ctext-wrap">
-                                                <div class="ctext-wrap-content">
-                                                    <div class="conversation-name"><span class="time">${time}</span></div>
-                                                    <p class="mb-0">${message}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>`;
-                        messageList.append(html);
-                        scrollToBottom();
-                        messageInput.val('');
-                    }
-                });
-
-                // Allow enter to send
-                $('input[placeholder="Enter Message..."]').on('keypress', function (e) {
-                    if (e.which == 13) {
-                        $('.chat-send').click();
-                    }
-                });
+                currentOtherUserId = otherUserName;
+                nextCursor = null;
+                lastMessageDate = null;
+                firstMessageDate = null;
+                $('#chat-profile-name').text(`${otherName}-${otherUserName}`);
+                messageList.empty();
+                loadMessages(false);
+                subscribeToChat(otherUserName);
             });
-        </script>
+
+            function subscribeToChat(otherUserId) {
+                if (echoChannel) {
+                    console.log('Leaving channel:', echoChannel);
+                    window.Echo.leave(echoChannel);
+                }
+                // Generate conversation_id consistently (same as backend)
+                let sender = parseInt(currentUserId);
+                let receiver = parseInt(otherUserId);
+                let conversationId = sender < receiver ? `${sender}_${receiver}` : `${receiver}_${sender}`;
+                echoChannel = `chat.${conversationId}`;
+                console.log('Subscribing to echoChannel channel:', echoChannel);
+
+                window.Echo.channel(echoChannel)
+                    .listen('.message.sent', (e) => {
+                        console.log('Real-time message received:', e.message);
+
+                        // Append to message list if it's the current conversation
+                        if (e.message.conversation_id === conversationId) {
+                            if (e.message.sender != currentUserId) {
+                                appendReceivedMessage(e.message);
+                            }
+                        }
+
+                        // Always refresh recent chats
+                        if (window.getRecentChats) {
+                            window.getRecentChats();
+                        }
+                    });
+            }
+
+            function appendReceivedMessage(msg) {
+                let msgDate = dayjs(msg.createdAt).format('YYYY-MM-DD');
+                let displayDate = formatDateLabel(msg.createdAt);
+                let html = '';
+
+                if (msgDate !== lastMessageDate) {
+                    html += `<li class="chat-day-title"><span class="title">${displayDate}</span></li>`;
+                    lastMessageDate = msgDate;
+                }
+
+                let time = dayjs(msg.createdAt).format('hh:mm A');
+                html += `
+                                    <li>
+                                        <div class="conversation-list">
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <div class="ctext-wrap">
+                                                        <div class="ctext-wrap-content">
+                                                            <div class="conversation-name">
+                                                                <span class="time">${time}</span>
+                                                            </div>
+                                                            <p class="mb-0">${msg.message}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>`;
+
+                messageList.append(html);
+                scrollToBottom();
+            }
+
+            async function loadMessages(isPrepend = false) {
+                if (isLoading || !currentOtherUserId) return;
+                if (isPrepend && !nextCursor) return;
+
+                isLoading = true;
+                try {
+                    let response = await getChat(currentOtherUserId, nextCursor);
+                    if (response.status === 'success') {
+                        let messages = response.data.data;
+                        nextCursor = response.data.next_cursor;
+
+                        renderMessages(messages, isPrepend);
+
+                        if (!isPrepend) {
+                            setTimeout(scrollToBottom, 100);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error loading messages:", error);
+                } finally {
+                    isLoading = false;
+                }
+            }
+
+            function renderMessages(messages, isPrepend) {
+                console.log('renderMessages', messages);
+                let html = '';
+                let batch = [...messages].reverse(); // Oldest first in this batch (ASC)
+
+                batch.forEach((msg, index) => {
+                    let msgDate = dayjs(msg.createdAt).format('YYYY-MM-DD');
+                    let displayDate = formatDateLabel(msg.createdAt);
+
+                    // For Appending (Newer messages)
+                    if (!isPrepend) {
+                        if (msgDate !== lastMessageDate) {
+                            html += `<li class="chat-day-title"><span class="title">${displayDate}</span></li>`;
+                            lastMessageDate = msgDate;
+                        }
+                    }
+
+                    let isRight = msg.sender == currentUserId ? 'right' : '';
+                    let time = dayjs(msg.createdAt).format('hh:mm A');
+
+                    html += `
+                                                    <li class="${isRight}">
+                                                        <div class="conversation-list">
+                                                            <div class="d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <div class="ctext-wrap">
+                                                                        <div class="ctext-wrap-content">
+                                                                            <div class="conversation-name">
+                                                                                <span class="time">${time}</span>
+                                                                            </div>
+                                                                            <p class="mb-0">${msg.message}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>`;
+                });
+
+                if (isPrepend) {
+                    // When prepending, we need to handle the date headers differently
+                    // To keep it simple but functional, we'll just prepend the batch
+                    // A more advanced version would merge date headers
+                    let previousHeight = scrollElement.scrollHeight;
+                    messageList.prepend(html);
+                    setTimeout(() => {
+                        let newHeight = scrollElement.scrollHeight;
+                        scrollElement.scrollTop = newHeight - previousHeight;
+                    }, 0);
+                } else {
+                    messageList.append(html);
+                }
+            }
+
+            function formatDateLabel(date) {
+                const d = dayjs(date);
+                if (d.isSame(dayjs(), 'day')) return 'Today';
+                if (d.isSame(dayjs().subtract(1, 'day'), 'day')) return 'Yesterday';
+                return d.format('DD MMM, YYYY');
+            }
+
+            function scrollToBottom() {
+                scrollElement.scrollTop = scrollElement.scrollHeight;
+            }
+
+            // Infinite Scroll (Load older messages on scroll top)
+            scrollElement.addEventListener('scroll', function (e) {
+                if (e.target.scrollTop === 0 && nextCursor && !isLoading) {
+                    loadMessages(true);
+                }
+            });
+
+            // Demo send functionality
+            $('.chat-send').click(function () {
+                let messageInput = $('input[placeholder="Enter Message..."]');
+                let message = messageInput.val();
+                if (message && currentOtherUserId) {
+                    let time = dayjs().format('hh:mm A');
+                    let html = `
+                                                    <li class="right">
+                                                        <div class="conversation-list">
+                                                            <div class="d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <div class="ctext-wrap">
+                                                                        <div class="ctext-wrap-content">
+                                                                            <div class="conversation-name"><span class="time">${time}</span></div>
+                                                                            <p class="mb-0">${message}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>`;
+                    messageList.append(html);
+                    scrollToBottom();
+                    messageInput.val('');
+                    $.ajax({
+                        url: "{{ route('chat.send-message') }}",
+                        type: 'POST',
+                        data: {
+                            receiver: currentOtherUserId,
+                            message: message,
+                        },
+                        success: function (response) {
+                            console.log(response);
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+
+            // Allow enter to send
+            $('input[placeholder="Enter Message..."]').on('keypress', function (e) {
+                if (e.which == 13) {
+                    $('.chat-send').click();
+                }
+            });
+        });
+    </script>
 @endsection

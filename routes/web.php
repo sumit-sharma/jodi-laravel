@@ -263,6 +263,6 @@ Route::middleware("auth")->group(function () {
         Route::get('/recent-chat-list/{userId?}', [ChatController::class, 'recentChatList'])->name('recent-chat-list');
         Route::get('/get-chat-messages/{userid}/{otherUser?}', [ChatController::class, 'getChatMessages'])->name('get-chat-messages');
         Route::get('/set-chat-read/{userid}/{otherUser?}', [ChatController::class, 'setChatRead'])->name('set-chat-read');
-        // Route::post('/send-message', [ChatController::class, 'sendMessage'])->name('send-message');
+        Route::post('/send-message', [ChatController::class, 'store'])->name('send-message');
     });
 });

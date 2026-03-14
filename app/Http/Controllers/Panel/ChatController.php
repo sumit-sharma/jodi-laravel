@@ -90,7 +90,17 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'receiver' => 'required',
+            'message' => 'required',
+        ]);
+        $data['sender'] = auth()->user()->username;
+        $message = $this->chatService->sendMessage($data);
+        return response()->json([
+            'status' => "success",
+            'message' => 'Chat message sent successfully',
+            'data' => $message
+        ]);
     }
 
     /**

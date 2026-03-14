@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Events\MessageSent;
 use App\Models\Chat;
+use App\Models\ChatConversation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -148,17 +150,30 @@ class ChatService
 
     public function getChatMessages($request)
     {
-        $firstUsername = (int) $request->first_username;
-        $secondUsername = (int) $request->second_username;
-        return Chat::orderBy('createdAt', 'desc')
-            ->where(function ($query) use ($firstUsername, $secondUsername) {
-                $query->where('sender', $firstUsername)
-                    ->where('receiver', $secondUsername);
-            })
-            ->orWhere(function ($query) use ($firstUsername, $secondUsername) {
-                $query->where('sender', $secondUsername)
-                    ->where('receiver', $firstUsername);
-            })
+        $firstUsername = $request->first_username;
+        $secondUsername = $request->second_username;
+
+        // Generate conversation_id consistently (same as sendMessage)
+        $conversation_id = $firstUsername < $secondUsername ? "{$firstUsername}_{$secondUsername}" : "{$secondUsername}_{$firstUsername}";
+
+        return Chat::where(function ($query) use ($conversation_id, $firstUsername, $secondUsername) {
+            $query->where('conversation_id', $conversation_id)
+                ->orWhere(function ($q) use ($firstUsername, $secondUsername) {
+                    $q->where(function ($sq) use ($firstUsername, $secondUsername) {
+                        $sq->where('sender', (int) $firstUsername)->where('receiver', (int) $secondUsername);
+                    })->orWhere(function ($sq) use ($firstUsername, $secondUsername) {
+                        $sq->where('sender', (string) $firstUsername)->where('receiver', (string) $secondUsername);
+                    });
+                })
+                ->orWhere(function ($q) use ($firstUsername, $secondUsername) {
+                    $q->where(function ($sq) use ($firstUsername, $secondUsername) {
+                        $sq->where('sender', (int) $secondUsername)->where('receiver', (int) $firstUsername);
+                    })->orWhere(function ($sq) use ($firstUsername, $secondUsername) {
+                        $sq->where('sender', (string) $secondUsername)->where('receiver', (string) $firstUsername);
+                    });
+                });
+        })
+            ->orderBy('createdAt', 'desc')
             ->cursorPaginate(request()->per_page ?? 20);
     }
 
@@ -189,5 +204,56 @@ class ChatService
             return [$label => $msgs->values()];
         });
         return $formatted;
+    }
+
+
+    public function sendMessage($data)
+    {
+        $message = DB::transaction(function () use ($data) {
+            $conversation_id = $data['sender'] < $data['receiver'] ? "{$data['sender']}_{$data['receiver']}" : "{$data['receiver']}_{$data['sender']}";
+            $message = Chat::create([
+                'sender' => $data['sender'],
+                'receiver' => $data['receiver'],
+                'message' => $data['message'],
+                'msgfrom' => fetchUserByUsername($data['sender'])->name . ' ' . $data['sender'],
+                'msgto' => fetchUserByUsername($data['receiver'])->name . ' ' . $data['receiver'],
+                'conversation_id' => $conversation_id,
+                'createdAt' => now(),
+            ]);
+
+            $conversation = ChatConversation::where('_id', $conversation_id)->first();
+            info($conversation);
+            // dd($conversation);
+            if ($conversation) {
+                $unreadCounts = $conversation->unread_counts ?? [];
+                if (isset($unreadCounts[$data['receiver']])) {
+                    (int) $unreadCounts[$data['receiver']] = (int)$unreadCounts[$data['receiver']] + 1;
+                } else {
+                    (int) $unreadCounts[$data['receiver']] = 1;
+                }
+                $conversation->unread_counts = $unreadCounts;
+            }
+
+
+            $conversation = new ChatConversation();
+            $conversation->_id = $conversation_id;
+            $conversation->unread_counts = [
+                (int) $data['receiver'] => 1,
+            ];
+
+
+            $conversation->last_message = $data['message'];
+            $conversation->last_message_time = now()->format('Y-m-d H:i:s');
+            $conversation->last_sender = (int) $data['sender'];
+            $conversation->participants = [
+                'sender' => (int) $data['sender'],
+                'receiver' => (int) $data['receiver'],
+            ];
+            $conversation->save();
+            event(new MessageSent($message));
+
+            return $message;
+        });
+        return $message;
     }
 }
