@@ -151,6 +151,7 @@
                                             <div class="col-md-3 mb-2">
                                                 <label class="form-label">Weight:</label>
                                                 <select name="wtkg" class="form-select">
+                                                    <option value=""></option>
                                                     @foreach (range(30, 199) as $item)
                                                         <option value="{{ $item }}" {{ $item == 65 ? 'selected' : '' }}>
                                                             {{ $item . ' kg' }}
@@ -161,7 +162,7 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="row mb-2 row-cols-5"">
-                                                                                                                                                                                                                                                                                                                                                                                            <div class="
+                                                                                                                                                                                                                                                                                                                                                                                                    <div class="
                                             col mb-2">
                                             <label class="form-label">Religion:</label>
                                             <select id="religion" name="religion" class="form-select">

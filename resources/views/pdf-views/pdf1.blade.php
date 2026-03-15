@@ -388,14 +388,14 @@
 				<tr>
 					<td>FAMILY INCOME</td>
 					<td>:</td>
-					<td>{{ $data->income->income }}</td>
+					<td>{{ $data?->income?->income }}</td>
 				</tr>
 
 				<tr>
 					<td valign="top">FAMILY HISTORY</td>
 					<td>:</td>
 					<td>
-						{!! $data->personal->familyhistory !!}
+						{!! $data?->personal?->familyhistory !!}
 					</td>
 				</tr>
 			</table>

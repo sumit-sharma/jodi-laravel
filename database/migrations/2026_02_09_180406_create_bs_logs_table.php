@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('bs_log', function (Blueprint $table) {
             $table->id();
             $table->integer('rno')->default(0);
-            $table->string('bsname', 200)->nullable();
-            $table->string('bs', 10)->nullable();
+            $table->string('bsname', 300)->nullable();
+            $table->string('bs', 255)->nullable();
             $table->integer('bsage')->default(0);
             $table->string('bsmarriage', 10)->nullable();
             $table->string('bsdetails', 500)->nullable();
