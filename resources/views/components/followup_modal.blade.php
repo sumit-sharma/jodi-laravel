@@ -26,6 +26,12 @@
                         </div>
 
                     </div>
+                    <div class="row">
+                        <div class="col-12 mt-0">
+                            <label for="" class="form-label">Followup Date & Time:</label>
+                            <label class="form-control">{{ now()->format('d-M-Y :: h:i A') }}</label>
+                        </div>
+                    </div>
                     <div class="row prev_date">
                         <div class="col-12 mt-0">
                             <label for="" class="form-label">Prev. Assign Date:</label>
