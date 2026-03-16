@@ -539,7 +539,6 @@
                 }
             });
             $("#btnShowDailyRep").click(function () {
-                console.log("dashdvhsad");
                 $("#frmShowDailyReportModal #daily_start_date").datepicker({
                     uiLibrary: 'bootstrap5',
                     format: 'yyyy-mm-dd',
@@ -554,6 +553,59 @@
 
 
             });
+
+            $("#newEntry_menu").click(function () {
+                Swal.fire({
+                    title: "Submit Mobile Number",
+                    input: "text",
+                    inputAttributes: {
+                        autocomplete: "off"
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: "Check Mobile",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async (mobile) => {
+                        const checkExistAPI = "{{ route('panel.check-exist') }}";
+                        $.ajax({
+                            url: checkExistAPI,
+                            type: 'POST',
+                            data: {
+                                table: 'profile_personal',
+                                whereArray: {
+                                    contactphone: mobile
+                                }
+                            },
+                            success: function (response) {
+                                console.log("response", response);
+                                if (response) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: "Your will be redirected to a new entry page",
+                                    }).then((result) => {
+                                        window.location.href = "{{ route('customer.create') }}";
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: `Phone Number ${mobile} already associated with another client`,
+                                    });
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: xhr.responseJSON.message,
+                                });
+                            }
+                        })
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                })
+            });
+
 
         });
     </script>

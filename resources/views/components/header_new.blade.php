@@ -262,7 +262,8 @@
                         <span data-key="t-ecommerce">Data</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li>
+                        {{-- <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li> --}}
+                        <li><a href="javascript:;" id="newEntry_menu" key="t-products">New Entry</a></li>
                         <li><a href="{{ route('add-advtdata') }}" data-key="t-product-detail">Add Advt Data</a></li>
                         @can('View All Advt Data')
                             <li><a href="{{ route('list-advtdata') }}" data-key="t-orders">Show Advt Data</a></li>
