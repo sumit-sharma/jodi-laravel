@@ -67,6 +67,13 @@ class SearchService
                 break;
 
             case 'contactphone':
+                $query->whereHas('personal', function ($q) use ($searchValue) {
+                    $q->whereRaw("
+                        REPLACE(REPLACE(REPLACE(REPLACE(contactphone, ' ', ''), '-', ''), '(', ''), ')', '')
+                        LIKE ?
+                    ", ["%{$searchValue}%"]);
+                });
+                break;
             case 'rcity':
             case 'contactemail':
             case 'arealocation':
