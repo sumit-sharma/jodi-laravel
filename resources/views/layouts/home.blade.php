@@ -559,12 +559,26 @@
                     title: "Submit Mobile Number",
                     input: "text",
                     inputAttributes: {
-                        autocomplete: "off"
+                        autocomplete: "off",
+                        maxlength: 10,
+                        inputmode: 'numeric'
                     },
                     showCancelButton: true,
                     confirmButtonText: "Check Mobile",
                     showLoaderOnConfirm: true,
                     preConfirm: async (mobile) => {
+                        if (!mobile) {
+                            Swal.showValidationMessage('Mobile number is required');
+                            return false;
+                        }
+
+                        const regex = /^\d{10}$/;
+
+                        if (!regex.test(mobile)) {
+                            Swal.showValidationMessage('Invalid mobile number');
+                            return false;
+                        }
+
                         const checkExistAPI = "{{ route('panel.check-exist') }}";
                         $.ajax({
                             url: checkExistAPI,
