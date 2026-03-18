@@ -242,7 +242,7 @@ class CustomerService
         $filterArray["g"]      = $data['gender'];
         $filterArray["y"]      = $diff->year;
         $filterArray["m"]      = $diff->month;
-        $filterArray["rl"]     = $data['religion'];
+        $filterArray["rl"]     = (int) $data['religion'];
         $filterArray["cst"]    = $cst->name;
         $filterArray["hg"]     = $data['hght'];
         $filterArray['wt']     = $data['wtkg'];
@@ -260,6 +260,7 @@ class CustomerService
         $filterArray['dtype']  = 'N';
         $filterArray['status'] = 'A';
         $filterArray['ost']    = '';
+        info($filterArray);
         return ViewProfile::updateOrCreate(['rno' => $rno], $filterArray);
     }
 

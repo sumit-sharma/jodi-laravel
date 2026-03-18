@@ -134,15 +134,8 @@ return [
 
         'mongodb' => [
             'driver'   => 'mongodb',
-            'dsn'      => env('MONGODB_URI', ''),
-            // 'host'     => env('MONGODB_HOST', '127.0.0.1'),
-            // 'port'     => env('MONGODB_PORT', 27017),
-            'database' => env('MONGODB_DATABASE', 'jodiv2_db'),
-            // 'username' => env('MONGODB_USERNAME', ''),
-            // 'password' => env('MONGODB_PASSWORD', ''),
-            // 'options'  => [
-            //     'database' => env('MONGODB_AUTH_DATABASE', 'admin'),
-            // ],
+            'dsn'      => env('MONGODB_URI', 'mongodb://127.0.0.1:27017'),
+            'database' => env('MONGODB_DATABASE', 'jodi_db'),
         ],
 
     ],

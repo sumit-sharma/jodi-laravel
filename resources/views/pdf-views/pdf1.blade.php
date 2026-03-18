@@ -388,14 +388,14 @@
 				<tr>
 					<td>FAMILY INCOME</td>
 					<td>:</td>
-					<td>{{ $data->income->income }}</td>
+					<td>{{ $data?->income?->income }}</td>
 				</tr>
 
 				<tr>
 					<td valign="top">FAMILY HISTORY</td>
 					<td>:</td>
 					<td>
-						{!! $data->personal->familyhistory !!}
+						{!! $data?->personal?->familyhistory !!}
 					</td>
 				</tr>
 			</table>
@@ -514,8 +514,8 @@
 
 
 		<div class="footer">
-			<h3>JodiSearch Matrimonial</h3>
-			<p>Email: info@jodisearchmatrimonial.in | Support: (+91) 9718511111 / 9711000143</p>
+			<h3>Elite Marriage Bureau</h3>
+			<p>Email: info@elitemarriagebureau.com | Support: (+91) 9718511111 / 9711000143</p>
 		</div>
 
 	</div>

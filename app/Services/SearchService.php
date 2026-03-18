@@ -67,6 +67,13 @@ class SearchService
                 break;
 
             case 'contactphone':
+                $query->whereHas('personal', function ($q) use ($searchValue) {
+                    $q->whereRaw("
+                        REPLACE(REPLACE(REPLACE(REPLACE(contactphone, ' ', ''), '-', ''), '(', ''), ')', '')
+                        LIKE ?
+                    ", ["%{$searchValue}%"]);
+                });
+                break;
             case 'rcity':
             case 'contactemail':
             case 'arealocation':
@@ -135,6 +142,9 @@ class SearchService
         }
         if (isset($input['gender']) && $input['gender'] != '') {
             $query =  $query->when($input['gender'], fn($q) => $q->where('g', $input['gender']));
+        }
+        if (isset($input['born']) && $input['born'] != '') {
+            $query->whereHas('bio', fn($q) => $q->whereYear('dob', $input['born']));
         }
 
         if (isset($input['from_age']) && $input['from_age'] != '') {

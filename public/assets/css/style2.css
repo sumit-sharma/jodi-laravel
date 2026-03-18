@@ -36,3 +36,24 @@ label.is-invalid {
 	color: #4d4afbff !important;
 	background-color: #FFB7DB !important;
 }
+
+.label-form {
+    display: block;
+    width: 100%;
+    padding: .47rem 0;
+    font-size: .8125rem;
+    font-weight: 350;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* background-color: var(--bs-input-bg); */
+    /* background-clip: padding-box; */
+    /* border: var(--bs-border-width) solid var(--bs-border-color); */
+    /* border-radius: var(--bs-border-radius); */
+    -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+}

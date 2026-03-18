@@ -183,8 +183,10 @@
                         <span data-key="t-ecommerce">Roles & Permission</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('roles.index') }}" data-key="t-customers">Roles</a></li>
-                        <li><a href="{{ route('permissions.index') }}" data-key="t-cart">Permissions</a></li>
+                        @can('Permission')
+                            <li><a href="{{ route('roles.index') }}" data-key="t-customers">Roles</a></li>
+                            <li><a href="{{ route('permissions.index') }}" data-key="t-cart">Permissions</a></li>
+                        @endcan
                         @can('Make Users')
                             <li><a href="{{ route('roles-permissions.employee-list') }}" data-key="t-cart">Users</a></li>
                         @endcan
@@ -260,7 +262,8 @@
                         <span data-key="t-ecommerce">Data</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li>
+                        {{-- <li><a href="{{ route('customer.create') }}" key="t-products">New Entry</a></li> --}}
+                        <li><a href="javascript:;" id="newEntry_menu" key="t-products">New Entry</a></li>
                         <li><a href="{{ route('add-advtdata') }}" data-key="t-product-detail">Add Advt Data</a></li>
                         @can('View All Advt Data')
                             <li><a href="{{ route('list-advtdata') }}" data-key="t-orders">Show Advt Data</a></li>
@@ -383,7 +386,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('chat.index') }}">
+                    <a href="#">
                         <i data-feather="message-square"></i>
                         <span data-key="t-chat">Chat</span>
                     </a>

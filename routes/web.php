@@ -246,8 +246,8 @@ Route::middleware("auth")->group(function () {
         Route::any('/daily-report', [ReportController::class, 'dailyReport'])->name('daily-report')->middleware('permission:Daily Report');
     });
 
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
+    Route::resource('roles', RoleController::class)->middleware('permission:Permission');
+    Route::resource('permissions', PermissionController::class)->middleware('permission:Permission');
     Route::prefix('roles-permissions')->name('roles-permissions.')->middleware('permission:Make Users')->group(function () {
         // Route::resource('users', UserController::class);
         Route::get('/employee-list', [EmployeeController::class, 'index'])->name('employee-list');

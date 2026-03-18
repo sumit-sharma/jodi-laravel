@@ -476,7 +476,7 @@
                 });
 
                 let data = await response.json();
-                let interactionmodal = bootstrap.Modal.getInstance(intModalModalEl);
+                let interactionmodal = bootstrap.Modal.getInstance(intModalEl);
 
                 // interactionmodal.hide();
 

@@ -8,42 +8,7 @@ class ViewProfile extends Model
 {
 
     protected $table = 'viewprofile';
-    protected $fillable = [
-        'rno',
-        'gender',
-        'refname',
-        'dob',
-        'tob',
-        'age',
-        'pob',
-        'religion',
-        'caste',
-        'subcaste',
-        'gotra',
-        'hght',
-        'hghtft',
-        'wtkg',
-        'complexion',
-        'dd',
-        'bg',
-        'astrostatus',
-        'drinkinghabit',
-        'smokinghabit',
-        'eatinghabit',
-        'spects',
-        'education',
-        'occupation',
-        'income',
-        'rs',
-        'ms',
-        'childstatus',
-        'dtype',
-        'payment',
-        'profiledate',
-        'empid',
-        'rfno',
-        'brand'
-    ];
+    protected $fillable = ['rno', 'g', 'refname', 'y', 'm', 'rl', 'cst', 'hg', 'hghtft', 'wt', 'eh', 'ast', 'ed', 'oc', 'pi', 'rs', 'ms', 'ch', 'fi', 'tc', 'mc', 'rm', 'p_sent', 'last_mail', 'last_call', 'last_mtng', 'dtype', 'status', 'ost', 'vc', 'op', 'st'];
 
 
     public function personal()
