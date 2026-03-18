@@ -113,7 +113,7 @@
 
                             <div class="col-md-12">
                                 <div class="table-rep-plugin">
-                                    <div class="{!! $results->count() > 2 ? 'table-responsive' : '' !!} mb-0"
+                                    <div class="{!! $results->count() > 0 ? 'table-responsive' : '' !!} mb-0"
                                         data-pattern="priority-columns">
                                         <table id="tech-companies-1" class="table table-bordered">
                                             <thead class="table-primary pdng_d">
