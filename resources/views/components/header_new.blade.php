@@ -386,7 +386,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('chat.index') }}">
                         <i data-feather="message-square"></i>
                         <span data-key="t-chat">Chat</span>
                     </a>

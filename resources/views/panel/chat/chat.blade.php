@@ -16,7 +16,7 @@
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
                             <li class="breadcrumb-item active">Chat</li>
                         </ol>
                     </div>
@@ -30,36 +30,31 @@
             <div class="chat-leftsidebar card">
                 <div class="p-3 px-4 border-bottom">
                     <div class="d-flex align-items-start ">
-                        <div class="flex-shrink-0 me-3 align-self-center">
+                        {{-- <div class="flex-shrink-0 me-3 align-self-center">
                             <img src="assets/images/users/avatar-1.jpg" class="avatar-sm rounded-circle" alt="">
-                        </div>
+                        </div> --}}
 
                         <div class="flex-grow-1">
-                            <h5 class="font-size-16 mb-1"><a href="#" class="text-dark">Paul <i
+                            <h5 class="font-size-16 mb-1"><a href="#"
+                                    class="text-dark">{{ auth()->user()->name . ' - ' . auth()->user()->username }} <i
                                         class="mdi mdi-circle text-success align-middle font-size-10 ms-1"></i></a></h5>
                             <p class="text-muted mb-0">Available</p>
                         </div>
 
                         <div class="flex-shrink-0">
-                            <div class="dropdown chat-noti-dropdown">
+                            {{-- <div class="dropdown chat-noti-dropdown">
                                 <button class="btn dropdown-toggle p-0" type="button" data-bs-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                                     <i class="bx bx-dots-horizontal-rounded"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Profile</a>
-                                    <a class="dropdown-item" href="#">Edit</a>
-                                    <a class="dropdown-item" href="#">Add Contact</a>
-                                    <a class="dropdown-item" href="#">Setting</a>
-                                </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
 
                 <div class="p-3">
                     <div class="search-box position-relative">
-                        <input type="text" class="form-control rounded border" placeholder="Search...">
+                        <input type="search" id="chat-search" class="form-control rounded border" placeholder="Search...">
                         <i class="bx bx-search search-icon"></i>
                     </div>
                 </div>
@@ -107,7 +102,8 @@
                                                                 <h5 class="font-size-13 mb-0">{{ $subItem->name }}</h5>
                                                             </a>
                                                         </li> --}}
-                                                        <li>
+                                                        <li data-otherusername="{{ $subItem->username }}"
+                                                            data-othername="{{ $subItem->name }}">
                                                             <a href="#">
                                                                 <div class="d-flex align-items-start">
 
@@ -150,15 +146,20 @@
             <!-- end chat-leftsidebar -->
 
             <div class="w-100 user-chat mt-4 mt-sm-0 ms-lg-1">
-                <div class="card">
+                <div id="dv_cht" class="card vh-100 d-flex align-items-center justify-content-center">
+                    <div class="text-center">
+                        <h3 class="mb-0">Select a user on left side to start messaging...</h3>
+                    </div>
+                </div>
+                <div class="card chat-on d-none">
                     <div class="p-3 px-lg-4 border-bottom">
                         <div class="row">
                             <div class="col-xl-4 col-7">
                                 <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0 avatar-sm me-3 d-sm-block d-none">
+                                    {{-- <div class="flex-shrink-0 avatar-sm me-3 d-sm-block d-none">
                                         <img src="assets/images/users/avatar-2.jpg" alt=""
                                             class="img-fluid d-block rounded-circle">
-                                    </div>
+                                    </div> --}}
                                     <div class="flex-grow-1">
                                         <h5 class="font-size-14 mb-1 text-truncate"><a href="#" id="chat-profile-name"
                                                 class="text-dark text-uppercase"></a></h5>
@@ -184,21 +185,6 @@
                                             </div>
                                         </div>
                                     </li>
-
-                                    {{-- <li class="list-inline-item">
-                                        <div class="dropdown">
-                                            <button class="btn nav-btn dropdown-toggle" type="button"
-                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="bx bx-dots-horizontal-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Profile</a>
-                                                <a class="dropdown-item" href="#">Archive</a>
-                                                <a class="dropdown-item" href="#">Muted</a>
-                                                <a class="dropdown-item" href="#">Delete</a>
-                                            </div>
-                                        </div>
-                                    </li> --}}
                                 </ul>
                             </div>
                         </div>
@@ -257,6 +243,7 @@
 
             $(document).on('click', '.chat-list li a', function (e) {
                 e.preventDefault();
+                console.log('time', dayjs().format('hh:mm:ss A'));
                 let listItem = $(this).closest('li');
                 let otherUserName = listItem.data('otherusername');
                 let otherName = listItem.data('othername');
@@ -271,6 +258,8 @@
                 messageList.empty();
                 loadMessages(false);
                 subscribeToChat(otherUserName);
+                $('.chat-on').removeClass('d-none');
+                $('#dv_cht').addClass('d-none');
             });
 
             function subscribeToChat(otherUserId) {
@@ -314,23 +303,7 @@
                 }
 
                 let time = dayjs(msg.createdAt).format('hh:mm A');
-                html += `
-                                    <li>
-                                        <div class="conversation-list">
-                                            <div class="d-flex">
-                                                <div class="flex-grow-1">
-                                                    <div class="ctext-wrap">
-                                                        <div class="ctext-wrap-content">
-                                                            <div class="conversation-name">
-                                                                <span class="time">${time}</span>
-                                                            </div>
-                                                            <p class="mb-0">${msg.message}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>`;
+                html += `<li> <div class="conversation-list"> <div class="d-flex"> <div class="flex-grow-1"> <div class="ctext-wrap"> <div class="ctext-wrap-content"> <div class="conversation-name"> <span class="time">${time}</span> </div> <p class="mb-0">${msg.message}</p> </div> </div> </div> </div> </div> </li>`;
 
                 messageList.append(html);
                 scrollToBottom();
@@ -380,23 +353,7 @@
                     let isRight = msg.sender == currentUserId ? 'right' : '';
                     let time = dayjs(msg.createdAt).format('hh:mm A');
 
-                    html += `
-                                                    <li class="${isRight}">
-                                                        <div class="conversation-list">
-                                                            <div class="d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <div class="ctext-wrap">
-                                                                        <div class="ctext-wrap-content">
-                                                                            <div class="conversation-name">
-                                                                                <span class="time">${time}</span>
-                                                                            </div>
-                                                                            <p class="mb-0">${msg.message}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>`;
+                    html += ` <li class="${isRight}"> <div class="conversation-list"> <div class="d-flex"> <div class="flex-grow-1"> <div class="ctext-wrap"> <div class="ctext-wrap-content"> <div class="conversation-name"> <span class="time">${time}</span> </div> <p class="mb-0">${msg.message}</p> </div> </div> </div> </div> </div> </li>`;
                 });
 
                 if (isPrepend) {
@@ -438,21 +395,7 @@
                 let message = messageInput.val();
                 if (message && currentOtherUserId) {
                     let time = dayjs().format('hh:mm A');
-                    let html = `
-                                                    <li class="right">
-                                                        <div class="conversation-list">
-                                                            <div class="d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <div class="ctext-wrap">
-                                                                        <div class="ctext-wrap-content">
-                                                                            <div class="conversation-name"><span class="time">${time}</span></div>
-                                                                            <p class="mb-0">${message}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>`;
+                    let html = ` <li class="right"> <div class="conversation-list"> <div class="d-flex"> <div class="flex-grow-1"> <div class="ctext-wrap"> <div class="ctext-wrap-content"> <div class="conversation-name"><span class="time">${time}</span></div> <p class="mb-0">${message}</p> </div> </div> </div> </div> </div> </li>`;
                     messageList.append(html);
                     scrollToBottom();
                     messageInput.val('');
@@ -478,6 +421,56 @@
                 if (e.which == 13) {
                     $('.chat-send').click();
                 }
+            });
+
+            // Search functionality for both Chat and Contacts
+            window.applyChatSearch = function () {
+                let term = $('#chat-search').val().trim().toLowerCase();
+
+                if (term === '') {
+                    $('.chat-list li').show();
+                    $('.contact-list').each(function () {
+                        $(this).closest('.mt-4').show();
+                        $('.contact-list').show();
+
+                    });
+                    return;
+                }
+
+                // Hide/Show list items in all .chat-list
+                $('.chat-list li').each(function () {
+                    let name = $(this).data('othername') ? $(this).data('othername').toString().toLowerCase() : '';
+                    let username = $(this).data('otherusername') ? $(this).data('otherusername').toString().toLowerCase() : '';
+
+                    if (name.includes(term) || username.includes(term)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                $('.contact-list').hide();
+
+
+
+                // // Handle letter headers in the Contacts tab
+                // $('.contact-list').each(function () {
+                //     let parentGroup = $(this).closest('.mt-4');
+                //     let visibleItems = parentGroup.find('ul.chat-list li:visible').length;
+
+                //     if (visibleItems > 0) {
+                //         parentGroup.show();
+                //     } else {
+                //         parentGroup.hide();
+                //     }
+                // });
+            }
+
+            $('#chat-search').on('input', applyChatSearch);
+
+            // Re-apply search when switching tabs
+            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                applyChatSearch();
             });
         });
     </script>

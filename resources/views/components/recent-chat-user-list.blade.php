@@ -56,7 +56,7 @@
 </ul> --}}
 @push('scripts')
     <script>
-        window.getRecentChats = function() {
+        window.getRecentChats = function () {
             var chatWindow = $('.recent-chat-list');
             fetch('{{ route('chat.recent-chat-list') }}')
                 .then(response => response.json())
@@ -70,6 +70,7 @@
                             html += `<li  class="${unreadClass}" data-otherusername="${chat.otherUser.username}" data-othername="${chat.otherUser.name}"> <a href="#"> <div class="d-flex align-items-start"> <div class="flex-shrink-0 user-img online align-self-center me-3"> <div class="avatar-sm align-self-center"> <span class="avatar-title rounded-circle bg-primary-subtle text-primary text-capitalize"> ${chat.otherUser.initial} </span> </div> <span class="user-status"></span> </div> <div class="flex-grow-1 overflow-hidden"> <h5 class="text-truncate font-size-13 mb-1"> ${chat.otherUser.name}-${chat.otherUser.username} </h5> <p class="text-truncate mb-0">${chat.last_message}</p> </div> <div class="flex-shrink-0"> <div class="font-size-11">${chat.last_message_time}</div> </div> ${unreadBadge} </div> </a> </li>`;
                         });
                         chatWindow.html(html);
+                        if (window.applyChatSearch) window.applyChatSearch();
                     }
                 });
         }
