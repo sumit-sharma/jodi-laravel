@@ -232,11 +232,10 @@ class ChatService
                     (int) $unreadCounts[$data['receiver']] = 1;
                 }
                 $conversation->unread_counts = $unreadCounts;
+            } else {
+                $conversation = new ChatConversation();
+                $conversation->_id = $conversation_id;
             }
-
-
-            $conversation = new ChatConversation();
-            $conversation->_id = $conversation_id;
             $conversation->unread_counts = [
                 (int) $data['receiver'] => 1,
             ];
