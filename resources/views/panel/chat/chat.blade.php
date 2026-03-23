@@ -274,6 +274,9 @@
                 echoChannel = `chat.${conversationId}`;
                 console.log('Subscribing to echoChannel channel:', echoChannel);
 
+                window.ACTIVE_CHAT_ID = conversationId;
+
+
                 window.Echo.channel(echoChannel)
                     .listen('.message.sent', (e) => {
                         console.log('Real-time message received:', e.message);

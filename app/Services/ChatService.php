@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\MessageSent;
+use App\Events\NewMessageNotification;
 use App\Models\Chat;
 use App\Models\ChatConversation;
 use Carbon\Carbon;
@@ -222,7 +223,7 @@ class ChatService
             ]);
 
             $conversation = ChatConversation::where('_id', $conversation_id)->first();
-            info($conversation);
+            // info($conversation);
             // dd($conversation);
             if ($conversation) {
                 $unreadCounts = $conversation->unread_counts ?? [];
@@ -249,7 +250,12 @@ class ChatService
                 'receiver' => (int) $data['receiver'],
             ];
             $conversation->save();
+
             event(new MessageSent($message));
+
+            // ALWAYS send notification (frontend will decide)
+            broadcast(new NewMessageNotification($message))->toOthers();
+
 
             return $message;
         });

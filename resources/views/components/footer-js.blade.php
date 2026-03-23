@@ -246,3 +246,82 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="/assets/plugins/dayjs.min.js"></script>
+
+<script>
+    let audioEnabled = false;
+
+    document.addEventListener('click', () => {
+        audioEnabled = true;
+    });
+    function playSound() {
+        if (!audioEnabled) return;
+        let audio = new Audio('/assets/audio/notification.wav');
+        console.log("audio playing...");
+        // audio.play();
+        audio.play().catch(() => { });
+
+    }
+
+    function incrementUnread(conversationId) {
+        // let el = document.getElementById('unread-' + conversationId);
+        let el = document.getElementById('unread-count');
+
+        if (el) {
+            let count = parseInt(el.innerText || 0);
+            el.innerText = count + 1;
+        }
+    }
+
+</script>
+<script type="module">
+
+    let userId = "{{ auth()->user()->username }}";
+
+    // Listen notifications
+    window.Echo.private('user.' + userId)
+        .listen('.notification.new', (data) => {
+            console.log("hndle notification")
+            handleNotification(data?.data);
+        });
+
+    function handleNotification(data) {
+        let isChatPage = window.location.pathname.startsWith('/chat');
+        let isTabActive = !document.hidden;
+        // playSound();
+        console.log("data", data);
+
+
+        // OPTIONAL: track active conversation
+        let activeConversationId = window.ACTIVE_CHAT_ID || null;
+
+        // ❌ Case 1: same chat + active tab
+        if (isChatPage && isTabActive && data.conversation_id == activeConversationId) {
+            return;
+        }
+
+        // ✅ Case 2: on chat page but different chat
+        if (isChatPage && isTabActive) {
+            toastr.success(data.message, 'new chat');
+            incrementUnread(data.conversation_id);
+            return;
+        }
+
+        // ✅ Case 3: chat page but tab inactive
+        if (isChatPage && !isTabActive) {
+            toastr.success(data.message, 'new chat');
+            playSound();
+            // browserNotify(data.message);
+            return;
+        }
+
+        // ✅ Case 4: not on chat page
+        if (!isChatPage) {
+            toastr.success(data.message, 'new chat');
+            playSound();
+            incrementUnread(data.conversation_id);
+            // browserNotify(data.message);
+        }
+
+    }
+
+</script>
