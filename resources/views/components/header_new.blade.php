@@ -31,13 +31,13 @@
         </div>
 
         <div class="d-flex">
-            <div class="dropdown d-none d-lg-inline-block ms-1">
+            {{-- <div class="dropdown d-none d-lg-inline-block ms-1">
                 <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <i class="text-primary" data-feather="message-square"></i>
                     <span class="badge bg-success rounded-pill" id="unread-count">0</span>
                 </button>
-            </div>
+            </div> --}}
 
 
             {{-- <div class="dropdown d-inline-block">

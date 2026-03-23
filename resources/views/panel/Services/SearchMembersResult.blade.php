@@ -12,6 +12,31 @@
                 vertical-align: middle;
                 text-align: center;
             }
+
+            /* 1440px Desktop and Lower */
+            @media (max-width: 1440px) {
+                #tech-companies-1 {
+                    font-size: 10px !important;
+                    width: 100% !important;
+                    table-layout: auto !important;
+                }
+
+                #tech-companies-1 th,
+                #tech-companies-1 td {
+                    padding: 4px 2px !important;
+                    line-height: 1.1;
+                    white-space: normal !important;
+                    word-break: break-word;
+                }
+
+                .card-body {
+                    padding: 0.75rem !important;
+                }
+
+                .table-responsive {
+                    overflow-x: hidden !important;
+                }
+            }
         </style>
         <div class="row">
             @include('components.inner-menu')
