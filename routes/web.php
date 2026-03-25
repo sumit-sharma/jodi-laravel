@@ -167,7 +167,7 @@ Route::middleware("auth")->group(function () {
     Route::post('/save-fix-member', [FixMemberController::class, 'store'])->name('save-fix-member');
     Route::get('/check-fix-member/{rno}', [FixMemberController::class, 'checkFixMember'])->name('check-fix-member');
     Route::get('/fix-member', [FixMemberController::class, 'index'])->name('fix-member.index')->middleware('permission:Fix / Active Member');
-    Route::put('/update-fix-active-job/{action}/{rno}', [FixMemberController::class, 'updateFixActiveJob'])->name('update-fix-active-job');
+    Route::put('/update-fix-active-job/{action}/{rno}/{pk?}', [FixMemberController::class, 'updateFixActiveJob'])->name('update-fix-active-job');
 
 
     Route::get('/hold-member-list', [HoldMemberController::class, 'index'])->name('hold-member.index');

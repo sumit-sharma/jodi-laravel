@@ -538,8 +538,11 @@
                         toastr.error(data.message)
                         return;
                     } else {
+                        let label = data.label
                         let modal = bootstrap.Modal.getInstance(fixModalEl) ||
                             new bootstrap.Modal(fixModalEl);
+                        $("#fixMemberModal span.fixActiveMemberModal_action_label").text(label)
+                        $("#fixMemberModal #fixMemberModal_status").val(label == "Active" ? 1 : 0)
                         modal.show()
                     }
                 })

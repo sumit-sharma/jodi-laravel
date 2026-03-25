@@ -46,18 +46,26 @@ class FixMemberController extends Controller
             'status' => 'required',
         ]);
 
+        switch ((int) $request->status) {
+            case 0:
+                $label = "Fix";
+                break;
+            case 1:
+                $label = "Active";
+                break;
+        }
 
         $result = $this->customerService->storeFixMember($validated);
         if ($result) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Fix Member created successfully',
+                'message' => "{$label} Member created successfully",
                 'data' => $result,
             ]);
         }
         return response()->json([
             'status' => 'error',
-            'message' => 'Fix Member creation failed',
+            'message' => "{$label} Member creation failed",
         ]);
     }
 
@@ -66,6 +74,7 @@ class FixMemberController extends Controller
      */
     public function checkFixMember(int $rno)
     {
+        $label = "Fix";
         $holdMemberCount = $this->customerService->checkHoldMember($rno);
 
         if ($holdMemberCount > 0) {
@@ -81,9 +90,16 @@ class FixMemberController extends Controller
                 'message' => 'Already Entered',
             ]);
         }
+
+        $fixStatus = $this->customerService->checkFixStatus($rno);
+        if ($fixStatus) {
+            $label = "Active";
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Member is available for fix',
+            'label' => $label,
         ]);
     }
 
@@ -111,19 +127,19 @@ class FixMemberController extends Controller
         //
     }
 
-    public function updateFixActiveJob(string $action, int $rno)
+    public function updateFixActiveJob(string $action, int $rno, $pk = null)
     {
         switch ($action) {
             case 'fix':
-                $result = $this->customerService->setFixMember($rno);
+                $result = $this->customerService->setFixMember($rno, $pk);
                 $msg = 'Member fixed successfully';
                 break;
             case 'active':
-                $result = $this->customerService->setActiveMember($rno);
+                $result = $this->customerService->setActiveMember($rno, $pk);
                 $msg = 'Member activated successfully';
                 break;
             case 'delete':
-                $result = $this->customerService->deleteFixMember($rno);
+                $result = $this->customerService->deleteFixMember($pk);
                 $msg = 'Member deleted successfully';
                 break;
         }

@@ -6,7 +6,8 @@
             <div class="modal-header">
                 <div class="row">
                     <div class="col-12">
-                        <h5 class="modal-title font-size-16" id="IntractionPageTitle">Fix Member</h5>
+                        <h5 class="modal-title font-size-16" id="IntractionPageTitle"><span
+                                class="fixActiveMemberModal_action_label"></span> Member</h5>
                     </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -27,26 +28,30 @@
                                 disabled>
                         </div>
                         <div class="col-4 mt-0">
-                            <label for="" class="form-label">Fix Date</label>
+                            <label for="" class="form-label"><span class="fixActiveMemberModal_action_label"></span>
+                                Date</label>
                             <input class="form-control bg-secondary-subtle" type="text"
                                 value="{{ now()->format('M d, Y') }}" disabled>
                         </div>
                         <div class="clearfix"></div>
 
                         <div class="col-4 mt-4">
-                            <label for="" class="form-label">Fix Time</label>
+                            <label for="" class="form-label"><span class="fixActiveMemberModal_action_label"></span>
+                                Time</label>
                             <input class="form-control bg-secondary-subtle" type="text"
                                 value="{{ now()->format('h:i A') }}" disabled>
                         </div>
                         <div class="col-4 mt-4">
-                            <label for="" class="form-label">Fix By</label>
+                            <label for="" class="form-label"><span class="fixActiveMemberModal_action_label"></span>
+                                By</label>
                             <select name="fix_by" id="fix_by" class="form-select" style="width: 100%; height: 40px;"
                                 required>
                                 <option>Select</option>
                             </select>
                         </div>
                         <div class="col-4 mt-4">
-                            <label for="" class="form-label">Fix Source</label>
+                            <label for="" class="form-label"><span class="fixActiveMemberModal_action_label"></span>
+                                Source</label>
                             <select name="fixed_through" id="fixed_through" class="form-select" required>
                                 <option>Select</option>
                                 <option value="Own Source">Own Source</option>
@@ -63,7 +68,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <input type="hidden" name="rno" id="fixMemberModal_rno" />
-                        <input type="hidden" name="status" value="0" id="fixMemberModal_status" />
+                        <input type="hidden" name="status" id="fixMemberModal_status" />
 
                         <div class="col-12 mt-4">
                             <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>

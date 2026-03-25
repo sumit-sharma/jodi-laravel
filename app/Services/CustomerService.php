@@ -486,6 +486,12 @@ class CustomerService
         return FixMember::where('rno', $rno)->where('status', '<', 2)->count();
     }
 
+    public function checkFixStatus($rno)
+    {
+        return ViewProfile::where('rno', $rno)->where('status', 'F')->exists();
+    }
+
+
     public function getFixMembers($request)
     {
         $orderBy = $request->has('orderBy') ? strtoupper($request->orderBy) : 'DESC';
@@ -507,10 +513,10 @@ class CustomerService
         return $request->limit ? $query->paginate($request->limit) : $query->get();
     }
 
-    public function setFixMember($rno)
+    public function setFixMember($rno, $pk)
     {
-        return DB::transaction(function () use ($rno) {
-            FixMember::where('rno', $rno)
+        return DB::transaction(function () use ($rno, $pk) {
+            FixMember::where('id', $pk)
                 ->update([
                     'status' => 2,
                     'update_by' => auth()->user()->username,
@@ -535,10 +541,10 @@ class CustomerService
         });
     }
 
-    public function setActiveMember($rno)
+    public function setActiveMember($rno, $pk)
     {
-        return DB::transaction(function () use ($rno) {
-            FixMember::where('rno', $rno)
+        return DB::transaction(function () use ($rno, $pk) {
+            FixMember::where('id', $pk)
                 ->update([
                     'status' => 3,
                     'update_by' => auth()->user()->username,
@@ -557,10 +563,10 @@ class CustomerService
         });
     }
 
-    public function deleteFixMember($rno)
+    public function deleteFixMember($pk)
     {
-        return DB::transaction(function () use ($rno) {
-            FixMember::where('rno', $rno)
+        return DB::transaction(function () use ($pk) {
+            FixMember::where('id', $pk)
                 ->update([
                     'status' => 4,
                     'update_by' => auth()->user()->username,

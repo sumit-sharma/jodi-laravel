@@ -78,7 +78,7 @@
 
                                     <tbody class="pdng_d">
                                         @foreach ($members as $member)
-                                            <tr>
+                                            <tr data-id="{{ $member->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $member->rno }}</td>
                                                 <td>
@@ -222,7 +222,9 @@
             $('button.btnAction').click(function () {
                 var rno = $(this).data('rno');
                 var action = $(this).data('action');
-
+                var pk = $(this).closest('tr').data('id');
+                console.log("pk", pk);
+                // return false;
                 swal.fire({
                     title: 'Are you sure?',
                     text: `It will ${action} this member`,
@@ -234,10 +236,11 @@
                     showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var url = "{{ route('update-fix-active-job', ['action' => ':action', 'rno' => ':rno']) }}";
+                        var url = "{{ route('update-fix-active-job', ['action' => ':action', 'pk' => ':pk', 'rno' => ':rno']) }}";
+                        url = url.replace(':action', action).replace(':pk', pk).replace(':rno', rno)
                         $.ajax({
-                            url: url.replace(':action', action).replace(':rno', rno),
                             type: "PUT",
+                            url: url,
                             data: {
                                 rno: rno,
                                 action: action,
