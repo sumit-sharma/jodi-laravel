@@ -169,7 +169,7 @@
                                                 </tr>
                                             </thead>
 
-                                            <tbody class="pdng_d">
+                                            <tbody class="">
                                                 @foreach ($results as $data)
                                                     <tr data-rno="{{ $data->rno }}">
                                                         <td>
@@ -183,7 +183,8 @@
                                                                 data-bs-target="#Modal_biodata"
                                                                 data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
                                                         <td>{{ $data->g }}</td>
-                                                        <td>{{ $data->refname }}
+                                                        <td class="{{ $data->status == 'F' ? 'td-bg-pink' : '' }}">
+                                                            <div>{{ $data->refname }}</div>
                                                             {!! $data->vc == 1 ? '<i class="bi bi-vimeo"></i>' : '' !!}
                                                             {!! $data->oc == 1 ? '<i class="text-danger"><strong>O</strong></i>' : '' !!}
                                                         </td>
