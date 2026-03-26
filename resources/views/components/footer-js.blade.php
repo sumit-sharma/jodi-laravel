@@ -278,11 +278,11 @@
     let userId = "{{ auth()->user()->username }}";
 
     // Listen notifications
-    window.Echo.private('user.' + userId)
-        .listen('.notification.new', (data) => {
-            console.log("hndle notification")
-            handleNotification(data?.data);
-        });
+    // window.Echo.private('user.' + userId)
+    //     .listen('.notification.new', (data) => {
+    //         console.log("hndle notification")
+    //         handleNotification(data?.data);
+    //     });
 
     function handleNotification(data) {
         let isChatPage = window.location.pathname.startsWith('/chat');

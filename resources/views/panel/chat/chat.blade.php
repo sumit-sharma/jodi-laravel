@@ -277,22 +277,22 @@
                 window.ACTIVE_CHAT_ID = conversationId;
 
 
-                window.Echo.channel(echoChannel)
-                    .listen('.message.sent', (e) => {
-                        console.log('Real-time message received:', e.message);
+                // window.Echo.channel(echoChannel)
+                //     .listen('.message.sent', (e) => {
+                //         console.log('Real-time message received:', e.message);
 
-                        // Append to message list if it's the current conversation
-                        if (e.message.conversation_id === conversationId) {
-                            if (e.message.sender != currentUserId) {
-                                appendReceivedMessage(e.message);
-                            }
-                        }
+                //         // Append to message list if it's the current conversation
+                //         if (e.message.conversation_id === conversationId) {
+                //             if (e.message.sender != currentUserId) {
+                //                 appendReceivedMessage(e.message);
+                //             }
+                //         }
 
-                        // Always refresh recent chats
-                        if (window.getRecentChats) {
-                            window.getRecentChats();
-                        }
-                    });
+                //         // Always refresh recent chats
+                //         if (window.getRecentChats) {
+                //             window.getRecentChats();
+                //         }
+                //     });
             }
 
             function appendReceivedMessage(msg) {
