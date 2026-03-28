@@ -78,11 +78,19 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none inner-menu-item"
-                                    href="javascript:void(0);" data-key="/feedback/">
-                                    <span>Feedback</span>
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">Feedback</span>
+                                    <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="#" class="dropdown-item inner-menu-modal" id="modl_feedback"
+                                        data-key="AddFeedbackModal">Add Feedback</a>
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/feedback/">View Feedback </a>
+                                </div>
                             </li>
+
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
                                     <span data-key="t-apps">Enquiry</span>
@@ -177,6 +185,7 @@
     @include('components.followup_modal')
     @include('components.form-transfer-modal')
     @include('components.convert_modal')
+    @include('components.feedback_modal')
     {{-- @include('components.delete_member_modal') --}}
 </div>
 
@@ -255,6 +264,7 @@
             let followUpModalEl = document.getElementById('FollowUpModal');
             let formTransferModalEl = document.getElementById('FormTransferModal');
             let convertMemberModalEl = document.getElementById('ConvertMemberModal');
+            let feedbackModalEl = document.getElementById('AddFeedbackModal');
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -1591,6 +1601,145 @@
 
                 });
             });
+
+
+
+            $('#modl_feedback').click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+
+                let rno = selected_rno;
+
+                let feedbackModal = bootstrap.Modal.getInstance(feedbackModalEl) || new bootstrap.Modal(feedbackModalEl);
+                feedbackModal.show();
+
+                fetch("{{ route('get-feedback-modal', ['rno' => ':rno']) }}".replace(':rno', selected_rno))
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.status == "success") {
+                            let options = '<option value="">Select</option>';
+                            data.data.sendMailProposals.forEach(element => {
+                                options += `<option value="${element.proposal}">${element.proposal} - ${element.receiver.refname}</option>`;
+                            });
+                            $("#frmAddFeedback #feedback_proposal").html(options)
+                                .select2({
+                                    dropdownParent: $('#AddFeedbackModal'),
+                                    placeholder: "Select",
+                                    allowClear: true
+                                });
+
+                            let feedbackoptions = '<option value="">Select</option>';
+                            data.data.feedbackOptions.forEach(element => {
+                                feedbackoptions += `<option value="${element.feedback}">${element.feedback}</option>`;
+                            });
+                            $("#frmAddFeedback #feedbackdetails").html(feedbackoptions)
+                                .select2({
+                                    dropdownParent: $('#AddFeedbackModal'),
+                                    placeholder: "Select",
+                                    allowClear: true
+                                });
+
+                        }
+
+                    });
+
+
+                $("#AddFeedbackModal #feedback_rno").val(rno);
+                $("#AddFeedbackModal #feedback_refname").text(selected_refname)
+                $("#AddFeedbackModal #feedback_refno").text(rno)
+            });
+
+
+
+
+            $("#frmAddFeedback").validate({
+                ignore: ':hidden:not(.select2-hidden-accessible)',
+                errorClass: 'is-invalid',
+                validClass: 'is-valid',
+                errorPlacement: function (error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2')); // place after Select2
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).next('.select2').find('.select2-selection')
+                        .removeClass('is-invalid');
+                },
+                rules: {
+                    proposal: {
+                        required: true
+                    },
+                    fstatus: {
+                        required: true
+                    },
+                    feedback: {
+                        required: true
+                    }
+                },
+                messages: {
+                    proposal: {
+                        required: "Please select proposal"
+                    },
+                    fstatus: {
+                        required: "Please select feedback status"
+                    },
+                    feedback: {
+                        required: "Please select feedback details"
+                    }
+                },
+                submitHandler: function (form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: new FormData(form),
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            console.log("response", response)
+                            if (response.status == "success") {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                $("#AddFeedbackModal").modal("hide");
+                                $("#frmAddFeedback").trigger("reset");
+                                cacheClear(cacheKey);
+                                window.location.reload();
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: xhr.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    });
+                }
+            });
+
         });
     </script>
 @endsection

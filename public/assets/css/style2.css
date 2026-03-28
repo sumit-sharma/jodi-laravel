@@ -37,8 +37,8 @@ label.is-invalid {
 	background-color: #FFB7DB !important;
 }
 .td-bg-pink {
-    display: table-cell;
-    width: 100%;
+    /* display: table-cell; */
+    /* width: 100%; */
     color: #4d4afbff !important;
     background-color: #FFB7DB !important;
 }
@@ -62,4 +62,9 @@ label.is-invalid {
     transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+}
+
+.table-rep-plugin a{
+    color: var(--bs-primary) !important;
+    /* color: #000 !important; */
 }

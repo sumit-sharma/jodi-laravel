@@ -163,6 +163,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/feedback/{rno}', [FeedbackController::class, 'feedbackList'])->name('feedback');
     Route::get('/fetch-feedback/{type}/{rno}', [FeedbackController::class, 'fetchFeedbackByType'])->name('fetch-feedback');
     Route::post('/save-feedback', [FeedbackController::class, 'store'])->name('save-feedback');
+    Route::get('/get-feedback-modal/{rno}', [FeedbackController::class, 'getFeedbackModal'])->name('get-feedback-modal');
 
     Route::post('/save-fix-member', [FixMemberController::class, 'store'])->name('save-fix-member');
     Route::get('/check-fix-member/{rno}', [FixMemberController::class, 'checkFixMember'])->name('check-fix-member');

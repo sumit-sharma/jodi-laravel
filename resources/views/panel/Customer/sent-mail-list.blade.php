@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Sent Mail</h4>
+                                    <h4 class="mb-sm-0 font-size-18">Add Feedback & Sent Mail</h4>
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Mail</a></li>
@@ -23,48 +23,51 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-
+                            <h5 class="">Add Feedback</h5>
                             <form id="frmSaveFeedback" action="{{ route('save-feedback') }}" method="POST">
                                 @csrf
                                 <div class="col-12">
                                     <div class="row">
-                                    <div class="col-md-2 mt-2">
-                                        <label for="example-text-input" class="form-label">Reference No:</label>
-                                        <input class="form-control bg-secondary-subtle" type="text" value="{{ $rno }}" id=""
-                                            disabled>
-                                    </div>
-                                    <div class="col-md-2 mt-2">
-                                        <label for="example-text-input" class="form-label">Name: </label>
-                                        <input class="form-control bg-secondary-subtle" type="text" value="{{ fetchCustomerByrno($rno)->refname }}"
-                                            id="" disabled>
-                                    </div>
-                                    <div class="col-md-2 mt-2">
-                                        <label for="example-text-input" class="form-label"> Proposal </label>
-                                        <select name="proposal" class="form-select select2-notag" required>
-                                            <option value="">Select</option>
-                                            @foreach ($sendMailProposals as $proposal)
-                                                <option value="{{ $proposal->proposal }}">{{ $proposal->proposal.'-'.$proposal->receiver->refname }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 mt-2">
-                                        <label for="example-text-input" class="form-label"> Feedback Status </label>
-                                        <select name="fstatus" class="form-select" required>
-                                            <option value="0">No</option>
-                                            <option value="1" selected="selected">Yes</option>
-                                            <option value="2">Can't Decide Now</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 mt-2">
-                                        <label for="example-text-input" class="form-label"> Feedback Details </label>
-                                        <select id="feedback" name="feedback" class="form-select select2-notag" required>
-                                            <option value="">Select</option>
-                                            @foreach ($feedbackOptions as $item)
-                                                <option value="{{ $item->feedback }}">{{ $item->feedback }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="clearfix"></div>
+                                        <div class="col-md-2 mt-2">
+                                            <label for="example-text-input" class="form-label">Reference No:</label>
+                                            <input class="form-control bg-secondary-subtle" type="text" value="{{ $rno }}"
+                                                id="" disabled>
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <label for="example-text-input" class="form-label">Name: </label>
+                                            <input class="form-control bg-secondary-subtle" type="text"
+                                                value="{{ fetchCustomerByrno($rno)->refname }}" id="" disabled>
+                                        </div>
+                                        <div class="col-md-2 mt-2">
+                                            <label for="example-text-input" class="form-label"> Proposal </label>
+                                            <select name="proposal" class="form-select select2-notag" required>
+                                                <option value="">Select</option>
+                                                @foreach ($sendMailProposals as $proposal)
+                                                    <option value="{{ $proposal->proposal }}">
+                                                        {{ $proposal->proposal . '-' . $proposal->receiver->refname }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 mt-2">
+                                            <label for="example-text-input" class="form-label"> Feedback Status </label>
+                                            <select name="fstatus" class="form-select" required>
+                                                <option value="0">No</option>
+                                                <option value="1" selected="selected">Yes</option>
+                                                <option value="2">Can't Decide Now</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 mt-2">
+                                            <label for="example-text-input" class="form-label"> Feedback Details </label>
+                                            <select id="feedback" name="feedback" class="form-select select2-notag"
+                                                required>
+                                                <option value="">Select</option>
+                                                @foreach ($feedbackOptions as $item)
+                                                    <option value="{{ $item->feedback }}">{{ $item->feedback }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="clearfix"></div>
 
                                     </div>
                                 </div>
@@ -89,6 +92,7 @@
                 <div class="card">
                     <!-- card body -->
                     <div class="card-body">
+                        <h5 class="">Sent Mail List</h5>
                         <div class="row">
 
                             <div class="col-md-8 col-12">
@@ -166,14 +170,14 @@
                                                                 @endphp
 
                                                                 @if (Storage::disk('public')->exists('uploads/customer/' . $photoWithExtension))
-                                                                <a href="{{ url('/uploads/customer/' . $photoWithExtension) }}"
-                                                                    class="image-popup"
-                                                                    data-lightbox="{{ 'gallery_' . $row->rno . '_' . $row->proposal }}">
-                                                                    {{-- <img src="/uploads/customer/{{ $photo }}" width="100%" />
-                                                                    --}}
-                                                                    {{ 'Photo ' . ++$key }}
-                                                                </a>
-                                                                    
+                                                                    <a href="{{ url('/uploads/customer/' . $photoWithExtension) }}"
+                                                                        class="image-popup"
+                                                                        data-lightbox="{{ 'gallery_' . $row->rno . '_' . $row->proposal }}">
+                                                                        {{-- <img src="/uploads/customer/{{ $photo }}" width="100%" />
+                                                                        --}}
+                                                                        {{ 'Photo ' . ++$key }}
+                                                                    </a>
+
                                                                 @endif
                                                             @endforeach
                                                         </td>
@@ -211,7 +215,7 @@
     <script src="/assets/plugins/lightbox2/js/lightbox.js"></script>
 
     <script>
-        $(function(){
+        $(function () {
             $('#frmSaveFeedback').validate({
                 ignore: ':hidden:not(.select2-hidden-accessible)',
                 errorClass: 'is-invalid',
@@ -242,7 +246,7 @@
                     },
                     'feedback': {
                         required: true
-                    }      
+                    }
                 },
                 messages: {
                     'proposal': {
@@ -253,7 +257,7 @@
                     },
                     'feedback': {
                         required: 'Feedback is required'
-                    }      
+                    }
                 },
                 submitHandler: function (form) {
                     // form.submit();

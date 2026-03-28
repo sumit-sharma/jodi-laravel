@@ -8,35 +8,43 @@
                 border: 1px solid #420d1c !important;
             }
 
+
             td {
                 vertical-align: middle;
                 text-align: center;
             }
 
             /* 1440px Desktop and Lower */
-            @media (max-width: 1440px) {
-                #tech-companies-1 {
-                    font-size: 10px !important;
-                    width: 100% !important;
-                    table-layout: auto !important;
-                }
-
-                #tech-companies-1 th,
-                #tech-companies-1 td {
-                    padding: 4px 2px !important;
-                    line-height: 1.1;
-                    white-space: normal !important;
-                    word-break: break-word;
-                }
-
-                .card-body {
-                    padding: 0.75rem !important;
-                }
-
-                .table-responsive {
-                    overflow-x: hidden !important;
-                }
+            /* @media (max-width: 1440px) { */
+            #tech-companies-1 {
+                font-size: 12px !important;
+                width: 100% !important;
+                table-layout: auto !important;
             }
+
+            #tech-companies-1 th,
+            #tech-companies-1 td {
+                padding: 4px 2px !important;
+                line-height: 1.1;
+                white-space: normal !important;
+                word-break: break-word;
+            }
+
+            th {
+                /* white-space: nowrap !important; */
+                word-break: keep-all !important;
+                text-align: center !important;
+            }
+
+            .card-body {
+                padding: 0.75rem !important;
+            }
+
+            .table-responsive {
+                overflow-x: hidden !important;
+            }
+
+            /* } */
         </style>
         <div class="row">
             @include('components.inner-menu')
@@ -102,16 +110,20 @@
                                     $ms = '';
                                     switch ($msInt) {
                                         case '1':
-                                            $ms = 'Never Married';
+                                            // $ms = 'Never Married';
+                                            $ms = 'N';
                                             break;
                                         case '2':
-                                            $ms = 'Divorced';
+                                            // $ms = 'Divorced';
+                                            $ms = 'D';
                                             break;
                                         case '3':
-                                            $ms = 'Widow';
+                                            // $ms = 'Widow';
+                                            $ms = 'W';
                                             break;
                                         case '4':
-                                            $ms = 'Separated';
+                                            // $ms = 'Separated';
+                                            $ms = 'S';
                                             break;
                                     }
                                     return $ms;
@@ -122,13 +134,16 @@
                                     $rs_value = '';
                                     switch ($rs) {
                                         case '1':
-                                            $rs_value = 'Indian Citizen';
+                                            // $rs_value = 'Indian Citizen';
+                                            $rs_value = 'I';
                                             break;
                                         case '2':
-                                            $rs_value = 'Temp. Residing Abroad';
+                                            // $rs_value = 'Temp. Residing Abroad';
+                                            $rs_value = 'T';
                                             break;
                                         case '3':
-                                            $rs_value = 'Non Resident Indian';
+                                            // $rs_value = 'Non Resident Indian';
+                                            $rs_value = 'N';
                                             break;
                                     }
                                     return $rs_value;
@@ -145,9 +160,9 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Ref No.</th>
-                                                    <th>Gender</th>
+                                                    <th>G</th>
                                                     <th>Name</th>
-                                                    <th>Born</th>
+                                                    <th class="text-nowrap">Born</th>
                                                     <th>Age</th>
                                                     <th>Ms</th>
                                                     <th>Caste</th>
@@ -159,6 +174,7 @@
                                                     <th>Location</th>
                                                     <th>Occupation</th>
                                                     <th>Rs</th>
+                                                    <th>TL</th>
                                                     <th>TC</th>
                                                     <th>RM</th>
                                                     <th>L_CALL</th>
@@ -179,29 +195,47 @@
                                                                     data-cachekey="{{ $cacheKey }}" data-oc="{{ $data->oc }}"
                                                                     data-ost="{{ $data->ost }}"></div>
                                                         </td>
-                                                        <td><a href="#" class="biodata_modal" data-bs-toggle="modal"
-                                                                data-bs-target="#Modal_biodata"
+                                                        <td style="word-break: keep-all"><a href="#" class="biodata_modal"
+                                                                data-bs-toggle="modal" data-bs-target="#Modal_biodata"
                                                                 data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
                                                         <td>{{ $data->g }}</td>
                                                         <td class="{{ $data->status == 'F' ? 'td-bg-pink' : '' }}">
-                                                            <div>{{ $data->refname }}</div>
+                                                            @php 
+                                                            $textColor = '';
+                                                            
+                                                            if ($data->dtype == 'P' && $data->ost == ''){
+                                                                $textColor = '#090';
+                                                            }elseif($data->dtype == 'P' && $data->ost == 'F'){
+                                                                $textColor = '#93C';
+                                                            }elseif($data->dtype == 'N' && $data->ost == 'F'){
+                                                                $textColor = '#C30';
+                                                            }elseif($data->dtype == 'N' && $data->ost == ''){
+                                                                $textColor = '#000';
+                                                            }elseif($data->dtype == 'P' && $data->ost == 'N'){
+                                                                $textColor = '#F90';
+                                                            }
+                                                            @endphp
+                                                            <div style="color: {{ $textColor }}">{{ $data->refname }}</div>
                                                             {!! $data->vc == 1 ? '<i class="bi bi-vimeo"></i>' : '' !!}
                                                             {!! $data->oc == 1 ? '<i class="text-danger"><strong>O</strong></i>' : '' !!}
                                                         </td>
-                                                        <td>{{ \Carbon\Carbon::parse($data?->bio?->dob)->format('Y') }}</td>
+                                                        <td style="word-break: keep-all">
+                                                            {{ \Carbon\Carbon::parse($data?->bio?->dob)->format('Y') }}
+                                                        </td>
                                                         <td>{{ \Carbon\Carbon::parse($data?->bio?->dob)->age }}</td>
                                                         <td>{{ msValue($data->ms) }}</td>
                                                         <td>{{ $data->cst }}</td>
                                                         <td>{{ $data->hg }}</td>
-                                                        <td>{{ $data?->bio?->astrostatus->label() }}</td>
+                                                        <td>{{ $data?->bio?->astrostatus->label()[0] }}</td>
                                                         <td>{{ $data?->bio?->education->label() }}</td>
                                                         <td>{{ $data->personal->budget }}</td>
                                                         <td>{{ $data?->income?->income }}</td>
                                                         <td>{{ $data->personal->arealocation }}</td>
                                                         <td>{{ $data->occupation?->name }}</td>
                                                         <td>{{ rsValue($data->rs) }}</td>
-                                                        <td>{{ $data->tc }}</td>
-                                                        <td>{{ $data->rm }}</td>
+                                                        <td style="word-break: keep-all">{{ $data->mc }}</td>
+                                                        <td style="word-break: keep-all">{{ $data->tc }}</td>
+                                                        <td style="word-break: keep-all">{{ $data->rm }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}</td>
                                                         <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}</td>

@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Services\CustomerService;
+use App\Services\MiscService;
+use App\Services\SendMailService;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
 
-    private $customerService;
-    public function __construct(CustomerService $customerService)
+    private $customerService, $sendMailService;
+    public function __construct(CustomerService $customerService, SendMailService $sendMailService)
     {
         $this->customerService = $customerService;
+        $this->sendMailService = $sendMailService;
     }
 
     /**
@@ -57,6 +60,7 @@ class FeedbackController extends Controller
             'fstatus.required' => 'Feedback status is required',
             'feedback.required' => 'Feedback Details is required',
         ]);
+        $validated['fby'] = auth()->user()->username;
         $result = $this->customerService->storeFeedback($validated);
         if ($result) {
             return response()->json([
@@ -67,6 +71,17 @@ class FeedbackController extends Controller
         return response()->json([
             'status' => 'error',
             'message' => 'Feedback unable to save',
+        ]);
+    }
+
+    public function getFeedbackModal(Request $request)
+    {
+        $rno = $request->rno;
+        $data['sendMailProposals'] = $this->sendMailService->sendMailProposals($rno, 1);
+        $data['feedbackOptions'] = MiscService::getTableData('feedback_option', ['id', 'feedback']);
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
         ]);
     }
 }

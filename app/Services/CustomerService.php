@@ -260,7 +260,7 @@ class CustomerService
         $filterArray['dtype']  = 'N';
         $filterArray['status'] = 'A';
         $filterArray['ost']    = '';
-        info($filterArray);
+        // info($filterArray);
         return ViewProfile::updateOrCreate(['rno' => $rno], $filterArray);
     }
 
