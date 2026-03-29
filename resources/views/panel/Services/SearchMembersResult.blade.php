@@ -219,6 +219,7 @@
                                                             {!! $data->vc == 1 ? '<i class="bi bi-vimeo"></i>' : '' !!}
                                                             {!! $data->oc == 1 ? '<i class="text-danger"><strong>O</strong></i>' : '' !!}
                                                             {!! strlen($data->bio->dd) > 6 ? '<i class="text-black bi bi-person-wheelchair"></i>' : '' !!}
+                                                            {!! $data->rs > 1 ? '<i class="bi bi-airplane-fill"></i>' : '' !!}
                                                         </td>
                                                         <td style="word-break: keep-all">
                                                             {{ \Carbon\Carbon::parse($data?->bio?->dob)->format('Y') }}

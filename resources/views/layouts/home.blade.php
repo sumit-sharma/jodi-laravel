@@ -176,6 +176,8 @@
         }
 
         $(function () {
+            document.body.setAttribute('data-sidebar-size', 'sm');
+
             $('.select2-tag').select2({
                 tags: true,
                 placeholder: "Select or type to Search",
