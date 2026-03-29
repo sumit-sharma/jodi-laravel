@@ -253,6 +253,12 @@
                                         <label id="childdetails"></label>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td><strong>Extra Info (Personal):</strong></td>
+                                    <td colspan="5"><label id="personaldetails"></label>
+                                    </td>
+                                </tr>
+
                             </tbody>
 
                             <thead class="table-primary">
@@ -298,12 +304,6 @@
                                 <tr>
                                     <td><strong>Family History:</strong></td>
                                     <td colspan="5"><label id="familyhistory"></label>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td><strong>Extra Info (Personal):</strong></td>
-                                    <td colspan="5"><label id="personaldetails"></label>
                                     </td>
 
                                 </tr>
@@ -655,7 +655,7 @@
 
                     item.organisation.forEach(org => {
                         companyhtml += `<tr class="company_row"> <td><strong>Company Name:</strong></td> <td>${org.orgname}</td> <td><strong>Designation:</strong></td> <td>${org.orgdept}</td> <td><strong>Working Year:</strong></td> <td>${org.orgyear}</td>
-                                                                                                                                                                                                                                                                                                                                                                    </tr>`;
+                                                                                                                                                                                                                                                                                                                                                                                </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
