@@ -35,6 +35,16 @@ class MasterController extends Controller
         return response()->json((bool) !$result);
     }
 
+    public function checkMobiles(Request $request): JsonResponse
+    {
+        $customerService = new \App\Services\CustomerService;
+        $result = $customerService->checkMobiles($request->mobiles);
+        return response()->json((bool) $result);
+    }
+
+
+
+
     public function storeCaste(Request $request)
     {
         $request->validate([

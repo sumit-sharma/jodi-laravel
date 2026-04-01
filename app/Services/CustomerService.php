@@ -833,4 +833,46 @@ class CustomerService
             return true;
         });
     }
+
+
+    public function toggleHideMember($rno)
+    {
+        return DB::transaction(function () use ($rno) {
+            $vp = ViewProfile::where('rno', $rno)->first();
+            if ($vp) {
+                if (in_array($vp->dtype, ['N', 'P'])) {
+                    $dt = 'H';
+                    $responseTxt = 'hide';
+                } elseif ($vp->dtype == 'H') {
+                    $dt = 'N';
+                    if (substr($rno, 0, 1) == 4) {
+                        $dt = 'P';
+                    }
+                    $responseTxt = 'unhide';
+                } else {
+                    return 'na';
+                }
+                ViewProfile::where('rno', $rno)->update([
+                    'dtype' => $dt,
+                ]);
+                ProfileBio::where('rno', $rno)->update([
+                    'dtype' => $dt,
+                ]);
+                return $responseTxt;
+            }
+            return false;
+        });
+    }
+
+
+    public function checkMobiles(array $mobiles): bool
+    {
+        $existing = ProfilePersonal::where(function ($q) use ($mobiles) {
+            foreach ($mobiles as $mobile) {
+                $q->orWhere('contactphone', 'like', "%{$mobile}%");
+            }
+        })->pluck('contactphone')->toArray();
+
+        return count($existing) < count($mobiles);
+    }
 }

@@ -558,38 +558,47 @@
 
             $("#newEntry_menu").click(function () {
                 Swal.fire({
-                    title: "Submit Mobile Number",
-                    input: "text",
-                    inputAttributes: {
-                        autocomplete: "off",
-                        maxlength: 10,
-                        inputmode: 'numeric'
-                    },
+                    title: "Submit Mobile Number/s",
+                    html: `<input id="mobile1" class="swal2-input" placeholder="Mobile 1"> <input id="mobile2" class="swal2-input" placeholder="Mobile 2"> <input id="mobile3" class="swal2-input" placeholder="Mobile 3"> `,
                     showCancelButton: true,
-                    confirmButtonText: "Check Mobile",
+                    confirmButtonText: "Check Mobiles",
                     showLoaderOnConfirm: true,
-                    preConfirm: async (mobile) => {
-                        if (!mobile) {
-                            Swal.showValidationMessage('Mobile number is required');
+                    preConfirm: () => {
+                        const m1 = $('#mobile1').val().trim();
+                        const m2 = $('#mobile2').val().trim();
+                        const m3 = $('#mobile3').val().trim();
+
+                        const mobiles = [m1, m2, m3].filter(v => v !== '');
+
+                        if (mobiles.length === 0) {
+                            Swal.showValidationMessage('At least one mobile number is required');
                             return false;
                         }
 
                         const regex = /^\d{10}$/;
 
-                        if (!regex.test(mobile)) {
-                            Swal.showValidationMessage('Invalid mobile number');
+                        // Validate format
+                        for (let m of mobiles) {
+                            if (!regex.test(m)) {
+                                Swal.showValidationMessage(`Invalid mobile: ${m}`);
+                                return false;
+                            }
+                        }
+
+                        // Check duplicate in entered values
+                        if (new Set(mobiles).size !== mobiles.length) {
+                            Swal.showValidationMessage('Duplicate mobile numbers entered');
                             return false;
                         }
 
-                        const checkExistAPI = "{{ route('panel.check-exist') }}";
+
+
+                        const checkExistAPI = "{{ route('panel.check-mobiles') }}";
                         $.ajax({
                             url: checkExistAPI,
                             type: 'POST',
                             data: {
-                                table: 'profile_personal',
-                                whereArray: {
-                                    contactphone: mobile
-                                }
+                                mobiles: mobiles
                             },
                             success: function (response) {
                                 console.log("response", response);
@@ -605,7 +614,7 @@
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Error',
-                                        text: `Phone Number ${mobile} already associated with another client`,
+                                        text: `All Phone Numbers have been already associated with another client`,
                                     });
                                 }
                             },

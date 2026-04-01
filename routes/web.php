@@ -16,6 +16,7 @@ use App\Http\Controllers\Panel\FixMemberController;
 use App\Http\Controllers\Panel\FollowupController;
 use App\Http\Controllers\Panel\FormTransferController;
 use App\Http\Controllers\Panel\FreshCallController;
+use App\Http\Controllers\Panel\HideMemberController;
 use App\Http\Controllers\Panel\HoldMemberController;
 use App\Http\Controllers\Panel\MasterController;
 use App\Http\Controllers\Panel\MatchController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Termwind\Components\Raw;
 
 Route::middleware("guest")->group(function () {
     Route::get("/login", [AuthController::class, "showLogin"])->name("login");
@@ -102,6 +104,7 @@ Route::middleware("auth")->group(function () {
         });
 
         Route::any('/check-exist', [MasterController::class, 'checkExists'])->name('panel.check-exist');
+        Route::post('/check-mobiles', [MasterController::class, 'checkMobiles'])->name('panel.check-mobiles');
         Route::get('/get-active-employee', [MasterController::class, 'getActiveEmployee'])->name('panel.get-active-employee');
         Route::get('/change-password', [MasterController::class, 'changePassword'])->name('change-password');
         Route::post('/change-password', [MasterController::class, 'changePasswordStore'])->name('panel.change-password');
@@ -176,7 +179,9 @@ Route::middleware("auth")->group(function () {
     Route::get('/check-hold-member/{rno}', [HoldMemberController::class, 'checkHoldMember'])->name('check-hold-member');
     Route::get('/show-all-hold-records', [HoldMemberController::class, 'showAllHoldRecords'])->name('show-all-hold-records');
 
-
+    Route::get('/hide-member-list', [HideMemberController::class, 'index'])->name('hide-member.index');
+    Route::put('/toggle-hide-member/{rno}', [HideMemberController::class, 'update'])->name('toggle-hide-member');
+    Route::get('/check-hide-status/{rno}', [HideMemberController::class, 'show'])->name('check-hide-status');
 
     Route::get('/fetch-tctlrm-member/{rno}', [CustomerController::class, 'fetchTctlrmMember'])->name('fetch-tctlrm-member');
     Route::post('/edit-tctlrm-member', [CustomerController::class, 'editTctlrmMember'])->name('edit-tctlrm-member');

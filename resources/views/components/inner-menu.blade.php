@@ -17,6 +17,8 @@
                                     >
 
 
+                                    {{-- <a href="javascript:;" class="dropdown-item" id="btnToggleHide"
+                                        data-key="t-chat">Hide/Unhide Member </a> --}}
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                         id="modl_delete_member" data-key="DeleteMemberModal">Delete Member </a>
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal"
@@ -986,6 +988,83 @@
                         });
                     }
                 })
+            });
+
+
+            $("#btnToggleHide").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+
+                fetch('{{ route("check-hide-status", ["rno" => ":rno"]) }}'.replace(':rno', selected_rno))
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("data", data);
+                        if (data.status === 'success') {
+                            selected_hide = data.data.dtype;
+
+                            if (data.data.text == 'na') {
+                                toastr.error("Not eligible for hide/unhide operation");
+                                return;
+                            }
+
+                            var txtMsh = `Are you sure to ${data.data.text} member ?`;
+                            var title = selected_rno + " - " + selected_refname
+
+                            Swal.fire({
+                                title: title,
+                                text: txtMsh,
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, do it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var url = "{{ route('toggle-hide-member', ['rno' => ':rno']) }}";
+                                    url = url.replace(':rno', selected_rno);
+                                    $.ajax({
+                                        url: url,
+                                        type: "PUT",
+                                        success: function (response) {
+                                            if (response.status === 'success') {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Success',
+                                                    text: response.message,
+                                                }).then((result) => {
+                                                    cacheClear(cacheKey);
+                                                    window.location.reload();
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: 'Error',
+                                                    text: response.message,
+                                                });
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: xhr.responseJSON.message,
+                                            });
+                                        }
+                                    });
+
+
+                                }
+                            })
+
+
+                        }
+                    });
+
+                return false;
+
+
             });
 
 
