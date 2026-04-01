@@ -144,7 +144,7 @@ class CustomerController extends Controller
             return redirect()->route('search-data', ['searchinfield' => 'rno', 'searchvalue' => $rno])->with('success', 'Profile has been updated successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
-            // dd($th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile());
+            info($th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile());
             return back()->with('error', $th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile());
         }
     }

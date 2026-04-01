@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('cst', 100)->default('');
             $table->integer('hg')->nullable();
             $table->string('hghtft', 20)->nullable();
-            $table->string('wt', 3)->default('');
+            $table->string('wt', 3)->default('')->nullable();
             $table->string('eh', 2)->default('');
             $table->string('ast', 2)->default('');
             $table->string('ed', 2)->default('');
