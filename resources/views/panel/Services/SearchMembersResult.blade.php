@@ -97,8 +97,7 @@
                             </div>
                             <div class="col-md-2 text-right" style="text-align: right;">
                                 <div class="mb-4">
-                                    <button type="button" class="btn btn-secondary">Total Record -
-                                        {{ $total }}</button>
+                                    <button type="button" class="btn btn-secondary">Showing <span id="loaded-count">{{ $results->count() }}</span> of {{ $total }}</button>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -277,6 +276,7 @@
         var isLoading = false;
         var hasMorePages = {{ $results->hasMorePages() ? 'true' : 'false' }};
         var inputData = @json($inputdata);
+        var totalLoaded = {{ $results->count() }};
 
         $(function () {
             // Row selection logic
@@ -311,30 +311,35 @@
             });
             let scrollTimeout;
 
-            // Infinite Scroll logic
+            // Proactive Infinite Scroll logic
             $(window).on('scroll', function () {
-                // if ($(window).scrollTop() + $(window).height() >= $(document).height() - 700) {
-                //     if (!isLoading && hasMorePages) {
-                //         loadMoreResults();
-                //     }
-                // }
                 clearTimeout(scrollTimeout);
-
-                scrollTimeout = setTimeout(function () {
-
-                    let scrollPosition = $(window).scrollTop() + $(window).height();
-                    let triggerPoint = $(document).height() * 0.4; // 40%
-                    if (scrollPosition >= triggerPoint) {
-                        if (!isLoading && hasMorePages) {
-                            loadMoreResults();
-                        }
-                    }
-                }, 120);
+                scrollTimeout = setTimeout(checkAndLoadMore, 100);
             });
 
+            // Start auto-loading all data on page load
+            if (hasMorePages) {
+                setTimeout(loadMoreResults, 1000);
+            }
+
+            function checkAndLoadMore() {
+                if (isLoading || !hasMorePages) return;
+
+                let scrollPosition = $(window).scrollTop() + $(window).height();
+                let docHeight = $(document).height();
+                
+                // Trigger when user has scrolled 40% through the current content
+                let triggerPoint = docHeight * 0.4; 
+
+                if (scrollPosition >= triggerPoint) {
+                    loadMoreResults();
+                }
+            }
+
             function loadMoreResults() {
+                if (isLoading || !hasMorePages) return;
+                
                 isLoading = true;
-                // currentPage++;
                 $('#loading-indicator').show();
 
                 $.ajax({
@@ -348,12 +353,23 @@
                         if (response.html.trim() === "") {
                             hasMorePages = false;
                         } else {
-                            $('#results-container').append(response.html);
+                            let $newRows = $(response.html);
+                            $('#results-container').append($newRows);
                             nextCursor = response.next_cursor;
                             hasMorePages = response.hasMorePages;
+                            
+                            // Update counter
+                            totalLoaded += $newRows.filter('tr').length;
+                            $('#loaded-count').text(totalLoaded);
+
                             // Re-initialize feather icons for new rows
                             if (typeof feather !== 'undefined') {
                                 feather.replace();
+                            }
+
+                            // AUTO LOAD MORE: Continue loading until all data is fetched
+                            if (hasMorePages) {
+                                setTimeout(loadMoreResults, 500); 
                             }
                         }
                         isLoading = false;
