@@ -133,13 +133,30 @@
             return dayjs(date).format(format);
         }
 
+        $(document).ready(function () {
+            // Save jQuery UI datepicker
+            // var uiDatepicker = $.fn.datepicker;
+
+            // // Init all datepickers dynamically
+            // $(".js-date").each(function () {
+            //     let format = $(this).data("date-format") || "yy-mm-dd";
+
+            //     uiDatepicker.call($(this), {
+            //         dateFormat: format,
+            //         changeMonth: true,
+            //         changeYear: true
+
+            //     });
+            // });
+
+        });
     </script>
 
     @yield('footer-script')
 
     <!--     timepicker -->
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" /> --}}
 
 
     <x-toast />
@@ -187,7 +204,8 @@
             $('.select2-notag').select2({
                 placeholder: "Select or type to Search",
                 allowClear: true,
-            })
+            });
+
         });
     </script>
 
@@ -554,6 +572,30 @@
                 });
 
 
+            });
+
+            $("#btnShowFinRep").click(function () {
+                // $("#finStartDate").datepicker({
+                //     changeMonth: true,
+                //     changeYear: true
+                // });
+                // $("#finEndDate").datepicker({
+                //     changeMonth: true,
+                //     changeYear: true
+                // });
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    $('#frmShowFinanceReportModal #finance_report_tc').html(options).select2({
+                        dropdownParent: $('#showFinanceReportModal'),
+                        placeholder: "Select or type to search",
+                        allowClear: true
+                    });
+
+                });
             });
 
             $("#newEntry_menu").click(function () {

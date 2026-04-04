@@ -1,0 +1,61 @@
+1	Change Date Calender: design change
+2	Change Time Picker to manual: design change
+3	Weight till 30, blank after that : fix
+4	Add Caste : Can be added
+5	BS error on add fresh data: fixed
+6	change profile detail modal change
+7	fix pdf-1 download error: Done
+8	change pdf footer : fixed
+9	change pdf header : design change
+10	show image : fixed
+
+
+11      In new entry page, "update all information" button submit form => User need to manually switch tabs to update other details. 
+12      weight , religion,caste - is not showing on profile modal: fixed
+13      Check mobile number before creating a new account: fixed
+14      Save Interaction is not working: fixed
+15      Chnage Customer into client in breadcrumb of interaction listing page : fixed
+16      Edit profile: Need blank weight option: fixed
+
+
+17      Followup me shift karne par time aur date aani chahiye... record ke liye: fixed
+12      edit profile is not viewing: design change
+19      PDF me bhi Education me Post Graduation aana chahiye, Occupation, Income (P.A) also missing in pdf
+20      isme Extra Info (Personal Wali) -- family details ke sath a rahi hai... humare PDF me candidate ki qualification aur occupation ke bich me aati thi: design discussion
+21      View more info need label only page: fixed
+
+==========================
+TC 1034 show ho rha hai
+TL ka usme option nahi hai
+RM blank show ho rha hai
+
+
+
+
+1. PIC-1: =>  screen ka size wesa he hai sir abhi...  edit karne k liye drag karna pad rha hai
+2. PIC-2: => ye personal info wala... candidate wale me add karna hai sir... family wale me nahi chahiye ye wala
+3. pic-3: => ye hold release krne ape ese kyu aa rha hai
+4. video-1 => ye itna le rha hai hold or active par click karne pas => fixed
+5. sare member black me hi hai in search result => fixed
+6. pic-4 :=>fixed par click kiya to sb black aa rha hai color change ho jaye taki pta rhe ki fixed hai => fixed
+
+
+
+
+===============================================================================
+1. Add Feedback form => fixed
+2. Client Name color as per paid, allocated or set free => fixed
+3. Disabled data => fixed
+4. Add Plane icon on NRI => fixed
+5. Show Hidden members and add option to show/hide => Need discussion
+6. Show all non-photo members in menu 
+7. Birthday, events and other notifications (Transfer, feedback)
+8. Online data
+9. Report=> Convert History
+
+
+
+
+
+
+

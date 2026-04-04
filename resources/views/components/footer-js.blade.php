@@ -164,6 +164,9 @@
 <script src="/assets/libs/node-waves/waves.min.js"></script>
 <script src="/assets/libs/feather-icons/feather.min.js"></script>
 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
+
 
 <!-- pace js -->
 {{--

@@ -358,8 +358,13 @@
                                     data-bs-target="#showDailyReportModal" key="t-products">Daily Report</a></li>
                         @endcan
                         @can('Finance Report')
-                            <li><a href="{{ route('reports.finance-report') }}" data-key="t-product-detail">Finance
-                                    Report</a></li>
+                            {{-- <li><a href="{{ route('reports.finance-report') }}" data-key="t-product-detail">Finance
+                                    Report</a></li> --}}
+
+                            <li><a href="javascript:;" id="btnShowFinRep" data-bs-toggle="modal"
+                                    data-bs-target="#showFinanceReportModal" key="t-products">Finance Report</a></li>
+
+
                         @endcan
                         <li><a href="{{ route('reports.meeting-report') }}" key="t-products">Meetings Report</a></li>
                         @can('Edit Log Report')
@@ -454,3 +459,4 @@
 @include('components.direct-meeting-modal')
 @include('components.add-attendance-modal')
 @include('components.daily-report-modal')
+@include('components.finance-report-modal')
