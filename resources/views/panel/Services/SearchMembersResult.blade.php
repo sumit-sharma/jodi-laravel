@@ -98,59 +98,12 @@
                             <div class="col-md-2 text-right" style="text-align: right;">
                                 <div class="mb-4">
                                     <button type="button" class="btn btn-secondary">Total Record -
-                                        {{ $results->total() }}</button>
+                                        {{ $total }}</button>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
 
                             {{-- @dump($results) --}}
-                            @php
-                                function msValue($msInt)
-                                {
-                                    $ms = '';
-                                    switch ($msInt) {
-                                        case '1':
-                                            // $ms = 'Never Married';
-                                            $ms = 'N';
-                                            break;
-                                        case '2':
-                                            // $ms = 'Divorced';
-                                            $ms = 'D';
-                                            break;
-                                        case '3':
-                                            // $ms = 'Widow';
-                                            $ms = 'W';
-                                            break;
-                                        case '4':
-                                            // $ms = 'Separated';
-                                            $ms = 'S';
-                                            break;
-                                    }
-                                    return $ms;
-                                }
-
-                                function rsValue($rs)
-                                {
-                                    $rs_value = '';
-                                    switch ($rs) {
-                                        case '1':
-                                            // $rs_value = 'Indian Citizen';
-                                            $rs_value = 'I';
-                                            break;
-                                        case '2':
-                                            // $rs_value = 'Temp. Residing Abroad';
-                                            $rs_value = 'T';
-                                            break;
-                                        case '3':
-                                            // $rs_value = 'Non Resident Indian';
-                                            $rs_value = 'N';
-                                            break;
-                                    }
-                                    return $rs_value;
-                                }
-
-                            @endphp
-
                             <div class="col-md-12">
                                 <div class="table-rep-plugin">
                                     <div class="{!! $results->count() > 0 ? 'table-responsive' : '' !!} mb-0"
@@ -185,93 +138,16 @@
                                                 </tr>
                                             </thead>
 
-                                            <tbody class="">
-                                                @foreach ($results as $data)
-                                                    <tr data-rno="{{ $data->rno }}">
-                                                        <td>
-                                                            <div class="form-check"><input class="form-check-input chkrno"
-                                                                    type="radio" name="formRadios" data-vc="{{ $data->vc }}"
-                                                                    data-refname="{{ $data->refname }}" value="{{ $data->rno }}"
-                                                                    data-cachekey="{{ $cacheKey }}" data-oc="{{ $data->oc }}"
-                                                                    data-ost="{{ $data->ost }}"></div>
-                                                        </td>
-                                                        <td style="word-break: keep-all"><a href="#" class="biodata_modal"
-                                                                data-bs-toggle="modal" data-bs-target="#Modal_biodata"
-                                                                data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
-                                                        <td>{{ $data->g }}</td>
-                                                        <td class="{{ $data->status == 'F' ? 'td-bg-pink' : '' }}">
-                                                            @php 
-                                                            $textColor = '';
-                                                            
-                                                            if ($data->dtype == 'P' && $data->ost == ''){
-                                                                $textColor = '#090';
-                                                            }elseif($data->dtype == 'P' && $data->ost == 'F'){
-                                                                $textColor = '#93C';
-                                                            }elseif($data->dtype == 'N' && $data->ost == 'F'){
-                                                                $textColor = '#C30';
-                                                            }elseif($data->dtype == 'N' && $data->ost == ''){
-                                                                $textColor = '#000';
-                                                            }elseif($data->dtype == 'P' && $data->ost == 'N'){
-                                                                $textColor = '#F90';
-                                                            }
-                                                            @endphp
-                                                            <div style="color: {{ $textColor }}">{{ $data->refname }}</div>
-                                                            {!! $data->vc == 1 ? '<i class="bi bi-vimeo"></i>' : '' !!}
-                                                            {!! $data->oc == 1 ? '<i class="text-danger"><strong>O</strong></i>' : '' !!}
-                                                            {!! strlen($data->bio->dd) > 6 ? '<i class="text-black bi bi-person-wheelchair"></i>' : '' !!}
-                                                            {!! $data->rs > 1 ? '<i class="bi bi-airplane-fill"></i>' : '' !!}
-                                                        </td>
-                                                        <td style="word-break: keep-all">
-                                                            {{ \Carbon\Carbon::parse($data?->bio?->dob)->format('Y') }}
-                                                        </td>
-                                                        <td>{{ \Carbon\Carbon::parse($data?->bio?->dob)->age }}</td>
-                                                        <td>{{ msValue($data->ms) }}</td>
-                                                        <td>{{ $data->cst }}</td>
-                                                        <td>{{ $data->hg }}</td>
-                                                        <td>{{ $data?->bio?->astrostatus->label()[0] }}</td>
-                                                        <td>{{ $data?->bio?->education->label() }}</td>
-                                                        <td>{{ $data->personal->budget }}</td>
-                                                        <td>{{ $data?->income?->income }}</td>
-                                                        <td>{{ $data->personal->arealocation }}</td>
-                                                        <td>{{ $data->occupation?->name }}</td>
-                                                        <td>{{ rsValue($data->rs) }}</td>
-                                                        <td style="word-break: keep-all">{{ $data->mc }}</td>
-                                                        <td style="word-break: keep-all">{{ $data->tc }}</td>
-                                                        <td style="word-break: keep-all">{{ $data->rm }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mail)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->last_mtng)->format('M d Y') }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data?->bio?->profiledate)->format('M d Y') }}
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group me-1 mt-2">
-                                                                <span class="dropdown-toggle  dropstart dropdown-toggle-split"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    <i data-feather="more-vertical"></i>
-                                                                </span>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item"
-                                                                        href="{{ route('customer.edit', ['customer' => $data->rno]) }}"
-                                                                        target="_blank">Edit
-                                                                        Profile</a>
-                                                                    <a class="dropdown-item"
-                                                                        href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}"
-                                                                        target="_blank">Upload
-                                                                        Photo</a>
-                                                                    {{-- <a class="dropdown-item" href="#"
-                                                                        target="_blank">Update
-                                                                        Finance</a> --}}
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-
+                                            <tbody id="results-container">
+                                                @include('panel.Services.partials._search_results_rows', ['results' => $results, 'cacheKey' => $cacheKey])
                                             </tbody>
-                                            <tfoot>
-                                            </tfoot>
                                         </table>
-                                        {{ $results->withQueryString()->links() }}
+
+                                        <div id="loading-indicator" class="text-center my-3" style="display: none;">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     @include('components.biodata_modal')
@@ -397,15 +273,14 @@
 
 
     <script>
-        var selected_rno = "";
-        var selected_refname = "";
-        var selected_vc = "";
-        var selected_oc = "";
-        var cacheKey = "";
-        var selected_ost = "";
+        var nextCursor = @json($results->nextCursor() ? $results->nextCursor()->encode() : null);
+        var isLoading = false;
+        var hasMorePages = {{ $results->hasMorePages() ? 'true' : 'false' }};
+        var inputData = @json($inputdata);
 
         $(function () {
-            $('.chkrno').on('change', function () {
+            // Row selection logic
+            $(document).on('change', '.chkrno', function () {
                 rno = $(this).val()
                 refname = $(this).data('refname');
                 vc = $(this).data('vc');
@@ -417,6 +292,7 @@
                 selected_oc = oc;
                 cacheKey = $(this).data('cachekey');
             });
+
             $('#searchFilterBtn').on('click', function () {
                 let search_term = $("#searchFilterText").val();
                 if (search_term.trim() == "") {
@@ -433,6 +309,62 @@
                     $('#searchFilterBtn').click();
                 }
             });
+            let scrollTimeout;
+
+            // Infinite Scroll logic
+            $(window).on('scroll', function () {
+                // if ($(window).scrollTop() + $(window).height() >= $(document).height() - 700) {
+                //     if (!isLoading && hasMorePages) {
+                //         loadMoreResults();
+                //     }
+                // }
+                clearTimeout(scrollTimeout);
+
+                scrollTimeout = setTimeout(function () {
+
+                    let scrollPosition = $(window).scrollTop() + $(window).height();
+                    let triggerPoint = $(document).height() * 0.4; // 40%
+                    if (scrollPosition >= triggerPoint) {
+                        if (!isLoading && hasMorePages) {
+                            loadMoreResults();
+                        }
+                    }
+                }, 120);
+            });
+
+            function loadMoreResults() {
+                isLoading = true;
+                // currentPage++;
+                $('#loading-indicator').show();
+
+                $.ajax({
+                    url: "{{ route('search-data') }}",
+                    type: 'GET',
+                    data: {
+                        ...inputData,
+                        cursor: nextCursor
+                    },
+                    success: function (response) {
+                        if (response.html.trim() === "") {
+                            hasMorePages = false;
+                        } else {
+                            $('#results-container').append(response.html);
+                            nextCursor = response.next_cursor;
+                            hasMorePages = response.hasMorePages;
+                            // Re-initialize feather icons for new rows
+                            if (typeof feather !== 'undefined') {
+                                feather.replace();
+                            }
+                        }
+                        isLoading = false;
+                        $('#loading-indicator').hide();
+                    },
+                    error: function () {
+                        isLoading = false;
+                        $('#loading-indicator').hide();
+                    }
+                });
+            }
         });
     </script>
 

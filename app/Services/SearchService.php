@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class SearchService
 {
-    public function search(array $input, int $perPage = 20,  int $page = 1)
+    public function search(array $input, int $perPage = 20, $cursor = null)
     {
         $searchField  = $input['searchinfield'];
         $searchValue  = trim($input['searchvalue']);
@@ -25,7 +25,7 @@ class SearchService
         $ms           = $input['ms'] ?? '';
         $searchterm  = $input['searchterm'] ?? '';
 
-        $cacheKey = 'search_results_' . md5(json_encode(['searchField' => $searchField, 'searchValue' => $searchValue, 'searchterm' => $searchterm, 'g' => $gender, 'fromAge' => $fromAge, 'toAge' => $toAge, 'ast' => $ast, 'arealocation' => $arealocation, 'ms' => $ms, 'dtype' => $dtype, 'status' => $status, 'page'  => $page, 'perPage' => $perPage]));
+        $cacheKey = 'search_results_' . md5(json_encode(['searchField' => $searchField, 'searchValue' => $searchValue, 'searchterm' => $searchterm, 'g' => $gender, 'fromAge' => $fromAge, 'toAge' => $toAge, 'ast' => $ast, 'arealocation' => $arealocation, 'ms' => $ms, 'dtype' => $dtype, 'status' => $status, 'cursor'  => $cursor, 'perPage' => $perPage]));
 
         if ($searchField === 'dob') {
             $searchValue = date('Y-m-d', strtotime(str_replace('/', '-', $searchValue)));
@@ -187,12 +187,20 @@ class SearchService
         // Sort latest profiles first
         $query->orderByDesc('id');
 
-        $resultData = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($query, $perPage, $page) {
-            // Return paginated result
-            return $query->paginate($perPage, ['*'], 'page', $page)->withQueryString();
+        $totalCacheKey = str_replace('search_results_', 'search_total_', $cacheKey);
+        // Remove cursor and page from total cache key to share count across pages
+        $totalCacheKey = preg_replace('/_cursor.*?(_|$)/', '_', $totalCacheKey);
+        
+        $total = Cache::remember($totalCacheKey, now()->addMinutes(30), function () use ($query) {
+            return $query->count();
         });
 
-        return ['resultData' => $resultData, 'cacheKey' => $cacheKey];
+        $resultData = Cache::remember($cacheKey, now()->addMinutes(30), function () use ($query, $perPage, $cursor) {
+            // Return cursor paginated result
+            return $query->cursorPaginate($perPage, ['*'], 'cursor', $cursor)->withQueryString();
+        });
+
+        return ['resultData' => $resultData, 'cacheKey' => $cacheKey, 'total' => $total];
     }
 
     public static function get_zonedetail($searchValue)

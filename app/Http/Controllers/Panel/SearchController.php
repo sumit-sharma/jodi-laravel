@@ -31,19 +31,29 @@ class SearchController extends Controller
             unset($data['_token']);
             $response = $this->searchService->search(
                 $data,
-                $request->get('per_page', 20),
-                $request->get('page', 1)
+                $request->get('per_page', 500),
+                $request->get('cursor')
             );
 
             $results = $response['resultData'];
             $cacheKey = $response['cacheKey'];
+            $total = $response['total'];
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'html' => view('panel.Services.partials._search_results_rows', compact('results', 'cacheKey'))->render(),
+                    'next_cursor' => $results->nextCursor() ? $results->nextCursor()->encode() : null,
+                    'hasMorePages' => $results->hasMorePages(),
+                ]);
+            }
+
             if ($request->expectsJson()) {
                 return response()->json($results);
             }
 
             $searchLog = $this->searchService->saveSearchLog($data);
             $inputdata = $data;
-            return view('panel.Services.SearchMembersResult', compact('results', 'inputdata', 'cacheKey'));
+            return view('panel.Services.SearchMembersResult', compact('results', 'inputdata', 'cacheKey', 'total'));
         } catch (\Throwable $th) {
             //throw $th;
             return $th;
