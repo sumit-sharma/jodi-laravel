@@ -845,7 +845,7 @@ class CustomerService
                     $responseTxt = 'hide';
                 } elseif ($vp->dtype == 'H') {
                     $dt = 'N';
-                    if (substr($rno, 0, 1) == 4) {
+                    if (substr($rno, 0, 1) == 4 || substr($rno, 0, 1) == 5) {
                         $dt = 'P';
                     }
                     $responseTxt = 'unhide';
