@@ -99,11 +99,9 @@
         <td>{{ \Carbon\Carbon::parse($data?->bio?->profiledate)->format('M d Y') }}
         </td>
         <td>
-            <div class="btn-group me-1 mt-2">
-                <span class="dropdown-toggle  dropstart dropdown-toggle-split"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i data-feather="more-vertical"></i>
-                </span>
+            <div class="btn-group dropstart me-1 mt-2">
+                <span class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i data-feather="more-vertical"></i></span>
                 <div class="dropdown-menu">
                     <a class="dropdown-item"
                         href="{{ route('customer.edit', ['customer' => $data->rno]) }}"
