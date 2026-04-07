@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum SmokingHabitEnum:int
+enum SmokingHabitEnum: int
 {
     case NA = 0;
     case NonSmoker = 1;
@@ -17,7 +17,7 @@ enum SmokingHabitEnum:int
             self::NonSmoker => 'Non Smoker',
             self::Smoker => 'Smoker',
             self::DontKnow => "Don't Know",
-            self::Occasionally => "Occasionally",
+            self::Occasionally => "Smoke Occasionally",
         };
     }
 }

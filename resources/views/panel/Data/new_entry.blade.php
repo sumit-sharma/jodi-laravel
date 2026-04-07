@@ -162,7 +162,7 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="row mb-2 row-cols-5"">
-                                                                                                                                                                                                                                                                                                                                                                                                    <div class="
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="
                                             col mb-2">
                                             <label class="form-label">Religion:</label>
                                             <select id="religion" name="religion" class="form-select">
@@ -288,6 +288,7 @@
                                             <select name="smokinghabit" id="smokinghabit" class="form-select">
                                                 <option value="1" selected>Non Smoker</option>
                                                 <option value="2">Smoker</option>
+                                                <option value="4">Smoke Occasionally</option>
                                                 <option value="3">Don't Know</option>
                                             </select>
                                         </div>
@@ -791,9 +792,22 @@
                                 </div>
                             </div>
                     </div>
-
+                    <div class="row mb-2">
+                        <div class="col-lg-3 col-12 mb-2">
+                            <label for="" class="form-label">Account type</label>
+                            <select name="datastatus" id="datastatus" style="width:180px" class="form-select">
+                                <option value="0" selected>Normal Data</option>
+                                @can('hide member')
+                                    <option value="1">Hidden Data</option>
+                                @endcan
+                                @can('Create Online Data')
+                                    <option value="2">Online Data</option>
+                                @endcan
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-lg-12 col-md-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg waves-effect waves-light mb-3">UPDATE ALL
+                        <button type="submit" class="btn btn-primary btn-lg waves-effect waves-light mb-3">SAVE ALL
                             INFORMATIONS</button>
                         &nbsp; &nbsp;
                         {{-- <button type="button" class="btn bg-success btn-lg waves-effect waves-light mb-3">EDIT

@@ -264,6 +264,8 @@ class CustomerService
         return ViewProfile::updateOrCreate(['rno' => $rno], $filterArray);
     }
 
+
+
     public function getSnaps($rno)
     {
         return Snap::where('rno', $rno)->OrderBy('sorting', 'asc')->get();
@@ -837,32 +839,39 @@ class CustomerService
 
     public function toggleHideMember($rno)
     {
-        return DB::transaction(function () use ($rno) {
-            $vp = ViewProfile::where('rno', $rno)->first();
-            if ($vp) {
-                if (in_array($vp->dtype, ['N', 'P'])) {
-                    $dt = 'H';
-                    $responseTxt = 'hide';
-                } elseif ($vp->dtype == 'H') {
-                    $dt = 'N';
-                    if (substr($rno, 0, 1) == 4 || substr($rno, 0, 1) == 5) {
-                        $dt = 'P';
-                    }
-                    $responseTxt = 'unhide';
-                } else {
-                    return 'na';
+        $vp = ViewProfile::where('rno', $rno)->first();
+        if ($vp) {
+            if (in_array($vp->dtype, ['N', 'P'])) {
+                $dt = 'H';
+                $responseTxt = 'hide';
+            } elseif ($vp->dtype == 'H') {
+                $dt = 'N';
+                if (substr($rno, 0, 1) == 4 || substr($rno, 0, 1) == 5) {
+                    $dt = 'P';
                 }
-                ViewProfile::where('rno', $rno)->update([
-                    'dtype' => $dt,
-                ]);
-                ProfileBio::where('rno', $rno)->update([
-                    'dtype' => $dt,
-                ]);
-                return $responseTxt;
+                $responseTxt = 'unhide';
+            } else {
+                return 'na';
             }
-            return false;
+
+            $this->setDtypeStatus($rno, $dt);
+            return $responseTxt;
+        }
+        return false;
+    }
+
+    public function setDtypeStatus($rno, $dt)
+    {
+        return DB::transaction(function () use ($rno, $dt) {
+            ViewProfile::where('rno', $rno)->update([
+                'dtype' => $dt,
+            ]);
+            ProfileBio::where('rno', $rno)->update([
+                'dtype' => $dt,
+            ]);
         });
     }
+
 
 
     public function checkMobiles(array $mobiles): bool

@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\EmpDetail;
 use App\Models\Followup;
+use App\Models\FollowupAutolog;
+use App\Models\FollowupLog;
 use App\Models\Prospective;
 use App\Models\User;
 use App\Models\ViewProfile;
@@ -57,6 +59,13 @@ class FollowupService
             $rno = $data['rno'];
             unset($data['rno']);
             $status = Followup::updateOrCreate(['rno' => $rno], $data);
+            FollowupLog::create([
+                'rno' => $rno,
+                'd_to' => $data['empid'],
+                'd_by' => auth()->user()->username,
+                'dated' => $data['dated'],
+                'time' => now()->format('H:i:s')
+            ]);
             ViewProfile::where('rno', $rno)->update(['ost' => 'F', 'tc' => $data['empid']]);
             return $status;
         });

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -20,22 +21,11 @@ class RolePermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
 
-        $results = DB::select('select * from old_jodi.permission');
-        foreach ($results as $result) {
-            echo nl2br($result->permission . "\n");
-            Permission::updateOrCreate([
-                'name' => $result->permission,
-            ], [
-                'guard_name' => 'web',
-            ]);
-            // $empIds = explode(',', $result->empid);
-            // foreach ($empIds as $empId) {
-            //     $user = User::where('username', $empId)->first();
-            //     if ($user) {
-            //         $user->assignRole($result->permission);
-            //     }
-            // }
-        }
+        $results       = DB::select('select permission from old_jodi.permission');
+        $permissions   = Arr::pluck($results, 'permission');
+        $permissions[] = 'Create Online Data';
+
+        $this->savePermissions($permissions);
 
         // Create roles and assign permissions
 
@@ -46,5 +36,16 @@ class RolePermissionSeeder extends Seeder
         // Admin - has all permissions
         $admin = Role::create(['name' => 'admin']);
         $admin->givePermissionTo(Permission::all());
+    }
+
+    private function savePermissions(array $permissions, $guard = 'web')
+    {
+        foreach ($permissions as $permission) {
+            Permission::updateOrCreate([
+                'name' => $permission,
+            ], [
+                'guard_name' => $guard,
+            ]);
+        }
     }
 }

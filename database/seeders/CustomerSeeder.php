@@ -131,5 +131,8 @@ class CustomerSeeder extends Seeder
         DB::statement("insert ignore into jodi_laravel.bs_log (rno, bsname, bs, bsage, bsmarriage, bsdetails, dated, time, empid, created_at, updated_at) SELECT li.rno, li.bsname, li.bs, li.bsage, li.bsmarriage, li.bsdetails, li.dated, li.time, li.empid, NOW(), NOW() FROM old_jodi.bs_log as li");
         echo nl2br("finish bs_log import\n");
          */
+
+
+        DB::statement("insert ignore into jodi_laravel.followup_log (rno, d_to, d_by, dated, time) SELECT li.rno, li.d_to, li.d_by, li.dated, li.time FROM old_jodi.followup_log as li");
     }
 }

@@ -8,6 +8,7 @@ use App\Models\CounterNumber;
 use App\Models\ProfileMoreInfo;
 use App\Models\ViewProfile;
 use App\Services\CustomerService;
+use App\Services\FollowupService;
 use App\Services\MiscService;
 use App\Services\SearchService;
 use FontLib\Table\Type\name;
@@ -75,7 +76,7 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, FollowupService $followUpService)
     {
         try {
             DB::beginTransaction();
@@ -88,6 +89,26 @@ class CustomerController extends Controller
             $profileOrganisation = $this->customerService->saveProfileOrganisation($rno, $data);
             $profileBS           = $this->customerService->saveProfileBS($rno, $data);
             $ViewProfile         = $this->customerService->saveViewProfile($rno, $data);
+
+            if ($request->datastatus == 1) {
+                $this->customerService->setDtypeStatus($rno, 'H');
+            } elseif ($request->datastatus == 2) {
+                $this->customerService->setDtypeStatus($rno, 'O');
+            } elseif ($request->datastatus == 0) {
+                $assignto = DB::table('refer as r')
+                    ->join('profile_bio as p', 'p.rfno', '=', 'r.rno')
+                    ->where('p.rno', $rno)
+                    ->orderByDesc('r.rno')
+                    ->value('r.assignto');
+
+                if ($assignto && is_numeric($assignto) && strlen($assignto)) {
+                    $checklimit = $followUpService->checkLimit($assignto);
+                    if ($checklimit) {
+                        $followUpService->store(['empid' => $assignto, 'rno' => $rno]);
+                    }
+                }
+            }
+
             DB::commit();
             return redirect()->route('search-data', ['searchinfield' => 'rno', 'searchvalue' => $rno])->with('success', 'Profile has been created with Reference Number:' . $rno . ' successfully');
         } catch (\Throwable $th) {
