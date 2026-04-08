@@ -640,7 +640,7 @@
                             education = "Doctorate"
                             break;
                     }
-                    let eduHtml = `<tr><td><strong>Education:</strong></td><td colspan="5">${education}</td></tr>`;
+                    let eduHtml = `<tr><td><strong>Education:</strong></td><td colspan="5" class="text-start">${education}</td></tr>`;
                     item.education.forEach(ed => {
                         eduHtml += `<tr> <td><strong>Name of Course:</strong></td> <td><label class="educourse">${ed.educourse}</label></td> <td><strong>Institution:</strong></td> <td><label class="eduinst">${ed.eduinst}</label></td> <td><strong>Year:</strong></td> <td><label class="eduyear">${ed.eduyear}</label></td> </tr>`;
                     });
@@ -655,7 +655,7 @@
 
                     item.organisation.forEach(org => {
                         companyhtml += `<tr class="company_row"> <td><strong>Company Name:</strong></td> <td>${org.orgname}</td> <td><strong>Designation:</strong></td> <td>${org.orgdept}</td> <td><strong>Working Year:</strong></td> <td>${org.orgyear}</td>
-                                                                                                                                                                                                                                                                                                                                                                                </tr>`;
+                                                                                                                                                                                                                                                                                                                                                                                            </tr>`;
                     });
                     $("#Modal_biodata #tbody_organistion").append(companyhtml)
 
