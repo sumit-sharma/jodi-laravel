@@ -245,7 +245,8 @@ class CustomerController extends Controller
         $data['bio']       = MiscService::getTableData('profile_bio', ['rno', 'refname'], 'rno', 'asc', "rno =  $rno")->first();
         $data['employees'] = MiscService::getTableData('users', ['username', 'name'], 'name', 'asc', "status = 1");
         $data['moreInfo'] = $this->customerService->fetchProfileMoreInfo($rno) ?? new ProfileMoreInfo;
-        return view('panel.Customer.more_info.view_more_info', $data);
+        return response()->json(['status' => 'success', 'message' => 'More Info has been fetched successfully', 'data' => $data]);
+        // return view('panel.Customer.more_info.view_more_info', $data);
     }
 
 
@@ -259,7 +260,6 @@ class CustomerController extends Controller
             if ($result) {
                 return response()->json(['status' => 'success', 'message' => 'Interaction has been saved successfully']);
             }
-            dd($result);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'message' => $th->getMessage() . ' on Line ' . $th->getLine() . ' on file ' . $th->getFile()]);
         }

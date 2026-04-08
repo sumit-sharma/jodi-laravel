@@ -15,16 +15,20 @@
                                 <div class="dropdown-menu" aria-labelledby="topnav-pages" {{--
                                     style="position: fixed; height: 50vh;"> --}}
                                     >
-
-
-                                    {{-- <a href="javascript:;" class="dropdown-item" id="btnToggleHide"
-                                        data-key="t-chat">Hide/Unhide Member </a> --}}
-                                    <a href="javascript:;" class="dropdown-item inner-menu-modal"
-                                        id="modl_delete_member" data-key="DeleteMemberModal">Delete Member </a>
+                                    @can('Hide Member')
+                                        <a href="javascript:;" class="dropdown-item" id="btnToggleHide"
+                                            data-key="t-chat">Hide/Unhide Member </a>
+                                    @endcan
+                                    @can('Delete Member')
+                                        <a href="javascript:;" class="dropdown-item inner-menu-modal"
+                                            id="modl_delete_member" data-key="DeleteMemberModal">Delete Member </a>
+                                    @endcan
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                         id="modl_convert_member" data-key="ConvertMemberModal">Convert Member </a>
-                                    <a href="javascript:;" class="dropdown-item inner-menu-modal"
-                                        id="modl_change_tctlrm" data-key="ChangeTCTLRMPageModal">Change TC/TL/RM</a>
+                                    @can(' Change TC/TL/RM')
+                                        <a href="javascript:;" class="dropdown-item inner-menu-modal"
+                                            id="modl_change_tctlrm" data-key="ChangeTCTLRMPageModal">Change TC/TL/RM</a>
+                                    @endcan
 
                                     <a href="javascript:;" class="dropdown-item" id="btnToggleClassified"
                                         data-key="t-chat">Classified</a>
@@ -59,8 +63,10 @@
                                     <a href="javascript:;" class="dropdown-item inner-menu-item"
                                         data-key="/update-more-info/">Add more info </a>
 
-                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
-                                        data-key="/view-more-info/">View more info </a>
+                                    {{-- <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/view-more-info/">View more info </a> --}}
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_more_info"
+                                        data-key="MoreInfoModal">View more info </a>
                                 </div>
                             </li>
 
@@ -188,7 +194,10 @@
     @include('components.form-transfer-modal')
     @include('components.convert_modal')
     @include('components.feedback_modal')
-    {{-- @include('components.delete_member_modal') --}}
+    @can('Delete Member')
+        {{-- @include('components.delete_member_modal') --}}
+    @endcan
+    @include('components.more-info-modal')
 </div>
 
 @section('bottom-js')
@@ -267,6 +276,7 @@
             let formTransferModalEl = document.getElementById('FormTransferModal');
             let convertMemberModalEl = document.getElementById('ConvertMemberModal');
             let feedbackModalEl = document.getElementById('AddFeedbackModal');
+            let moreInfoModalEl = document.getElementById('MoreInfoModal');
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -1818,6 +1828,51 @@
                     });
                 }
             });
+
+            $("#modl_more_info").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+                if (selected_rno.charAt(0) == '4') {
+                    toastr.error("Applicable only to non paid customers")
+                    return;
+                }
+
+                let modal = bootstrap.Modal.getInstance(moreInfoModalEl) || new bootstrap.Modal(moreInfoModalEl);
+                modal.show();
+
+                $("#more_info_loader").show();
+                $("#moreInfoSection").hide();
+
+                fetch("{{ route('view-more-info', ['rno' => ':rno']) }}".replace(':rno', selected_rno))
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.status == "success") {
+                            $("#more_info_loader").hide();
+                            $("#moreInfoSection").show();
+                            const item = data.data;
+                            $("#MoreInfoModal #refno").text(item.bio.rno);
+                            $("#MoreInfoModal #name").text(item.bio.refname);
+                            $("#MoreInfoModal #met_with").text(item.moreInfo.met_with);
+                            $("#MoreInfoModal #current_profession").text(item.moreInfo.profession);
+                            $("#MoreInfoModal #family_outlook").text(item.moreInfo.family);
+                            $("#MoreInfoModal #properties_type").text(`${item.moreInfo.prop1} ${item.moreInfo.prop2} ${item.moreInfo.prop3}`);
+                            $("#MoreInfoModal #properties_details").text(item.moreInfo.properties);
+                            $("#MoreInfoModal #residence").text(item.moreInfo.residence);
+                            $("#MoreInfoModal #business").text(item.moreInfo.business);
+                            $("#MoreInfoModal #income").text(item.moreInfo.income);
+                            $("#MoreInfoModal #rented_income").text(item.moreInfo.rentedincome);
+                            $("#MoreInfoModal #turnover").text(item.moreInfo.turnover);
+                            $("#MoreInfoModal #vehicle").text(item.moreInfo.vehicle);
+                            $("#MoreInfoModal #any_roka_earlier").text(item.moreInfo.roka);
+                            $("#MoreInfoModal #remarks").text(item.moreInfo.remarks);
+                        }
+                    });
+
+            });
+
 
         });
     </script>
