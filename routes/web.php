@@ -51,6 +51,7 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/fetch-customer-data/{rno}', [DashboardController::class, 'fetchCustomerData'])->name('fetch-customer-data');
+    Route::get('/fetch-contact-details/{rno}', [DashboardController::class, 'fetchContactDetails'])->name('fetch-contact-details');
 
     Route::get('/customer-photos/{rno}', [CustomerController::class, 'showPhotos'])->name('customer.show-photos');
     Route::get('/uplod-photo/{rno}', [CustomerController::class, 'uplodPics'])->name('customer.uplod-photo');

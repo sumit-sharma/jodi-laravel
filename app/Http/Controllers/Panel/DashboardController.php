@@ -83,6 +83,25 @@ class DashboardController extends Controller
         return response()->json(['data' => $data]);
     }
 
+    public function fetchContactDetails($rno)
+    {
+        $data['contactphone'] = '*****';
+        $data['contactemail'] = '*****';
+
+        $eligibleUsers = config('constants.Show_Contact_Users');
+        $customer = $this->searchService->searchByrno($rno, ['personal', 'bio']);
+        $eligibleUsers[] =  $customer->bio->empid; // created by
+        $eligibleUsers[] = $customer->rm; // rm
+        $eligibleUsers = array_unique($eligibleUsers);
+        if (in_array(auth()->user()->username, $eligibleUsers)) {
+            $data['contactphone'] = $customer?->personal?->contactphone ?? '*****';
+            $data['contactemail'] = $customer?->personal?->contactemail ?? '*****';
+        }
+        return response()->json(['status' => 'success', 'message' => 'Contact details fetched successfully', 'data' => $data]);
+    }
+
+
+
     public function cacheClear(Request $request)
     {
         if ($request->has('cacheKey')) {

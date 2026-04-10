@@ -884,4 +884,9 @@ class CustomerService
 
         return count($existing) < count($mobiles);
     }
+
+    public function getContactDetails($rno)
+    {
+        return ProfilePersonal::where('rno', $rno)->select('contactphone', 'contactemail')->first();
+    }
 }

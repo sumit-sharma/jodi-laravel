@@ -12,9 +12,14 @@ class PermissionController extends Controller
     /**
      * Display a listing of the permissions.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::with('roles')->paginate(15);
+        $permissions = Permission::with('roles')
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->search}%");
+            })
+            ->paginate(30);
+
         return view('panel.role-permission.permissions-index', compact('permissions'));
     }
 
@@ -31,11 +36,18 @@ class PermissionController extends Controller
      */
     public function store(PermissionRequest $request)
     {
-        Permission::create([
-            'name' => $request->name,
-            'guard_name' => 'web'
-        ]);
+        $permission = Permission::where(['name' => $request->name])->first();
+        if (!$permission) {
+            $permission = Permission::create([
+                'name' => $request->name,
+                'guard_name' => 'web'
+            ]);
+        }
 
+        $sp = Role::where(['name' => 'super-admin'])->first();
+        $admin = Role::where(['name' => 'admin'])->first();
+        $permission->assignRole($sp);
+        $permission->assignRole($admin);
         return redirect()->route('permissions.index')
             ->with('success', 'Permission created successfully.');
     }
