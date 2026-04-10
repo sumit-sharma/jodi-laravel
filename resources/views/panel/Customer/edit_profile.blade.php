@@ -107,30 +107,55 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label for="" class="form-label">Name:</label>
-                                            <input class="form-control" type="text" name="refname"
-                                                value="{{ $customer->bio->refname }}" placeholder="Enter full name"
-                                                required>
+                                            @if($can_edit_critical_profile)
+                                                <input class="form-control" type="text" name="refname"
+                                                    value="{{ $customer->bio->refname }}" placeholder="Enter full name"
+                                                    required>
+                                            @else
+                                                <label class="form-control" disabled>
+                                                    {{ $customer->bio->refname }}
+                                                </label>
+                                            @endif
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label for="" class="form-label">DOB:</label>
-                                            <input class="form-control datepicker" type="text" id="dob" name="dob" {{--
-                                                placeholder="" --}} {{-- max="{{ now()->subYears(18)->format('Y-m-d') }}"
-                                                --}}
-                                                value="{{ Carbon\Carbon::parse($customer->bio->dob)->format('Y-m-d') }}"
-                                                required>
+                                            @if($can_edit_critical_profile)
+                                                <input class="form-control datepicker" type="text" id="dob" name="dob" {{--
+                                                    placeholder="" --}} {{-- max="{{ now()->subYears(18)->format('Y-m-d') }}"
+                                                    --}}
+                                                    value="{{ Carbon\Carbon::parse($customer->bio->dob)->format('Y-m-d') }}"
+                                                    required>
+                                            @else
+                                                <label class="form-control">
+                                                    {{ Carbon\Carbon::parse($customer->bio->dob)->format('Y-m-d') }}
+                                                </label>
+                                            @endif
+
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label for="" class="form-label">Age:</label>
-                                            <input class="form-control" type="text" id="age" name="age"
-                                                value="{{ $customer->bio->age }}" placeholder="Enter age" readonly>
+                                            @if($can_edit_critical_profile)
+                                                <input class="form-control" type="text" id="age" name="age"
+                                                    value="{{ $customer->bio->age }}" placeholder="Enter age" readonly>
+                                            @else
+                                                <label class="form-control">
+                                                    {{ $customer->bio->age }}
+                                                </label>
+                                            @endif
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col-md-3 mb-2">
                                             <label class="form-label">Time of Birth:</label>
-                                            <input class="form-control" type="text" id="tob" name="tob"
-                                                value="{{ $customer->bio->tob }}" placeholder="Enter birth time" readonly>
+                                            @if($can_edit_critical_profile)
+                                                <input class="form-control" type="text" id="tob" name="tob"
+                                                    value="{{ $customer->bio->tob }}" placeholder="Enter birth time" readonly>
+                                            @else
+                                                <label class="form-control">
+                                                    {{ $customer->bio->tob }}
+                                                </label>
+                                            @endif
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label for="" class="form-label">Birth Place:</label>
@@ -139,14 +164,20 @@
                                         </div>
                                         <div class="col-md-2 col-6 mb-2">
                                             <label class="form-label">Height (Cms):</label>
-                                            <select id="height_cm" name="hght" class="form-select">
-                                                <option disabled>Select</option>
-                                                @foreach (range(122, 214) as $item)
-                                                    <option value="{{ $item }}" {{ $item == $customer->hg ? 'selected' : '' }}>
-                                                        {{ $item }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            @if($can_edit_critical_profile)
+                                                <select id="height_cm" name="hght" class="form-select">
+                                                    <option disabled>Select</option>
+                                                    @foreach (range(122, 214) as $item)
+                                                        <option value="{{ $item }}" {{ $item == $customer->hg ? 'selected' : '' }}>
+                                                            {{ $item }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <label class="form-control">
+                                                    {{ $customer->hg }}
+                                                </label>
+                                            @endif
                                         </div>
                                         <div class="col-md-1 col-6 mb-2">
                                             <label class="form-label">Height (Fit):</label>
@@ -168,7 +199,8 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="row mb-2 row-cols-5"">
-                                                                        <div class=" col mb-2">
+                                                                                                                                                <div class="
+                                        col mb-2">
                                         <label class="form-label">Religion:</label>
                                         <select id="religion" name="religion" class="form-select">
                                             <option value="1" {{ $customer->bio->religion->value == 1 ? 'selected' : '' }}>
@@ -915,15 +947,27 @@
                                 <div class="row mb-2">
                                     <div class="col-lg-3 col-12 mb-2">
                                         <label for="" class="form-label">Phone No.:</label>
-                                        <input class="form-control" type="text" name="contactphone"
-                                            value="{{ $customer->personal->contactphone }}" id="contactphone"
-                                            placeholder="Enter number">
+                                        @if($can_edit_critical_profile)
+                                            <input class="form-control" type="text" name="contactphone"
+                                                value="{{ $customer->personal->contactphone }}" id="contactphone"
+                                                placeholder="Enter number">
+                                        @else
+                                            <label class="form-control" disabled>
+                                                {{ $customer->personal->contactphone }}
+                                            </label>
+                                        @endif
                                     </div>
                                     <div class="col-lg-3 col-12 mb-2">
                                         <label for="" class="form-label">Email ID:</label>
-                                        <input class="form-control" type="text" name="contactemail"
-                                            value="{{ $customer->personal->contactemail }}" id="contactemail"
-                                            placeholder="Enter email">
+                                        @if($can_edit_critical_profile)
+                                            <input class="form-control" type="text" name="contactemail"
+                                                value="{{ $customer->personal->contactemail }}" id="contactemail"
+                                                placeholder="Enter email">
+                                        @else
+                                            <label class="form-control" disabled>
+                                                {{ $customer->personal->contactemail }}
+                                            </label>
+                                        @endif
                                     </div>
                                     <div class="col-lg-3 col-12 mb-2">
                                         <label for="" class="form-label">Relation:</label>

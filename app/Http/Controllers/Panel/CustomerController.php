@@ -141,6 +141,15 @@ class CustomerController extends Controller
         $data['zones']         = MiscService::getTableData('zones', ['zone_code', 'zone_name'], 'zone_name');
 
         $data['customer'] = $this->searchService->searchByrno($rno);
+        $data['can_edit_critical_profile'] = false;
+
+        $eligibleUsers = config('constants.EDIT_CRIT_PROF_USERS');
+        $eligibleUsers[] = $data['customer']->rm; // rm
+        $eligibleUsers = array_unique($eligibleUsers);
+        if (in_array(auth()->user()->username, $eligibleUsers)) {
+            $data['can_edit_critical_profile'] = true;
+        }
+
         // dd($data['customer']);
         return view('panel.Customer.edit_profile', $data);
     }
