@@ -366,7 +366,13 @@
 
 
                         @endcan
-                        <li><a href="{{ route('reports.meeting-report') }}" key="t-products">Meetings Report</a></li>
+
+                        <li><a href="javascript:;" id="btnShowMeetingRep" data-bs-toggle="modal"
+                                data-bs-target="#ShowMeetingReportModal" key="t-products"
+                                data-allemp="{{ in_array(auth()->user()->username, config('constants.MEETING_REPORT_ALL_USERS')) ? 1 : 0 }}">Meetings
+                                Report</a></li>
+
+
                         @can('Edit Log Report')
 
                             <li><a href="{{ route('reports.edit-log-report') }}" data-key="t-product-detail">Edit Log
@@ -460,3 +466,4 @@
 @include('components.add-attendance-modal')
 @include('components.daily-report-modal')
 @include('components.finance-report-modal')
+@include('components.meeting-report-modal')

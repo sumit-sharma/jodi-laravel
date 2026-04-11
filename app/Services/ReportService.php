@@ -116,13 +116,13 @@ class ReportService
             ->when($request->filled('rno'), fn($query) => $query->where('rno', $request->rno))
             ->when($request->filled('proposal'), fn($query) => $query->where('proposal', $request->proposal))
             ->when($request->filled('meeting_type'), fn($query) => $query->where('meeting_type', $request->meeting_type))
-            ->when($request->filled('empid'), fn($query) => $query->where('mtg_by1', $request->empid)->orWhere('mtg_by2', $request->empid))
+            ->when($request->filled('empid'), fn($query) => $query->where(fn($q) => $q->where('mtg_by1', $request->empid)->orWhere('mtg_by2', $request->empid)))
             ->when($request->filled('mtg_by1'), fn($query) => $query->where('mtg_by1', $request->mtg_by1))
             ->when($request->filled('mtg_by2'), fn($query) => $query->where('mtg_by2', $request->mtg_by2))
             ->when($request->filled('att_by1'), fn($query) => $query->where('att_by1', $request->att_by1))
             ->when($request->filled('att_by2'), fn($query) => $query->where('att_by2', $request->att_by2))
-            ->when($request->filled('from_date'), fn($query) => $query->where('dated', '>=', $request->from_date))
-            ->when($request->filled('to_date'), fn($query) => $query->where('dated', '<=', $request->to_date))
+            ->when($request->filled('start_date'), fn($query) => $query->where('dated', '>=', $request->start_date))
+            ->when($request->filled('end_date'), fn($query) => $query->where('dated', '<=', $request->end_date))
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where(function ($q) use ($request) {
                     $q->where('rno', 'LIKE', "%{$request->search}%")

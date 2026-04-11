@@ -112,7 +112,7 @@
                                                 @endforelse
                                             </tbody>
                                         </table>
-                                        {{ $meetings->links() }}
+                                        {{ $meetings->withQueryString()->links() }}
                                     </div>
 
                                     <!-- Modal -->

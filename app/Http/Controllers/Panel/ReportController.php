@@ -21,9 +21,11 @@ class ReportController extends Controller
     public function meetingReport(Request $request)
     {
         $inputFilter = ['page' => $request->page ?? 1, 'limit' => $request->limit ?? 25, 'dtype' => 'P,N'];
-        if (!auth()->user()->can('Meeting Report')) {
-            $inputFilter['empid'] = $request->user()->username;
-        }
+        // if (!auth()->user()->can('Meeting Report')) {
+        // if (!in_array(auth()->user()->username, config('constants.MEETING_REPORT_ALL_USERS'))) {
+        //     $inputFilter['empid'] = $request->user()->username;
+        // }
+        // }
         $request->merge($inputFilter);
         $data['meetings'] = $this->reportService->getMeetingsReport($request);
         return view('panel.reports.meeting-report', $data);

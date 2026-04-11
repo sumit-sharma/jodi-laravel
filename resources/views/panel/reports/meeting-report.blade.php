@@ -125,7 +125,7 @@
                                                 @endforelse
                                             </tbody>
                                         </table>
-                                        {{ $meetings->links() }}
+                                        {{ $meetings->withQueryString()->links() }}
                                     </div>
 
                                     <!-- Modal -->
@@ -170,19 +170,19 @@
                         <div class="clearfix"></div>
 
                         <div class="col-12 mb-3">
-                            <label for="from_date" class="form-label"> Meeting Report From
+                            <label for="start_date" class="form-label"> Meeting Report From
                             </label>
-                            <input class="form-control" type="text" name="from_date"
-                                value="{{ request()->get('from_date') }}" id="from_date" autocomplete="off">
+                            <input class="form-control" type="text" name="start_date"
+                                value="{{ request()->get('start_date') }}" id="start_date" autocomplete="off">
                         </div>
 
                         <div class="clearfix"></div>
 
                         <div class="col-12 mb-3">
-                            <label for="to_date" class="form-label"> Meeting Report To
+                            <label for="end_date" class="form-label"> Meeting Report To
                             </label>
-                            <input class="form-control" type="text" name="to_date" value="{{ request()->to_date }}"
-                                id="to_date" autocomplete="off">
+                            <input class="form-control" type="text" name="end_date" value="{{ request()->get('end_date') }}"
+                                id="end_date" autocomplete="off">
                         </div>
 
                         <div class="clearfix"></div>
@@ -242,16 +242,16 @@
         $(document).ready(function () {
             var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
-            $('#from_date').datepicker({
+            $('#start_date').datepicker({
                 uiLibrary: 'bootstrap5',
                 format: 'yyyy-mm-dd',
                 maxDate: today,
             });
-            $('#to_date').datepicker({
+            $('#end_date').datepicker({
                 uiLibrary: 'bootstrap5',
                 format: 'yyyy-mm-dd',
                 minDate: function () {
-                    return $('#from_date').val();
+                    return $('#start_date').val();
                 },
                 maxDate: today,
             });

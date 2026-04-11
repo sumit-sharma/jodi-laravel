@@ -598,6 +598,46 @@
                 });
             });
 
+
+
+            $("#btnShowMeetingRep").click(function () {
+                allemp = $(this).data('allemp');
+                $("#frmShowMeetingReportModal #meeting_start_date").datepicker({
+                    uiLibrary: 'bootstrap5',
+                    format: 'yyyy-mm-dd',
+                    maxDate: new Date()
+                });
+
+                $("#frmShowMeetingReportModal #meeting_end_date").datepicker({
+                    uiLibrary: 'bootstrap5',
+                    format: 'yyyy-mm-dd',
+                    minDate: $("#frmShowMeetingReportModal #meeting_start_date").val(),
+                    maxDate: new Date()
+                });
+                if (allemp == 1) {
+                    fetchActiveEmployee().then((employeeData) => {
+                        let options = '<option value="">Select</option>';
+                        employeeData.data.forEach(element => {
+                            console.log("element", element.username);
+                            options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                        });
+
+                        $('#frmShowMeetingReportModal #meeting_empid').html(options).select2({
+                            dropdownParent: $('#ShowMeetingReportModal'),
+                            placeholder: "Select or type to search",
+                            allowClear: true
+                        });
+
+                    });
+                } else {
+                    let options = `<option value="{{ auth()->user()->username }}">{{ auth()->user()->username }} - {{ auth()->user()->name }}</option>`;
+                    $('#frmShowMeetingReportModal #meeting_empid').html(options).select2({
+                        dropdownParent: $('#ShowMeetingReportModal'),
+                        allowClear: false
+                    });
+                }
+            });
+
             $("#newEntry_menu").click(function () {
                 Swal.fire({
                     title: "Submit Mobile Number/s",

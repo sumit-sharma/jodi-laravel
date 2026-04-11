@@ -20,4 +20,16 @@ return [
         3013, // yasoda
         5002, // vijit sir
     ],
+    'DAILY_REPORT_ALL_USERS' => [
+        1018, //  pankaj
+        3033, // manu
+        3013, // yasoda
+        5002, // vijit sir
+    ],
+    'MEETING_REPORT_ALL_USERS' => [
+        1018, //  pankaj
+        3033, // manu
+        3013, // yasoda
+        5002, // vijit sir
+    ],
 ];
