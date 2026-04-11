@@ -199,7 +199,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="row mb-2 row-cols-5"">
-                                                                                                                                                <div class="
+                                                                                                                                                                                            <div class="
                                         col mb-2">
                                         <label class="form-label">Religion:</label>
                                         <select id="religion" name="religion" class="form-select">
@@ -947,25 +947,33 @@
                                 <div class="row mb-2">
                                     <div class="col-lg-3 col-12 mb-2">
                                         <label for="" class="form-label">Phone No.:</label>
-                                        @if($can_edit_critical_profile)
+                                        @if(in_array(auth()->user()->username, config('constants.EDIT_CRIT_PROF_USERS')))
                                             <input class="form-control" type="text" name="contactphone"
                                                 value="{{ $customer->personal->contactphone }}" id="contactphone"
                                                 placeholder="Enter number">
-                                        @else
+                                        @elseif($can_edit_critical_profile)
                                             <label class="form-control" disabled>
                                                 {{ $customer->personal->contactphone }}
+                                            </label>
+                                        @else
+                                            <label class="form-control" disabled>
+                                                ******
                                             </label>
                                         @endif
                                     </div>
                                     <div class="col-lg-3 col-12 mb-2">
                                         <label for="" class="form-label">Email ID:</label>
-                                        @if($can_edit_critical_profile)
+                                        @if(in_array(auth()->user()->username, config('constants.EDIT_CRIT_PROF_USERS')))
                                             <input class="form-control" type="text" name="contactemail"
                                                 value="{{ $customer->personal->contactemail }}" id="contactemail"
                                                 placeholder="Enter email">
-                                        @else
+                                        @elseif($can_edit_critical_profile)
                                             <label class="form-control" disabled>
                                                 {{ $customer->personal->contactemail }}
+                                            </label>
+                                        @else
+                                            <label class="form-control" disabled>
+                                                ******
                                             </label>
                                         @endif
                                     </div>
