@@ -351,7 +351,8 @@
                         --}}
                         @can('Appointment Report')
                             <li><a href="javascript:;" id="btnShowAppointmentRep" data-bs-toggle="modal"
-                                    data-bs-target="#AppointmentReportModal" data-key="t-product-detail">Appointment
+                                    data-bs-target="#AppointmentReportModal" data-key="t-product-detail"
+                                    data-allemp="{{ in_array(auth()->user()->username, config('constants.MEETING_REPORT_ALL_USERS')) ? 1 : 0 }}">Appointment
                                     List</a></li>
                         @endcan
                         @can('Daily Report')

@@ -639,6 +639,7 @@
 
 
             $("#btnShowAppointmentRep").click(function () {
+                allemp = $(this).data('allemp');
                 $("#frmAppointmentReportModal #appointment_start_date").datepicker({
                     uiLibrary: 'bootstrap5',
                     format: 'yyyy-mm-dd',
@@ -652,19 +653,27 @@
                     maxDate: new Date()
                 });
 
-                fetchActiveEmployee().then((employeeData) => {
-                    let options = '<option value="">Select</option>';
-                    employeeData.data.forEach(element => {
-                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
-                    });
+                if (allemp == 1) {
+                    fetchActiveEmployee().then((employeeData) => {
+                        let options = '<option value="">Select</option>';
+                        employeeData.data.forEach(element => {
+                            options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                        });
 
+                        $('#frmAppointmentReportModal #appointment_empid').html(options).select2({
+                            dropdownParent: $('#AppointmentReportModal'),
+                            placeholder: "Select or type to search",
+                            allowClear: true
+                        });
+                    });
+                } else {
+                    let options = `<option value="{{ auth()->user()->username }}">{{ auth()->user()->username }} - {{ auth()->user()->name }}</option>`;
                     $('#frmAppointmentReportModal #appointment_empid').html(options).select2({
                         dropdownParent: $('#AppointmentReportModal'),
-                        placeholder: "Select or type to search",
-                        allowClear: true
+                        allowClear: false
                     });
+                }
 
-                });
             });
 
 

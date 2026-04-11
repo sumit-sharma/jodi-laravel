@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-12 mt-4">
                             <label for="" class="form-label">Employee:</label>
-                            <select class="form-select" id="appointment_empid" name="empid">
+                            <select class="form-select" id="appointment_empid" name="empid" style="width: 100%;">
 
                             </select>
                         </div>
