@@ -637,6 +637,40 @@
                 }
             });
 
+
+            $("#btnShowAppointmentRep").click(function () {
+                $("#frmAppointmentReportModal #appointment_start_date").datepicker({
+                    uiLibrary: 'bootstrap5',
+                    format: 'yyyy-mm-dd',
+                    maxDate: new Date()
+                });
+
+                $("#AppointmentReportModal #appointment_end_date").datepicker({
+                    uiLibrary: 'bootstrap5',
+                    format: 'yyyy-mm-dd',
+                    minDate: $("#AppointmentReportModal #appointment_start_date").val(),
+                    maxDate: new Date()
+                });
+
+                fetchActiveEmployee().then((employeeData) => {
+                    let options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    $('#frmAppointmentReportModal #appointment_empid').html(options).select2({
+                        dropdownParent: $('#AppointmentReportModal'),
+                        placeholder: "Select or type to search",
+                        allowClear: true
+                    });
+
+                });
+            });
+
+
+
+
+
             $("#newEntry_menu").click(function () {
                 Swal.fire({
                     title: "Submit Mobile Number/s",

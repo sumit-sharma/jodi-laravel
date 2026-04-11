@@ -350,7 +350,8 @@
                         {{-- <li><a href="{{ route('reports.employee-list') }}" key="t-products">Employee List</a></li>
                         --}}
                         @can('Appointment Report')
-                            <li><a href="{{ route('appointment-report.index') }}" data-key="t-product-detail">Appointment
+                            <li><a href="javascript:;" id="btnShowAppointmentRep" data-bs-toggle="modal"
+                                    data-bs-target="#AppointmentReportModal" data-key="t-product-detail">Appointment
                                     List</a></li>
                         @endcan
                         @can('Daily Report')
@@ -467,3 +468,4 @@
 @include('components.daily-report-modal')
 @include('components.finance-report-modal')
 @include('components.meeting-report-modal')
+@include('components.appointment-report-modal')

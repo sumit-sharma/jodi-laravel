@@ -8,7 +8,7 @@
                     <div class="col-12">
                         <h5 class="modal-title font-size-16" id="IntractionPageTitle"><span
                                 class="addAttendanceModalModal_action_label"></span>
-                            Daily Report</h5>
+                            Meeting Report</h5>
                     </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
