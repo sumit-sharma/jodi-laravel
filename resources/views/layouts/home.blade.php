@@ -618,7 +618,6 @@
                     fetchActiveEmployee().then((employeeData) => {
                         let options = '<option value="">Select</option>';
                         employeeData.data.forEach(element => {
-                            console.log("element", element.username);
                             options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
                         });
 
