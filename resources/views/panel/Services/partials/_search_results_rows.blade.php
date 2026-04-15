@@ -55,9 +55,9 @@
                 data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
         <td>{{ $data->g }}</td>
         <td class="{{ $data->status == 'F' ? 'td-bg-pink' : '' }}">
-            @php 
+            @php
             $textColor = '';
-            
+
             if ($data->dtype == 'P' && $data->ost == ''){
                 $textColor = '#090';
             }elseif($data->dtype == 'P' && $data->ost == 'F'){
@@ -73,7 +73,7 @@
             <div style="color: {{ $textColor }}">{{ $data->refname }}</div>
             {!! $data->vc == 1 ? '<i class="bi bi-vimeo"></i>' : '' !!}
             {!! $data->oc == 1 ? '<i class="text-danger"><strong>O</strong></i>' : '' !!}
-            {!! strlen($data->bio->dd) > 6 ? '<i class="text-black bi bi-person-wheelchair"></i>' : '' !!}
+            {!! strlen($data?->bio?->dd) > 6 ? '<i class="text-black bi bi-person-wheelchair"></i>' : '' !!}
             {!! $data->rs > 1 ? '<i class="bi bi-airplane-fill"></i>' : '' !!}
         </td>
         <td style="word-break: keep-all">
