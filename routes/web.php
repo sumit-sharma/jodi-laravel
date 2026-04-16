@@ -263,6 +263,8 @@ Route::middleware("auth")->group(function () {
         Route::get('/edit-user/{username}', [EmployeeController::class, 'edit'])->name('edit-user');
         Route::put('/update-user/{username}', [EmployeeController::class, 'update'])->name('update-user');
         // Route::put('/toggle-user-status/{username}', [EmployeeController::class, 'toggleUserStatus'])->name('toggle-user-status');
+        Route::get('/user-permission/{id}', [UserController::class, 'showUserPermissions'])->name('show-user-permission');
+        Route::put('/user-permission/{id}', [UserController::class, 'updateUserPermissions'])->name('update-user-permission');
     });
 
     Route::prefix('chat')->name('chat.')->group(function () {
