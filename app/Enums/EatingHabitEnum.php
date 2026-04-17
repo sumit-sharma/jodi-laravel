@@ -17,7 +17,7 @@ enum EatingHabitEnum: int
     public function label(): string
     {
         return match ($this) {
-            self::NoPref => 'No Prefrences',
+            self::NoPref => 'No Preferences',
             self::Vegetarian => 'Vegetarian',
             self::Eggetarian => 'Eggetarian',
             self::NonVegetarian => 'Non Vegetarian',

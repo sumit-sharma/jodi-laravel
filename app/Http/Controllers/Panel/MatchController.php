@@ -42,7 +42,7 @@ class MatchController extends Controller
         $validate_data['zonepref']   = \App\Traits\CommonTrait::chkArrayImplode($request->zonepref);
         $validate_data['mr']         = \App\Traits\CommonTrait::chkArrayImplode($request->mr);
         $result = $this->matchService->saveMatchPrefrence($rno, $validate_data);
-        return back()->with('success', 'Match prefrences updated ');
+        return back()->with('success', 'Match preferences updated ');
     }
 
     public function findMatch(Request $request, $rno = null)
