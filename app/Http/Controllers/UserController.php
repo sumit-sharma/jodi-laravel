@@ -192,7 +192,7 @@ class UserController extends Controller
     {
         $user = $this->user->where('username', $id)->first();
         $userPermissions = $user->permissions->pluck('id')->toArray();
-        $userRolePermissions = $user->roles->first()->permissions->pluck('name', 'id')->toArray();
+        $userRolePermissions = $user->roles->first()?->permissions?->pluck('name', 'id')->toArray() ?? [];
         $userRolePermissionIds = array_keys($userRolePermissions);
         $permissions = Permission::whereNotIn('id', $userRolePermissionIds)->get();
         $userDirectPermissions = $user->getDirectPermissions()->pluck('id')->toArray();

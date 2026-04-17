@@ -20,7 +20,9 @@
                         <h5 class="mb-0">Permissions Through Role({{ count($userRolePermissions) }})</h5>
                     </div>
                     <div class="card-body">
-                        @if(count($userRolePermissions) > 0)
+                        @if($user->roles->count() == 0)
+                            <p class="text-danger fw-bold bg-white">No Role is assigned .</p>
+                        @elseif(count($userRolePermissions) > 0)
                             <div class="row">
                                 @foreach($userRolePermissions as $permission)
                                     <div class="col-md-6 mb-2">
@@ -76,7 +78,8 @@
                                                         <input class="form-check-input permission-checkbox" type="checkbox"
                                                             name="permissions[]" value="{{ $permission->name }}"
                                                             id="permission-{{ $permission->id }}" 
-                                                            {{ in_array($permission->id, $userDirectPermissions) ? 'checked' : '' }}>
+                                                            {{ in_array($permission->id, $userDirectPermissions) ? "checked" : "" }}
+                                                        >
                                                         <label class="form-check-label" for="permission-{{ $permission->id }}">
                                                             {{ $permission->name }}
                                                         </label>
