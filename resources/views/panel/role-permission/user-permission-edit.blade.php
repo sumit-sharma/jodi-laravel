@@ -21,7 +21,7 @@
                     </div>
                     <div class="card-body">
                         @if($user->roles->count() == 0)
-                            <p class="text-danger fw-bold bg-white">No Role is assigned .</p>
+                            <p class="text-danger fw-bold bg-white">No Role is assigned to this user.</p>
                         @elseif(count($userRolePermissions) > 0)
                             <div class="row">
                                 @foreach($userRolePermissions as $permission)
