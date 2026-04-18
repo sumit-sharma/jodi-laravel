@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('service')->nullable();
 
             $table->integer('tc')->default(0);
-            $table->integer('mc')->default(0);
+            $table->integer('tc2')->default(0);
+            $table->integer('tl')->default(0);
+            $table->integer('tl2')->default(0);
             $table->integer('rm')->default(0);
 
             $table->string('otherdetails')->nullable();
@@ -32,7 +34,7 @@ return new class extends Migration
             $table->index('package');
             $table->index('service');
             $table->index('tc', 'empmain');
-            $table->index('mc', 'empcc');
+            $table->index('tl', 'empcc');
             $table->index('rm');
             $table->index('reference');
 

@@ -254,7 +254,7 @@ class CustomerService
         $filterArray['ch']     = $data['child'];
         $filterArray['fi']     = $data['familyincome'];
         $filterArray['tc']     = $currentUserId;
-        $filterArray['mc']     = $currentUserId;
+        $filterArray['tl']     = $currentUserId;
         $filterArray['rm']     = $currentUserId;
         $filterArray['p_sent'] = '0';
         $filterArray['dtype']  = 'N';
@@ -657,18 +657,22 @@ class CustomerService
         $pd = ProfileDetail::where('rno', $rno)->first();
         if ($pd) {
             return [
-                'tc' => $pd->tc,
-                'mc' => $pd->mc,
-                'rm' => $pd->rm,
+                'tc'  => $pd->tc,
+                'tc2' => $pd->tc2,
+                'tl'  => $pd->tl,
+                'tl2' => $pd->tl2,
+                'rm'  => $pd->rm,
             ];
         }
 
         $vp = ViewProfile::where('rno', $rno)->first();
         if ($vp) {
             return [
-                'tc' => $vp->tc,
-                'mc' => $vp->mc,
-                'rm' => $vp->rm,
+                'tc'  => $vp->tc,
+                'tc2' => $vp->tc2,
+                'tl'  => $vp->tl,
+                'tl2' => $vp->tl2,
+                'rm'  => $vp->rm,
             ];
         }
 
@@ -682,16 +686,20 @@ class CustomerService
         return DB::transaction(function () use ($data) {
             $pd = ProfileDetail::where('rno', $data['rno'])->first();
             if ($pd) {
-                $pd->tc = $data['tc'];
-                $pd->mc = $data['tl'];
-                $pd->rm = $data['rm'];
+                $pd->tc  = $data['tc'];
+                $pd->tc2 = $data['tc2'] ?? 0;
+                $pd->tl  = $data['tl'];
+                $pd->tl2 = $data['tl2'] ?? 0;
+                $pd->rm  = $data['rm'];
                 $pd->save();
             }
             $vp = ViewProfile::where('rno', $data['rno'])->first();
             if ($vp) {
-                $vp->tc = $data['tc'];
-                $vp->mc = $data['tl'];
-                $vp->rm = $data['rm'];
+                $vp->tc  = $data['tc'];
+                $vp->tc2 = $data['tc2'] ?? 0;
+                $vp->tl  = $data['tl'];
+                $vp->tl2 = $data['tl2'] ?? 0;
+                $vp->rm  = $data['rm'];
                 $vp->save();
             }
             // TODO:: send Notification if old and new values are different
@@ -800,12 +808,14 @@ class CustomerService
         $new_rno = CounterNumber::nextNumber('PAID');
         DB::statement('CALL memberconvert(?, ?, ?)', [$data['rno'], $new_rno, auth()->user()->username]);
         return DB::transaction(function () use ($data, $new_rno) {
-            $model = ProfileDetail::where('rno', $new_rno)->first();
-            $pd = $model ?? new ProfileDetail();
+            $model   = ProfileDetail::where('rno', $new_rno)->first();
+            $pd      = $model ?? new ProfileDetail();
             $pd->rno = $new_rno;
-            $pd->tc = $data['tc_code'];
-            $pd->mc = $data['tl_code'];
-            $pd->rm = $data['rm_code'];
+            $pd->tc  = $data['tc_code'];
+            $pd->tc2 = $data['tc2_code'] ?? 0;
+            $pd->tl  = $data['tl_code'];
+            $pd->tl2 = $data['tl2_code'] ?? 0;
+            $pd->rm  = $data['rm_code'];
             if ($pd->save()) {
                 Snap::where('rno', $data['rno'])->update([
                     'rno' => $new_rno,

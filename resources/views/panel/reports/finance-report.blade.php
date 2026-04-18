@@ -94,7 +94,7 @@
                                                         </td>
                                                         <td>{{ $item->viewProfile->refname }}</td>
                                                         <td>{{ $item->viewProfile->tc }}</td>
-                                                        <td>{{ $item->viewProfile->mc }}</td>
+                                                        <td>{{ $item->viewProfile->tl }}</td>
                                                         <td>{{ $item->viewProfile->rm }}</td>
                                                         <td>{{ convertCommonDate($item->dated) }}</td>
                                                         <td>{{ $item->details }}</td>

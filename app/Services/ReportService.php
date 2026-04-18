@@ -303,7 +303,7 @@ class ReportService
             ->when($request->filled('end_date'), fn($q) => $q->where('dated', '<=', $request->end_date))
             ->when($request->filled('rno'), fn($q) => $q->where('rno', $request->rno))
             ->when($request->filled('tc'), fn($q) => $q->whereRelation('viewProfile', 'tc', $request->tc))
-            ->when($request->filled('tl'), fn($q) => $q->whereRelation('viewProfile', 'mc', $request->tl))
+            ->when($request->filled('tl'), fn($q) => $q->whereRelation('viewProfile', 'tl', $request->tl))
             ->when($request->filled('rm'), fn($q) => $q->whereRelation('viewProfile', 'rm', $request->rm))
             ->when($request->filled('search'), function ($q) use ($request) {
                 $q->where(function ($q) use ($request) {

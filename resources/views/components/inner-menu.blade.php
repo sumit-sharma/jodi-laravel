@@ -791,10 +791,10 @@
                         });
                         if (data.status == 'success') {
                             $('#ChangeTCTLRMPageModal #tc').val(data.data.tc).trigger('change')
-                            $('#ChangeTCTLRMPageModal #tl').val(data.data.mc).trigger('change')
+                            $('#ChangeTCTLRMPageModal #tl').val(data.data.tl).trigger('change')
                             $('#ChangeTCTLRMPageModal #rm').val(data.data.rm).trigger('change')
                             $('#ChangeTCTLRMPageModal #old_tc').val(data.data.tc)
-                            $('#ChangeTCTLRMPageModal #old_tl').val(data.data.mc)
+                            $('#ChangeTCTLRMPageModal #old_tl').val(data.data.tl)
                             $('#ChangeTCTLRMPageModal #old_rm').val(data.data.rm)
                         }
                     });

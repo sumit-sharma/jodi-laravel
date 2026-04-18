@@ -113,7 +113,7 @@
                                                         <td>{{ $data->occupation?->name }}</td>
                                                         <td>{{ rs_label($data->rs) }}</td>
                                                         <td>{{ $data->tc }}</td>
-                                                        <td>{{ $data->mc }}</td>
+                                                        <td>{{ $data->tl }}</td>
                                                         <td>{{ $data->rm }}</td>
                                                         <td>{{ convertCommonDate($data->last_call) }}</td>
                                                         <td>{{ convertCommonDate($data->last_mail) }}</td>
@@ -184,7 +184,7 @@
 
                         <div class="col-12 mb-3">
                             <label class="form-label">TL:</label>
-                            <input name="mc" class="form-control" type="text" value="{{ request()->get('mc') }}">
+                            <input name="tl" class="form-control" type="text" value="{{ request()->get('tl') }}">
                         </div>
 
                         <div class="clearfix"></div>

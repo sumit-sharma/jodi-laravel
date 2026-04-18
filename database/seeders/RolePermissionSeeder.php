@@ -21,7 +21,7 @@ class RolePermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
 
-        $results       = DB::select('select permission from old_jodi.permission');
+        $results       = DB::select('select permission from jodi_new.permission');
         $permissions   = Arr::pluck($results, 'permission');
         $permissions[] = 'Create Online Data';
 

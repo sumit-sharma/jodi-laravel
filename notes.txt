@@ -1,125 +1,302 @@
-1	Change Date Calender: design change
-2	Change Time Picker to manual: design change
-3	Weight till 30, blank after that : fix
-4	Add Caste : Can be added
-5	BS error on add fresh data: fixed
-6	change profile detail modal change
-7	fix pdf-1 download error: Done
-8	change pdf footer : fixed
-9	change pdf header : design change
-10	show image : fixed
++--------------------------------------------+
+| Catalog Diff Report                        |
++--------------------------------------------+
+Table `old_jodi`.`searchlog old` was dropped
+Table `old_jodi`.`edit_log` was created
+  columns:
+  - sno of type INT
+  - rno of type INT
+  - userid of type INT
+  - dated of type DATE
+  - time of type TIME
+  __
+  indices:
+  - PRIMARY with columns: sno
+  - rno with columns: rno
+  - userid with columns: userid
+  __
+  attributes:
+  - engine: MyISAM
+  - next auto increment: 4426
+  - default character set: utf8mb3
+  __
+Table `old_jodi`.`finance_edit_log` was created
+  columns:
+  - sno of type INT
+  - rno of type INT
+  - field_name of type VARCHAR
+  - old_value of type TEXT
+  - new_value of type TEXT
+  - edited_by of type INT
+  - edited_at of type DATETIME
+  __
+  indices:
+  - PRIMARY with columns: sno
+  __
+  attributes:
+  - engine: MyISAM
+  - next auto increment: 463
+  - default character set: utf8mb3
+  __
+Table `old_jodi`.`form_history` was created
+  columns:
+  - sno of type INT
+  - rno of type INT
+  - refname of type VARCHAR
+  - dob of type DATE
+  - dtype of type VARCHAR
+  - empid of type INT
+  - edate of type DATE
+  - new_rno of type INT
+  - cdate of type DATE
+  - cby of type INT
+  - status of type INT
+  __
+  indices:
+  - PRIMARY with columns: sno
+  - rno_empid_new_rno with columns: rno, empid, new_rno
+  __
+  attributes:
+  - engine: MyISAM
+  - next auto increment: 6948
+  - default character set: utf8mb3
+  __
+Table `old_jodi`.`payment_audit_log` was created
+  columns:
+  - sno of type INT
+  - rno of type INT
+  - action_type of type ENUM
+  - old_data of type TEXT
+  - new_data of type TEXT
+  - userid of type INT
+  - action_time of type DATETIME
+  __
+  indices:
+  - PRIMARY with columns: sno
+  __
+  attributes:
+  - engine: MyISAM
+  - next auto increment: 81
+  - default character set: utf8mb3
+  __
+Table `old_jodi`.`superactive_log` was created
+  columns:
+  - sno of type INT
+  - rno of type INT
+  - empid of type INT
+  - dated of type DATE
+  - status of type VARCHAR
+  __
+  indices:
+  - PRIMARY with columns: sno
+  - rno with columns: rno
+  __
+  attributes:
+  - engine: MyISAM
+  - next auto increment: 2362
+  - default character set: latin1
+  - row format: DYNAMIC
+  __
+Table `old_jodi`.`changetcrmlog` was modified
+  columns:
+  - added column type of type VARCHAR(3)
+  __
+Table `old_jodi`.`hold_member` was modified
+  columns:
+  - added column rdate of type DATE
+  - modified column status
+  __
+  indices:
+  - added index rdate with columns: rdate
+  __
+Table `old_jodi`.`interaction` was modified
+  columns:
+  - added column del of type INT(11)
+  __
+  indices:
+  - added index del with columns: del
+  __
+Table `old_jodi`.`logininfo` was modified
+  columns:
+  - modified column password
+  __
+Table `old_jodi`.`logininfo_old` was modified
+  attributes:
+  - engine: MyISAM --> MyISAM
+  __
+Table `old_jodi`.`meeting` was modified
+  columns:
+  - added column qremark of type INT(11)
+  - modified column rno
+  - modified column proposal
+  - modified column dated
+  - modified column time
+  - modified column place
+  - modified column mtg_by1
+  - modified column mtg_by2
+  - modified column meeting_type
+  - modified column remarks
+  - modified column att_by1
+  - modified column att_by2
+  __
+Table `old_jodi`.`permission` was modified
+  columns:
+  - modified column empid
+  __
+Table `old_jodi`.`profile_details` was modified
+  columns:
+  - added column tc1 of type INT(11)
+  - added column tc2 of type INT(11)
+  - added column tl1 of type INT(11)
+  - added column tl2 of type INT(11)
+  - removed column mc
+  - removed column tc
+  __
+  indices:
+  - added index empmain with columns: tc1
+  - added index empcc with columns: tl1
+  - added index tc2_tl2 with columns: tc2, tl2
+  - removed index empmain
+  - removed index empcc
+  __
+Table `old_jodi`.`profile_payment` was modified
+  columns:
+  - added column status of type TINYINT(4)
+  __
+  indices:
+  - added index status with columns: status
+  __
+Table `old_jodi`.`viewprofile` was modified
+  columns:
+  - added column tc1 of type INT(11)
+  - added column tc2 of type INT(11)
+  - added column tl1 of type INT(11)
+  - added column tl2 of type INT(11)
+  - removed column mc
+  - removed column tc
+  __
+  indices:
+  - added index tc with columns: tc1
+  - added index tc2_tl2 with columns: tc2, tl2
+  - added index tl1 with columns: tl1
+  - removed index tc
+  __
+----------------------------------------------
+End of MySQL Workbench Report
 
 
-11      In new entry page, "update all information" button submit form => User need to manually switch tabs to update other details. 
-12      weight , religion,caste - is not showing on profile modal: fixed
-13      Check mobile number before creating a new account: fixed
-14      Save Interaction is not working: fixed
-15      Chnage Customer into client in breadcrumb of interaction listing page : fixed
-16      Edit profile: Need blank weight option: fixed
++--------------------------------------------+
+| Catalog Diff Report                        |
++--------------------------------------------+
+Table `jodi_new`.`superactive_log` was dropped
+Table `jodi_new`.`payment_audit_log` was dropped
+Table `jodi_new`.`form_history` was dropped
+Table `jodi_new`.`finance_edit_log` was dropped
+Table `jodi_new`.`edit_log` was dropped
+Table `jodi_new`.`searchlog old` was created
+  columns:
+  - sno of type INT
+  - dated of type DATE
+  - time of type TIME
+  - empid of type INT
+  - search_criteria of type VARCHAR
+  - search_str of type VARCHAR
+  __
+  indices:
+  - PRIMARY with columns: sno
+  - empid with columns: empid
+  __
+  attributes:
+  - engine: MyISAM
+  - next auto increment: 949496
+  - default character set: utf8mb3
+  __
+Table `jodi_new`.`changetcrmlog` was modified
+  columns:
+  - removed column type
+  __
+Table `jodi_new`.`hold_member` was modified
+  columns:
+  - removed column rdate
+  - modified column status
+  __
+  indices:
+  - removed index rdate
+  __
+Table `jodi_new`.`interaction` was modified
+  columns:
+  - removed column del
+  __
+  indices:
+  - removed index del
+  __
+Table `jodi_new`.`logininfo` was modified
+  columns:
+  - modified column password
+  __
+Table `jodi_new`.`logininfo_old` was modified
+  attributes:
+  - engine: InnoDB --> InnoDB
+  __
+Table `jodi_new`.`meeting` was modified
+  columns:
+  - removed column qremark
+  - modified column rno
+  - modified column proposal
+  - modified column dated
+  - modified column time
+  - modified column place
+  - modified column mtg_by1
+  - modified column mtg_by2
+  - modified column meeting_type
+  - modified column remarks
+  - modified column att_by1
+  - modified column att_by2
+  __
+Table `jodi_new`.`permission` was modified  ==================> no required
+  columns:
+  - modified column empid
+  __
+Table `jodi_new`.`profile_details` was modified
+  columns:
+  - added column tc of type INT(11)
+  - added column mc of type INT(11)
+  - removed column tl2
+  - removed column tl1
+  - removed column tc2
+  - removed column tc1
+  __
+  indices:
+  - added index empmain with columns: tc
+  - added index empcc with columns: mc
+  - removed index empmain
+  - removed index empcc
+  - removed index tc2_tl2
+  __
+Table `jodi_new`.`profile_payment` was modified
+  columns:
+  - removed column status
+  __
+  indices:
+  - removed index status
+  __
+Table `jodi_new`.`viewprofile` was modified
+  columns:
+  - added column tc of type INT(11)
+  - added column mc of type INT(11)
+  - removed column tl2
+  - removed column tl1
+  - removed column tc2
+  - removed column tc1
+  __
+  indices:
+  - added index tc with columns: tc
+  - removed index tc
+  - removed index tl1
+  - removed index tc2_tl2
+  __
+----------------------------------------------
+End of MySQL Workbench Report
 
 
-17      Followup me shift karne par time aur date aani chahiye... record ke liye: fixed
-12      edit profile is not viewing: design change
-19      PDF me bhi Education me Post Graduation aana chahiye, Occupation, Income (P.A) also missing in pdf
-20      isme Extra Info (Personal Wali) -- family details ke sath a rahi hai... humare PDF me candidate ki qualification aur occupation ke bich me aati thi: design discussion
-21      View more info need label only page: fixed
-
-==========================
-TC 1034 show ho rha hai
-TL ka usme option nahi hai
-RM blank show ho rha hai
-
-
-
-
-1. PIC-1: =>  screen ka size wesa he hai sir abhi...  edit karne k liye drag karna pad rha hai
-2. PIC-2: => ye personal info wala... candidate wale me add karna hai sir... family wale me nahi chahiye ye wala
-3. pic-3: => ye hold release krne ape ese kyu aa rha hai
-4. video-1 => ye itna le rha hai hold or active par click karne pas => fixed
-5. sare member black me hi hai in search result => fixed
-6. pic-4 :=>fixed par click kiya to sb black aa rha hai color change ho jaye taki pta rhe ki fixed hai => fixed
-
-
-
-
-===============================================================================
-1. Add Feedback form => fixed
-2. Client Name color as per paid, allocated or set free => fixed
-3. Disabled data => fixed
-4. Add Plane icon on NRI => fixed
-5. Show Hidden members and add option to show/hide => Need discussion
-6. Show all non-photo members in menu 
-7. Birthday, events and other notifications (Transfer, feedback)
-8. Online data
-9. Report=> Convert History
-
-
-
-===================================================================================
-
-
-
-
-
-
-
-[11:01 am, 10/04/2026] Pankaj Elite Jodi: sir isme  
-Number
-Email id 
-sabke liye pehle se he hide rakho aap...
-
-sirf RM ko
-Manu Mam ko
-Vijit Sir ko
-Mujhe aur Yashoda mam ko show hona chahiye 
-
-hum panch logo ke alawa kisi ko bhi show nahi hona chahiye
-[11:03 am, 10/04/2026] Pankaj Elite Jodi: aur isme 
-Date of birth
-Time of Birth
-Height 
-aur client ka name
-
-ye sab all staff sirf dekh sake... inme se ek bhi change me edit na kar sake....
-ise edit karne ki permission bhi...
-
-manu mam
-vijit sir
-mujhe aur yashoda mam ke pass rahegi
-[11:05 am, 10/04/2026] Pankaj Elite Jodi: aur samee aise he..  contact details me..  
-Number aur Email id  remove karna ya new add karna
-manu mam
-mujhe aur yashoda mam ke pass rahegi permission
-[11:06 am, 10/04/2026] Pankaj Elite Jodi: aur pics upload karne ki permission sabke pass rahegi...
-
-lekin delete karne ki 
-manu mam
-mujhe aur yashoda mam ke pass rahegi permission
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  sUM@#12Kytjjklvnm\

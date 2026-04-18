@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->boolean('status');
+            $table->integer('is_blocked')->default(0);
             $table->timestamps();
         });
 

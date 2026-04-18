@@ -44,31 +44,28 @@
 @foreach ($results as $data)
     <tr data-rno="{{ $data->rno }}">
         <td>
-            <div class="form-check"><input class="form-check-input chkrno"
-                    type="radio" name="formRadios" data-vc="{{ $data->vc }}"
-                    data-refname="{{ $data->refname }}" value="{{ $data->rno }}"
-                    data-cachekey="{{ $cacheKey }}" data-oc="{{ $data->oc }}"
-                    data-ost="{{ $data->ost }}"></div>
+            <div class="form-check"><input class="form-check-input chkrno" type="radio" name="formRadios"
+                    data-vc="{{ $data->vc }}" data-refname="{{ $data->refname }}" value="{{ $data->rno }}"
+                    data-cachekey="{{ $cacheKey }}" data-oc="{{ $data->oc }}" data-ost="{{ $data->ost }}"></div>
         </td>
-        <td style="word-break: keep-all"><a href="#" class="biodata_modal"
-                data-bs-toggle="modal" data-bs-target="#Modal_biodata"
-                data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
+        <td style="word-break: keep-all"><a href="#" class="biodata_modal" data-bs-toggle="modal"
+                data-bs-target="#Modal_biodata" data-rno="{{ $data->rno }}">{{ $data->rno }}</a></td>
         <td>{{ $data->g }}</td>
         <td class="{{ $data->status == 'F' ? 'td-bg-pink' : '' }}">
             @php
-            $textColor = '';
+                $textColor = '';
 
-            if ($data->dtype == 'P' && $data->ost == ''){
-                $textColor = '#090';
-            }elseif($data->dtype == 'P' && $data->ost == 'F'){
-                $textColor = '#93C';
-            }elseif($data->dtype == 'N' && $data->ost == 'F'){
-                $textColor = '#C30';
-            }elseif($data->dtype == 'N' && $data->ost == ''){
-                $textColor = '#000';
-            }elseif($data->dtype == 'P' && $data->ost == 'N'){
-                $textColor = '#F90';
-            }
+                if ($data->dtype == 'P' && $data->ost == '') {
+                    $textColor = '#090';
+                } elseif ($data->dtype == 'P' && $data->ost == 'F') {
+                    $textColor = '#93C';
+                } elseif ($data->dtype == 'N' && $data->ost == 'F') {
+                    $textColor = '#C30';
+                } elseif ($data->dtype == 'N' && $data->ost == '') {
+                    $textColor = '#000';
+                } elseif ($data->dtype == 'P' && $data->ost == 'N') {
+                    $textColor = '#F90';
+                }
             @endphp
             <div style="color: {{ $textColor }}">{{ $data->refname }}</div>
             {!! $data->vc == 1 ? '<i class="bi bi-vimeo"></i>' : '' !!}
@@ -90,7 +87,7 @@
         <td>{{ $data->personal->arealocation }}</td>
         <td>{{ $data->occupation?->name }}</td>
         <td>{{ rsValue($data->rs) }}</td>
-        <td style="word-break: keep-all">{{ $data->mc }}</td>
+        <td style="word-break: keep-all">{{ $data->tl }}</td>
         <td style="word-break: keep-all">{{ $data->tc }}</td>
         <td style="word-break: keep-all">{{ $data->rm }}</td>
         <td>{{ \Carbon\Carbon::parse($data->last_call)->format('M d Y') }}</td>
@@ -103,12 +100,10 @@
                 <span class="dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                     <i data-feather="more-vertical"></i></span>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item"
-                        href="{{ route('customer.edit', ['customer' => $data->rno]) }}"
+                    <a class="dropdown-item" href="{{ route('customer.edit', ['customer' => $data->rno]) }}"
                         target="_blank">Edit
                         Profile</a>
-                    <a class="dropdown-item"
-                        href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}"
+                    <a class="dropdown-item" href="{{ route('customer.uplod-photo', ['rno' => $data->rno]) }}"
                         target="_blank">Upload
                         Photo</a>
                 </div>
