@@ -25,7 +25,7 @@
                                     @endcan
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                         id="modl_convert_member" data-key="ConvertMemberModal">Convert Member </a>
-                                    @can(' Change TC/TL/RM')
+                                    @can('Change TC/TL/RM')
                                         <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                             id="modl_change_tctlrm" data-key="ChangeTCTLRMPageModal">Change TC/TL/RM</a>
                                     @endcan
@@ -861,6 +861,7 @@
                                     title: 'Success',
                                     text: response.message,
                                 }).then((result) => {
+                                    cacheClear(cacheKey);
                                     window.location.reload();
                                 });
                             } else {
