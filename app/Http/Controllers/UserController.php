@@ -11,6 +11,12 @@ use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
+
+    public function __construct(private User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Display a listing of the users.
      */
@@ -33,7 +39,7 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage.
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
         $user = User::create([
             'name' => $request->name,
@@ -80,7 +86,7 @@ class UserController extends Controller
     /**
      * Update the specified user in storage.
      */
-    public function update(UserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
         $data = [
             'name' => $request->name,
@@ -180,5 +186,29 @@ class UserController extends Controller
 
         return redirect()->back()
             ->with('success', 'Permission removed successfully.');
+    }
+
+    public function showUserPermissions($id)
+    {
+        $user = $this->user->where('username', $id)->first();
+        $userPermissions = $user->permissions->pluck('id')->toArray();
+        $userRolePermissions = $user->roles->first()?->permissions?->pluck('name', 'id')->toArray() ?? [];
+        $userRolePermissionIds = array_keys($userRolePermissions);
+        $permissions = Permission::whereNotIn('id', $userRolePermissionIds)->get();
+        $userDirectPermissions = $user->getDirectPermissions()->pluck('id')->toArray();
+        // dd($userDirectPermissions);
+        return view('panel.role-permission.user-permission-edit', compact('user', 'permissions', 'userPermissions', 'userRolePermissions', 'userRolePermissionIds', 'userDirectPermissions'));
+    }
+
+    public function updateUserPermissions(Request $request, $id)
+    {
+        // return $request->all();
+        $user = $this->user->where('username', $id)->first();
+        if ($user->syncPermissions($request->permissions)) {
+            return back()
+                ->with('success', 'User permissions updated successfully.');
+        }
+        return back()
+            ->with('error', 'User permissions updated failed.');
     }
 }

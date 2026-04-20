@@ -7,7 +7,7 @@
         <div class="row">
 
             <?php // include 'includes/inner-menu.php';
-                ?>
+                                                                ?>
 
             <div class="col-xl-12">
                 <!-- card -->
@@ -76,10 +76,14 @@
                                                             <img src="{{ url('uploads/customer/' . $item->photo) }}"
                                                                 class="img-fluid" width="200" alt="profile pictures">
                                                         </a>
-                                                        <p align="center" class="mt-2">
-                                                            <a href="javascript:;" data-photo="{{ $item->photo }}"
-                                                                class="btn_delpic text-danger"><i data-feather="delete"></i></a>
-                                                        </p>
+                                                        @if(in_array(auth()->user()->username, config('constants.DELETE_SNAPS_USERS')))
+                                                            <p align="center" class="mt-2">
+                                                                <a href="javascript:;" data-photo="{{ $item->photo }}"
+                                                                    title="delete image" class="btn_delpic text-danger"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"><i
+                                                                        data-feather="delete"></i></a>
+                                                            </p>
+                                                        @endif
 
                                                     </div>
                                                 </div>

@@ -28,7 +28,7 @@ class DataService
         ])
             ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
             ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
-            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('tl'), fn($query) => $query->where('tl', $request->tl))
             ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
             ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
             ->when($request->filled('search'), function ($q) use ($request) {
@@ -62,7 +62,7 @@ class DataService
             ->whereIn('dtype', ['P', 'N'])
             ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
             ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
-            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('tl'), fn($query) => $query->where('tl', $request->tl))
             ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
             ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
             ->when($request->filled('search'), function ($q) use ($request) {
@@ -114,7 +114,7 @@ class DataService
         ])
             ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
             ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
-            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('tl'), fn($query) => $query->where('tl', $request->tl))
             ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
             ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
             ->when($request->filled('search'), function ($q) use ($request) {
@@ -148,7 +148,7 @@ class DataService
         ])
             ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
             ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
-            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('tl'), fn($query) => $query->where('tl', $request->tl))
             ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
             ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
             ->when($request->filled('search'), function ($q) use ($request) {
@@ -205,7 +205,7 @@ class DataService
         $query =  DoneList::with(['bride', 'groom'])->orderBy($sortBy, $orderBy)
             ->when($request->filled('g'), fn($query) => $query->where('g', $request->g))
             ->when($request->filled('tc'), fn($query) => $query->where('tc', $request->tc))
-            ->when($request->filled('mc'), fn($query) => $query->where('mc', $request->mc))
+            ->when($request->filled('tl'), fn($query) => $query->where('tl', $request->tl))
             ->when($request->filled('rm'), fn($query) => $query->where('rm', $request->rm))
             ->when($request->filled('oc'), fn($query) => $query->where('oc', $request->oc))
             ->when($request->filled('fix_month'), fn($query) => $query->where('fix_month', $request->fix_month))

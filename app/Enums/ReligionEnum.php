@@ -10,7 +10,8 @@ enum ReligionEnum: int
     case Jain = 3;
     case Christian = 4;
     case Muslim = 5;
-    case Atheist = 6;
+    case Buddhist = 6;
+    case Atheist = 7;
 
     public function label(): string
     {
@@ -21,6 +22,7 @@ enum ReligionEnum: int
             self::Jain => 'Jain',
             self::Christian => 'Christian',
             self::Muslim => 'Muslim',
+            self::Buddhist => 'Buddhist',
             self::Atheist => 'Atheist',
         };
     }

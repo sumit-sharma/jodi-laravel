@@ -33,7 +33,9 @@ return new class extends Migration
             $table->string('ch', 50)->default('');
             $table->integer('fi')->nullable();
             $table->integer('tc')->nullable()->index();
-            $table->integer('mc')->nullable();
+            $table->integer('tc2')->nullable()->index();
+            $table->integer('tl')->nullable();
+            $table->integer('tl2')->nullable();
             $table->integer('rm')->nullable()->index();
             $table->integer('p_sent')->nullable()->index();
             $table->date('last_mail')->nullable();

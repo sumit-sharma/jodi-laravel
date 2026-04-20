@@ -25,7 +25,7 @@
                                     @endcan
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                         id="modl_convert_member" data-key="ConvertMemberModal">Convert Member </a>
-                                    @can(' Change TC/TL/RM')
+                                    @can('Change TC/TL/RM')
                                         <a href="javascript:;" class="dropdown-item inner-menu-modal"
                                             id="modl_change_tctlrm" data-key="ChangeTCTLRMPageModal">Change TC/TL/RM</a>
                                     @endcan
@@ -791,10 +791,10 @@
                         });
                         if (data.status == 'success') {
                             $('#ChangeTCTLRMPageModal #tc').val(data.data.tc).trigger('change')
-                            $('#ChangeTCTLRMPageModal #tl').val(data.data.mc).trigger('change')
+                            $('#ChangeTCTLRMPageModal #tl').val(data.data.tl).trigger('change')
                             $('#ChangeTCTLRMPageModal #rm').val(data.data.rm).trigger('change')
                             $('#ChangeTCTLRMPageModal #old_tc').val(data.data.tc)
-                            $('#ChangeTCTLRMPageModal #old_tl').val(data.data.mc)
+                            $('#ChangeTCTLRMPageModal #old_tl').val(data.data.tl)
                             $('#ChangeTCTLRMPageModal #old_rm').val(data.data.rm)
                         }
                     });
@@ -861,6 +861,7 @@
                                     title: 'Success',
                                     text: response.message,
                                 }).then((result) => {
+                                    cacheClear(cacheKey);
                                     window.location.reload();
                                 });
                             } else {

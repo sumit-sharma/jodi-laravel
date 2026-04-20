@@ -61,7 +61,7 @@ class SearchService
             case 'refname':
             case 'cst':
             case 'tc':
-            case 'mc':
+            case 'tl':
             case 'rm':
                 $query->where($searchField, 'like', "%$searchValue%");
                 break;
@@ -190,7 +190,7 @@ class SearchService
         $totalCacheKey = str_replace('search_results_', 'search_total_', $cacheKey);
         // Remove cursor and page from total cache key to share count across pages
         $totalCacheKey = preg_replace('/_cursor.*?(_|$)/', '_', $totalCacheKey);
-        
+
         $total = Cache::remember($totalCacheKey, now()->addMinutes(30), function () use ($query) {
             return $query->count();
         });

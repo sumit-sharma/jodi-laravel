@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('amount');
             $table->date('dated');
             $table->string('details');
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

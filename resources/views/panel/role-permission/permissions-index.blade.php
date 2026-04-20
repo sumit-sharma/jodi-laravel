@@ -12,6 +12,38 @@
 
         <div class="card">
             <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 col-12">
+                        <div class="mb-3">
+                            {{-- <button data-bs-toggle="offcanvas" data-bs-target="#filterModal" type="button"
+                                class="btn btn-primary waves-effect btn-label waves-light"><i
+                                    class="bx bx-filter-alt label-icon"></i> Filter</button> --}}
+                            &nbsp;&nbsp;
+                            <a href="{{ request()->url() }}" class="btn btn-primary waves-effect btn-label waves-light"><i
+                                    class="bx bx-reset label-icon"></i> Reset</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-12">
+                        <form class="app-search d-none d-lg-block pt-0 pb-0">
+                            <div class="position-relative">
+                                <form method="GET" action="{{ request()->url() }}">
+                                    <input type="search" name="search" class="form-control bg-black opacity-50"
+                                        placeholder="Search..." value="{{ request()->get('search') }}">
+                                    <button class="btn btn-primary" type="submit"><i
+                                            class="bx bx-search-alt align-middle"></i></button>
+                                </form>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2 col-12 text-right" style="text-align: right;">
+                        <div class="mb-4">
+                            <button type="button" class="btn btn-secondary">Total Record -
+                                {{ $permissions->total() }}</button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
@@ -73,7 +105,7 @@
                 </div>
 
                 <div class="d-flex float-end">
-                    {{ $permissions->links() }}
+                    {{ $permissions->withQueryString()->links() }}
                 </div>
             </div>
         </div>

@@ -86,7 +86,11 @@
                                     <tbody class="pdng_d">
                                         @forelse ($followups as $followup)
                                             <tr>
-                                                <td>{{ $followup->rno }}</td>
+                                                <td>
+                                                    <a href="#" class="biodata_modal" data-bs-toggle="modal"
+                                                        data-bs-target="#Modal_biodata"
+                                                        data-rno="{{ $followup->rno }}">{{ $followup->rno }}</a>
+                                                </td>
                                                 <td>{{ $followup->viewProfile?->g }}</td>
                                                 <td>{{ $followup->viewProfile?->refname }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($followup->viewProfile?->bio?->dob)->age }}</td>
@@ -197,6 +201,7 @@
 
 
 
+        @include('components.biodata_modal')
 
 
 

@@ -51,6 +51,7 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/fetch-customer-data/{rno}', [DashboardController::class, 'fetchCustomerData'])->name('fetch-customer-data');
+    Route::get('/fetch-contact-details/{rno}', [DashboardController::class, 'fetchContactDetails'])->name('fetch-contact-details');
 
     Route::get('/customer-photos/{rno}', [CustomerController::class, 'showPhotos'])->name('customer.show-photos');
     Route::get('/uplod-photo/{rno}', [CustomerController::class, 'uplodPics'])->name('customer.uplod-photo');
@@ -262,6 +263,8 @@ Route::middleware("auth")->group(function () {
         Route::get('/edit-user/{username}', [EmployeeController::class, 'edit'])->name('edit-user');
         Route::put('/update-user/{username}', [EmployeeController::class, 'update'])->name('update-user');
         // Route::put('/toggle-user-status/{username}', [EmployeeController::class, 'toggleUserStatus'])->name('toggle-user-status');
+        Route::get('/user-permission/{id}', [UserController::class, 'showUserPermissions'])->name('show-user-permission');
+        Route::put('/user-permission/{id}', [UserController::class, 'updateUserPermissions'])->name('update-user-permission');
     });
 
     Route::prefix('chat')->name('chat.')->group(function () {

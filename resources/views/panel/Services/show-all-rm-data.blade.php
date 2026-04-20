@@ -77,7 +77,9 @@
                                                     <tr>
                                                         <td><a href="/services/search-result?searchinfield=rm&searchvalue={{ $employee->rm }}&dtype[]=P&chkstatus[]=A"
                                                                 target="_blank">{{ $employee->rm }}</a></td>
-                                                        <td>{{ $employee->rmData->name }}</td>
+                                                        <td class="text-decoration-underline"><a
+                                                                href="/services/search-result?searchinfield=rm&searchvalue={{ $employee->rm }}&dtype[]=P&chkstatus[]=A"
+                                                                target="_blank">{{ $employee->rmData->name }}</a></td>
                                                         <td>{{ $employee->count }}</td>
                                                     </tr>
                                                 @endforeach

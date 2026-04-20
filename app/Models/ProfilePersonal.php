@@ -48,6 +48,10 @@ class ProfilePersonal extends Model
         'arealocation'
     ];
 
+    protected $hidden = [
+        'contactphone',
+        'contactemail',
+    ];
 
     protected function casts()
     {

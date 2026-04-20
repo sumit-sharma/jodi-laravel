@@ -66,5 +66,6 @@ label.is-invalid {
 
 .table-rep-plugin a{
     color: var(--bs-primary) !important;
+    text-decoration: underline !important;
     /* color: #000 !important; */
 }

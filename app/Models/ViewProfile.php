@@ -8,7 +8,7 @@ class ViewProfile extends Model
 {
 
     protected $table = 'viewprofile';
-    protected $fillable = ['rno', 'g', 'refname', 'y', 'm', 'rl', 'cst', 'hg', 'hghtft', 'wt', 'eh', 'ast', 'ed', 'oc', 'pi', 'rs', 'ms', 'ch', 'fi', 'tc', 'mc', 'rm', 'p_sent', 'last_mail', 'last_call', 'last_mtng', 'dtype', 'status', 'ost', 'vc', 'op', 'st'];
+    protected $fillable = ['rno', 'g', 'refname', 'y', 'm', 'rl', 'cst', 'hg', 'hghtft', 'wt', 'eh', 'ast', 'ed', 'oc', 'pi', 'rs', 'ms', 'ch', 'fi', 'tc', 'tc2', 'tl', 'tl2', 'rm', 'p_sent', 'last_mail', 'last_call', 'last_mtng', 'dtype', 'status', 'ost', 'vc', 'op', 'st'];
 
 
     public function personal()

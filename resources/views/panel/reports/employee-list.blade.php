@@ -91,12 +91,13 @@
                                             <th data-priority="1" width="">User ID</th>
                                             <th data-priority="2" width="">Name</th>
                                             <th data-priority="3" width="">Dept</th>
-                                            <th data-priority="4" width="">Email</th>
-                                            <th data-priority="5" width="">Mobile</th>
-                                            <th data-priority="6" width="">Shift</th>
-                                            <th data-priority="7" width="">Offday</th>
-                                            <th data-priority="8" width="">Status</th>
-                                            <th data-priority="9" width="">Action</th>
+                                            <th data-priority="4" width="">Role</th>
+                                            <th data-priority="5" width="">Email</th>
+                                            <th data-priority="6" width="">Mobile</th>
+                                            <th data-priority="7" width="">Shift</th>
+                                            <th data-priority="8" width="">Offday</th>
+                                            <th data-priority="9" width="">Status</th>
+                                            <th data-priority="10" width="">Action</th>
                                             {{-- <th data-priority="9" width="">Reset</th>
                                             <th data-priority="10" width="">Move</th>
                                             <th data-priority="11" width="">Unlock</th> --}}
@@ -109,6 +110,8 @@
                                                 <td>{{ $employee->username }}</td>
                                                 <td>{{ $employee->name }}</td>
                                                 <td>{{ $employee->details?->department }}</td>
+                                                <td class="text-uppercase">{{ $employee->roles->pluck('name')->implode(', ') }}
+                                                </td>
                                                 <td>{{ $employee->email }}</td>
                                                 <td>{{ $employee->mobile }}</td>
                                                 <td>{{ $employee->details?->intime }} - {{ $employee->details?->outtime }}</td>
@@ -133,6 +136,12 @@
                                                             <i class="bi bi-lock-fill"></i>
                                                         </a>
                                                     @endif
+                                                    @can('Permission')
+                                                        <a href="{{ route('roles-permissions.show-user-permission', ['id' => $employee->username]) }}"
+                                                            class="btn btn-success btn-sm"
+                                                            data-username="{{ $employee->username }}"><i
+                                                                class="bi bi-shield-lock"></i></a>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach
