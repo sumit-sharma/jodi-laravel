@@ -49,3 +49,26 @@ if (!function_exists('ms_label')) {
         };
     }
 }
+
+if (!function_exists('getPackage')) {
+    function getPackage(int|float $amt): string
+    {
+        return match (true) {
+            $amt >= 500000 => 'N',
+            $amt >= 400000 => 'M',
+            $amt >= 350000 => 'L',
+            $amt >= 300000 => 'K',
+            $amt >= 250000 => 'J',
+            $amt >= 200000 => 'I',
+            $amt >= 150000 => 'H',
+            $amt >= 100000 => 'G',
+            $amt >= 90000  => 'F',
+            $amt >= 70000  => 'E',
+            $amt >= 60000  => 'D',
+            $amt >= 40000  => 'C',
+            $amt >= 30000  => 'B',
+            $amt >= 0      => 'A',
+            default        => '',
+        };
+    }
+}

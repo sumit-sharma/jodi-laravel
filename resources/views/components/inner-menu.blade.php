@@ -54,6 +54,7 @@
                                 </div>
                             </li>
 
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
                                     <span data-key="t-apps">More Info</span>
@@ -67,6 +68,22 @@
                                         data-key="/view-more-info/">View more info </a> --}}
                                     <a href="javascript:;" class="dropdown-item inner-menu-modal" id="modl_more_info"
                                         data-key="MoreInfoModal">View more info </a>
+                                </div>
+                            </li>
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ref" role="button">
+                                    <span data-key="t-apps">Services</span>
+                                    <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                    <a href="javascript:;" class="dropdown-item inner-menu-item"
+                                        data-key="/finance/view-finance/">View Finance </a>
+
+                                    <a href="javascript:;" class="dropdown-item inner-menu-modal"
+                                        id="modl_update_finance" data-key="UpdateFinanceModal">Update Finance </a>
+
                                 </div>
                             </li>
 
@@ -198,6 +215,7 @@
         {{-- @include('components.delete_member_modal') --}}
     @endcan
     @include('components.more-info-modal')
+    @include('panel.Customer.finance.update-finance')
 </div>
 
 @section('bottom-js')
@@ -243,6 +261,94 @@
                 }
             }
 
+            const fetchReference = async () => {
+                let url = "{{ route('fetch-table-data') }}";
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json",
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        table: 'refdata',
+                        columns: ['reftype'],
+                        sortBy: 'id',
+                        sortOrder: 'asc',
+                        where: null
+                    })
+                });
+                let data = await response.json();
+                return data;
+            }
+
+            const fetchServicetypes = async () => {
+                let url = "{{ route('fetch-table-data') }}";
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Content-Type": "application/json",
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        table: 'servicetypes',
+                        columns: ['servicetype'],
+                        sortBy: 'id',
+                        sortOrder: 'asc',
+                        where: null
+                    })
+                });
+                let data = await response.json();
+                return data;
+            }
+
+            const getPaymentList = (password, rno) => {
+
+                $.ajax({
+                    url: "{{ route('finance.get-payment-list') }}",
+                    type: "POST",
+                    data: {
+                        password: password,
+                        _token: "{{ csrf_token() }}",
+                        rno: rno,
+                    },
+                    success: function (response) {
+                        $("#amtDetailsSection").show();
+                        if (response.status == "error") {
+                            $("#errorMsg").html(response.message);
+                        } else {
+                            $("#errorMsg").html("");
+                            let html = '';
+                            let key = 1;
+                            Object.entries(response.data.payments).forEach(([ind, value]) => {
+                                html += `<tr><td>${key++}</td><td>${value.amount}</td><td>${convertDate(value.dated)}</td><td>${value.details}</td><td ><button data-id="${value.id}" data-rno="${rno}" class="btn btn-danger btn-sm btnDeleteFinance"><i class="fa fa-trash"></i></button></td></tr>`;
+                            });
+                            $("#table_finance_entries tbody").html(html);
+                            $("#amt_det").removeClass("d-none");
+                            $("#btnAddFinance").prop("disabled", false);
+                            $("#btnAddFinance").removeClass('btn-secondary');
+                            $("#btnAddFinance").addClass('btn-primary');
+                        }
+                    }
+                });
+            }
+
+
+            const fetchProfileData = async (rno) => {
+                let response = await fetch("{{ route('finance.view-finance', ['rno' => ':rno']) }}".replace(':rno', selected_rno), {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                let data = await response.json();
+                return data;
+            }
+
+
 
             // $(".upper-menu-item").click(function () {
             //     if (selected_rno == "") return false;
@@ -277,6 +383,7 @@
             let convertMemberModalEl = document.getElementById('ConvertMemberModal');
             let feedbackModalEl = document.getElementById('AddFeedbackModal');
             let moreInfoModalEl = document.getElementById('MoreInfoModal');
+            let updateFinanceModalEl = document.getElementById('UpdateFinanceModal');
 
             $(".timepicker").timepicker({
                 uiLibrary: 'bootstrap5',
@@ -555,7 +662,6 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 }).then(response => response.json()).then(data => {
-                    console.log(data)
                     if (data.status == 'error') {
                         toastr.error(data.message)
                         return;
@@ -650,7 +756,6 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 }).then(response => response.json()).then(data => {
-                    console.log(data)
                     if (data.status == 'error') {
                         $("#holdMemberModal #holdMemberModal_status").val(1);
                         $("#holdMemberModal .holdMemberModal_action_label").text("Release");
@@ -1011,7 +1116,6 @@
                 fetch('{{ route("check-hide-status", ["rno" => ":rno"]) }}'.replace(':rno', selected_rno))
                     .then(response => response.json())
                     .then(data => {
-                        console.log("data", data);
                         if (data.status === 'success') {
                             selected_hide = data.data.dtype;
 
@@ -1708,7 +1812,6 @@
                 fetch("{{ route('get-feedback-modal', ['rno' => ':rno']) }}".replace(':rno', selected_rno))
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
                         if (data.status == "success") {
                             let options = '<option value="">Select</option>';
                             data.data.sendMailProposals.forEach(element => {
@@ -1794,7 +1897,6 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            console.log("response", response)
                             if (response.status == "success") {
                                 Swal.fire({
                                     icon: 'success',
@@ -1849,7 +1951,6 @@
                 fetch("{{ route('view-more-info', ['rno' => ':rno']) }}".replace(':rno', selected_rno))
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
                         if (data.status == "success") {
                             $("#more_info_loader").hide();
                             $("#moreInfoSection").show();
@@ -1874,6 +1975,177 @@
 
             });
 
+            $("#modl_update_finance").click(function () {
+                if (selected_rno == "") {
+                    toastr.error("please check candidate first")
+                    return;
+                }
+
+                let modal = bootstrap.Modal.getInstance(updateFinanceModalEl) || new bootstrap.Modal(updateFinanceModalEl);
+                modal.show();
+                $("#UpdateFinanceModal #fin_amount").val("");
+                $("#UpdateFinanceModal #fin_dated").val("");
+                $("#UpdateFinanceModal #fin_payment_details").val("");
+
+                $("#UpdateFinanceModal #fin_loader").show();
+                Promise.all([
+                    fetchProfileData(selected_rno),
+                    fetchReference(),
+                    fetchActiveEmployee(),
+                    fetchServicetypes()
+                ]).then(([profileDetail, refData, employeeData, servicetypeData]) => {
+                    const pd = profileDetail.data;
+                    $("#UpdateFinanceModal #fin_loader").hide();
+                    $("#UpdateFinanceModal #fin_form").show();
+                    $("#UpdateFinanceModal #fin_member_no").val(selected_rno);
+                    $("#UpdateFinanceModal #fin_member_name").val(selected_refname);
+                    let refOptions = refData.map(item => `<option value="${item.reftype}">${item.reftype}</option>`).join('');
+                    let employeeOptions = employeeData.data.map(item => `<option value="${item.name}">${item.name}</option>`).join('');
+                    let servicetypeOptions = servicetypeData.map(item => `<option value="${item.servicetype}">${item.servicetype}</option>`).join('');
+                    let selectOption = '<option value="">Select</option>';
+                    let options = [...refOptions, ...employeeOptions].join('')
+                    selectOption += options;
+                    $("#UpdateFinanceModal #refselect").html(selectOption)
+                        .select2({
+                            dropdownParent: $('#UpdateFinanceModal'),
+                            placeholder: "Select",
+                            allowClear: true
+                        });
+                    $("#UpdateFinanceModal #servicetype").html(servicetypeOptions)
+
+
+                    options = '<option value="">Select</option>';
+                    employeeData.data.forEach(element => {
+                        options += `<option value="${element.username}">${element.username} - ${element.name}</option>`;
+                    });
+
+                    const tc_code = $("#UpdateFinanceModal #tcselect");
+                    const tl_code = $("#UpdateFinanceModal #tlselect");
+                    const rm_code = $("#UpdateFinanceModal #rmselect");
+
+                    tc_code.html(options).select2({
+                        dropdownParent: $('#UpdateFinanceModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                    tl_code.html(options).select2({
+                        dropdownParent: $('#UpdateFinanceModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                    rm_code.html(options).select2({
+                        dropdownParent: $('#UpdateFinanceModal'),
+                        placeholder: "Select",
+                        allowClear: true
+                    });
+
+                    if (pd.tc) {
+                        tc_code.val(String(pd.tc)).trigger("change");
+                    }
+
+                    if (pd.tl) {
+                        tl_code.val(String(pd.tl)).trigger("change");
+                    }
+
+                    if (pd.rm) {
+                        rm_code.val(String(pd.rm)).trigger("change");
+                    }
+                    $("#UpdateFinanceModal #refselect").val(String(pd.reference)).trigger("change");
+                    $("#UpdateFinanceModal #servicetype").val(String(pd.service)).trigger("change");
+                    $("#UpdateFinanceModal #fin_package").val(pd.package);
+                    $("#UpdateFinanceModal #amount").val(pd.amount);
+                    $("#UpdateFinanceModal #fin_duration").val(pd.duration);
+                    $("#UpdateFinanceModal #fin_r_date").val(convertDate(pd?.bio?.profiledate, 'YYYY-MM-DD'));
+                    $("#UpdateFinanceModal #otherdetails").val(pd.otherdetails);
+                })
+            });
+
+            $("#UpdateFinanceModal #btnAddFinance").click(function () {
+                const amount = $("#UpdateFinanceModal #fin_amount").val();
+                const dated = $("#UpdateFinanceModal #fin_dated").val();
+                const details = $("#UpdateFinanceModal #fin_payment_details").val();
+                if (amount == "" || dated == "" || details == "") {
+                    toastr.error("Please fill all the fields");
+                    return;
+                }
+
+                fetch("{{ route('finance.add-payment') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        rno: selected_rno,
+                        amount: amount,
+                        dated: dated,
+                        details: details
+                    })
+                }).then(response => response.json()).then(data => {
+                    if (data.status == "success") {
+                        $("#UpdateFinanceModal #fin_amount").val("");
+                        $("#UpdateFinanceModal #fin_dated").val("");
+                        $("#UpdateFinanceModal #fin_payment_details").val("");
+                        toastr.success(data.message);
+                        var password = $("#fin_password").val();
+                        getPaymentList(password, selected_rno);
+                        fetchProfileData(selected_rno).then(function (profileData) {
+                            $("#UpdateFinanceModal #fin_package").val(profileData.data.package);
+                        });
+                    } else {
+                        toastr.error(data.message);
+                    }
+                });
+
+            });
+
+            $("#btnChkPasscode").click(function () {
+                var password = $("#fin_password").val();
+                if (password == "") {
+                    $("#errorMsg").html("Please enter password");
+                    return;
+                }
+                getPaymentList(password, selected_rno);
+            });
+
+            $("#UpdateFinanceModal #table_finance_entries").on("click", ".btnDeleteFinance", function () {
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You want to delete this payment',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    confirmButtonColor: "#dc3545",
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const id = $(this).data("id");
+                        const rno = $(this).data("rno");
+                        $.ajax({
+                            url: "{{ route('finance.delete-payment', ['id' => ':id', 'rno' => ':rno']) }}".replace(':id', id).replace(':rno', rno),
+                            type: "DELETE",
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                            },
+                            success: function (response) {
+                                if (response.status == "error") {
+                                    toastr.error(response.message);
+                                } else {
+                                    toastr.success(response.message);
+                                    var password = $("#fin_password").val();
+                                    getPaymentList(password, selected_rno);
+                                    fetchProfileData(selected_rno).then(function (profileData) {
+                                        $("#UpdateFinanceModal #fin_package").val(profileData.data.package);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
 
         });
     </script>

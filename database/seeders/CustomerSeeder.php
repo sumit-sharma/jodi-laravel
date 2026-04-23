@@ -14,9 +14,6 @@ class CustomerSeeder extends Seeder
     public function run(): void
     {
 
-        // /**
-        //  *
-        /*   
         echo nl2br("start profile_bio import\n");
         DB::statement("insert ignore into jodi_laravel.profile_bio (rno,gender,refname,dob,tob,age,pob,religion,caste,subcaste,gotra,hght,hghtft,wtkg,complexion,dd,bg,astrostatus,drinkinghabit,smokinghabit,eatinghabit,spects,education,occupation,income,rs,ms,childstatus,dtype,payment,profiledate,empid,rfno,brand,created_at,updated_at) Select li.rno, li.gender, li.refname, li.dob, li.tob, li.age, li.pob, li.religion, li.caste, li.subcaste, li.gotra, li.hght, li.hghtft, li.wtkg, li.complexion, li.dd, li.bg, li.astrostatus, li.drinkinghabit, li.smokinghabit, li.eatinghabit, li.spects, li.education, li.occupation, li.income, li.rs, li.ms, li.childstatus, li.dtype, li.payment, li.profiledate, li.empid, li.rfno, li.brand, NOW(), NOW() from jodi_new.profile_bio as li");
 
@@ -37,7 +34,7 @@ class CustomerSeeder extends Seeder
         echo nl2br("start profile_personal import\n");
         DB::statement("insert ignore into jodi_laravel.profile_personal (rno, visa, rcity, rcountry, marriageinfo, child, childdetails, occdetails, familyvalue, familystatus, fathersname, mothersname, fatherdetails, motherdetails, fatherocc, motherocc, familyincome, familyincomem, typeoffamily, familynative, hobbies, characteristics, eyecolor, haircolor, salary, budget, nationality, familyhistory, contactperson, contactaddress, contactcity, contactstate, contactpincode, contactcountry, contactphone, contactemail, contactrelation, personaldetails, contactzone, arealocation, created_at, updated_at) SELECT li.rno, li.visa, li.rcity, li.rcountry, li.marriageinfo, li.child, li.childdetails, li.occdetails, li.familyvalue, li.familystatus, li.fathersname, li.mothersname, li.fatherdetails, li.motherdetails, li.fatherocc, li.motherocc, li.familyincome, li.familyincomem, li.typeoffamily, li.familynative, li.hobbies, li.characteristics, li.eyecolor, li.haircolor, li.salary, li.budget, li.nationality, li.familyhistory, li.contactperson, li.contactaddress, li.contactcity, li.contactstate, li.contactpincode, li.contactcountry, li.contactphone, li.contactemail, li.contactrelation, li.personaldetails, li.contactzone, li.arealocation, NOW(), NOW() FROM jodi_new.profile_personal as li");
         echo nl2br("finish profile_personal import\n");
- */
+
         echo nl2br("start viewprofile import\n");
         DB::statement("insert ignore into jodi_laravel.viewprofile (rno, g, refname, y, m, rl, cst, hg, hghtft, wt, eh, ast, ed, oc, pi, rs, ms, ch, fi, tc, tc2, tl, tl2, rm, p_sent, last_mail, last_call, last_mtng, dtype, status, ost, vc, op, st, created_at, updated_at) SELECT li.rno, li.g, li.refname, li.y, li.m, li.rl, li.cst, li.hg, li.hghtft, li.wt, li.eh, li.ast, li.ed, li.oc, li.pi, li.rs, li.ms, li.ch, li.fi, li.tc1, li.tc2, li.tl1, li.tl2, li.rm, li.p_sent, li.last_mail, li.last_call, li.last_mtng, li.dtype, li.status, li.ost, li.vc, li.op, li.st, NOW(), NOW() FROM jodi_new.viewprofile as li");
         echo nl2br("finish viewprofile import\n");

@@ -12,6 +12,7 @@ use App\Http\Controllers\Panel\DataController;
 use App\Http\Controllers\Panel\EmployeeController;
 use App\Http\Controllers\Panel\EnquiryController;
 use App\Http\Controllers\Panel\FeedbackController;
+use App\Http\Controllers\Panel\FinanceController;
 use App\Http\Controllers\Panel\FixMemberController;
 use App\Http\Controllers\Panel\FollowupController;
 use App\Http\Controllers\Panel\FormTransferController;
@@ -65,7 +66,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/dashboard/get-castes/{religion}', [DashboardController::class, 'getCaste'])->name('get-caste');
     Route::get('/dashboard/fetch-castes', [DashboardController::class, 'fetchCastes'])->name('fetch-castes');
     Route::get('/dashboard/fetch-distinct-data', [DashboardController::class, 'getDistinctData'])->name('fetch-distinct-data');
-    Route::get('/dashboard/fetch-table-data', [DashboardController::class, 'getTableData'])->name('fetch-table-data');
+    Route::any('/dashboard/fetch-table-data', [DashboardController::class, 'getTableData'])->name('fetch-table-data');
 
     Route::get('/appointment-report', [AppointmentController::class, 'appointmentReport'])->name('appointment-report.index')->middleware('permission:Appointment Report');
     Route::post('/appointment-report', [AppointmentController::class, 'appointmentReportStore'])->name('appointment-report.store');
@@ -251,6 +252,14 @@ Route::middleware("auth")->group(function () {
         Route::get('/followup-auto-logs-report', [ReportController::class, 'getFollowupAutoLogsReport'])->name('followup-auto-logs-report')->middleware('permission:Edit Log Report');
         Route::get('/finance-report', [ReportController::class, 'getFinanceReport'])->name('finance-report')->middleware('permission:Finance Report');
         Route::any('/daily-report', [ReportController::class, 'dailyReport'])->name('daily-report')->middleware('permission:Daily Report');
+    });
+
+
+    Route::prefix('finance')->name('finance.')->group(function () {
+        Route::get('/view-finance/{rno}', [FinanceController::class, 'show'])->name('view-finance');
+        Route::post('/get-payment-list', [FinanceController::class, 'getPaymentList'])->name('get-payment-list');
+        Route::delete('/delete-payment/{rno}/{id}', [FinanceController::class, 'destroy'])->name('delete-payment');
+        Route::post('/add-payment', [FinanceController::class, 'store'])->name('add-payment');
     });
 
     Route::resource('roles', RoleController::class)->middleware('permission:Permission');

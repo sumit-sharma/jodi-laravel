@@ -21,4 +21,10 @@ class ProfileDetail extends Model
         'reference',
         'duration',
     ];
+
+
+    public function bio()
+    {
+        return $this->hasOne(ProfileBio::class, 'rno', 'rno');
+    }
 }

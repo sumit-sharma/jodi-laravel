@@ -16,12 +16,14 @@ use App\Models\HoldMember;
 use App\Models\Interaction;
 use App\Models\Meeting;
 use App\Models\OrgLog;
+use App\Models\Passcode;
 use App\Models\ProfileBio;
 use App\Models\ProfileBs;
 use App\Models\ProfileDetail;
 use App\Models\ProfileEducation;
 use App\Models\ProfileMoreInfo;
 use App\Models\ProfileOrganisation;
+use App\Models\ProfilePayment;
 use App\Models\ProfilePersonal;
 use App\Models\Snap;
 use App\Models\ViewProfile;
@@ -898,5 +900,48 @@ class CustomerService
     public function getContactDetails($rno)
     {
         return ProfilePersonal::where('rno', $rno)->select('contactphone', 'contactemail')->first();
+    }
+
+    public function fetchProfileDetail($rno)
+    {
+        return ProfileDetail::with('bio:rno,profiledate')->where('rno', $rno)->first();
+    }
+
+
+    public function getPaymentList($rno)
+    {
+        return ProfilePayment::where('rno', $rno)->get();
+    }
+
+    public function checkPasscode(string $passcode)
+    {
+        return Passcode::where('password', md5($passcode))->first();
+    }
+
+    public function deletePayment($rno, $id)
+    {
+        return DB::transaction(function () use ($rno, $id) {
+            $payment = ProfilePayment::where(['rno' => $rno, 'id' => $id])->first();
+            if ($payment) {
+                $amount = $payment->amount;
+                $payment->delete();
+                return ProfileDetail::where('rno', $rno)->decrement('package', $amount);
+            }
+            return false;
+        });
+    }
+
+    public function addPayment($data)
+    {
+        return DB::transaction(function () use ($data) {
+            ProfilePayment::create([
+                'rno' => $data['rno'],
+                'amount' => $data['amount'],
+                'dated' => $data['dated'],
+                'details' => $data['details'],
+            ]);
+            ProfileDetail::where('rno', $data['rno'])->increment('package', $data['amount']);
+            return true;
+        });
     }
 }
